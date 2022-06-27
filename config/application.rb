@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module HousiblyBackend
   class Application < Rails::Application
+    Dir['./lib/**/*.rb'].each { |file| require file }
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 

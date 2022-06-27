@@ -17,7 +17,8 @@
 /tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
-
+.idea
+.idea/housibly_backend.iml
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep

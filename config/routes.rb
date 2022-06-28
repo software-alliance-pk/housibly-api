@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#create'
       get '/*a', to: 'application#not_found'
+      post '/forgot_password', to: 'forgot_password#forgot_password_through_email'
+      post '/reset_password', to: 'forgot_password#reset_password'
     end
   end
 end

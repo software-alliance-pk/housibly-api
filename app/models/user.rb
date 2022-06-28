@@ -16,6 +16,24 @@ class User < ApplicationRecord
     want_support_closer: 2
   }
 
+  def generate_password_token!
+    self.reset_password_token = generate_otp
+    self.reset_password_sent_at = Time.now.utc
+    self.save!
+  end
+  def password_token_valid?
+    (self.reset_password_sent_at + 4.hours) > Time.now.utc
+  end
+  def reset_password!(password)
+    self.reset_password_token = nil
+    self.password = password
+    self.save!
+  end
+  private
+  def generate_otp
+    SecureRandom.hex(3)
+  end
+
   # def confirm?
   #   confirmed_at?
   # end

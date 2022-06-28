@@ -1,7 +1,7 @@
 class Api::V1::RegistrationsController < Api::V1::ApiController
   skip_before_action :authenticate_user, only: [:create]
+
   def create
-    debugger
     @user = User.new(user_params)
     if @user.save
       render json: { success: "confirmation email is sent" }, status: :ok

@@ -6,7 +6,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     if @user.save
       @user
     else
-      render json: { error: @user.errors.messages }, status: :ok
+      render_error_messages(@user)
     end
   end
 

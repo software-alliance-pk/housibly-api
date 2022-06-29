@@ -57,7 +57,8 @@ class SocialLoginService
       resource
     else
       name =  response['name'].present? ?  response['name'] : "apple don't provide name"
-      User.create!(email: response['email'], full_name: name, password: PASSWORD_DIGEST, password_confirmation: PASSWORD_DIGEST)
+      @user = User.new(email: response['email'], full_name: name, password: PASSWORD_DIGEST, password_confirmation: PASSWORD_DIGEST)
+      @user.save(validate: false)
     end
   end
 

@@ -9,7 +9,7 @@ class Api::V1::SocialLoginsController < Api::V1::ApiController
       @user = response[0]
       @token = response[1]
     else
-      render json: { error: "Token has been Expired"}, status: :unprocessable_entity
+      render json: { error: "Token has been Expired" }, status: :unprocessable_entity
     end
   end
 end

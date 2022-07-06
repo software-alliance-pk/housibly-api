@@ -1,6 +1,6 @@
 module AuthenticateHelper
   def authenticate_user
-    email = JsonWebTokenService.decode(request.headers["HTTP_AUTH_TOKEN"])["email"]
+    email = JsonWebTokenService.decode(request.headers["HTTP_AUTH_TOKEN"])["email"] rescue nil
     @current_user = User.find_by(email: email)
     render json: { error: "not authorized" }, status: 401 unless @current_user
   end

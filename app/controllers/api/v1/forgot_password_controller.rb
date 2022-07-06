@@ -1,14 +1,17 @@
 class Api::V1::ForgotPasswordController < Api::V1::ApiController
   skip_before_action :authenticate_user
+  include CreateOtp
   def forgot_password_through_email
     if user_params[:email].blank?
       return render json: { error: 'email not found' }
     end
     user = User.find_by(email: user_params[:email])
     if user.present?
-      user.generate_password_token! #generate pass token
-      # SEND EMAIL/PHONE HERE
-      render json: { "otp": user.reset_password_token}, status: :ok
+      otp(user)
+
+      # user.generate_password_token! #generate pass token
+      # # SEND EMAIL/PHONE HERE
+      # render json: { "otp": user.reset_password_token}, status: :ok
     else
       render json: { error: ['Email address not found. Please check and try again.'] }, status: :not_found
     end
@@ -19,9 +22,10 @@ class Api::V1::ForgotPasswordController < Api::V1::ApiController
     end
     user = User.find_by(phone_number: user_params[:phone_number])
     if user.present?
-      user.generate_password_token! #generate pass token
-      # SEND EMAIL HERE
-      render json: { "otp": user.reset_password_token}, status: :ok
+      otp(user)
+      # user.generate_password_token! #generate pass token
+      # # SEND EMAIL HERE
+      # render json: { "otp": user.reset_password_token}, status: :ok
     else
       render json: { error: ['Phone number is not found. Please check and try again.'] }, status: :not_found
     end

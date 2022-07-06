@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(version: 2022_06_28_093429) do
     t.string "email"
     t.string "phone_number"
     t.text "description"
-    t.boolean "licensed_realtor", default: false
-    t.boolean "contacted_by_real_estate", default: false
+    t.boolean "licensed_realtor"
+    t.boolean "contacted_by_real_estate"
     t.integer "user_type"
     t.integer "profile_type"
     t.datetime "created_at", precision: 6, null: false

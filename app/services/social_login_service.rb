@@ -45,7 +45,7 @@ class SocialLoginService
     data = token_data.with_indifferent_access
     user = create_user(data['email'], data['sub'], data)
     token = JsonWebTokenService.encode({ email: user.email })
-    [user, token," "]
+    [user, token, " "]
 
   end
 
@@ -56,7 +56,7 @@ class SocialLoginService
     if resource
       resource
     else
-      name =  response['name'].present? ?  response['name'] : "apple don't provide name"
+      name = response['name'].present? ? response['name'] : "apple don't provide name"
       @user = User.new(email: response['email'], full_name: name, password: PASSWORD_DIGEST, password_confirmation: PASSWORD_DIGEST)
       @user.save(validate: false)
     end

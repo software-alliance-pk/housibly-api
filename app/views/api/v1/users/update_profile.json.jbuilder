@@ -1,4 +1,4 @@
-json.profile do
+json.user do
   json.id @current_user.id
   json.full_name @current_user.full_name
   json.email @current_user.email

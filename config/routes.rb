@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post '/reset_password', to: 'forgot_password#reset_password'
       post '/social_login', to: 'social_logins#social_login'
       get '/get_profile', to: 'users#get_profile'
+      put '/update_profile', to: 'users#update_profile'
       get '/*a', to: 'application#not_found'
     end
   end

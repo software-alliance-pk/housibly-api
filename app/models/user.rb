@@ -29,18 +29,21 @@ class User < ApplicationRecord
     self.reset_password_sent_at = Time.now.utc
     self.save!
   end
+
   def generate_signup_token!
-    debugger
     self.reset_signup_token = generate_otp
     self.reset_signup_token_sent_at = Time.now.utc
     self.save!
   end
+
   def password_token_valid?
     (self.reset_password_sent_at + 4.hours) > Time.now.utc
   end
+
   def signup_token_valid?
     (self.reset_signup_token_sent_at + 4.hours) > Time.now.utc
   end
+
   def reset_password!(password)
     self.reset_password_token = nil
     self.password = password
@@ -48,6 +51,7 @@ class User < ApplicationRecord
   end
 
   private
+
   def generate_otp
     SecureRandom.hex(3)
   end

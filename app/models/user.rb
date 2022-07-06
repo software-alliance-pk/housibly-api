@@ -6,9 +6,9 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   validates :full_name, :email, :phone_number, :description, :user_type,
-            :profile_type, :password_digest, :password_digest, presence: true
+            :profile_type, :password_digest, presence: true
   validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
-  validates :phone_number, format: { with: /\A[+-]?\d+\z/ }
+  validates :phone_number, format: { with: /\A^\+?\d+$\z/ }
   validates :email, uniqueness: { case_sensitive: false }
   validates :password_digest, length: { minimum: 6 }, confirmation: true
   validates :user_type, inclusion: { in: %w(seller buyer neither) }
@@ -29,8 +29,17 @@ class User < ApplicationRecord
     self.reset_password_sent_at = Time.now.utc
     self.save!
   end
+  def generate_signup_token!
+    debugger
+    self.reset_signup_token = generate_otp
+    self.reset_signup_token_sent_at = Time.now.utc
+    self.save!
+  end
   def password_token_valid?
     (self.reset_password_sent_at + 4.hours) > Time.now.utc
+  end
+  def signup_token_valid?
+    (self.reset_signup_token_sent_at + 4.hours) > Time.now.utc
   end
   def reset_password!(password)
     self.reset_password_token = nil

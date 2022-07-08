@@ -4,7 +4,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def update_profile
-    @current_user.update(user_params)
+    @current_user.update!(user_params)
   end
 
   private

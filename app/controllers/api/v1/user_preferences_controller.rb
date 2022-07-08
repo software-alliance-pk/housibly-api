@@ -1,4 +1,5 @@
 class Api::V1::UserPreferencesController < Api::V1::ApiController
+  skip_before_action :authenticate_user
   def create_preference
     @preference = @current_user.user_preference.new(preference_params)
     if @preference.save

@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_one :user_preference
 
-  validates :full_name, :email, :phone_number, :description, :user_type,
+  validates :full_name, :email, :phone_number, :user_type,
             :profile_type, :password_digest, presence: true
   validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
   validates :phone_number, format: { with: /\A^\+?\d+$\z/ }

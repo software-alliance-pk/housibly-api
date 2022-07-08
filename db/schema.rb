@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_06_143927) do
+ActiveRecord::Schema.define(version: 2022_07_08_064654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,32 @@ ActiveRecord::Schema.define(version: 2022_07_06_143927) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "user_preferences", force: :cascade do |t|
+    t.integer "property_type"
+    t.decimal "min_price"
+    t.decimal "max_price"
+    t.integer "min_bedrooms"
+    t.integer "max_bedrooms"
+    t.integer "min_bathrooms"
+    t.integer "max_bathrooms"
+    t.string "property_style"
+    t.integer "min_lot_frontage"
+    t.integer "min_lot_size"
+    t.integer "max_lot_size"
+    t.integer "min_living_space"
+    t.integer "max_living_space"
+    t.integer "parking_spot"
+    t.integer "garbage_spot"
+    t.integer "max_age"
+    t.boolean "balcony"
+    t.string "security"
+    t.string "laundry"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_user_preferences_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "full_name"
     t.string "email"
@@ -63,4 +89,5 @@ ActiveRecord::Schema.define(version: 2022_07_06_143927) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "user_preferences", "users"
 end

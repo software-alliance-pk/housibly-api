@@ -4,6 +4,7 @@ class User < ApplicationRecord
   #
   has_secure_password
   has_one_attached :avatar
+  has_one :user_preference
 
   validates :full_name, :email, :phone_number, :description, :user_type,
             :profile_type, :password_digest, presence: true

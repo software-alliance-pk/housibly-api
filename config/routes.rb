@@ -4,14 +4,13 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post '/signup', to: 'registrations#create'
-      post '/login_with_email', to: 'sessions#login_with_email'
-      post '/login_with_phone', to: 'sessions#login_with_phone'
+      post '/login', to: 'sessions#login'
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
       post '/forgot_password/phone', to: 'forgot_password#forgot_password_through_phone'
       post '/reset_password', to: 'forgot_password#reset_password'
       post '/social_login', to: 'social_logins#social_login'
       post '/preference', to: 'user_preferences#create_preference'
-      post '/verify_otp', to: 'registrations#email_verify_otp?'
+      post '/verify_otp', to: 'registrations#verify_otp?'
       get '/get_profile', to: 'users#get_profile'
       put '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'

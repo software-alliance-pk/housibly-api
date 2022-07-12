@@ -1,5 +1,5 @@
 class Api::V1::RegistrationsController < Api::V1::ApiController
-  skip_before_action :authenticate_user, only: [:create, :email_verify_otp?]
+  skip_before_action :authenticate_user, only: [:create, :verify_otp?]
   include CreateOtp
 
   def create
@@ -15,12 +15,13 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   def update_personal_info
     if @current_user.is_otp_verified
       @current_user.update!(user_params)
+      @current_user.update!(is_confirmed: true)
     else
       render json: { error: "OTP not verified" }
     end
   end
 
-  def email_verify_otp?
+  def verify_otp?
     @user = User.find_by(email: user_params[:email], reset_signup_token: params[:otp])
     if @user && @user.signup_token_valid?
       @user.update!(is_otp_verified: true)

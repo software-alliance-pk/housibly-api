@@ -54,7 +54,11 @@ class User < ApplicationRecord
   private
 
   def generate_otp
-    SecureRandom.hex(3)
+    otp_length(6)
+  end
+
+  def otp_length(length)
+    rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
   end
 
   # def confirm?

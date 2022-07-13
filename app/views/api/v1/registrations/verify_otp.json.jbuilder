@@ -1,5 +1,5 @@
 json.user do
-  json.otp @user.reset_signup_token
+  json.auth_token @token
   json.id @user.id
   json.is_otp_verified @user.is_otp_verified
   json.is_confirmed @user.is_confirmed

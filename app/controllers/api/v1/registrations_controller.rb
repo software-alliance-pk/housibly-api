@@ -1,5 +1,5 @@
 class Api::V1::RegistrationsController < Api::V1::ApiController
-  skip_before_action :authenticate_user, only: [:create, :verify_otp]
+  skip_before_action :authenticate_user, only: [:create, :verify_otp, :email_resend_otp]
   include CreateOtp
 
   def create
@@ -27,6 +27,15 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       @token = JsonWebTokenService.encode({ email: @user.email })
     else
       render json: { message: "Incorrect Email or OTP" }, status: 401
+    end
+  end
+
+  def email_resend_otp
+    @user = User.find_by(email: user_params[:email])
+    if @user
+      signup_otp(@user)
+    else
+      render_error_messages(@user)
     end
   end
 

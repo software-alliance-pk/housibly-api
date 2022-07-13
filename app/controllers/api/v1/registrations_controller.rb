@@ -16,7 +16,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       @current_user.update!(user_params)
       @current_user.update!(is_confirmed: true)
     else
-      render json: { error: "OTP not verified" }
+      render json: { message: "OTP not verified" }, status: 401
     end
   end
 
@@ -26,7 +26,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       @user.update(is_otp_verified: true)
       @token = JsonWebTokenService.encode({ email: @user.email })
     else
-      render json: { error: "Incorrect Email or OTP" }
+      render json: { message: "Incorrect Email or OTP" }, status: 401
     end
   end
 

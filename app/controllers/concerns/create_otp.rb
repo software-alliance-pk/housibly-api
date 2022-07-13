@@ -9,6 +9,7 @@ module CreateOtp
 
   def signup_otp(user)
     user.generate_signup_token!
+    UserVerificationMailer.with(user: user, subject: "OTP Verification").send_otp_to_email.deliver_now
     render json: { "otp": user.reset_signup_token }, status: :ok
   end
 

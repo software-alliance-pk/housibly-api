@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       post '/social_login', to: 'social_logins#social_login'
       post '/preference', to: 'user_preferences#create_preference'
       post '/verify_otp', to: 'registrations#verify_otp'
-      post '/verify_otp/email_resend_otp', to: 'registrations#email_resend_otp'
+      post '/verify_otp/resend_otp', to: 'registrations#resend_otp'
       put '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       get '/get_profile', to: 'users#get_profile'

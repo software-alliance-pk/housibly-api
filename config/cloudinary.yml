@@ -1,0 +1,18 @@
+development:
+  cloud_name: dsoaq1rmb
+  api_key: '144599123285664'
+  api_secret: "b2lRFejWICIsiOZGGNtiese_Kfo"
+  enhance_image_tag: true
+  static_file_support: false
+production:
+  cloud_name: dsoaq1rmb
+  api_key: '144599123285664'
+  api_secret: "b2lRFejWICIsiOZGGNtiese_Kfo"
+  enhance_image_tag: true
+  static_file_support: true
+test:
+  cloud_name: dsoaq1rmb
+  api_key: '144599123285664'
+  api_secret: "b2lRFejWICIsiOZGGNtiese_Kfo"
+  enhance_image_tag: true
+  static_file_support: false

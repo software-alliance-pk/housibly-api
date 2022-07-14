@@ -1,5 +1,5 @@
 class Api::V1::RegistrationsController < Api::V1::ApiController
-  skip_before_action :authenticate_user, only: [:create, :verify_otp, :email_resend_otp]
+  skip_before_action :authenticate_user, only: [:create, :verify_otp, :resend_otp]
   include CreateOtp
 
   def create
@@ -31,12 +31,13 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     end
   end
 
-  def email_resend_otp
-    @user = User.find_by(email: user_params[:email])
+  def resend_otp
+    @user = User.find_by(email: user_params[:email]) if user_params[:email].present?
+    @user = User.find_by(phone_number: user_params[:phone_number]) if user_params[:phone_number].present?
     if @user
       signup_otp(@user)
     else
-      render_error_messages(@user)
+      render json: { message: "Email/Phone not found" }, status: 401
     end
   end
 

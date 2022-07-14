@@ -21,7 +21,8 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   end
 
   def verify_otp
-    @user = User.find_by(email: user_params[:email], reset_signup_token: params[:otp])
+    @user = User.find_by(email: user_params[:email], reset_signup_token: params[:otp]) if user_params[:email].present?
+    @user = User.find_by(phone_number: user_params[:phone_number], reset_signup_token: params[:otp]) if user_params[:phone_number].present?
     if @user && @user.signup_token_valid?
       @user.update(is_otp_verified: true)
       @token = JsonWebTokenService.encode({ email: @user.email })

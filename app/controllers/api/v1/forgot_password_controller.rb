@@ -14,7 +14,7 @@ class Api::V1::ForgotPasswordController < Api::V1::ApiController
       # # SEND EMAIL/PHONE HERE
       # render json: { "otp": user.reset_password_token}, status: :ok
     else
-      render json: { message: ['Email address not found. Please check and try again.'] }, status: :not_found
+      render json: { message: 'Email address is not found. Please check and try again.' }, status: :not_found
     end
   end
 
@@ -26,7 +26,7 @@ class Api::V1::ForgotPasswordController < Api::V1::ApiController
     if user.present?
       signup_otp(user)
     else
-      render json: { message: ['Phone number is not found. Please check and try again.'] }, status: :not_found
+      render json: { message: 'Phone number is not found. Please check and try again.' }, status: :not_found
     end
   end
 

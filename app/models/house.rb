@@ -1,0 +1,3 @@
+class House < Property
+
+end

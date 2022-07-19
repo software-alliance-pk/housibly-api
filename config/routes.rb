@@ -14,9 +14,13 @@ Rails.application.routes.draw do
       post '/preference', to: 'user_preferences#create_preference'
       post '/verify_otp', to: 'registrations#verify_otp'
       post '/verify_otp/resend_otp', to: 'registrations#resend_otp'
+      post '/tickets', to: 'supports#create_ticket'
+      post '/tickets', to: 'supports#create_ticket'
       put '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       get '/get_profile', to: 'users#get_profile'
+      get '/property/filter', to: 'properties#property_filters'
+      get '/tickets', to: 'supports#get_tickets'
       get '/*a', to: 'application#not_found'
     end
   end

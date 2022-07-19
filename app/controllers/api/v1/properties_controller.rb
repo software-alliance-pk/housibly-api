@@ -44,6 +44,18 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
+  def property_filters
+    if params[:type].present?
+      if params[:type].in?(%w[house condo vacant_land])
+        @properties = @current_user.properties.where("type = ?", params[:type].capitalize)
+      else
+        render json: { message: "Property type not valid" }, status: 422
+      end
+    else
+      render json: { message: "Type not present" }, status: 404
+    end
+  end
+
   private
 
   def property_params

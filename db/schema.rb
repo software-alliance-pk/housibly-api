@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_18_153647) do
+ActiveRecord::Schema.define(version: 2022_07_19_133206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2022_07_18_153647) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "heat_type"
     t.bigint "user_id", null: false
+    t.boolean "is_property_sold"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 
@@ -113,6 +114,16 @@ ActiveRecord::Schema.define(version: 2022_07_18_153647) do
     t.string "level"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "supports", force: :cascade do |t|
+    t.string "ticket_number"
+    t.integer "status", default: 0
+    t.text "description"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_supports_on_user_id"
   end
 
   create_table "user_preferences", force: :cascade do |t|
@@ -165,5 +176,6 @@ ActiveRecord::Schema.define(version: 2022_07_18_153647) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "dream_addresses", "users"
   add_foreign_key "properties", "users"
+  add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"
 end

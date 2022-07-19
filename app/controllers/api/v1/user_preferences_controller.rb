@@ -1,7 +1,6 @@
 class Api::V1::UserPreferencesController < Api::V1::ApiController
-  skip_before_action :authenticate_user
   def create_preference
-    @preference = @current_user.user_preference.new(preference_params)
+    @preference = @current_user.build_user_preference(preference_params)
     if @preference.save
       @preference
     else
@@ -11,11 +10,11 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
 
   private
 
-  def preference_params
-    params.require(:preference).permit(:user_id, :property_type, :min_price, :max_price,
-                                       :min_bedrooms, :max_bedrooms, :min_bathrooms, :max_bathrooms,
-                                       :property_style, :min_lot_frontage, :min_lot_size,
-                                       :max_lot_size, :min_living_space, :max_living_space, :parking_spot,
-                                       :garbage_spot, :max_age, :balcony, :security, :laundry)
-  end
+    def preference_params
+      params.require(:preference).permit(:user_id, :property_type, :min_price, :max_price,
+                                         :min_bedrooms, :max_bedrooms, :min_bathrooms, :max_bathrooms,
+                                         :property_style, :min_lot_frontage, :min_lot_size,
+                                         :max_lot_size, :min_living_space, :max_living_space, :parking_spot,
+                                         :garbage_spot, :max_age, :balcony, :security, :laundry)
+    end
 end

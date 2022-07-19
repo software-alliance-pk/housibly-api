@@ -1,0 +1,3 @@
+class Condo < Property
+
+end

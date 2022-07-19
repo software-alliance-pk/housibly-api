@@ -1,0 +1,3 @@
+class VacantLand < Property
+
+end

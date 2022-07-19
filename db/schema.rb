@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_12_040848) do
+ActiveRecord::Schema.define(version: 2022_07_19_133206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,89 @@ ActiveRecord::Schema.define(version: 2022_07_12_040848) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "dream_addresses", force: :cascade do |t|
+    t.string "location"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_dream_addresses_on_user_id"
+  end
+
+  create_table "properties", force: :cascade do |t|
+    t.string "type"
+    t.string "title"
+    t.float "price"
+    t.integer "year_built"
+    t.string "address"
+    t.integer "unit"
+    t.float "lot_frontage"
+    t.float "lot_depth"
+    t.float "lot_size"
+    t.boolean "is_lot_irregular"
+    t.text "lot_description"
+    t.integer "bath_room"
+    t.integer "bed_room"
+    t.integer "living_space"
+    t.integer "parking_space"
+    t.integer "garage_space"
+    t.boolean "garage"
+    t.boolean "parking_type"
+    t.boolean "parking_ownership"
+    t.string "condo_type"
+    t.string "condo_style"
+    t.boolean "driveway"
+    t.string "house_type"
+    t.string "house_style"
+    t.boolean "exterior"
+    t.boolean "water"
+    t.boolean "sewer"
+    t.boolean "heat_source"
+    t.boolean "air_conditioner"
+    t.boolean "laundry"
+    t.boolean "fire_place"
+    t.boolean "central_vacuum"
+    t.boolean "basement"
+    t.boolean "pool"
+    t.integer "property_tax"
+    t.integer "tax_year"
+    t.string "other_items"
+    t.boolean "locker"
+    t.float "condo_fees"
+    t.boolean "balcony"
+    t.boolean "exposure"
+    t.boolean "security"
+    t.boolean "pets_allowed"
+    t.boolean "included_utilities"
+    t.text "property_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "heat_type"
+    t.bigint "user_id", null: false
+    t.boolean "is_property_sold"
+    t.index ["user_id"], name: "index_properties_on_user_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.float "length_in_feet"
+    t.float "length_in_inch"
+    t.float "width_in_feet"
+    t.float "width_in_inch"
+    t.string "level"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "supports", force: :cascade do |t|
+    t.string "ticket_number"
+    t.integer "status", default: 0
+    t.text "description"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_supports_on_user_id"
   end
 
   create_table "user_preferences", force: :cascade do |t|
@@ -91,5 +174,8 @@ ActiveRecord::Schema.define(version: 2022_07_12_040848) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "dream_addresses", "users"
+  add_foreign_key "properties", "users"
+  add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"
 end

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
+      resources :properties, only: [:create, :index, :update, :destroy]
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#login'
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
@@ -13,7 +14,6 @@ Rails.application.routes.draw do
       post '/preference', to: 'user_preferences#create_preference'
       post '/verify_otp', to: 'registrations#verify_otp'
       post '/verify_otp/resend_otp', to: 'registrations#resend_otp'
-      post '/property', to: 'properties#property'
       put '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       get '/get_profile', to: 'users#get_profile'

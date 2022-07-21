@@ -1,5 +1,5 @@
-hash = { @property.type => @property }
-json.property do
-  json.merge! hash
-  json.images @property.images.attached? ? @property.images.map { |image| rails_blob_url(image) } : ""
+json.partial! 'property_details', property: @property
+json.image @property.images do |image|
+  json.id image.id
+  json.url rails_blob_url(image) rescue ""
 end

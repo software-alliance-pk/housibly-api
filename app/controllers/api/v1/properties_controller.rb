@@ -4,7 +4,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def create
     if params[:property][:property_type].in?(%w[house condo vacant_land])
-      @property = params[:property][:property_type].capitalize.constantize.new(property_params)
+      @property = params[:property][:property_type].titleize.gsub(" ", "").constantize.new(property_params)
       @property.user = @current_user
       if @property.save
         @property
@@ -78,9 +78,9 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def property_params
     params.require(:property).permit(
       [
-        :type, :title, :price, :year_built, :address, :unit, :lot_frontage,
-        :lot_depth, :lot_size, :is_lot_irregular, :lot_description,
-        :bath_room, :bed_room, :living_space, :parking_space, :garage_space,
+        :type, :title, :price, :year_built, :address, :unit, :lot_frontage_foot, :lot_frontage_sq_meter,
+        :lot_depth_feet, :lot_depth_sq_meter, :lot_size_feet, :lot_size_sq_meter, :is_lot_irregular,
+        :lot_description, :bath_room, :bed_room, :living_space, :parking_space, :garage_space,
         :garage, :parking_type, :parking_ownership, :condo_type, :condo_style,
         :driveway, :house_type, :house_style, :exterior, :water, :sewer,
         :heat_source, :heat_type, :air_conditioner, :laundry, :fire_place, :central_vacuum,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_20_091846) do
+ActiveRecord::Schema.define(version: 2022_07_21_075702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,20 @@ ActiveRecord::Schema.define(version: 2022_07_20_091846) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "card_infos", force: :cascade do |t|
+    t.string "card_id"
+    t.string "number"
+    t.integer "exp_month"
+    t.integer "exp_year"
+    t.string "cvc"
+    t.string "brand"
+    t.string "country"
+    t.string "fingerprint"
+    t.string "last4"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "dream_addresses", force: :cascade do |t|
     t.string "location"
     t.bigint "user_id", null: false
@@ -58,9 +72,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_091846) do
     t.integer "year_built"
     t.string "address"
     t.integer "unit"
-    t.float "lot_frontage"
-    t.float "lot_depth"
-    t.float "lot_size"
+    t.float "lot_frontage_feet"
+    t.float "lot_depth_feet"
+    t.float "lot_size_feet"
     t.boolean "is_lot_irregular"
     t.text "lot_description"
     t.integer "bath_room"
@@ -102,6 +116,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_091846) do
     t.string "heat_type"
     t.bigint "user_id", null: false
     t.boolean "is_property_sold"
+    t.float "lot_frontage_sq_meter"
+    t.float "lot_depth_sq_meter"
+    t.float "lot_size_sq_meter"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 

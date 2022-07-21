@@ -8,6 +8,7 @@ gem 'bcrypt'
 gem 'activestorage'
 gem 'cloudinary'
 gem 'twilio-ruby'
+gem 'stripe'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'
 # Use postgresql as the database for Active Record

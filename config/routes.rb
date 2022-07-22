@@ -27,8 +27,8 @@ Rails.application.routes.draw do
       get '/tickets', to: 'supports#get_tickets'
       delete '/card', to: 'payments#destroy_card'
       delete '/card', to: 'payments#destroy_card'
+      get '/static_page/:permalink', to: 'static_pages#static_page'
       get '/*a', to: 'api#not_found'
-      get 'static_page/:page', to: 'static_pages#static_page'
     end
   end
 end

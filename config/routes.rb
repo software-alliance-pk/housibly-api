@@ -26,7 +26,9 @@ Rails.application.routes.draw do
       get '/property/filter', to: 'properties#property_filters'
       get '/tickets', to: 'supports#get_tickets'
       delete '/card', to: 'payments#destroy_card'
-      get '/*a', to: 'application#not_found'
+      delete '/card', to: 'payments#destroy_card'
+      get '/*a', to: 'api#not_found'
+      get 'static_page/:page', to: 'static_pages#static_page'
     end
   end
 end

@@ -1,10 +1,12 @@
 class Api::V1::PropertiesController < Api::V1::ApiController
+  before_action :parse_parameters, only: [:create,:update]
   require 'stripe'
   Stripe.api_key = 'sk_test_51LNZ3BAsady3KIaWsrai2Zq9cT9PCOp5s8AF6JjSyutqxodm7ESoI8EFCKtfC5Cd79CxcklRNVD76aOBwP8XnpO400X2CvQDdP'
 
   def create
-    if params[:property][:property_type].in?(%w[house condo vacant_land])
-      @property = params[:property][:property_type].titleize.gsub(" ", "").constantize.new(property_params)
+    property_type = parse_parameters[:property_type]
+    if property_type.in?(%w[house condo vacant_land])
+      @property = property_type.titleize.gsub(" ", "").constantize.new(parse_parameters)
       @property.user = @current_user
       if @property.save
         @property
@@ -23,7 +25,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def update
     @property = Property.find_by(id: params[:id])
     if @property
-      if @property.update(property_params)
+      if @property.update(parse_parameters)
         @property
       else
         render_error_messages(@property)
@@ -57,17 +59,19 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       render json: { message: "Type not present" }, status: 404
     end
   end
-
+  #TODO: Need to Remove that
   def create_customer
     customer = StripeService.create_customer(params[:name], params[:email])
     render json: { customer: customer }
   end
 
+  #TODO: Need to Remove that
   def create_token
     token = StripeService.create_token(params[:number], params[:exp_month], params[:exp_year], params[:cvc])
     render json: { token: token }
   end
 
+  #TODO: Need to Remove that
   def create_card
     card = StripeService.create_card(params[:customer_id], params[:token])
     render json: { card: card }
@@ -75,19 +79,18 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   private
 
+  def parse_parameters
+    if property_params[:data]
+      data = JSON.parse(property_params[:data])
+      data.push("images" => property_params[:images])
+      combine_parameters = data[0].merge(data[1])
+      return combine_parameters.with_indifferent_access
+    else
+      render json: {error: "Parameters has some issue"}, status: 422
+    end
+  end
+
   def property_params
-    params.require(:property).permit(
-      [
-        :type, :title, :price, :year_built, :address, :unit, :lot_frontage_foot, :lot_frontage_sq_meter,
-        :lot_depth_feet, :lot_depth_sq_meter, :lot_size_feet, :lot_size_sq_meter, :is_lot_irregular,
-        :lot_description, :bath_room, :bed_room, :living_space, :parking_space, :garage_space,
-        :garage, :parking_type, :parking_ownership, :condo_type, :condo_style,
-        :driveway, :house_type, :house_style, :exterior, :water, :sewer,
-        :heat_source, :heat_type, :air_conditioner, :laundry, :fire_place, :central_vacuum,
-        :basement, :pool, :property_tax, :tax_year, :other_items, :locker,
-        :condo_fees, :balcony, :exposure, :security, :pets_allowed, :included_utilities,
-        :property_description, :is_property_sold, images: []
-      ]
-    )
+    params.require(:property).permit(:data,images: [])
   end
 end

@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :dream_addresses, dependent: :destroy
   has_many :properties, dependent: :destroy
   has_many :supports, dependent: :destroy
+  has_many :card_infos, dependent: :destroy
 
   validates :full_name, :email, :phone_number, :user_type,
             :profile_type, :password_digest, presence: true

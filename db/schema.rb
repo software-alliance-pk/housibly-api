@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_21_075702) do
+ActiveRecord::Schema.define(version: 2022_07_21_135150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 2022_07_21_075702) do
     t.integer "property_tax"
     t.integer "tax_year"
     t.string "other_items"
-    t.boolean "locker"
+    t.string "locker"
     t.float "condo_fees"
     t.string "balcony"
     t.string "exposure"

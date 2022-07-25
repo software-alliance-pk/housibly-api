@@ -101,11 +101,11 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   # SMTP settings for gmail
-  config.action_mailer.smtp_settings = {
+    config.action_mailer.smtp_settings = {
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    :user_name            => "iramhinnah29@gmail.com",
-    :password             => "cdavyjgzhwqtjcqk",
+    :user_name            => "convertx00@gmail.com",
+    :password             => "yulapcriizkuwaur",
     :authentication       => "plain",
     :enable_starttls_auto => true
   }

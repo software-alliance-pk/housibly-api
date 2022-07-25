@@ -26,7 +26,11 @@ class Api::V1::ForgotPasswordController < Api::V1::ApiController
     if user.present?
       # signup_otp(user)
       user.generate_signup_token!
-      TwilioService.send_message(user.phone_number,"+12264065718",user.reset_signup_token)
+      TwilioService.send_message(
+        user.phone_number,
+        Rails.application.credentials.twilio[:sender_number],
+        user.reset_signup_token
+      )
       render json: { "otp": user.reset_signup_token }, status: :ok
     else
       render json: { message: 'Phone number is not found. Please check and try again.' }, status: :not_found

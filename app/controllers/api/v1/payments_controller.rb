@@ -1,26 +1,21 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
-  require 'stripe'
-  Stripe.api_key = 'sk_test_51LNZ3BAsady3KIaWsrai2Zq9cT9PCOp5s8AF6JjSyutqxodm7ESoI8EFCKtfC5Cd79CxcklRNVD76aOBwP8XnpO400X2CvQDdP'
+  Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+  before_action :find_card, only: [:get_card, :destroy_card, :update_card, :default_card]
 
   def create
-    if @current_user.stripe_customer_id.present?
-      customer = Stripe::Customer.retrieve(@current_user.stripe_customer_id) rescue nil
-    else
-      customer = StripeService.create_customer(payment_params[:name], @current_user.email)
-      @current_user.update(stripe_customer_id: customer.id) rescue nil
-    end
+    customer =  check_customer_at_stripe
     card = StripeService.create_card(customer.id, payment_params[:token])
-    if @card = @current_user.card_infos.create(card_id: card.id, exp_month: card.exp_month,
-                                               exp_year: card.exp_year, last4: card.last4,
-                                               brand: card.brand, country: payment_params[:country],
-                                               fingerprint: card.fingerprint, name: payment_params[:name])
+    @card = create_user_payment_card(card)
+    make_first_card_as_default
+    if @card
+      @card
     else
       render_error_messages(@card)
     end
   end
 
   def get_card
-    if @card = CardInfo.find_by(card_id: payment_params[:id])
+    if @card
       @card
     else
       render_error_messages(@card)
@@ -36,7 +31,6 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def destroy_card
-    @card = CardInfo.find_by(card_id: payment_params[:id])
     if @card.present?
       if @card.destroy
         render json: { message: "Card deleted successfully!" }, status: 200
@@ -47,15 +41,48 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def update_card
-    @card = CardInfo.find_by(card_id: payment_params[:id])
-    if @card.update(name: payment_params[:name], country: payment_params[:country])
+    if @card&.update(name: payment_params[:name], country: payment_params[:country])
       @card
     else
       render_error_messages(@card)
     end
   end
 
+  def default_card
+    if @card
+      @current_user.card_infos.update_all(is_default:false)
+      @card.update(is_default: true)
+    end
+  end
+
   private
+
+  def find_card
+    @card = CardInfo.find_by(card_id: payment_params[:id])
+  end
+
+  def check_customer_at_stripe
+    if @current_user.stripe_customer_id.present?
+      customer = Stripe::Customer.retrieve(@current_user.stripe_customer_id) rescue nil
+    else
+      customer = StripeService.create_customer(payment_params[:name], @current_user.email)
+      @current_user.update(stripe_customer_id: customer.id) rescue nil
+    end
+    return customer
+  end
+
+  def make_first_card_as_default
+    @current_user.card_infos.update(is_default: true) if @current_user.card_infos.count < 2
+  end
+
+  def create_user_payment_card(card)
+    @current_user.card_infos.create(
+      card_id: card.id, exp_month: card.exp_month,
+      exp_year: card.exp_year, last4: card.last4,
+      brand: card.brand, country: payment_params[:country],
+      fingerprint: card.fingerprint, name: payment_params[:name]
+    )
+  end
 
   def payment_params
     params.require(:payment).permit(:token, :name, :id, :country)

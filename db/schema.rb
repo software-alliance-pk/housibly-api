@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_22_121834) do
+ActiveRecord::Schema.define(version: 2022_07_25_125039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,10 +55,8 @@ ActiveRecord::Schema.define(version: 2022_07_22_121834) do
 
   create_table "card_infos", force: :cascade do |t|
     t.string "card_id"
-    t.string "number"
     t.integer "exp_month"
     t.integer "exp_year"
-    t.string "cvc"
     t.string "brand"
     t.string "country"
     t.string "fingerprint"
@@ -67,6 +65,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_121834) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.bigint "user_id", null: false
+    t.boolean "is_default"
     t.index ["user_id"], name: "index_card_infos_on_user_id"
   end
 

@@ -1,6 +1,6 @@
 class GooglePayService
   require 'stripe'
-  Stripe.api_key = 'sk_test_51LNZ3BAsady3KIaWsrai2Zq9cT9PCOp5s8AF6JjSyutqxodm7ESoI8EFCKtfC5Cd79CxcklRNVD76aOBwP8XnpO400X2CvQDdP'
+  Stripe.api_key = Rails.application.credentials.stripe[:api_key]
 
 
   def self.google_pay

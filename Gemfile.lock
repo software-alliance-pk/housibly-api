@@ -244,6 +244,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  actiontext (~> 6.1.6)
   activestorage
   bcrypt
   bootsnap (>= 1.4.4)

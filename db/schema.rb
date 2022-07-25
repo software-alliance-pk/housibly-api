@@ -81,7 +81,6 @@ ActiveRecord::Schema.define(version: 2022_07_22_121834) do
   create_table "pages", force: :cascade do |t|
     t.string "title"
     t.string "permalink"
-    t.text "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["permalink"], name: "index_pages_on_permalink"

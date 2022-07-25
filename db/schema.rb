@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_22_121834) do
+ActiveRecord::Schema.define(version: 2022_07_25_125039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -45,10 +55,8 @@ ActiveRecord::Schema.define(version: 2022_07_22_121834) do
 
   create_table "card_infos", force: :cascade do |t|
     t.string "card_id"
-    t.string "number"
     t.integer "exp_month"
     t.integer "exp_year"
-    t.string "cvc"
     t.string "brand"
     t.string "country"
     t.string "fingerprint"
@@ -57,6 +65,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_121834) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.bigint "user_id", null: false
+    t.boolean "is_default"
     t.index ["user_id"], name: "index_card_infos_on_user_id"
   end
 
@@ -66,6 +75,14 @@ ActiveRecord::Schema.define(version: 2022_07_22_121834) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_dream_addresses_on_user_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.string "title"
+    t.string "permalink"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["permalink"], name: "index_pages_on_permalink"
   end
 
   create_table "properties", force: :cascade do |t|

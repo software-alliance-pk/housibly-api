@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       put '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       put '/update_card', to: 'payments#update_card'
+      put '/default_card', to: 'payments#default_card'
       get '/get_card', to: 'payments#get_card'
       get '/cards', to: 'payments#get_all_cards'
       get '/get_profile', to: 'users#get_profile'

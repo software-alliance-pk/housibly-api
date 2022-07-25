@@ -1,24 +1,12 @@
 class StripeService
   require 'stripe'
-  Stripe.api_key = 'sk_test_51LNZ3BAsady3KIaWsrai2Zq9cT9PCOp5s8AF6JjSyutqxodm7ESoI8EFCKtfC5Cd79CxcklRNVD76aOBwP8XnpO400X2CvQDdP'
+  Stripe.api_key = Rails.application.credentials.stripe[:api_key]
 
   def self.create_customer(name, email)
     Stripe::Customer.create(
       {
         name: name,
         email: email
-      })
-  end
-
-  def self.create_token(number, exp_month, exp_year, cvc)
-    Stripe::Token::create(
-      {
-        card: {
-          number: number,
-          exp_month: exp_month,
-          exp_year: exp_year,
-          cvc: cvc
-        }
       })
   end
 

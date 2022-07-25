@@ -39,7 +39,11 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       signup_otp(@user)
       else
         @user.generate_signup_token!
-        TwilioService.send_message(@user.phone_number,"+12264065718",@user.reset_signup_token)
+        TwilioService.send_message(
+          @user.phone_number,
+          Rails.application.credentials.twilio[:sender_number],
+          @user.reset_signup_token
+        )
         render json: { "otp": @user.reset_signup_token }, status: :ok
       end
     else

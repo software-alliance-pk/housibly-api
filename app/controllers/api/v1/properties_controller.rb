@@ -1,7 +1,5 @@
 class Api::V1::PropertiesController < Api::V1::ApiController
   before_action :parse_parameters, only: [:create,:update]
-  require 'stripe'
-  Stripe.api_key = 'sk_test_51LNZ3BAsady3KIaWsrai2Zq9cT9PCOp5s8AF6JjSyutqxodm7ESoI8EFCKtfC5Cd79CxcklRNVD76aOBwP8XnpO400X2CvQDdP'
 
   def create
     property_type = parse_parameters[:property_type]
@@ -58,23 +56,6 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     else
       render json: { message: "Type not present" }, status: 404
     end
-  end
-  #TODO: Need to Remove that
-  def create_customer
-    customer = StripeService.create_customer(params[:name], params[:email])
-    render json: { customer: customer }
-  end
-
-  #TODO: Need to Remove that
-  def create_token
-    token = StripeService.create_token(params[:number], params[:exp_month], params[:exp_year], params[:cvc])
-    render json: { token: token }
-  end
-
-  #TODO: Need to Remove that
-  def create_card
-    card = StripeService.create_card(params[:customer_id], params[:token])
-    render json: { card: card }
   end
 
   private

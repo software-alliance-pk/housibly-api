@@ -9,6 +9,8 @@ Bundler.require(*Rails.groups)
 module HousiblyBackend
   class Application < Rails::Application
     Dir['./lib/**/*.rb'].each { |file| require file }
+    puts "#{Rails.root}/app/services"
+    config.autoload_once_paths << "#{Rails.root}/app/services"
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1

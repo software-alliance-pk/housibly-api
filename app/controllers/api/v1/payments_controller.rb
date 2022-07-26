@@ -73,7 +73,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def apple_pay
-    ApplePayService.apple_pay
+    # ApplePayService.apple_pay
   end
 
   private

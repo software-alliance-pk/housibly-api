@@ -72,6 +72,10 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def charge_payment
   end
 
+  def apple_pay
+    ApplePayService.apple_pay
+  end
+
   private
 
   def find_card

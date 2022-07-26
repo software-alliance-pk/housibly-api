@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post '/tickets', to: 'supports#create_ticket'
       post '/tickets', to: 'supports#create_ticket'
       post '/card', to: 'payments#create'
+      post '/apple_pay', to: 'payments#apple_pay'
       put '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       put '/update_card', to: 'payments#update_card'

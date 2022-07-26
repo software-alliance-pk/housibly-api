@@ -1,9 +1,9 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
   Stripe.api_key = Rails.application.credentials.stripe[:api_key]
-  before_action :find_card, only: [:get_card, :destroy_card, :update_card, :default_card]
+  before_action :find_card, only: [:get_card, :destroy_card, :update_card, :set_default_card]
 
   def create
-    customer =  check_customer_at_stripe
+    customer = check_customer_at_stripe
     card = StripeService.create_card(customer.id, payment_params[:token])
     @card = create_user_payment_card(card)
     make_first_card_as_default
@@ -18,7 +18,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     if @card
       @card
     else
-      render_error_messages(@card)
+      render json: { message: "card not found" }, status: 404
     end
   end
 
@@ -33,6 +33,11 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def destroy_card
     if @card.present?
       if @card.destroy
+        user_cards_info = @current_user.card_infos
+        find_first_card = user_cards_info&.first unless user_cards_info.pluck(:is_default).include?(true)
+        if find_first_card
+          find_first_card.update(is_default: true)
+        end
         render json: { message: "Card deleted successfully!" }, status: 200
       else
         render_error_messages(@card)
@@ -48,17 +53,34 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     end
   end
 
-  def default_card
+  def set_default_card
     if @card
-      @current_user.card_infos.update_all(is_default:false)
+      @current_user.card_infos.update_all(is_default: false)
       @card.update(is_default: true)
     end
+  end
+
+  def get_default_card
+    @card = @current_user.card_infos&.default_card
+    if @card
+      @card
+    else
+      render json: { message: "user has no card" }
+    end
+  end
+
+  def charge_payment
   end
 
   private
 
   def find_card
     @card = CardInfo.find_by(card_id: payment_params[:id])
+    if @card
+      @card
+    else
+      render json: { message: "card not found" }
+    end
   end
 
   def check_customer_at_stripe

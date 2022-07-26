@@ -5,7 +5,7 @@ class TwilioService
       Rails.application.credentials.twilio[:account_sid],
       Rails.application.credentials.twilio[:auth_token]
     )
-    client.messages.create(body: message_body, to: contact_no, from: sender_number)
+    client.messages.create(body: "Your Housibly OTP code is: " + message_body, to: contact_no, from: sender_number)
     OpenStruct.new(success: true)
   rescue StandardError => e
     OpenStruct.new(success: false)

@@ -13,8 +13,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
 
   def update_personal_info
     if @current_user.is_otp_verified
-      @current_user.update!(user_params)
-      @current_user.update!(is_confirmed: true)
+      @current_user.update(user_params.merge(is_confirmed: true))
     else
       render json: { message: "OTP not verified" }, status: 401
     end
@@ -36,7 +35,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     @user = User.find_by(phone_number: user_params[:phone_number]) if user_params[:phone_number].present?
     if @user
       if user_params[:email].present?
-      signup_otp(@user)
+        signup_otp(@user)
       else
         @user.generate_signup_token!
         TwilioService.send_message(

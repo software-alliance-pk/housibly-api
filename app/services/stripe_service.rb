@@ -17,4 +17,13 @@ class StripeService
     )
   end
 
+  def self.charge(amount, currency, card_id)
+    Stripe::Charge.create(
+      {
+        amount: amount,
+        currency: currency,
+        source: card_id
+      })
+  end
+
 end

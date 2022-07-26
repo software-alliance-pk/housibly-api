@@ -1,7 +1,7 @@
 class ApplePayService
   require 'stripe'
   Stripe.api_key = Rails.application.credentials.stripe[:api_key] if Rails.env.development?
-  Stripe.api_key = Rails.application.credentials.stripe[:api_key] if Rails.env.production?
+  Stripe.api_key = Rails.application.stripe_api_key if Rails.env.production?
 
   def self.apple_pay
     intent = Stripe::PaymentIntent.create({

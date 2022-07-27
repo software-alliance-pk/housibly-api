@@ -31,6 +31,8 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   end
 
   def resend_otp
+    twilio_sender_number = Rails.application.credentials.twilio[:sender_number] if Rails.env.development?
+    twilio_sender_number = ENV["TWILIO_SENDER_NUMBER"] if Rails.env.production?
     @user = User.find_by(email: user_params[:email]) if user_params[:email].present?
     @user = User.find_by(phone_number: user_params[:phone_number]) if user_params[:phone_number].present?
     if @user
@@ -40,7 +42,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
         @user.generate_signup_token!
         TwilioService.send_message(
           @user.phone_number,
-          Rails.application.credentials.twilio[:sender_number],
+          twilio_sender_number,
           @user.reset_signup_token
         )
         render json: { "otp": @user.reset_signup_token }, status: :ok

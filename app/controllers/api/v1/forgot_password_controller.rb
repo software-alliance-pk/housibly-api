@@ -22,13 +22,15 @@ class Api::V1::ForgotPasswordController < Api::V1::ApiController
     if user_params[:phone_number].blank?
       return render json: { message: 'phone number is not found' }
     end
+    twilio_sender_number = Rails.application.credentials.twilio[:sender_number] if Rails.env.development?
+    twilio_sender_number = ENV["TWILIO_SENDER_NUMBER"] if Rails.env.production?
     user = User.find_by(phone_number: user_params[:phone_number])
     if user.present?
       # signup_otp(user)
       user.generate_signup_token!
       TwilioService.send_message(
         user.phone_number,
-        Rails.application.credentials.twilio[:sender_number],
+        twilio_sender_number,
         user.reset_signup_token
       )
       render json: { "otp": user.reset_signup_token }, status: :ok

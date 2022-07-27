@@ -2,9 +2,11 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   before_action :parse_parameters, only: [:create,:update]
 
   def create
-    property_type = parse_parameters[:property_type]
-    if property_type.in?(%w[house condo vacant_land])
-      @property = property_type.titleize.gsub(" ", "").constantize.new(parse_parameters)
+    debugger
+    property_types = parse_parameters["property_type"]
+    if property_types.in?(%w[house condo vacant_land])
+      @property = property_types.titleize.gsub(" ", "").constantize.new(parse_parameters)
+      debugger
       @property.user = @current_user
       if @property.save
         @property
@@ -63,9 +65,10 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def parse_parameters
     if property_params[:data]
       data = JSON.parse(property_params[:data])
-      data.push("images" => property_params[:images])
-      combine_parameters = data[0].merge(data[1])
-      return combine_parameters.with_indifferent_access
+      data.push({"name"=> "images", "value" => property_params[:images]})
+      format_data =  data&.map{ |item| {item["name"] => item["value"]} }
+      simplificated_format = Hash[*format_data.map(&:to_a).flatten]
+      return simplificated_format.with_indifferent_access
     else
       render json: {error: "Parameters has some issue"}, status: 422
     end

@@ -2,11 +2,9 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   before_action :parse_parameters, only: [:create,:update]
 
   def create
-    debugger
-    property_types = parse_parameters["property_type"]
+    property_types = parse_parameters[:property_type]
     if property_types.in?(%w[house condo vacant_land])
       @property = property_types.titleize.gsub(" ", "").constantize.new(parse_parameters)
-      debugger
       @property.user = @current_user
       if @property.save
         @property
@@ -63,18 +61,40 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   private
 
   def parse_parameters
-    if property_params[:data]
-      data = JSON.parse(property_params[:data])
-      data.push({"name"=> "images", "value" => property_params[:images]})
-      format_data =  data&.map{ |item| {item["name"] => item["value"]} }
-      simplificated_format = Hash[*format_data.map(&:to_a).flatten]
-      return simplificated_format.with_indifferent_access
+    if property_params
+      data = JSON.parse(property_params[:other_options])
+      format_data =  data&.map{ |item| {item["title"].downcase.sub(" ","_") => item["value"]} }
+      data = Hash[*format_data.map(&:to_a).flatten]
+      data.store("price",property_params[:price])
+      data.store("year_built",property_params[:year_built])
+      data.store("address", property_params[:address])
+      data.store("lot_frontage_feet",property_params[:lot_frontage_feet])
+      data.store("lot_frontage_sq_meter",property_params[:lot_frontage_sq_meter])
+      data.store("lot_depth_sq_meter", property_params[:lot_depth_sq_meter])
+      data.store("lot_depth_feet", property_params[:lot_depth_feet])
+      data.store("lot_depth_sq_meter", property_params[:lot_depth_sq_meter])
+      data.store("lot_size_feet",property_params[:lot_size_feet])
+      data.store( "lot_size_sq_meter",property_params[:lot_size_sq_meter])
+      data.store("is_lot_irregular",property_params[:is_lot_irregular])
+      data.store("lot_description", property_params[:lot_description])
+      data.store("property_tax",property_params[:property_tax])
+      data.store("tax_year",property_params[:tax_year])
+      data.store("locker", property_params[:locker])
+      data.store("property_type", property_params[:property_type])
+      data.store("condo_corporation_or_hqa", property_params[:condo_corporation_or_hqa])
+      #c data.push({"name"=> "images", "value" => property_params[:images]})
+      return data.with_indifferent_access
     else
       render json: {error: "Parameters has some issue"}, status: 422
     end
   end
 
   def property_params
-    params.require(:property).permit(:data,images: [])
+    params.require(:property).permit(:property_type,:title, :price,:year_built,:address,:unit,
+                                     :lot_frontage_feet,:lot_frontage_sq_meter,:lot_depth_feet,
+                                     :lot_depth_sq_meter,:lot_size_sq_meter,:is_lot_irregular,
+                                     :lot_description,:property_tax,:tax_year,:locker,
+                                     :condo_corporation_or_hqa,
+                                     :other_options,:images)
   end
 end

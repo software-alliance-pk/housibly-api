@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_26_074315) do
+ActiveRecord::Schema.define(version: 2022_07_27_140143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2022_07_26_074315) do
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["record_type", "record_id"], name: "index_active_storage_attachments_on_record_type_and_record_id"
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 2022_07_26_074315) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index ["blob_id"], name: "index_active_storage_variant_records_on_blob_id"
   end
 
   create_table "card_infos", force: :cascade do |t|
@@ -97,11 +99,11 @@ ActiveRecord::Schema.define(version: 2022_07_26_074315) do
     t.float "lot_size_feet"
     t.boolean "is_lot_irregular"
     t.text "lot_description"
-    t.integer "bath_room"
-    t.integer "bed_room"
+    t.integer "bath_rooms"
+    t.integer "bed_rooms"
     t.integer "living_space"
-    t.integer "parking_space"
-    t.integer "garage_space"
+    t.integer "parking_spaces"
+    t.integer "garage_spaces"
     t.string "garage"
     t.string "parking_type"
     t.string "parking_ownership"
@@ -122,7 +124,7 @@ ActiveRecord::Schema.define(version: 2022_07_26_074315) do
     t.string "pool"
     t.integer "property_tax"
     t.integer "tax_year"
-    t.string "other_items"
+    t.string "appliances_and_other_items"
     t.string "locker"
     t.float "condo_fees"
     t.string "balcony"
@@ -139,6 +141,7 @@ ActiveRecord::Schema.define(version: 2022_07_26_074315) do
     t.float "lot_frontage_sq_meter"
     t.float "lot_depth_sq_meter"
     t.float "lot_size_sq_meter"
+    t.text "condo_corporation_or_hqa"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 

@@ -1,16 +1,25 @@
 class Api::V1::PropertiesController < Api::V1::ApiController
+  require 'uri'
   before_action :parse_parameters, only: [:create,:update]
 
   def create
     property_types = parse_parameters[:property_type]
     if property_types.in?(%w[house condo vacant_land])
-      @property = property_types.titleize.gsub(" ", "").constantize.new(parse_parameters)
-      @property.user = @current_user
-      if @property.save
-        @property
-      else
-        render_error_messages(@property)
-      end
+      image_arr = JSON.parse(parse_parameters["images"])
+      if image_arr.length < 30
+          @property = property_types.titleize.gsub(" ", "").constantize.new(parse_parameters.except(:images))
+          @property.user = @current_user
+          if @property.save
+              image_arr.each do |image|
+                @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
+              end
+            @property
+          else
+            render_error_messages(@property)
+          end
+          else
+            render json: { message: "Number of images is greater than 30" }, status: 404
+          end
     else
       render json: { message: "property_type does not exist" }, status: 404
     end
@@ -82,6 +91,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       data.store("locker", property_params[:locker])
       data.store("property_type", property_params[:property_type])
       data.store("condo_corporation_or_hqa", property_params[:condo_corporation_or_hqa])
+      data.store("images",property_params[:images])
       #c data.push({"name"=> "images", "value" => property_params[:images]})
       return data.with_indifferent_access
     else

@@ -25,6 +25,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
+
   def index
     @properties = @current_user.properties.order("created_at desc")
   end
@@ -32,7 +33,13 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def update
     @property = Property.find_by(id: params[:id])
     if @property
-      if @property.update(parse_parameters)
+      image_arr = JSON.parse(parse_parameters["images"])
+      @property.images.purge
+      image_arr.each do |image|
+        @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
+      end
+        @property
+      if @property.update(parse_parameters.except(:images))
         @property
       else
         render_error_messages(@property)
@@ -75,6 +82,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       format_data =  data&.map{ |item| {item["title"].downcase.sub(" ","_") => item["value"]} }
       data = Hash[*format_data.map(&:to_a).flatten]
       data.store("price",property_params[:price])
+      data.store("title",property_params[:title])
       data.store("year_built",property_params[:year_built])
       data.store("address", property_params[:address])
       data.store("lot_frontage_feet",property_params[:lot_frontage_feet])
@@ -83,7 +91,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       data.store("lot_depth_feet", property_params[:lot_depth_feet])
       data.store("lot_depth_sq_meter", property_params[:lot_depth_sq_meter])
       data.store("lot_size_feet",property_params[:lot_size_feet])
-      data.store( "lot_size_sq_meter",property_params[:lot_size_sq_meter])
+      data.store("lot_size_sq_meter",property_params[:lot_size_sq_meter])
       data.store("is_lot_irregular",property_params[:is_lot_irregular])
       data.store("lot_description", property_params[:lot_description])
       data.store("property_tax",property_params[:property_tax])

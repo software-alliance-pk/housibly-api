@@ -48,6 +48,16 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       render json: { message: "property not found" }, status: 404
     end
   end
+  def recent_property
+    @properties = @current_user.properties.where('created_at >= :five_days_ago',:five_days_ago => 5.days.ago)
+    if @properties
+      @properties
+    else
+      render json: {
+        message: "Property not found"
+      }, status: :unprocessable_entity
+    end
+  end
 
   def destroy
     @property = Property.find_by(id: params[:id])

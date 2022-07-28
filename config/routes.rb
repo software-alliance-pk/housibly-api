@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
-      resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index]
+      resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property]
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#login'
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       delete '/card', to: 'payments#destroy_card'
       delete '/card', to: 'payments#destroy_card'
       get '/static_page/:permalink', to: 'static_pages#static_page'
+      get '/recent_property', to: 'properties#recent_property'
       get '/*a', to: 'api#not_found'
     end
   end

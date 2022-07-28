@@ -5,5 +5,6 @@ class ChangeColumnToProperty < ActiveRecord::Migration[6.1]
     rename_column :properties, :parking_space, :parking_spaces
     rename_column :properties, :garage_space, :garage_spaces
     rename_column :properties, :other_items, :appliances_and_other_items
+    rename_column :properties, :fire_place, :fireplace
   end
 end

@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 2022_07_27_140143) do
     t.string "heat_source"
     t.string "air_conditioner"
     t.string "laundry"
-    t.string "fire_place"
+    t.string "fireplace"
     t.string "central_vacuum"
     t.string "basement"
     t.string "pool"

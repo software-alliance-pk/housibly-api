@@ -92,7 +92,6 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       data = JSON.parse(property_params[:other_options])
       format_data =  data&.map{ |item| {item["title"].downcase.sub(" ","_") => item["value"]} }
       data = Hash[*format_data.map(&:to_a).flatten]
-      puts data
       # data.store("price",property_params[:price])
       # data.store("title",property_params[:title])
       # data.store("year_built",property_params[:year_built])
@@ -112,7 +111,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
-      puts property_params[:property_type]
+      puts property_params[:property]
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
       puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "

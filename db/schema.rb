@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_27_140143) do
+ActiveRecord::Schema.define(version: 2022_07_29_153025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,20 @@ ActiveRecord::Schema.define(version: 2022_07_27_140143) do
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string "namespace"
+    t.text "body"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.string "author_type"
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
+    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
+  end
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -33,7 +47,6 @@ ActiveRecord::Schema.define(version: 2022_07_27_140143) do
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-    t.index ["record_type", "record_id"], name: "index_active_storage_attachments_on_record_type_and_record_id"
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -52,7 +65,6 @@ ActiveRecord::Schema.define(version: 2022_07_27_140143) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-    t.index ["blob_id"], name: "index_active_storage_variant_records_on_blob_id"
   end
 
   create_table "card_infos", force: :cascade do |t|
@@ -94,9 +106,9 @@ ActiveRecord::Schema.define(version: 2022_07_27_140143) do
     t.integer "year_built"
     t.string "address"
     t.integer "unit"
-    t.float "lot_frontage_feet"
-    t.float "lot_depth_feet"
-    t.float "lot_size_feet"
+    t.float "lot_frontage"
+    t.float "lot_depth"
+    t.float "lot_size"
     t.boolean "is_lot_irregular"
     t.text "lot_description"
     t.integer "bath_rooms"
@@ -138,10 +150,11 @@ ActiveRecord::Schema.define(version: 2022_07_27_140143) do
     t.string "heat_type"
     t.bigint "user_id", null: false
     t.boolean "is_property_sold"
-    t.float "lot_frontage_sq_meter"
-    t.float "lot_depth_sq_meter"
-    t.float "lot_size_sq_meter"
+    t.float "lot_frontage_unit"
+    t.float "lot_depth_unit"
+    t.float "lot_size_unit"
     t.text "condo_corporation_or_hqa"
+    t.string "currency_type"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 

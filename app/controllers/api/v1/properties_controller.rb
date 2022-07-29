@@ -95,7 +95,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       data.store("title",property_params[:title])
       data.store("year_built",property_params[:year_built])
       data.store("address", property_params[:address])
-      data.store("lot_frontage_",property_params[:lot_frontage])
+      data.store("lot_frontage",property_params[:lot_frontage])
       data.store("lot_frontage_unit",property_params[:lot_frontage_unit])
       data.store("lot_depth_unit", property_params[:lot_depth_unit])
       data.store("lot_depth", property_params[:lot_depth])

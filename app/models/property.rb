@@ -3,7 +3,7 @@ class Property < ApplicationRecord
   has_many_attached :images
   # has_many :rooms, dependent: :destroy
   belongs_to :user
-  validates :price, :lot_frontage_sq_meter, :lot_depth_sq_meter,:bath_rooms,
+  validates :price, :lot_frontage_unit, :lot_depth_unit,:bath_rooms,
             :bed_rooms, :house_type, :house_style, :air_conditioner,
             :parking_spaces, :garage_spaces,  presence: true
 end

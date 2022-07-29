@@ -5,8 +5,9 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def create
     property_types = parse_parameters[:property_type]
     if property_types.in?(%w[house condo vacant_land])
-      image_arr = JSON.parse(parse_parameters["images"])
-      if image_arr.length < 30
+      image_arr = JSON.parse(parse_parameters["images"]) if parse_parameters["images"]
+      image_arr = [] if image_arr.blank?
+      if image_arr&.length <= 30
           @property = property_types.titleize.gsub(" ", "").constantize.new(parse_parameters.except(:images))
           @property.user = @current_user
           if @property.save
@@ -88,11 +89,9 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def parse_parameters
     if property_params
-      puts
-
-
       data = JSON.parse(property_params[:other_options])
       format_data =  data&.map{ |item| {item["title"].downcase.sub(" ","_") => item["value"]} }
+      puts format_data
       data = Hash[*format_data.map(&:to_a).flatten]
       data.store("price",property_params[:price])
       data.store("title",property_params[:title])

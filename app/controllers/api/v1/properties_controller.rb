@@ -88,7 +88,9 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def parse_parameters
     if property_params
-      puts property_params
+      puts
+
+
       data = JSON.parse(property_params[:other_options])
       format_data =  data&.map{ |item| {item["title"].downcase.sub(" ","_") => item["value"]} }
       data = Hash[*format_data.map(&:to_a).flatten]

@@ -5,9 +5,9 @@ json.price property.price
 json.address property.address
 json.unit property.unit
 json.year_built property.year_built
-json.lot_frontage_feet property.lot_frontage_feet
-json.lot_depth_feet property.lot_depth_feet
-json.lot_size_feet property.lot_size_feet
+json.lot_frontage_feet property.lot_frontage
+json.lot_depth_feet property.lot_depth
+json.lot_size_feet property.lot_size
 json.is_lot_irregular property.is_lot_irregular
 json.lot_description property.lot_description
 json.bath_room property.bath_rooms
@@ -47,6 +47,6 @@ json.property_description property.property_description
 json.heat_type property.heat_type
 json.user_id property.user_id
 json.is_property_sold property.is_property_sold
-json.lot_frontage_sq_meter property.lot_frontage_sq_meter
-json.lot_depth_sq_meter property.lot_depth_sq_meter
-json.lot_size_sq_meter property.lot_size_sq_meter
+json.lot_frontage_unit property.lot_frontage_unit
+json.lot_depth_unit property.lot_depth_unit
+json.lot_size_unit property.lot_size_unit

@@ -95,13 +95,13 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       data.store("title",property_params[:title])
       data.store("year_built",property_params[:year_built])
       data.store("address", property_params[:address])
-      data.store("lot_frontage_feet",property_params[:lot_frontage_feet])
-      data.store("lot_frontage_sq_meter",property_params[:lot_frontage_sq_meter])
-      data.store("lot_depth_sq_meter", property_params[:lot_depth_sq_meter])
-      data.store("lot_depth_feet", property_params[:lot_depth_feet])
-      data.store("lot_depth_sq_meter", property_params[:lot_depth_sq_meter])
-      data.store("lot_size_feet",property_params[:lot_size_feet])
-      data.store("lot_size_sq_meter",property_params[:lot_size_sq_meter])
+      data.store("lot_frontage_",property_params[:lot_frontage])
+      data.store("lot_frontage_unit",property_params[:lot_frontage_unit])
+      data.store("lot_depth_unit", property_params[:lot_depth_unit])
+      data.store("lot_depth", property_params[:lot_depth])
+      data.store("lot_depth_unit", property_params[:lot_depth_unit])
+      data.store("lot_size",property_params[:lot_size])
+      data.store("lot_size_unit",property_params[:lot_size_unit])
       data.store("is_lot_irregular",property_params[:is_lot_irregular])
       data.store("lot_description", property_params[:lot_description])
       data.store("property_tax",property_params[:property_tax])
@@ -119,8 +119,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def property_params
     params.require(:property).permit(:property_type,:title, :price,:year_built,:address,:unit,
-                                     :lot_frontage_feet,:lot_frontage_sq_meter,:lot_depth_feet,
-                                     :lot_depth_sq_meter,:lot_size_sq_meter,:is_lot_irregular,
+                                     :lot_frontage,:lot_frontage_unit,:lot_depth,
+                                     :lot_depth_unit,:lot_size_unit,:is_lot_irregular,
                                      :lot_description,:property_tax,:tax_year,:locker,
                                      :condo_corporation_or_hqa,
                                      :other_options,:images)

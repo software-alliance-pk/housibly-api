@@ -91,8 +91,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     if property_params
       data = JSON.parse(property_params[:other_options])
       format_data =  data&.map{ |item| {item["title"].downcase.sub(" ","_") => item["value"]} }
-      puts format_data
       data = Hash[*format_data.map(&:to_a).flatten]
+      puts data
       data.store("price",property_params[:price])
       data.store("title",property_params[:title])
       data.store("year_built",property_params[:year_built])
@@ -112,6 +112,13 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       data.store("property_type", property_params[:property_type])
       data.store("condo_corporation_or_hqa", property_params[:condo_corporation_or_hqa])
       data.store("images",property_params[:images])
+
+      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
+      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
+      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "
+
+
+      puts data
       #c data.push({"name"=> "images", "value" => property_params[:images]})
       return data.with_indifferent_access
     else

@@ -5,5 +5,5 @@ class Property < ApplicationRecord
   belongs_to :user
   validates :price, :lot_frontage_unit, :lot_depth_unit,:bath_rooms,
             :bed_rooms, :house_type, :house_style, :air_conditioner,
-            :parking_spaces, :garage_spaces,  presence: true
+            :parking_spaces, :garage_spaces,:currency_type, presence: true
 end

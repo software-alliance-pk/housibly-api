@@ -1,7 +1,8 @@
 json.id property.id
-json.type property.type
+json.property_type property.type
 json.title property.title
 json.price property.price
+json.currency_type property.currency_type
 json.address property.address
 json.unit property.unit
 json.year_built property.year_built
@@ -10,11 +11,11 @@ json.lot_depth_feet property.lot_depth
 json.lot_size_feet property.lot_size
 json.is_lot_irregular property.is_lot_irregular
 json.lot_description property.lot_description
-json.bath_room property.bath_rooms
-json.bed_room property.bed_rooms
-json.living_space property.living_space
-json.parking_space property.parking_spaces
-json.garage_space property.garage_spaces
+json.bath_rooms property.bath_rooms
+json.bed_rooms property.bed_rooms
+json.living_spaces property.living_space
+json.parking_spaces property.parking_spaces
+json.garage_spaces property.garage_spaces
 json.garage property.garage
 json.parking_type property.parking_type
 json.parking_ownership property.parking_ownership

@@ -6,7 +6,8 @@ class Api::V1::PaymentsController < Api::V1::ApiController
 
   def create
     customer = check_customer_at_stripe
-    card = StripeService.create_card(customer.id, payment_params[:token])
+    card = StripeService.create_card(customer.id, payment_params[:token]) rescue ""
+    return render json: {error: "Please Change Payment Token"}, status: 422 if card.blank?
     @card = create_user_payment_card(card)
     make_first_card_as_default
     if @card
@@ -27,8 +28,6 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def get_all_cards
     if @cards = @current_user.card_infos
       @cards
-    else
-      render_error_messages(@cards)
     end
   end
 

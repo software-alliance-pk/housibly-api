@@ -127,7 +127,9 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def upload_image_to_cloundinary(image)
     begin
-      @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
+      require "down"
+      tempfile = Down.download(image["uri"])
+      @property.images.attach(io: File.open(tempfile), filename: image["name"], content_type: image["type"])
     rescue => e
       render json: { error: e.message }, status: 404
     end

@@ -86,6 +86,8 @@ GEM
     crass (1.0.6)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    down (5.3.1)
+      addressable (~> 2.8)
     erubi (1.10.0)
     faraday (2.3.0)
       faraday-net_http (~> 2.0)
@@ -251,6 +253,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   cloudinary
+  down (~> 5.0)
   jbuilder (~> 2.7)
   jwt
   letter_opener

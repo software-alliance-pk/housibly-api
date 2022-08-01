@@ -3,7 +3,14 @@ class Property < ApplicationRecord
   has_many_attached :images
   # has_many :rooms, dependent: :destroy
   belongs_to :user
-  validates :price, :lot_frontage_unit, :lot_depth_unit,:bath_rooms,
-            :bed_rooms, :house_type, :house_style, :air_conditioner,
-            :parking_spaces, :garage_spaces,:currency_type, presence: true
+  validates :price,presence: true
+  validates :lot_frontage_unit, :currency_type, :lot_depth_unit, presence: true
+  validates :bath_rooms, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :bed_rooms, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :house_type, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :house_style, presence:  true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :air_conditioner, presence:  true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+
 end

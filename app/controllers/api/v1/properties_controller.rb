@@ -21,13 +21,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def update
     @property.type = @property_types.titleize.gsub(" ", "").constantize
-    if @property.update(parse_parameters)
-      if @image_arr.length > 0
-        @property.images.purge
-        @image_arr.each do |image|
-          upload_image_to_cloundinary(image)
-        end
-      end
+    if @property.update(@image_arr.length > 0 ? parse_parameters : parse_parameters.except(:images))
       @property
     else
       render_error_messages(@property)

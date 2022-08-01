@@ -7,7 +7,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def create
     customer = check_customer_at_stripe
     card = StripeService.create_card(customer.id, payment_params[:token]) rescue ""
-    return render json: {error: "Please Change Payment Token"}, status: 422 if card.blank?
+    return render json: { message: "You cannot use one token more than once" }, status: 422 if card.blank?
     @card = create_user_payment_card(card)
     make_first_card_as_default
     if @card
@@ -56,7 +56,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
 
   def set_default_card
     if @card
-      @current_user.card_infos.update_all(is_default: false)
+      @current_user.card_infos.update_all(is_default: false) unless @card.is_default
       @card.update(is_default: true)
     end
   end
@@ -80,7 +80,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   private
 
   def find_card
-    @card = CardInfo.find_by(card_id: payment_params[:id])
+    @card = CardInfo.find_by(id: payment_params[:id])
     if @card
       @card
     else

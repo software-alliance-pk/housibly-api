@@ -20,11 +20,13 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def update
-    @property.type = @property_types
+    @property.type = @property_types.titleize.gsub(" ", "").constantize
     if @property.update(parse_parameters)
-      @property.images.purge
-      @image_arr.each do |image|
-        upload_image_to_cloundinary(image)
+      if @image_arr.length > 0
+        @property.images.purge
+        @image_arr.each do |image|
+          upload_image_to_cloundinary(image)
+        end
       end
       @property
     else
@@ -125,11 +127,6 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     begin
       require "down"
       tempfile = Down.download(image["uri"])
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-      puts puts image["uri"]
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
       @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
     rescue => e
       render json: { error: e.message }, status: 404

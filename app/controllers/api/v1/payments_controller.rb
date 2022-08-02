@@ -62,7 +62,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def get_default_card
-    @card = @current_user.card_infos&.default_card
+    @card = @current_user.card_infos&.default_card.take
     if @card
       @card
     else

@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       get '/cards', to: 'payments#get_all_cards'
       get '/get_profile', to: 'users#get_profile'
       get '/get_default_card', to: 'payments#get_default_card'
-      get '/property/filter', to: 'properties#property_filters'
+      post '/property/filter', to: 'properties#property_filters'
       get '/tickets', to: 'supports#get_tickets'
       get '/static_page/:permalink', to: 'static_pages#static_page'
       get '/recent_property', to: 'properties#recent_property'

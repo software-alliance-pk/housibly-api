@@ -10,6 +10,6 @@ json.user do
   json.user_type @current_user.user_type
   json.profile_type @current_user.profile_type
   json.description @current_user.description
-  json.image @current_user.avatar.attached? ? rails_blob_url(@current_user.avatar) : ""
+  json.image @current_user.avatar.attached? ? @current_user.avatar.url : ""
 
 end

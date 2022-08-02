@@ -1,6 +1,6 @@
 class JsonWebTokenService
-  def self.encode(payload, exp = 24.hours.from_now)
-    payload[:exp] = exp.to_i
+  def self.encode(payload)
+    # payload[:exp] = exp.to_i
     JWT.encode payload, shift_credentials, 'HS256'
   end
 

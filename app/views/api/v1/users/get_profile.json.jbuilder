@@ -5,6 +5,8 @@ json.user do
   json.is_otp_verified @current_user.is_otp_verified
   json.is_confirmed @current_user.is_confirmed
   json.phone_number @current_user.phone_number
+  json.country_code @current_user.country_code
+  json.country_name @current_user.country_name
   json.licensed_realtor @current_user.licensed_realtor
   json.contacted_by_real_estate @current_user.contacted_by_real_estate
   json.user_type @current_user.user_type

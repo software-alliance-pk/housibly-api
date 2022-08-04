@@ -57,6 +57,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   def user_params
     params.require(:user).
       permit(:full_name, :email, :password, :phone_number, :description, :licensed_realtor,
-             :contacted_by_real_estate, :user_type, :profile_type, :otp, :country_code, :avatar)
+             :contacted_by_real_estate, :user_type, :profile_type, :otp, :country_code, :country_name,
+             :avatar)
   end
 end

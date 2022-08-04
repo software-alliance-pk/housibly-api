@@ -24,7 +24,7 @@ class SocialLoginService
     return JSON.parse(response.body) if response.code != '200'
     json_response = JSON.parse(response.body)
     user = create_user(json_response['email'], json_response['sub'], json_response)
-    reload!
+    reload
     token = JsonWebTokenService.encode({ email: user.email })
     [user, token, json_response['picture']]
   end
@@ -45,7 +45,7 @@ class SocialLoginService
     end
     data = token_data.with_indifferent_access
     user = create_user(data['email'], data['sub'], data)
-    reload!
+    reload
     token = JsonWebTokenService.encode({ email: user.email })
     [user, token, " "]
 

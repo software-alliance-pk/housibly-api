@@ -24,7 +24,7 @@ class SocialLoginService
     return JSON.parse(response.body) if response.code != '200'
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts JSON.parse(response)
+    puts JSON.parse(response.body)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     json_response = JSON.parse(response.body)

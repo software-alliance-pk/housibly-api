@@ -9,7 +9,7 @@ class Api::V1::ApiController < ActionController::API
   def render_error_messages(object)
     render json: {
       message: object.errors.messages.map { |msg, desc|
-        msg.to_s + ' ' + desc[0] }.join(', ')
+        msg.to_s.capitalize.to_s.gsub("_"," ") + ' ' + desc[0] }.join(', ')
     }, status: :unprocessable_entity
   end
 

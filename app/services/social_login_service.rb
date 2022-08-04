@@ -23,7 +23,7 @@ class SocialLoginService
     response = Net::HTTP.get_response(uri)
     return JSON.parse(response.body) if response.code != '200'
     json_response = JSON.parse(response.body)
-    user = create_user!(json_response['email'], json_response['sub'], json_response)
+    user = create_user(json_response['email'], json_response['sub'], json_response)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts user

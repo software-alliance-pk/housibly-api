@@ -23,12 +23,8 @@ class SocialLoginService
     response = Net::HTTP.get_response(uri)
     return JSON.parse(response.body) if response.code != '200'
     json_response = JSON.parse(response.body)
-    user = create_user(json_response['email'], json_response['sub'], json_response)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts user
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    create_user(json_response['email'], json_response['sub'], json_response)
+    user = User.find_by_email(response['email'])
     token = JsonWebTokenService.encode({ email: user.email })
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

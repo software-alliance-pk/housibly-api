@@ -20,6 +20,6 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def user_params
     params.require(:user).
-      permit(:email, :phone_number, :description, :avatar)
+      permit(:email, :phone_number, :description, :country_code, :country_name, :avatar)
   end
 end

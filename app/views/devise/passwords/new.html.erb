@@ -1,0 +1,29 @@
+<main>
+  <section id="forgot_pass" style="background-image: url('/assets/loginbg.jpg');">
+    <div class="contain">
+      <div class="flex_blk align-items-center">
+        <div>
+          <div class="logo_blk">
+            <%= image_tag 'logo.svg', alt: 'logo' %>
+          </div>
+          <h2>Forgot Password?</h2>
+          <p>Enter your detail below</p>
+            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+          <label for="">Email Address</label>
+            <div class="form_blk">
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Type here', class: 'input' %>
+            </div>
+
+            <div class="btn_blk">
+              <button type="button" class="site_btn">Reset Password</button>
+              <%= f.submit "Reset",class: 'site_btn' %>
+            </div>
+              <%end%>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- forgot_pass -->
+
+
+</main>

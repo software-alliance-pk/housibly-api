@@ -1,0 +1,48 @@
+<main>
+  <section id="sign_in" style="background-image: url('/assets/loginbg.jpg');">
+    <div class="contain">
+      <div class="flex_blk align-items-center">
+        <div>
+          <div class="logo_blk">
+            <%= image_tag 'logo.svg', alt: 'logo' %>
+          </div>
+          <h2>Reset Password</h2>
+          <p>Enter your new password below</p>
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
+            <%= f.hidden_field :reset_password_token %>
+            <label for="">New Password</label>
+            <div class="form_blk">
+              <div class="icon_blk">
+                <%= image_tag 'lockIcon.svg', alt: 'icon' %>
+              </div>
+              <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: 'input',placeholder: 'Type Here' %>
+            </div>
+            <label for="">Retype New Password</label>
+            <div class="form_blk mb-0">
+              <div class="icon_blk">
+                <%= image_tag 'lockIcon.svg', alt: 'icon' %>
+              </div>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password",placeholder: 'Type Here',class:'input' %>
+            </div>
+            <div class="btn_blk">
+              <%= f.submit "Create New Password", class: 'site_btn' %>
+              <button type="button" class="site_btn">Create New Password</button>
+            </div>
+          <%end%>
+        </div>
+      </div>
+    </div>
+    <div class="notify_blk">
+      <div class="text">
+        <div class="img_blk">
+          <img src="assets/images/emailIcon.svg" alt="logo">
+        </div>
+        <p>Your reset password link has been sent to your email.</p>
+      </div>
+    </div>
+  </section>
+  <!-- reset_pass -->
+
+
+</main>

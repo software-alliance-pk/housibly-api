@@ -1,0 +1,1552 @@
+////signIn css
+//
+//#sign_in {
+//    padding: 0;
+//    background-size: cover;
+//    background-position: center;
+//    background-repeat: no-repeat;
+//    .flex_blk {
+//        min-height: 100vh;
+//        padding: 6rem 0;
+//        .logo_blk {
+//            width: 11.9rem;
+//            min-width: 11.9rem;
+//            height: 10.5rem;
+//            margin-bottom: 3.4rem;
+//        }
+//        h2 {
+//            letter-spacing: 0.1rem;
+//            margin-bottom: 1.5rem;
+//            color: var(--light);
+//        }
+//        p {
+//            font-weight: 500;
+//            font-size: 3rem;
+//            line-height: 3.5rem;
+//            letter-spacing: 0.1rem;
+//            color: var(--light);
+//        }
+//        form {
+//            margin-top: 5rem;
+//            max-width: 38.3rem;
+//            width: 100%;
+//            label {
+//                font-size: 2.2rem;
+//                line-height: 2rem;
+//                color: var(--light);
+//                margin-bottom: 1.2rem;
+//            }
+//            input {
+//                background: rgba(255, 255, 255, 0.19);
+//                border-radius: 1rem;
+//                color: var(--light);
+//
+//                &::placeholder {
+//                    color: rgba(255, 255, 255, 0.85);
+//                    font-size: 1.8rem;
+//                    line-height: 2.1rem;
+//                }
+//                &:hover {
+//                    border-color: #4cbbff;
+//                }
+//            }
+//            input[type="password"] {
+//                &::placeholder {
+//                    margin-left: 3rem;
+//                }
+//            }
+//            .icon_blk {
+//                width: 1.6rem;
+//                min-width: 1.6rem;
+//                height: 1.6rem;
+//                position: absolute;
+//                top: 50%;
+//                bottom: 0;
+//                left: 5%;
+//                right: 0;
+//                transform: translate(0, -50%);
+//
+//                + input {
+//                    padding-left: 4rem;
+//                }
+//            }
+//            a {
+//                font-weight: 400;
+//                font-size: 1.8rem;
+//                line-height: 2rem;
+//                color: var(--light);
+//                margin-bottom: 1.2rem;
+//            }
+//
+//            .btn_blk {
+//                width: 100%;
+//                margin-top: 3.5rem;
+//                button {
+//                    width: 100%;
+//                    background: #4cbbff;
+//                    border: 0.1rem solid rgba(255, 255, 255, 0.2);
+//                    border-radius: 3.4rem;
+//                }
+//            }
+//        }
+//    }
+//}
+//
+////forgot Password
+//
+//#forgot_pass {
+//    padding: 0;
+//    background-size: cover;
+//    background-position: center;
+//    background-repeat: no-repeat;
+//    .flex_blk {
+//        min-height: 100vh;
+//        padding: 6rem 0;
+//        .logo_blk {
+//            width: 11.9rem;
+//            min-width: 11.9rem;
+//            height: 10.5rem;
+//            margin-bottom: 3.4rem;
+//        }
+//        h2 {
+//            letter-spacing: 0.1rem;
+//            margin-bottom: 1.5rem;
+//            color: var(--light);
+//        }
+//        p {
+//            font-weight: 500;
+//            font-size: 3rem;
+//            line-height: 3.5rem;
+//            letter-spacing: 0.1rem;
+//            color: var(--light);
+//        }
+//        form {
+//            margin-top: 5rem;
+//            max-width: 38.3rem;
+//            width: 100%;
+//            label {
+//                font-size: 2.2rem;
+//                line-height: 2rem;
+//                color: var(--light);
+//                margin-bottom: 1.2rem;
+//            }
+//            input {
+//                background: rgba(255, 255, 255, 0.19);
+//                border-radius: 1rem;
+//                color: var(--light);
+//
+//                &::placeholder {
+//                    color: rgba(255, 255, 255, 0.85);
+//                    font-size: 1.8rem;
+//                    line-height: 2.1rem;
+//                }
+//                &:hover {
+//                    border-color: #4cbbff;
+//                }
+//            }
+//
+//            a {
+//                font-weight: 400;
+//                font-size: 1.8rem;
+//                line-height: 2rem;
+//                color: var(--light);
+//                margin-bottom: 1.2rem;
+//            }
+//
+//            .btn_blk {
+//                width: 100%;
+//                margin-top: 3.5rem;
+//                button {
+//                    width: 100%;
+//                    background: #4cbbff;
+//                    border: 0.1rem solid rgba(255, 255, 255, 0.2);
+//                    border-radius: 3.4rem;
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// reset Password
+//#reset_pass {
+//    padding: 0;
+//    background-size: cover;
+//    background-position: center;
+//    background-repeat: no-repeat;
+//    .flex_blk {
+//        min-height: 100vh;
+//        padding: 6rem 0;
+//        .logo_blk {
+//            width: 11.9rem;
+//            min-width: 11.9rem;
+//            height: 10.5rem;
+//            margin-bottom: 3.4rem;
+//        }
+//        h2 {
+//            letter-spacing: 0.1rem;
+//            margin-bottom: 1.5rem;
+//            color: var(--light);
+//        }
+//        p {
+//            font-weight: 500;
+//            font-size: 3rem;
+//            line-height: 3.5rem;
+//            letter-spacing: 0.1rem;
+//            color: var(--light);
+//        }
+//        form {
+//            margin-top: 5rem;
+//            max-width: 38.3rem;
+//            width: 100%;
+//            label {
+//                font-size: 2.2rem;
+//                line-height: 2rem;
+//                color: var(--light);
+//                margin-bottom: 1.2rem;
+//            }
+//            input {
+//                background: rgba(255, 255, 255, 0.19);
+//                border-radius: 1rem;
+//                color: var(--light);
+//
+//                &::placeholder {
+//                    color: rgba(255, 255, 255, 0.85);
+//                    font-size: 1.8rem;
+//                    line-height: 2.1rem;
+//                }
+//                &:hover {
+//                    border-color: #4cbbff;
+//                }
+//            }
+//            .icon_blk {
+//                width: 1.6rem;
+//                min-width: 1.6rem;
+//                height: 1.6rem;
+//                position: absolute;
+//                top: 50%;
+//                bottom: 0;
+//                left: 5%;
+//                right: 0;
+//                transform: translate(0, -50%);
+//
+//                + input {
+//                    padding-left: 4rem;
+//                }
+//            }
+//            a {
+//                font-weight: 400;
+//                font-size: 1.8rem;
+//                line-height: 2rem;
+//                color: var(--light);
+//                margin-bottom: 1.2rem;
+//            }
+//
+//            .btn_blk {
+//                width: 100%;
+//                margin-top: 3.5rem;
+//                button {
+//                    width: 100%;
+//                    background: #4cbbff;
+//                    border: 0.1rem solid rgba(255, 255, 255, 0.2);
+//                    border-radius: 3.4rem;
+//                }
+//            }
+//        }
+//    }
+//
+//    .notify_blk {
+//        width: 100%;
+//        height: 100%;
+//        position: absolute;
+//        background: rgba(40, 42, 55, 0.8);
+//        top: 0;
+//        bottom: 0;
+//        left: 0;
+//        right: 0;
+//
+//        .text {
+//            display: flex;
+//            flex-direction: column;
+//            align-items: center;
+//            padding: 5rem 3.5rem;
+//            background-color: var(--light);
+//            border-radius: 1rem;
+//            max-width: 48.3rem;
+//            width: 100%;
+//            position: absolute;
+//            right: 10%;
+//            bottom: 10%;
+//            .img_blk {
+//                min-width: 9.8rem;
+//                width: 9.8rem;
+//                height: 8.3rem;
+//            }
+//            p {
+//                margin-top: 1.5rem;
+//                margin-bottom: 0;
+//                font-size: 3rem;
+//                line-height: 3.5rem;
+//                text-align: center;
+//                letter-spacing: 0.1rem;
+//                color: var(--dark);
+//            }
+//        }
+//    }
+//}
+//
+//// table blk css
+//
+//.table_blk {
+//    overflow-x: auto;
+//    table {
+//        min-width: 100%;
+//        width: max-content;
+//        thead {
+//            tr {
+//                th {
+//                    font-weight: 400;
+//                    font-size: 1.4rem;
+//                    line-height: 1.8rem;
+//                    color: #09110e;
+//                    opacity: 0.4;
+//                    padding: 2.6rem 0;
+//                    border-bottom: 0.1rem solid #efefef;
+//                    border-top: 0.1rem solid #efefef;
+//                }
+//            }
+//        }
+//        tbody {
+//            tr {
+//                td {
+//                    font-weight: 400;
+//                    font-size: 1.4rem;
+//                    line-height: 1.8rem;
+//                    padding: 2rem 0;
+//                    border-bottom: 0.1rem solid #efefef;
+//                    color: #626262;
+//
+//                    &.user_name {
+//                        color: var(--dark);
+//                    }
+//                    .img_blk {
+//                        width: 5.4rem;
+//                        min-width: 5.4rem;
+//                        height: 5.5rem;
+//                    }
+//                    .rating_blk {
+//                        width: 1rem;
+//                        min-width: 1rem;
+//                        height: 1rem;
+//                    }
+//                    .more_btn_blk {
+//                        width: 0.5rem;
+//                        min-width: 0.5rem;
+//                        height: 2rem;
+//                        cursor: pointer;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//.remove {
+//    background: #ffffff;
+//    border: 1px solid #e6e6e6;
+//    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+//    border-radius: 18px;
+//    padding: 1.2rem 2rem;
+//    align-items: center;
+//    justify-content: center;
+//    height: 4.3rem;
+//    padding: 0;
+//
+//    &.dropdown-menu.show {
+//        display: flex;
+//    }
+//    li {
+//        a {
+//            display: flex;
+//            align-items: center;
+//            justify-content: center;
+//            font-size: 1.4rem;
+//            line-height: 1.8rem;
+//            color: #626262;
+//            &:hover {
+//                background-color: initial;
+//                color: red;
+//            }
+//        }
+//    }
+//}
+//
+//// pagination
+//
+//.paginate_sec {
+//    display: flex;
+//    align-items: center;
+//    justify-content: space-between;
+//    width: 100%;
+//    p {
+//        margin-bottom: 0;
+//        font-size: 1.6rem;
+//        line-height: 2rem;
+//        color: rgba(0, 0, 0, 0.7);
+//    }
+//    nav {
+//        .pagination {
+//            align-items: center;
+//            .page_no {
+//                min-width: 4.8rem;
+//                width: 4.8rem;
+//                height: 4.8rem;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                background: #efefef;
+//                border-radius: 1rem;
+//                margin-right: 0.5rem;
+//                // transition: $trans;
+//                color: var(--dark);
+//
+//                &:hover {
+//                    background-color: #4cbbff;
+//                    color: #ffff;
+//                }
+//                a {
+//                    font-weight: 700;
+//                    font-size: 1.8rem;
+//                    line-height: 2rem;
+//                    &:hover {
+//                        color: var(--light) !important;
+//                    }
+//                }
+//            }
+//            .page_item {
+//                &.disable {
+//                    color: #000000;
+//                    opacity: 0.4;
+//                }
+//                .page_link {
+//                    display: flex;
+//                    align-items: center;
+//
+//                    .icon_blk {
+//                        width: 1.2rem;
+//                        min-width: 1.2rem;
+//                        height: 1.2rem;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// dashboard
+//
+//#dash {
+//    .table_head {
+//        margin-top: 4.4rem;
+//        display: flex;
+//        align-items: center;
+//        justify-content: space-between;
+//
+//        h3 {
+//            font-size: 3.5rem;
+//            line-height: 4.1rem;
+//            color: #2f2f2f;
+//            margin-bottom: 0;
+//        }
+//        .right_blk {
+//            display: flex;
+//            align-items: center;
+//            .csv_btn {
+//                background: #f1f3f6;
+//                border-radius: 1rem;
+//                border: transparent;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                width: 15rem;
+//                height: 4.4rem;
+//                font-weight: 500;
+//                font-size: 1.4rem;
+//                line-height: 1.8rem;
+//
+//                .img_blk {
+//                    width: 1.8rem;
+//                    min-width: 1.8rem;
+//                    height: 1.8rem;
+//                    margin-right: 1rem;
+//
+//                    img {
+//                        width: 100%;
+//                        height: 100%;
+//                    }
+//                }
+//            }
+//            .form_blk {
+//                .calender_blk {
+//                    min-width: 2rem;
+//                    width: 2rem;
+//                    height: 2rem;
+//                    position: absolute;
+//                    top: 50%;
+//                    left: 10%;
+//                    transform: translate(0, -50%);
+//                }
+//                input {
+//                    min-width: 15.6rem;
+//                    width: 15.6rem;
+//                    height: 4.8rem;
+//                    background: var(--light);
+//                    border: 0.1rem solid #ebebeb;
+//                    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.03);
+//                    border-radius: 1rem;
+//                    padding-left: 4.5rem;
+//
+//                    &::placeholder {
+//                        font-weight: 500;
+//                        font-size: 1.4rem;
+//                        line-height: 2rem;
+//                        color: #09110e;
+//                        opacity: 0.5;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// user info
+//
+//#user_info {
+//    .top_blk {
+//        list-style-type: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        display: flex;
+//        align-items: center;
+//        li {
+//            margin-right: 1rem;
+//            &:last-child {
+//                margin-right: 0;
+//            }
+//            .filter {
+//                background: #f1f3f6;
+//                border-radius: 1rem;
+//                border: transparent;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                width: 15rem;
+//                height: 4.4rem;
+//                font-weight: 500;
+//                font-size: 1.4rem;
+//                line-height: 1.8rem;
+//
+//                .img_blk {
+//                    width: 1.8rem;
+//                    min-width: 1.8rem;
+//                    height: 1.8rem;
+//                    margin-right: 1rem;
+//
+//                    img {
+//                        width: 100%;
+//                        height: 100%;
+//                    }
+//                }
+//            }
+//            .form_blk {
+//                input {
+//                    width: 34.4rem;
+//                    min-width: 34.4rem;
+//                    height: 4.4rem;
+//                }
+//                .icon_blk {
+//                    width: 2rem;
+//                    min-width: 2rem;
+//                    height: 2rem;
+//                    position: absolute;
+//                    top: 50%;
+//                    bottom: 0;
+//                    left: 5%;
+//                    right: 0;
+//                    transform: translate(0, -50%);
+//
+//                    + input {
+//                        padding-left: 5rem;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// dream address
+//
+//#dream_address {
+//    .top_blk {
+//        list-style-type: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        display: flex;
+//        align-items: center;
+//        li {
+//            margin-right: 1rem;
+//            &:last-child {
+//                margin-right: 0;
+//            }
+//            .filter {
+//                background: #f1f3f6;
+//                border-radius: 1rem;
+//                border: transparent;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                width: 15rem;
+//                height: 4.4rem;
+//                font-weight: 500;
+//                font-size: 1.4rem;
+//                line-height: 1.8rem;
+//
+//                .img_blk {
+//                    width: 1.8rem;
+//                    min-width: 1.8rem;
+//                    height: 1.8rem;
+//                    margin-right: 1rem;
+//
+//                    img {
+//                        width: 100%;
+//                        height: 100%;
+//                    }
+//                }
+//            }
+//            .form_blk {
+//                input {
+//                    width: 34.4rem;
+//                    min-width: 34.4rem;
+//                    height: 4.4rem;
+//                }
+//                .icon_blk {
+//                    width: 2rem;
+//                    min-width: 2rem;
+//                    height: 2rem;
+//                    position: absolute;
+//                    top: 50%;
+//                    bottom: 0;
+//                    left: 5%;
+//                    right: 0;
+//                    transform: translate(0, -50%);
+//
+//                    + input {
+//                        padding-left: 5rem;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// buy house
+//
+//#buy_house {
+//    .top_blk {
+//        list-style-type: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        display: flex;
+//        align-items: center;
+//        li {
+//            margin-right: 1rem;
+//            &:last-child {
+//                margin-right: 0;
+//            }
+//            .filter {
+//                background: #f1f3f6;
+//                border-radius: 1rem;
+//                border: transparent;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                width: 15rem;
+//                height: 4.4rem;
+//                font-weight: 500;
+//                font-size: 1.4rem;
+//                line-height: 1.8rem;
+//
+//                .img_blk {
+//                    width: 1.8rem;
+//                    min-width: 1.8rem;
+//                    height: 1.8rem;
+//                    margin-right: 1rem;
+//
+//                    img {
+//                        width: 100%;
+//                        height: 100%;
+//                    }
+//                }
+//            }
+//            .form_blk {
+//                input {
+//                    width: 34.4rem;
+//                    min-width: 34.4rem;
+//                    height: 4.4rem;
+//                }
+//                .icon_blk {
+//                    width: 2rem;
+//                    min-width: 2rem;
+//                    height: 2rem;
+//                    position: absolute;
+//                    top: 50%;
+//                    bottom: 0;
+//                    left: 5%;
+//                    right: 0;
+//                    transform: translate(0, -50%);
+//
+//                    + input {
+//                        padding-left: 5rem;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// support closers
+//
+//#support_closers {
+//    .top_blk {
+//        list-style-type: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        display: flex;
+//        align-items: center;
+//        li {
+//            margin-right: 1rem;
+//            &:last-child {
+//                margin-right: 0;
+//            }
+//            .filter {
+//                background: #f1f3f6;
+//                border-radius: 1rem;
+//                border: transparent;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                width: 15rem;
+//                height: 4.4rem;
+//                font-weight: 500;
+//                font-size: 1.4rem;
+//                line-height: 1.8rem;
+//
+//                .img_blk {
+//                    width: 1.8rem;
+//                    min-width: 1.8rem;
+//                    height: 1.8rem;
+//                    margin-right: 1rem;
+//
+//                    img {
+//                        width: 100%;
+//                        height: 100%;
+//                    }
+//                }
+//            }
+//            .form_blk {
+//                input {
+//                    width: 34.4rem;
+//                    min-width: 34.4rem;
+//                    height: 4.4rem;
+//                }
+//                .icon_blk {
+//                    width: 2rem;
+//                    min-width: 2rem;
+//                    height: 2rem;
+//                    position: absolute;
+//                    top: 50%;
+//                    bottom: 0;
+//                    left: 5%;
+//                    right: 0;
+//                    transform: translate(0, -50%);
+//
+//                    + input {
+//                        padding-left: 5rem;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//#subAdmins {
+//    .top_blk {
+//        display: flex;
+//        align-items: center;
+//        justify-content: space-between;
+//        .top_blk_filters {
+//            list-style-type: none;
+//            padding-left: 0;
+//            margin-bottom: 0;
+//            display: flex;
+//            align-items: center;
+//            li {
+//                margin-right: 1rem;
+//                &:last-child {
+//                    margin-right: 0;
+//                }
+//                .filter {
+//                    background: #f1f3f6;
+//                    border-radius: 1rem;
+//                    border: transparent;
+//                    display: flex;
+//                    align-items: center;
+//                    justify-content: center;
+//                    width: 15rem;
+//                    height: 4.4rem;
+//                    font-weight: 500;
+//                    font-size: 1.4rem;
+//                    line-height: 1.8rem;
+//
+//                    .img_blk {
+//                        width: 1.8rem;
+//                        min-width: 1.8rem;
+//                        height: 1.8rem;
+//                        margin-right: 1rem;
+//
+//                        img {
+//                            width: 100%;
+//                            height: 100%;
+//                        }
+//                    }
+//                }
+//                .form_blk {
+//                    input {
+//                        width: 34.4rem;
+//                        min-width: 34.4rem;
+//                        height: 4.4rem;
+//                    }
+//                    .icon_blk {
+//                        width: 2rem;
+//                        min-width: 2rem;
+//                        height: 2rem;
+//                        position: absolute;
+//                        top: 50%;
+//                        bottom: 0;
+//                        left: 5%;
+//                        right: 0;
+//                        transform: translate(0, -50%);
+//
+//                        + input {
+//                            padding-left: 5rem;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        .btn_blk {
+//            button {
+//                font-weight: 500;
+//                background: #f1f3f6;
+//                border: transparent;
+//                border-radius: 1rem;
+//                width: 11.9rem;
+//                height: 4.4rem;
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                .people_blk {
+//                    width: 2rem;
+//                    min-width: 2rem;
+//                    height: 2rem;
+//                    margin-right: 1rem;
+//                }
+//            }
+//        }
+//    }
+//    .sub_admin_form {
+//        .form_blk {
+//            display: flex;
+//            align-items: center;
+//            justify-content: space-between;
+//
+//            label {
+//                font-size: 1.8rem;
+//                line-height: 1.8rem;
+//                color: #4a4a4a;
+//            }
+//            input {
+//                background: rgba(231, 233, 235, 0.25);
+//                border: 0.1rem solid #e7e9eb;
+//                border-radius: 0.6rem;
+//                min-width: 24rem;
+//                width: 24rem;
+//                height: 4.3rem;
+//                padding: 0 1.5rem;
+//            }
+//        }
+//    }
+//}
+//
+//// school pin
+//
+//#school_pin {
+//    form {
+//        label {
+//            font-size: 1.8rem;
+//            line-height: 1.8rem;
+//            color: #4a4a4a;
+//            margin-bottom: 1.7rem;
+//        }
+//        input {
+//            &:placeholder {
+//                font-size: 1.8rem;
+//                line-height: 2.2rem;
+//                color: #767b7a;
+//            }
+//        }
+//        .btn_blk {
+//            button {
+//                width: 16.4rem;
+//                height: 5rem;
+//                background: var(--prime_color);
+//                border: 0.1rem solid rgba(255, 255, 255, 0.2);
+//                border-radius: 2.5rem;
+//            }
+//        }
+//    }
+//    .map_blk {
+//        min-width: 70.8rem;
+//        width: 70.8rem;
+//        height: 79.7rem;
+//    }
+//}
+//
+//// house details
+//
+//#house_details {
+//    #header {
+//        display: flex;
+//        align-items: center;
+//        margin-bottom: 3.5rem;
+//
+//        .page_title {
+//            margin: 0;
+//            font-size: 5rem;
+//            line-height: 5.9rem;
+//            letter-spacing: -0.3rem;
+//            color: #2f2f2f;
+//        }
+//        .left_arrow {
+//            width: 1.6rem;
+//            height: 3.6rem;
+//            min-width: 1.6rem;
+//            margin-right: 2.5rem;
+//        }
+//    }
+//    .house_imgs {
+//        // height: 100%;
+//        // display: flex;
+//        .main_image {
+//            // min-width: 32.7rem;
+//            // width: 32.7rem;
+//            img {
+//                // min-height: 26rem;
+//                // height: 32rem;
+//            }
+//        }
+//        .side_image_row {
+//            display: flex;
+//            margin-bottom: 0.15rem;
+//            list-style-type: none;
+//            padding-left: 0;
+//            margin-bottom: 0;
+//
+//            .side_imgs {
+//                min-width: 10.7rem;
+//                width: 10.7rem;
+//                height: 10.7rem;
+//                margin-left: 0.3rem;
+//                margin-bottom: 0.3rem;
+//                filter: drop-shadow(0 0 4rem rgba(0, 0, 0, 0.05));
+//            }
+//        }
+//    }
+//
+//    .house_detail_container {
+//        margin-top: 3.5rem;
+//        background: #f9fbfc;
+//        padding: 3.5rem;
+//        margin-bottom: 1.5rem;
+//
+//        .house_name {
+//            font-size: 3rem;
+//            line-height: 3.5rem;
+//            letter-spacing: 0.1rem;
+//            color: #2f2f2f;
+//        }
+//    }
+//    .house_detail_container {
+//        margin-top: 3.5rem;
+//        background: #f9fbfc;
+//        padding: 3.5rem;
+//        margin-bottom: 1.5rem;
+//
+//        .house_name {
+//            font-size: 3rem;
+//            line-height: 3.5rem;
+//            letter-spacing: 0.1rem;
+//            color: #2f2f2f;
+//        }
+//        .sub_title {
+//            font-size: 2.2rem;
+//            line-height: 2.6rem;
+//            letter-spacing: 0.1rem;
+//            color: #2f2f2f;
+//            margin: 0;
+//        }
+//
+//        .tag {
+//            display: flex;
+//            align-items: center;
+//            .tag_img_blk {
+//                display: flex;
+//                align-items: center;
+//                justify-content: center;
+//                min-width: 7.8rem;
+//                width: 7.8rem;
+//                height: 7.8rem;
+//                background: #ffffff;
+//                box-shadow: 0 0 4rem rgba(0, 0, 0, 0.05);
+//                border-radius: 2rem;
+//                margin-right: 2.5rem;
+//                .tag_img {
+//                    min-width: 3.5rem;
+//                    width: 3.5rem;
+//                    height: 3.5rem;
+//                }
+//            }
+//
+//            .tag_detail {
+//                .tag_sub_title {
+//                    font-size: 2.2rem;
+//                    line-height: 2.6rem;
+//                    color: #000000;
+//                    margin: 0;
+//                }
+//                .tag_title {
+//                    font-size: 2.6rem;
+//                    line-height: 3rem;
+//                    color: #000000;
+//                    margin: 0;
+//                }
+//            }
+//        }
+//
+//        .house_discptn {
+//            margin-top: 3rem;
+//            color: #767676;
+//            font-weight: 400;
+//            font-size: 2.2rem;
+//        }
+//    }
+//    .house_detail_list {
+//        padding: 2rem;
+//        list-style-type: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        .detail_item {
+//            display: flex;
+//            margin: 3rem 0;
+//            .left_item {
+//                width: 50%;
+//                font-size: 2.2rem;
+//                line-height: 1.8rem;
+//                color: #000000;
+//                display: flex;
+//                align-items: center;
+//                .icons {
+//                    max-width: 3.3rem;
+//                    min-height: 3.3rem;
+//                    margin-right: 5.5rem;
+//                }
+//            }
+//            .right_item {
+//                width: 50%;
+//                font-size: 2.2rem;
+//                line-height: 1.8rem;
+//                color: #000000;
+//                font-weight: 600;
+//            }
+//        }
+//    }
+//}
+//
+//// guide lines
+//
+//#guide_lines {
+//    .right-con-inner {
+//        .seletor {
+//            font-size: 1.4rem;
+//            line-height: 1.6rem;
+//            padding: 1.3rem 2rem;
+//            border: 0.1rem solid #e4e4e4;
+//            border-radius: 1.5rem;
+//            margin-bottom: 1.5rem;
+//            min-width: 17.7rem;
+//            display: flex;
+//            align-items: center;
+//            justify-content: space-between;
+//            background-color: var(--light);
+//        }
+//        .list {
+//            min-width: 17.7rem;
+//        }
+//        .details {
+//            border: 0.1rem solid #e4e4e4;
+//            border-radius: 2rem;
+//            padding: 2.2rem 4.2rem 7.7rem 4.2rem;
+//            font-size: 1.6rem;
+//            color: #979797;
+//        }
+//
+//        .date-section {
+//            height: 100%;
+//            border-left: 0.1rem dashed rgba(0, 0, 0, 0.2);
+//            padding-left: 3rem;
+//            .save_btn {
+//                min-width: 16.4rem;
+//                width: 16.4rem;
+//                height: 5rem;
+//                margin-bottom: 2.7rem;
+//                border: 0.1rem solid rgba(255, 255, 255, 0.2);
+//                border-radius: 2.5rem;
+//            }
+//            p {
+//                font-size: 1.4rem;
+//                line-height: 2.1rem;
+//                color: #979797;
+//                &:nth-child(1) {
+//                    opacity: 0.2;
+//                    color: #000000;
+//                }
+//            }
+//            .hr {
+//                color: #efefef;
+//            }
+//        }
+//        .job_list {
+//            list-style-type: none;
+//            padding-left: 0;
+//            margin-bottom: 0;
+//            li {
+//                display: flex;
+//                align-items: center;
+//                justify-content: space-between;
+//                margin-bottom: 0.8rem;
+//                &:last-child {
+//                    margin-bottom: 0;
+//                }
+//                .jobs {
+//                    background: #ffffff;
+//                    border: 1px solid #e4e4e4;
+//                    border-radius: 15px;
+//                    height: 4.2rem;
+//                    width: 100%;
+//                    display: flex;
+//                    align-items: center;
+//                    padding: 0 1.5rem;
+//                    margin-right: 1rem;
+//                    font-size: 1.6rem;
+//                    line-height: 3rem;
+//                }
+//                .icon_blk {
+//                    min-width: 0.4rem;
+//                    width: 0.4rem;
+//                    height: 2rem;
+//                    cursor: pointer;
+//                    &.dropdown-toggle {
+//                        &::after {
+//                            content: initial;
+//                        }
+//                    }
+//                }
+//                .remove {
+//                    background: #ffffff;
+//                    border: 1px solid #e6e6e6;
+//                    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+//                    border-radius: 18px;
+//                    min-width: 10rem;
+//                    width: 10rem;
+//                    align-items: center;
+//                    justify-content: center;
+//                    height: 4.3rem;
+//                    padding: 0;
+//
+//                    &.dropdown-menu.show {
+//                        display: flex;
+//                    }
+//                    li {
+//                        a {
+//                            display: flex;
+//                            align-items: center;
+//                            justify-content: center;
+//                            font-size: 1.4rem;
+//                            line-height: 1.8rem;
+//                            color: #626262;
+//                            &:hover {
+//                                background-color: initial;
+//                                color: red;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    ._inner {
+//        padding: 3rem;
+//    }
+//
+//    .text_blk {
+//        background: rgba(231, 233, 235, 0.25);
+//        border: 1px solid #e7e9eb;
+//        border-radius: 0.6rem;
+//        padding: 0.8rem 1.5rem;
+//        width: 100%;
+//        resize: none;
+//    }
+//}
+//.modal_btn {
+//    margin-top: 2rem;
+//    display: flex;
+//    justify-content: end;
+//    .cancel {
+//        color: #f11616;
+//        border: transparent;
+//        background-color: transparent;
+//    }
+//    .save {
+//        border: 0.1rem solid rgba(255, 255, 255, 0.2);
+//        border-radius: 3.8rem;
+//        min-width: 11.2rem;
+//        width: 11.2rem;
+//        height: 5rem;
+//    }
+//}
+//.hr {
+//    color: #efefef;
+//    margin: 3rem 0;
+//}
+//
+//// support
+//
+//#support {
+//    ul.tabs {
+//        list-style: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        display: flex;
+//        align-items: center;
+//        margin-bottom: 1.8rem;
+//        li {
+//            margin-right: 1.5rem;
+//
+//            &:last-child {
+//                margin-right: 0;
+//            }
+//            a {
+//                font-weight: 600;
+//                font-size: 1.6rem;
+//                line-height: 1.9rem;
+//                color: #c7c7c7;
+//
+//                &.active {
+//                    color: #52585d;
+//                    padding-bottom: 0.5rem;
+//                    border-bottom: 2px solid var(--prime_color);
+//                }
+//            }
+//        }
+//    }
+//    ul.chats {
+//        list-style: none;
+//        padding-left: 0;
+//        margin-bottom: 0;
+//        // width: 28rem;
+//        min-height: 100vh;
+//        height: 60rem;
+//        overflow: auto;
+//        padding-right: 1.6rem;
+//
+//        li {
+//            .chat_blk {
+//                display: flex;
+//                align-items: center;
+//                justify-content: space-between;
+//                padding: 1.5rem;
+//                background: rgba(90, 90, 90, 0.1);
+//                border-radius: 1.2rem;
+//                margin-bottom: 1.8rem;
+//                &.active-bg {
+//                    background-color: var(--prime_color);
+//                }
+//
+//                .chat_blk_left {
+//                    display: flex;
+//                    align-items: center;
+//                    .profile_blk {
+//                        min-width: 4rem;
+//                        width: 4rem;
+//                        height: 4rem;
+//                        border-radius: 75%;
+//                        overflow: hidden;
+//                        object-fit: cover;
+//                        margin-right: 1.2rem;
+//                    }
+//                    .profile_name {
+//                        display: flex;
+//                        flex-direction: column;
+//
+//                        p {
+//                            font-weight: 600;
+//                            font-size: 1rem;
+//                            line-height: 1.3rem;
+//                            color: #52585d;
+//                            margin-bottom: 0.3rem;
+//                            &.active_color {
+//                                color: var(--light);
+//                            }
+//                        }
+//                        span {
+//                            font-size: 1rem;
+//                            line-height: 1.1rem;
+//                            color: #96a9ba;
+//                            &.active_color {
+//                                color: var(--light);
+//                            }
+//                        }
+//                    }
+//                }
+//                .time {
+//                    display: flex;
+//                    flex-direction: column;
+//                    align-items: flex-end;
+//
+//                    p {
+//                        font-weight: 400;
+//                        font-size: 1rem;
+//                        line-height: 1.1rem;
+//                        text-align: right;
+//                        color: #96a9ba;
+//                        margin-bottom: 0.4rem;
+//                        &.active_color {
+//                            color: var(--light);
+//                        }
+//                    }
+//                    .message_count {
+//                        background: #11d4a6;
+//                        border-radius: 1.2rem;
+//                        width: 2.3rem;
+//                        min-width: 2.3rem;
+//                        height: 1.4rem;
+//                        font-weight: 600;
+//                        font-size: 1rem;
+//                        line-height: 1.6rem;
+//                        color: #fdfdfe;
+//                        display: flex;
+//                        align-items: center;
+//                        justify-content: center;
+//                        &.active_color {
+//                            color: var(--light);
+//                        }
+//                    }
+//                    .online {
+//                        background: #46d362;
+//                        height: 0.4rem;
+//                        width: 0.4rem;
+//                        min-width: 0.4rem;
+//                        border-radius: 75%;
+//                        margin-top: 0.5rem;
+//                        text-align: right;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    .chat_sec {
+//        // display: flex;
+//
+//        .top_blk {
+//            display: flex;
+//            align-items: center;
+//            justify-content: space-between;
+//            width: 100%;
+//            .tag {
+//                background: #313131;
+//                border-radius: 1.2rem;
+//                padding: 0.4rem 1.8rem;
+//                font-size: 1.1rem;
+//                line-height: 2.3rem;
+//                /* or 200% */
+//                color: var(--light);
+//            }
+//            .select {
+//                background: var(--light);
+//                border: 0.1rem solid #e3e3e3;
+//                border-radius: 1.4rem;
+//                min-width: 20rem;
+//                width: auto;
+//                height: 3.7rem;
+//                color: rgba(9, 17, 14, 0.5);
+//                padding: 0 1.8rem;
+//
+//                &::after {
+//                    content: "";
+//                    display: block;
+//                    margin-left: auto;
+//                }
+//                ul.dropdown-menu {
+//                    min-width: 20rem;
+//                }
+//            }
+//        }
+//        .chat_date {
+//            position: relative;
+//            span {
+//                display: block;
+//                padding: 0.4rem 1.8rem;
+//                background-color: var(--prime_color);
+//                border-radius: 1.2rem;
+//                font-size: 1.1rem;
+//                line-height: 2.3rem;
+//                color: var(--light);
+//                margin: auto;
+//                &:before {
+//                    content: "";
+//                    display: block;
+//                    background: #c4c4c4;
+//                    position: absolute;
+//                    left: 0;
+//                    top: 50%;
+//                    right: 0;
+//                    bottom: 0;
+//                    height: 0.1rem;
+//                    z-index: -1;
+//                }
+//            }
+//        }
+//        .chat_msg {
+//            display: flex;
+//            flex-direction: column;
+//            margin-top: 3rem;
+//            min-height: 100vh;
+//            height: 60rem;
+//            overflow: auto;
+//            .support_msg {
+//                display: flex;
+//                align-items: center;
+//                justify-content: end;
+//                width: 80%;
+//                margin-left: auto;
+//                margin-top: 3rem;
+//                .msg_time {
+//                    font-size: 1rem;
+//                    line-height: 2rem;
+//                    color: #979797;
+//                    // margin-top: 0.7rem;
+//                }
+//                .msg {
+//                    background: #f4f4f4;
+//                    border-radius: 30.2684px 30.2684px 30.2684px 30px;
+//                    padding: 2.6rem 2.3rem;
+//                }
+//                .profile_pic {
+//                    background-color: #e4e4e4;
+//                    width: 4.2rem;
+//                    min-width: 4.2rem;
+//                    height: 4.2rem;
+//                    border-radius: 75%;
+//                    overflow: hidden;
+//                    object-fit: contain;
+//                    margin-left: 1rem;
+//                    display: flex;
+//                    align-items: center;
+//                    justify-content: center;
+//                    margin-top: -1rem;
+//
+//                    .img_blk {
+//                        width: 2rem;
+//                        min-width: 2rem;
+//                        height: 2rem;
+//                    }
+//                }
+//            }
+//            .user_msg {
+//                display: flex;
+//                align-items: flex-end;
+//                justify-content: start;
+//                margin-top: 2rem;
+//                width: 80%;
+//                margin-right: auto;
+//                .msg_time {
+//                    font-size: 1rem;
+//                    line-height: 2rem;
+//                    color: #979797;
+//                    // margin-top: 0.7rem;
+//                }
+//                .msg {
+//                    background: var(--prime_color);
+//                    border-radius: 30.2684px 30.2684px 30.2684px 30px;
+//                    padding: 2.6rem 2.3rem;
+//                    color: var(--light);
+//                }
+//                .profile_pic {
+//                    .img_blk {
+//                        border-radius: 75%;
+//                        overflow: hidden;
+//                        object-fit: cover;
+//                        width: 3rem;
+//                        min-width: 3rem;
+//                        height: 3rem;
+//                        margin-right: 1rem;
+//                        margin-top: -5rem;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    .msg_blk {
+//        display: flex;
+//        align-items: center;
+//        justify-content: space-between;
+//        width: 100%;
+//
+//        .msg_type {
+//            display: flex;
+//            align-items: center;
+//            width: 100%;
+//
+//            .icon_blk {
+//                width: 2rem;
+//                min-width: 2rem;
+//                height: 2rem;
+//                margin-right: 2rem;
+//            }
+//            input {
+//                width: 100%;
+//                border: transparent;
+//                background-color: transparent;
+//
+//                &:focus {
+//                    border: 1px solid var(--prime_color);
+//                }
+//            }
+//        }
+//        button {
+//            min-width: 4rem;
+//            width: 4rem;
+//            height: 4rem;
+//            background: transparent;
+//            border: transparent;
+//        }
+//    }
+//}

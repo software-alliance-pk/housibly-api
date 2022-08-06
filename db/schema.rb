@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_05_114223) do
+ActiveRecord::Schema.define(version: 2022_08_06_180949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 2022_08_05_114223) do
     t.string "stripe_customer_id"
     t.string "country_code"
     t.string "country_name"
+    t.boolean "active", default: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

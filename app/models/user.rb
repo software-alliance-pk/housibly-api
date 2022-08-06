@@ -1,7 +1,4 @@
 class User < ApplicationRecord
-  # before_create :generate_confirmation_token
-  # after_create :send_confirmation_email
-
   has_secure_password
   has_one_attached :avatar
   has_one :user_preference, dependent: :destroy
@@ -31,6 +28,12 @@ class User < ApplicationRecord
     want_support_closer: 2
   }
 
+  scope :get_support_closer_user,-> { want_support_closer.order(created_at: :desc)}
+  scope :get_all_buyer,-> { want_buy.order(created_at: :desc)}
+  scope :get_all_seller,-> { want_sell.order(created_at: :desc)}
+  scope :get_new_user,-> { order(created_at: :desc)}
+  scope :count_active_user, -> { where('active = (?)',true) }
+  scope :count_support_closer_user, -> { want_support_closer.count }
   def generate_password_token!
     self.reset_password_token = generate_otp
     self.reset_password_sent_at = Time.now.utc
@@ -66,17 +69,4 @@ class User < ApplicationRecord
   def otp_length(length)
     rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
   end
-
-  # def confirm?
-  #   confirmed_at?
-  # end
-
-  # def generate_confirmation_token
-  #   self.confirmation_token = secureRandom.hex(10)
-  #   self.confirmation_sent_at = Time.now
-  # end
-
-  # def send_confirmation_email
-  #   SendConfirmationInstructionJob.perform_now(self.confirmation_token)
-  # end
 end

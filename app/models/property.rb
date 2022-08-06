@@ -15,4 +15,8 @@ class Property < ApplicationRecord
   validates :condo_type, presence: true, unless: ->(property){property.property_type == "vacant_land" || "house"}
   validates :condo_style, presence: true, unless: ->(property){property.property_type == "vacant_land" || "house"}
 
+
+  scope :count_house, -> { where("type = (?)","House").count }
+  scope :count_vacant_land, -> { where("type = (?)","VacantLand").count }
+  scope :count_condo, -> { where("type = (?)","Condo").count }
 end

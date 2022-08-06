@@ -1,0 +1,185 @@
+<main>
+
+
+  <section id="account_section">
+    <%= render 'shared/sidebar' %>
+    <div id="subAdmins" class="main_side">
+      <div id="top_header">
+        <h1>Sub Admins</h1>
+        <%= render 'shared/header-side' %>
+      </div>
+      <div class="top_blk">
+        <div class="row">
+          <div class="col-6">
+            <ul class="top_blk_filters">
+              <li>
+                <div class="dropdown">
+                  <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
+                    <div class="img_blk">
+                      <%= image_tag 'filter.svg' %>
+                    </div>
+                    filters
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><button type="button">All Data</button></li>
+                    <li><button type="button">User's Info</button></li>
+                    <li><button type="button">Vacant Land</button></li>
+                    <li><button type="button"> Dream Address</button></li>
+                    <li><button type="button">I Want to Buy</button></li>
+                    <li><button type="button">I Want to Sell</button></li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div class="form_blk">
+                  <div class="icon_blk">
+                    <%= image_tag 'search.svg' %>
+                  </div>
+                  <input type="search" placeholder="Search" class="input">
+                </div>
+              </li>
+              <li>
+                <button type="button" class="filter">
+                  <div class="img_blk">
+                    <%= image_tag 'csv-file-icon.svg' %>
+                  </div>
+                  Download CSV
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="btn_blk">
+          <button type="button" class="pop_btn" data-popup="add_subadmin">
+            <div class="people_blk">
+              <%= image_tag 'addPerson.svg' %>
+            </div>
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div class="table_blk mt-5 pt-3">
+        <table>
+          <thead>
+          <tr>
+            <th style="width:12.2rem">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" class="me-2">
+                Select all
+              </div>
+            </th>
+            <th style="width: 19rem;">
+              Name/Email
+            </th>
+            <th style="width:15.1rem">
+              Phone No.
+            </th>
+            <th style="width:18.5rem">
+              Username
+            </th>
+            <th style="width:14rem">
+              Location
+            </th>
+            <th style="width: 14rem">
+              Status
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                <input type="checkbox" class="me-3">
+
+                <div class="img_blk">
+                  <img src="assets/images/profilePic.svg" alt="">
+                </div>
+              </div>
+
+            </td>
+            <td class=" user_name">
+              <p class="fw_500 mb-0">
+                Davis Vaccaro
+              </p>
+              <p class="fw_400" style="color: #626262" style="color: #626262">
+                davisvaccaro@gmail.com
+              </p>
+            </td>
+            <td>+123 456 789</td>
+            <td>guyhawkins</td>
+            <td>
+              Washington, USA
+            </td>
+            <td>
+              <div class="d-flex align-items-center justify-content-between">
+                <p class="mb-0" style="color:#93DF70;">Active</p>
+                <div class="more_btn_blk">
+                  <%= image_tag 'more.svg' %>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <section class="popup" data-popup="add_subadmin" >
+        <div class="table_dv">
+          <div class="table_cell">
+            <div class="contain-fluid">
+              <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-8 col-sm-10">
+                  <div class="_inner">
+                    <!-- <button type="button" class="x_btn"></button> -->
+                    <h4 class="heading">Add Sub Admins</h4>
+                    <h5>Personal Data</h5>
+                    <hr class="hr">
+                    <form type="submit" class="sub_admin_form">
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">First Name</label>
+                        <input type="text" class="input" placeholder="Input Here">
+                      </div>
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">Last Name</label>
+                        <input type="text" class="input" placeholder="Input Here">
+                      </div>
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">Date of Birth</label>
+                        <input type="text" class="input" placeholder="MM/DD/YY">
+                      </div>
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">Location</label>
+                        <input type="text" class="input" placeholder="Input Here">
+                      </div>
+                      <h5>Personal Data</h5>
+                      <hr class="hr">
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">Email Address</label>
+                        <input type="text" class="input" placeholder="@mail.com">
+                      </div>
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">Phone Number</label>
+                        <input type="text" class="input" placeholder="+123">
+                      </div>
+                      <div class="form_blk d-flex align-items-center justify-content-between">
+                        <label for="">Temporary Password</label>
+                        <input type="text" class="input" placeholder="hcihwiy7e">
+                      </div>
+                    </form>
+                    <div class="btn_blk modal_btn">
+                      <button type="button" class="cancel">cancel</button>
+                      <button type="button" class="save site_btn">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+  <!-- dash -->
+
+
+</main>

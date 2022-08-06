@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  root "dashboard#index"
+  root "dashboards#index"
+  resources :supports
+  resources :sub_admins
+  resources :school_pins
+  resources :dashboards
+  resources :support_closers
+  resources :guidelines
+  resources :users_data
+  resources :users_lists
   devise_for :admins
   get 'user_preferences/create'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -2,20 +2,33 @@
     <div class="inside">
         <div class="logo_blk">
             <div class="logo">
-                <a href="index.php">
+                <%= link_to dashboards_path do %>
                     <%= image_tag 'logo_long.svg', alt: 'icon' %>
-                </a>
+                <%end%>
             </div>
         </div>
         <ul>
-            <li><a href="dashboard.php" class="active">Dashboard</a></li>
-            <li><a href="user-list.php">User’s List</a></li>
-            <li><a href="user-data.php">User’s All Data</a></li>
-            <li><a href="support-closer-lists.php">Support Closer’s Lists</a></li>
-            <li><a href="sub-admins.php">Sub Admins</a></li>
-            <li><a href="school-pin.php">School Pin</a></li>
-            <li><a href="support.php">Support</a></li>
-            <li><a href="guidelines.php">Guidelines</a></li>
+            <li>
+              <%= link_to 'Dashboard', dashboards_path %>
+            </li>
+            <li>
+              <%= link_to "User's List", users_lists_path %>
+            <li>
+              <%= link_to "User's All Data", users_data_path %>
+            <li>
+              <%= link_to "Support Closer's lists", support_closers_path %>
+            </li>
+            <li>
+              <%= link_to 'Sub Admins', sub_admins_path %>
+            </li>
+            <li>
+              <%= link_to 'School Pin', school_pins_path %>
+            <li>
+              <%= link_to 'Support',  supports_path %>
+            </li>
+            <li>
+              <%= link_to 'Guidelines', guidelines_path %>
+            </li>
         </ul>
     </div>
 </aside>

@@ -1,8 +1,10 @@
 <div class="paginate_sec">
-    <p>Showing 1 to 7 of 200 entries</p>
+    <p><%= page_entries_info @support_closer %>
+    </p>
+  <%= will_paginate @support_closer, :container => false %>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page_item disable me-4">
+          <li class="page_item disable me-4">
                 <a class="page_link" href="#" aria-label="Previous">
                     <div class="icon_blk me-2">
                       <%= image_tag 'paginateLeftArrow.svg', alt: 'icon' %>

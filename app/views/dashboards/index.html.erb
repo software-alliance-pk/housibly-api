@@ -22,7 +22,7 @@
           <div class="dash_blk">
             <div class="icon"><img src="/assets/vector-user.svg" alt=""></div>
             <div class="txt">
-              <div class="num">10.2k</div>
+              <div class="num"><%= User.count_active_user.count %></div>
               <p>No. of active users</p>
             </div>
           </div>
@@ -31,7 +31,7 @@
           <div class="dash_blk">
             <div class="icon"><img src="/assets/vector-user.svg" alt=""></div>
             <div class="txt">
-              <div class="num">10.2k</div>
+              <div class="num"><%= User.get_support_closer_user.count %></div>
               <p>No. of support closers</p>
             </div>
           </div>
@@ -40,7 +40,7 @@
           <div class="dash_blk">
             <div class="icon"><img src="/assets/vector-home.svg" alt=""></div>
             <div class="txt">
-              <div class="num">5.34k</div>
+              <div class="num"><%= Property.count_house %></div>
               <p>No. of Houses for Sale</p>
             </div>
           </div>
@@ -49,7 +49,7 @@
           <div class="dash_blk">
             <div class="icon"><img src="/assets/vector-building.svg" alt=""></div>
             <div class="txt">
-              <div class="num">3.2k</div>
+              <div class="num"><%= Property.count_condo %></div>
               <p>No. of Condos for Sale</p>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <div class="dash_blk">
             <div class="icon"><img src="/assets/vector-plants.svg" alt=""></div>
             <div class="txt">
-              <div class="num">2.15k</div>
+              <div class="num"><%= Property.count_vacant_land %></div>
               <p>No. of Vacant Lands for Sale</p>
             </div>
           </div>
@@ -115,63 +115,28 @@
           </tr>
           </thead>
           <tbody>
+            <% User.new_users.each do |new_user| %>
           <tr>
             <td>
               <div class="img_blk">
-                <img src="/assets/profilePic.svg" alt="">
+                <%= image_tag new_user.avatar if new_user.avatar.attached? %>
               </div>
             </td>
+            
             <td class=" user_name">
               <p class="fw_500 mb-0">
-                Davis Vaccaro
+                <%= new_user.full_name %>
               </p>
               <p class="fw_400" style="color: #626262" style="color: #626262">
-                davisvaccaro@gmail.com
+                 <%= new_user.email %>
               </p>
             </td>
-            <td>+123 456 789</td>
-            <td>Yes</td>
+            <td><%= new_user.phone_number %></td>
+            <td><%= new_user.contacted_by_real_estate %></td>
             <td>31901 Thornridge Cir, Hawaii 81063</td>
-            <td>03/12/2022</td>
+            <td><%= new_user.created_at %></td>
           </tr>
-          <tr>
-            <td>
-              <div class="img_blk">
-                <img src="/assets/profilePic.svg" alt="">
-              </div>
-            </td>
-            <td class=" user_name">
-              <p class="fw_500 mb-0">
-                Davis Vaccaro
-              </p>
-              <p class="fw_400" style="color: #626262">
-                davisvaccaro@gmail.com
-              </p>
-            </td>
-            <td>+123 456 789</td>
-            <td>Yes</td>
-            <td>31901 Thornridge Cir, Hawaii 81063</td>
-            <td>03/12/2022</td>
-          </tr>
-          <tr>
-            <td>
-              <div class="img_blk">
-                <img src="/assets/profilePic.svg" alt="">
-              </div>
-            </td>
-            <td class=" user_name">
-              <p class="fw_500 mb-0">
-                Davis Vaccaro
-              </p>
-              <p class="fw_400" style="color: #626262">
-                davisvaccaro@gmail.com
-              </p>
-            </td>
-            <td>+123 456 789</td>
-            <td>Yes</td>
-            <td>31901 Thornridge Cir, Hawaii 81063</td>
-            <td>03/12/2022</td>
-          </tr>
+          <% end %>
           </tbody>
         </table>
       </div>

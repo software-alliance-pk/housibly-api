@@ -87,6 +87,7 @@
           </tr>
           </thead>
           <tbody>
+            <% User.all_users.each do |user| %>
           <tr>
             <td>
               <div class="d-flex align-items-center">
@@ -98,28 +99,38 @@
               </div>
 
             </td>
+           
             <td class=" user_name">
               <p class="fw_500 mb-0">
-                Davis Vaccaro
+              <%= user.full_name %>
               </p>
               <p class="fw_400" style="color: #626262" style="color: #626262">
-                davisvaccaro@gmail.com
+                <%= user.email %>
               </p>
             </td>
-            <td>+123 456 789</td>
-            <td>guyhawkins</td>
+            <td><%= user.phone_number %></td>
+            <td><%= user.full_name %></td>
             <td>
               Washington, USA
             </td>
             <td>
               <div class="d-flex align-items-center justify-content-between">
-                <p class="mb-0" style="color:#93DF70;">Active</p>
-                <div class="more_btn_blk">
-                  <%= image_tag 'more.svg' %>
-                </div>
-              </div>
+                    <% if user.active %>
+                        <p class="mb-0" style="color:#93DF70;">Active</p>
+                      <%else%>
+                        <p class="mb-0" style="color:#df7074;">Disable Account</p>
+                      <%end%>
+                    <div class="more_btn_blk" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                      <%= image_tag 'more.svg' %>
+                    </div>
+                    <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">Disable Account</a></li>
+                    </ul>
+                  </div>
             </td>
           </tr>
+          <% end %>
           </tbody>
         </table>
       </div>

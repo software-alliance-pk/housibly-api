@@ -87,6 +87,7 @@
           </tr>
           </thead>
           <tbody>
+            <% Admin.sub_admins.each do |sub_admin| %>
           <tr>
             <td>
               <div class="d-flex align-items-center">
@@ -100,26 +101,27 @@
             </td>
             <td class=" user_name">
               <p class="fw_500 mb-0">
-                Davis Vaccaro
+                <%= sub_admin.full_name %>
               </p>
               <p class="fw_400" style="color: #626262" style="color: #626262">
-                davisvaccaro@gmail.com
+                 <%= sub_admin.email %>
               </p>
             </td>
-            <td>+123 456 789</td>
-            <td>guyhawkins</td>
+            <td><%= sub_admin.phone_number %></td>
+            <td> <%= sub_admin.user_name %></td>
             <td>
-              Washington, USA
+               <%= sub_admin.location %>
             </td>
             <td>
               <div class="d-flex align-items-center justify-content-between">
-                <p class="mb-0" style="color:#93DF70;">Active</p>
+                <p class="mb-0" style="color:#93DF70;"> <%= sub_admin.status %></p>
                 <div class="more_btn_blk">
                   <%= image_tag 'more.svg' %>
                 </div>
               </div>
             </td>
           </tr>
+          <% end %>
           </tbody>
         </table>
       </div>
@@ -183,4 +185,4 @@
 
 
 </main>
-<%= render 'shared/pagination'%>
+<%#= render 'shared/pagination'%>

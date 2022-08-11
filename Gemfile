@@ -9,6 +9,7 @@ gem 'activestorage'
 gem 'cloudinary'
 gem 'twilio-ruby'
 gem 'stripe'
+gem 'pg_search'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'
 # Use postgresql as the database for Active Record

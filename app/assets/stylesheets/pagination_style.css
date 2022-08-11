@@ -102,3 +102,47 @@
     margin-right: 1em; }
 .flickr_pagination .next_page {
     margin-left: 1em; }
+
+.paginate_sec {
+    margin-top: 3rem;
+}
+.paginate_sec > .pagination {
+    display: flex;
+    align-items: center;
+    gap:  0 0.2rem;
+    grid-gap:  0 0.2rem;
+}
+.paginate_sec > .pagination > * {
+    transition: all ease 0.5s;
+}
+.paginate_sec > .pagination > .previous_page {
+    margin-right: 1rem;
+}
+.paginate_sec > .pagination > .next_page {
+    margin-left: 1rem;
+}
+.paginate_sec > .pagination > .previous_page,
+.paginate_sec > .pagination > .next_page {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.4);
+}
+.paginate_sec > .pagination > *:not(.previous_page):not(.next_page) {
+    min-width: 4.8rem;
+    width: 4.8rem;
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #efefef;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    color: var(--dark);
+}
+.paginate_sec > .pagination > *:not(.previous_page):not(.next_page):hover {
+    background: var(--prime_color);
+    color: var(--light);
+}
+.paginate_sec > .pagination > *:hover {
+    color: var(--prime_color);
+}

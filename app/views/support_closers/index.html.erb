@@ -41,12 +41,12 @@
               </div>
             </li>
             <li>
-              <div class="form_blk">
+              <%= form_for :sub_admin, :url => {:controller => 'support_closers', :action => 'index'}, :html => {:method => 'get',id: 'searchformc', class: "form_blk"} do |f| %>
                 <div class="icon_blk">
                   <%= image_tag 'search.svg' %>
                 </div>
-                <input type="search" placeholder="Search" class="input">
-              </div>
+                <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+              <% end %>
             </li>
             <li>
               <button type="button" class="filter">
@@ -140,7 +140,7 @@
           </tbody>
         </table>
       </div>
+      <%= render 'shared/pagination' ,data: @support_closer%>
     </div>
   </section>
 </main>
-<%= render 'shared/pagination'%>

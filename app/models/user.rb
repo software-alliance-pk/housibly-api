@@ -1,5 +1,12 @@
 class User < ApplicationRecord
+  include PgSearch::Model
+     pg_search_scope :custom_search,
+                  against: [:full_name, :email, :phone_number],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
   has_secure_password
+  has_many :professions
   has_one_attached :avatar
   has_one :user_preference, dependent: :destroy
   has_many :dream_addresses, dependent: :destroy
@@ -34,6 +41,8 @@ class User < ApplicationRecord
   scope :get_new_user,-> { order(created_at: :desc)}
   scope :count_active_user, -> { where('active = (?)',true) }
   scope :count_support_closer_user, -> { want_support_closer.count }
+  scope :all_users, -> { where.not(profile_type: "want_support_closer")}
+  scope :new_users, -> { where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago) }
   def generate_password_token!
     self.reset_password_token = generate_otp
     self.reset_password_sent_at = Time.now.utc

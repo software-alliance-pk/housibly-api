@@ -1,6 +1,8 @@
 class Property < ApplicationRecord
   cattr_accessor :property_type
+  cattr_accessor :bookmark_type
   has_many_attached :images
+  has_many :bookmarks
   # has_many :rooms, dependent: :destroy
   belongs_to :user
   validates :price,presence: true

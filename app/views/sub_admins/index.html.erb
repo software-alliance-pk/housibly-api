@@ -31,12 +31,12 @@
                 </div>
               </li>
               <li>
-                <div class="form_blk">
+               <%= form_for :sub_admin, :url => {:controller => 'sub_admins', :action => 'index'}, :html => {:method => 'get',id: 'searchformc', class: 'form_blk'} do |f| %>
                   <div class="icon_blk">
                     <%= image_tag 'search.svg' %>
                   </div>
-                  <input type="search" placeholder="Search" class="input">
-                </div>
+                    <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+                  <% end %>
               </li>
               <li>
                 <button type="button" class="filter">
@@ -87,7 +87,8 @@
           </tr>
           </thead>
           <tbody>
-            <% Admin.sub_admins.each do |sub_admin| %>
+            <% if @sub_admins %>
+            <% @sub_admins.each do |sub_admin| %>
           <tr>
             <td>
               <div class="d-flex align-items-center">
@@ -122,9 +123,11 @@
             </td>
           </tr>
           <% end %>
+          <%end%>
           </tbody>
         </table>
       </div>
+      <%= render 'shared/pagination', data: @sub_admins %>
       <section class="popup" data-popup="add_subadmin" >
         <div class="table_dv">
           <div class="table_cell">
@@ -185,4 +188,12 @@
 
 
 </main>
-<%#= render 'shared/pagination'%>
+
+
+<script>
+ $( document ).on('turbolinks:load', function() {
+  $("#csearchbtn").keyup(function(){
+    $("#searchformc").submit();
+  });
+})
+</script>

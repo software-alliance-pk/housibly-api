@@ -115,31 +115,34 @@
           </tr>
           </thead>
           <tbody>
-            <% User.new_users.each do |new_user| %>
-          <tr>
-            <td>
-              <div class="img_blk">
-                <%= image_tag new_user.avatar if new_user.avatar.attached? %>
-              </div>
-            </td>
-            
-            <td class=" user_name">
-              <p class="fw_500 mb-0">
-                <%= new_user.full_name %>
-              </p>
-              <p class="fw_400" style="color: #626262" style="color: #626262">
-                 <%= new_user.email %>
-              </p>
-            </td>
-            <td><%= new_user.phone_number %></td>
-            <td><%= new_user.contacted_by_real_estate %></td>
-            <td>31901 Thornridge Cir, Hawaii 81063</td>
-            <td><%= new_user.created_at %></td>
-          </tr>
-          <% end %>
+            <% if @new_users.exists? %>
+              <% @new_users.each do |new_user| %>
+                <tr>
+                  <td>
+                    <div class="img_blk">
+                      <%= image_tag new_user.avatar if new_user.avatar.attached? %>
+                    </div>
+                  </td>
+                  
+                  <td class=" user_name">
+                    <p class="fw_500 mb-0">
+                      <%= new_user.full_name %>
+                    </p>
+                    <p class="fw_400" style="color: #626262" style="color: #626262">
+                       <%= new_user.email %>
+                    </p>
+                  </td>
+                  <td><%= new_user.phone_number %></td>
+                  <td><%= new_user.contacted_by_real_estate %></td>
+                  <td>31901 Thornridge Cir, Hawaii 81063</td>
+                  <td><%= new_user.created_at %></td>
+                </tr>
+            <% end %>
+          <% end %>  
           </tbody>
         </table>
       </div>
+      <%#= render 'shared/pagination', locals: {data: @new_users}%>
     </div>
   </section>
   <!-- dash -->

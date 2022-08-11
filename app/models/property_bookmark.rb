@@ -1,0 +1,2 @@
+class PropertyBookmark < Bookmark
+end

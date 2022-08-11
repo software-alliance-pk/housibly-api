@@ -7,6 +7,7 @@ class User < ApplicationRecord
                   }
   has_secure_password
   has_many :professions
+  has_many :bookmarks
   has_one_attached :avatar
   has_one :user_preference, dependent: :destroy
   has_many :dream_addresses, dependent: :destroy

@@ -7,7 +7,10 @@ class User < ApplicationRecord
                     tsearch: { prefix: true }
                   }
   has_secure_password
+  has_many_attached :images
+  has_many_attached :certificates
   has_many :professions
+  has_one :schedule
   has_many :bookmarks
   has_one_attached :avatar
   has_one :user_preference, dependent: :destroy

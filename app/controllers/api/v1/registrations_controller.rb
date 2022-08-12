@@ -12,8 +12,16 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   end
 
   def update_personal_info
-    if @current_user.is_otp_verified
-      @current_user.update(user_params.merge(is_confirmed: true))
+     if @current_user.is_otp_verified
+      if @current_user.want_support_closer?
+        @current_user.build_schedule(schedule_params) unless @current_user.schedule
+        @current_user.professions.destroy_all if @current_user.professions.present? 
+        @current_user.professions.build(eval(user_profession[:profession]))
+        @current_user.schedule.update(schedule_params) if @current_user.schedule
+        @current_user.update(user_params.merge(is_confirmed: true))
+      else
+        @current_user.update(user_params.merge(is_confirmed: true))
+      end
     else
       render json: { message: "OTP not verified" }, status: 401
     end
@@ -56,8 +64,15 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
 
   def user_params
     params.require(:user).
-      permit(:full_name, :email, :password, :phone_number, :description, :licensed_realtor,
-             :contacted_by_real_estate, :user_type, :profile_type, :otp, :country_code, :country_name,
-             :avatar)
+      permit(:full_name, :email, :password, :phone_number, :description,
+       :licensed_realtor,:contacted_by_real_estate, :user_type, :profile_type,
+        :otp, :country_code, :country_name,:avatar, images: [], certificates: [])
+  end
+  def user_profession
+     params.require(:user).permit(:profession)
+  end
+
+  def schedule_params
+     params.require(:user).permit(:ending_time,:starting_time,working_days: [])
   end
 end

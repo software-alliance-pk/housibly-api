@@ -31,19 +31,19 @@
                 </div>
               </li>
               <li>
-                <div class="form_blk">
+                <%= form_for :sub_admin, :url => {:controller => 'users_lists', :action => 'index'}, :html => {:method => 'get',id: 'searchformc', class: 'form_blk'} do |f| %>
                   <div class="icon_blk">
                     <%= image_tag 'search.svg' %>
                   </div>
-                  <input type="search" placeholder="Search" class="input">
-                </div>
+                    <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+                  <% end %>
               </li>
               <li>
                 <button type="button" class="filter">
                   <div class="img_blk">
                     <%= image_tag 'csv-file-icon.svg' %>
                   </div>
-                  Download CSV
+                  <%= link_to "Download CSV",users_lists_path(format: 'csv') %>
                 </button>
               </li>
             </ul>
@@ -87,53 +87,56 @@
           </tr>
           </thead>
           <tbody>
-            <% User.all_users.each do |user| %>
-          <tr>
-            <td>
-              <div class="d-flex align-items-center">
-                <input type="checkbox" class="me-3">
+            <% if @all_users.exists? %>
+              <% @all_users.each do |user| %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <input type="checkbox" class="me-3">
 
-                <div class="img_blk">
-                  <img src="assets/images/profilePic.svg" alt="">
-                </div>
-              </div>
-
-            </td>
-           
-            <td class=" user_name">
-              <p class="fw_500 mb-0">
-              <%= user.full_name %>
-              </p>
-              <p class="fw_400" style="color: #626262" style="color: #626262">
-                <%= user.email %>
-              </p>
-            </td>
-            <td><%= user.phone_number %></td>
-            <td><%= user.full_name %></td>
-            <td>
-              Washington, USA
-            </td>
-            <td>
-              <div class="d-flex align-items-center justify-content-between">
-                    <% if user.active %>
-                        <p class="mb-0" style="color:#93DF70;">Active</p>
-                      <%else%>
-                        <p class="mb-0" style="color:#df7074;">Disable Account</p>
-                      <%end%>
-                    <div class="more_btn_blk" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                         aria-expanded="false">
-                      <%= image_tag 'more.svg' %>
+                      <div class="img_blk">
+                        <img src="assets/images/profilePic.svg" alt="">
+                      </div>
                     </div>
-                    <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#">Disable Account</a></li>
-                    </ul>
-                  </div>
-            </td>
-          </tr>
+
+                  </td>
+                 
+                  <td class=" user_name">
+                    <p class="fw_500 mb-0">
+                    <%= user.full_name %>
+                    </p>
+                    <p class="fw_400" style="color: #626262" style="color: #626262">
+                      <%= user.email %>
+                    </p>
+                  </td>
+                  <td><%= user.phone_number %></td>
+                  <td><%= user.full_name %></td>
+                  <td>
+                    Washington, USA
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center justify-content-between">
+                          <% if user.active %>
+                              <p class="mb-0" style="color:#93DF70;">Active</p>
+                            <%else%>
+                              <p class="mb-0" style="color:#df7074;">Disable Account</p>
+                            <%end%>
+                          <div class="more_btn_blk" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                            <%= image_tag 'more.svg' %>
+                          </div>
+                          <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Disable Account</a></li>
+                          </ul>
+                        </div>
+                  </td>
+                </tr>
+            <% end %>
           <% end %>
           </tbody>
         </table>
       </div>
+      <%= render 'shared/pagination', data: @all_users %>
       <section class="popup" data-popup="add_subadmin" >
         <div class="table_dv">
           <div class="table_cell">

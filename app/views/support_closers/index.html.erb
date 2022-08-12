@@ -53,7 +53,7 @@
                 <div class="img_blk">
                   <%= image_tag 'csv-file-icon.svg', alt: '' %>
                 </div>
-                Download CSV
+                <%= link_to "Download CSV",support_closers_path(format: 'csv') %>
               </button>
             </li>
           </ul>

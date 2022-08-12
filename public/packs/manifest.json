@@ -1,0 +1,44 @@
+{
+  "application.js": "/packs/js/application-fee13668590ecff92817.js",
+  "application.js.map": "/packs/js/application-fee13668590ecff92817.js.map",
+  "bootstrap.js": "/packs/js/bootstrap-e63f4dc64fc00477633d.js",
+  "bootstrap.js.map": "/packs/js/bootstrap-e63f4dc64fc00477633d.js.map",
+  "datepicker.js": "/packs/js/datepicker-ab02c71f838b88e73f58.js",
+  "datepicker.js.map": "/packs/js/datepicker-ab02c71f838b88e73f58.js.map",
+  "entrypoints": {
+    "application": {
+      "js": [
+        "/packs/js/application-fee13668590ecff92817.js"
+      ],
+      "js.map": [
+        "/packs/js/application-fee13668590ecff92817.js.map"
+      ]
+    },
+    "bootstrap": {
+      "js": [
+        "/packs/js/bootstrap-e63f4dc64fc00477633d.js"
+      ],
+      "js.map": [
+        "/packs/js/bootstrap-e63f4dc64fc00477633d.js.map"
+      ]
+    },
+    "datepicker": {
+      "js": [
+        "/packs/js/datepicker-ab02c71f838b88e73f58.js"
+      ],
+      "js.map": [
+        "/packs/js/datepicker-ab02c71f838b88e73f58.js.map"
+      ]
+    },
+    "jquery": {
+      "js": [
+        "/packs/js/jquery-fb94cd7d8e88c5061623.js"
+      ],
+      "js.map": [
+        "/packs/js/jquery-fb94cd7d8e88c5061623.js.map"
+      ]
+    }
+  },
+  "jquery.js": "/packs/js/jquery-fb94cd7d8e88c5061623.js",
+  "jquery.js.map": "/packs/js/jquery-fb94cd7d8e88c5061623.js.map"
+}

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+   require 'csv'
   include PgSearch::Model
      pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
@@ -79,4 +80,16 @@ class User < ApplicationRecord
   def otp_length(length)
     rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
   end
+
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+        csv << self.attribute_names
+
+        all.each do |record|
+          csv << record.attributes.values
+      end
+    end
+  end
+
+
 end

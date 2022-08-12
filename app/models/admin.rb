@@ -17,4 +17,14 @@ class Admin < ApplicationRecord
     admin: 0,
     sub_admin: 1,
   }
+
+   def self.to_csv
+    CSV.generate(headers: true) do |csv|
+        csv << self.attribute_names
+
+        all.each do |record|
+          csv << record.attributes.values
+      end
+    end
+  end
 end

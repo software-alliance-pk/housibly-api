@@ -9,6 +9,7 @@
           <h2>Sign in to manage</h2>
           <p>Enter your detail below</p>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+           <%= render "devise/shared/error_messages", resource: resource %>
             <label for="">Email Address</label>
             <div class="form_blk">
               <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Type Here', class: 'input' %>
@@ -24,8 +25,7 @@
               <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Type Here',class: 'input' %>
             </div>
             <div class="btn_blk">
-              <%= f.submit "Sign In", class: 'site_btn' %>
-              <button type="button" class="site_btn">Sign In</button>
+              <button type="submit" class="site_btn">Sign In</button>
             </div>
           <%end%>
         </div>

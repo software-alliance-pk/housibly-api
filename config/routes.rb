@@ -43,6 +43,9 @@ Rails.application.routes.draw do
       get '/recent_property', to: 'properties#recent_property'
       resources :bookmarks, only:  [:create, :destroy]
       get '/*a', to: 'api#not_found'
+      post "/accounts/:id", to: 'users_lists#update'
+      post "/active", to: 'users_lists#index'
+      post "/deactive", to: 'users_lists#index'
     end
   end
 end

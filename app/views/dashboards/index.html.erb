@@ -13,7 +13,7 @@
           <div class="dash_blk">
             <div class="icon"><img src="/assets/vector-arrow-down.svg" alt=""></div>
             <div class="txt">
-              <div class="num">12.5k</div>
+              <div class="num"><%= csv_count = Setting.last ? Setting.last.csv_count : 0 %></div>
               <p>No. of downloads</p>
             </div>
           </div>

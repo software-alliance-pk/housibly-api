@@ -1,0 +1,2 @@
+class CsvCountsController < ApplicationController
+end

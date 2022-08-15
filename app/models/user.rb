@@ -83,6 +83,7 @@ class User < ApplicationRecord
   def otp_length(length)
     rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
   end
+      
 
   def self.to_csv
     CSV.generate(headers: true) do |csv|
@@ -90,8 +91,15 @@ class User < ApplicationRecord
 
         all.each do |record|
           csv << record.attributes.values
+        end
+         
       end
-    end
+      if csv_count = Setting.last.present?
+        csv_count = Setting.last.csv_count
+        Setting.update(csv_count:csv_count +1)
+      else
+        csv_count = Setting.create(csv_count: 1)
+      end
   end
 
 

@@ -43,7 +43,7 @@
                   <div class="img_blk">
                     <%= image_tag 'csv-file-icon.svg' %>
                   </div>
-                  <%= link_to "Download CSV",users_lists_path(format: 'csv') %>
+                  <%= link_to "Download CSV",users_lists_path(format: 'csv', search:params[:search])%>
                 </button>
               </li>
             </ul>
@@ -126,7 +126,15 @@
                             <%= image_tag 'more.svg' %>
                           </div>
                           <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Disable Account</a></li>
+                            <% if user.active %>
+                            <li>
+                              <%= link_to "Disable account",api_v1_get_profile_path, :remote => true %></li>
+                              <% else %>
+                              <li>
+                              <a class="dropdown-item" href="#">Active</a></li>
+                              <%end %>
+
+
                           </ul>
                         </div>
                   </td>

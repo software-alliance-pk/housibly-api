@@ -43,7 +43,7 @@
                   <div class="img_blk">
                     <%= image_tag 'csv-file-icon.svg' %>
                   </div>
-                  <%= link_to "Download CSV",sub_admins_path(format: 'csv') %>
+                  <%= link_to "Download CSV",sub_admins_path(format: 'csv', search:params[:search])%>
                 </button>
               </li>
             </ul>

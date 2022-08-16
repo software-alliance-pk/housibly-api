@@ -5,12 +5,19 @@ Rails.application.routes.draw do
   resources :school_pins
   resources :dashboards
   resources :support_closers
-  resources :guidelines
+  resources :guidelines do
+    collection do
+      get :job_lists
+    end
+  end
   resources :users_data
   resources :users_lists do
     member do
       get :active_account
       get :deactive_account
+    end
+    collection do
+      get :user_profile
     end
   end
   devise_for :admins

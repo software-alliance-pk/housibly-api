@@ -8,25 +8,31 @@
       </div>
       <div class="row">
         <div class="col-3">
-          <form action="submit">
+          <%= form_with model: @school_pin do |form| %>
             <div class="form_blk">
-              <label for="">Name</label>
-              <input type="text" class="input">
+            <label for="">Name</label>
+            <%= form.text_field :pin_name, class:"input" %>
             </div>
             <div class="form_blk">
-              <label for="">Longtitude</label>
-              <input type="text" class="input">
+            <label for="">Longtitude</label>
+            <%= form.text_field :longtitude, class:"input" %>
             </div>
             <div class="form_blk">
-              <label for="">Latitude</label>
-              <input type="text" class="input">
+            <label for="">Latitude</label>
+            <%= form.text_field :latitude, class: "input" %>
             </div>
+            <div class="btn_blk " style="margin-top: 30px">
+              <button type="submit" class="site_btn">Submit</button>
+            </div>
+          <% end %>
 
-            <div class="btn_blk">
-              <button type="button" class="btn-primary">Submit</button>
+          <% if flash.alert.present? %>
+            <div class="error error-success note-shadow">
+              <% flash.alert.each do |msg| %>
+                <p><%= msg %></p>
+              <% end %>
             </div>
-
-          </form>
+          <% end %>
         </div>
         <div class="col-9">
           <div class="map_blk">

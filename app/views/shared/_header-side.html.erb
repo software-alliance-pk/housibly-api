@@ -6,5 +6,9 @@
     <button type="button" class="noti_btn input">
       <%= image_tag 'icon-bell.svg' %>
         <span>7</span>
+
+
     </button>
+    <%= button_to "Logout", destroy_admin_session_path, method: :delete,  class:"noti_btn input fw-bold px-5" 
+         %></button>
 </div>

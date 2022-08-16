@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :users_lists
   devise_for :admins
   get 'user_preferences/create'
+  get "/active_account/:id", to: 'users_lists#active_user', as: 'active_account'
+  get "/deactive_account/:id", to: 'users_lists#deactive_user',as: 'deactive_account'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
@@ -43,6 +45,9 @@ Rails.application.routes.draw do
       get '/recent_property', to: 'properties#recent_property'
       resources :bookmarks, only:  [:create, :destroy]
       get '/*a', to: 'api#not_found'
+      
+      post "/active", to: 'users_lists#index'
+      
     end
   end
 end

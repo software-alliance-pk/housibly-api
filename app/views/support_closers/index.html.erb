@@ -129,9 +129,17 @@
                          aria-expanded="false">
                       <%= image_tag 'more.svg' %>
                     </div>
-                    <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#">Disable Account</a></li>
-                    </ul>
+                    <ul class="remove dropdown-menu px-5" aria-labelledby="dropdownMenuButton1">
+                    <% if record.active %>
+                    <li>
+                      <%= link_to 'Disable account',sp_deactive_account_path(id: record), :remote => true %>
+                    </li>
+                    <% else %>
+                    <li>
+                      <%= link_to 'Active', sp_active_account_path(id: record), remote: :true %>
+                    </li>
+                    <%end %>
+                  </ul>
                   </div>
                 </td>
               </tr>

@@ -15,4 +15,24 @@ class SupportClosersController < ApplicationController
       end
     end
   end
+
+   def active_user
+    @user = User.find_by(id: params[:id])
+      if @user.update(active: true)
+      redirect_to support_closers_path
+    else
+      redirect_to support_closers_path
+
+    end
+  end
+
+
+  def deactive_user
+     @user = User.find_by(id: params[:id])
+      if @user.update(active: false)
+      redirect_to support_closers_path
+    else
+      redirect_to support_closers_path
+    end
+  end
 end

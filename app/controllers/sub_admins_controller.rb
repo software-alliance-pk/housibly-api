@@ -14,4 +14,24 @@ class SubAdminsController < ApplicationController
       end
     end
   end
+
+   def active_admin
+    @sub_admin = Admin.find_by(id: params[:id])
+      if @sub_admin.update(status: 1)
+      redirect_to sub_admins_path
+    else
+      redirect_to sub_admins_path
+
+    end
+  end
+
+
+  def deactive_admin
+    @sub_admin = Admin.find_by(id: params[:id])
+      if @sub_admin.update(status: 0)
+      redirect_to sub_admins_path
+    else
+      redirect_to sub_admins_path
+    end
+  end
 end

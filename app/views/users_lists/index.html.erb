@@ -117,6 +117,7 @@
                   <td>
                     <div class="d-flex align-items-center justify-content-between">
                           <% if user.active %>
+                            <%# byebug %>
                               <p class="mb-0" style="color:#93DF70;">Active</p>
                             <%else%>
                               <p class="mb-0" style="color:#df7074;">Disable Account</p>
@@ -128,10 +129,15 @@
                           <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <% if user.active %>
                             <li>
-                              <%= link_to "Disable account",api_v1_get_profile_path, :remote => true %></li>
+                              <%= link_to 'Disable account',deactive_account_path(id: user), :remote => true %>
+                                
+                                
+                              </li>
+                              
                               <% else %>
                               <li>
-                              <a class="dropdown-item" href="#">Active</a></li>
+                                <%= link_to 'Active', active_account_path(id: user), remote: :true %>
+                            </li>
                               <%end %>
 
 

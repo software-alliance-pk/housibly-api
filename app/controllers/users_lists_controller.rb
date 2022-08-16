@@ -16,7 +16,11 @@ class UsersListsController < ApplicationController
     end
   end
 
-  def active_user
+  def user_profile
+
+  end
+
+  def active_account
     @user = User.find_by(id: params[:id])
       if @user.update(active: true)
       redirect_to users_lists_path
@@ -27,7 +31,7 @@ class UsersListsController < ApplicationController
   end
 
 
-  def deactive_user
+  def deactive_account
      @user = User.find_by(id: params[:id])
       if @user.update(active: false)
       redirect_to users_lists_path

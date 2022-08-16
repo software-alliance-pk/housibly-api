@@ -32,11 +32,11 @@
               </li>
               <li>
                 <%= form_for :sub_admin, :url => {:controller => 'users_lists', :action => 'index'}, :html => {:method => 'get',id: 'searchformc', class: 'form_blk'} do |f| %>
-                  <div class="icon_blk">
-                    <%= image_tag 'search.svg' %>
-                  </div>
-                    <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
-                  <% end %>
+                <div class="icon_blk">
+                  <%= image_tag 'search.svg' %>
+                </div>
+                <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+                <% end %>
               </li>
               <li>
                 <button type="button" class="filter">
@@ -62,91 +62,84 @@
       <div class="table_blk mt-5 pt-3">
         <table>
           <thead>
-          <tr>
-            <th style="width:12.2rem">
-              <div class="d-flex align-items-center">
-                <input type="checkbox" class="me-2">
-                Select all
-              </div>
-            </th>
-            <th style="width: 19rem;">
-              Name/Email
-            </th>
-            <th style="width:15.1rem">
-              Phone No.
-            </th>
-            <th style="width:18.5rem">
-              Username
-            </th>
-            <th style="width:14rem">
-              Location
-            </th>
-            <th style="width: 14rem">
-              Status
-            </th>
-          </tr>
+            <tr>
+              <th style="width:12.2rem">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" class="me-2">
+                  Select all
+                </div>
+              </th>
+              <th style="width: 19rem;">
+                Name/Email
+              </th>
+              <th style="width:15.1rem">
+                Phone No.
+              </th>
+              <th style="width:18.5rem">
+                Username
+              </th>
+              <th style="width:14rem">
+                Location
+              </th>
+              <th style="width: 14rem">
+                Status
+              </th>
+            </tr>
           </thead>
           <tbody>
             <% if @all_users.exists? %>
-              <% @all_users.each do |user| %>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <input type="checkbox" class="me-3">
+            <% @all_users.each do |user| %>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" class="me-3">
 
-                      <div class="img_blk">
-                        <img src="assets/images/profilePic.svg" alt="">
-                      </div>
-                    </div>
+                  <div class="img_blk">
+                    <img src="assets/images/profilePic.svg" alt="">
+                  </div>
+                </div>
 
-                  </td>
-                 
-                  <td class=" user_name">
-                    <p class="fw_500 mb-0">
-                    <%= user.full_name %>
-                    </p>
-                    <p class="fw_400" style="color: #626262" style="color: #626262">
-                      <%= user.email %>
-                    </p>
-                  </td>
-                  <td><%= user.phone_number %></td>
-                  <td><%= user.full_name %></td>
-                  <td>
-                    Washington, USA
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center justify-content-between">
-                          <% if user.active %>
-                            <%# byebug %>
-                              <p class="mb-0" style="color:#93DF70;">Active</p>
-                            <%else%>
-                              <p class="mb-0" style="color:#df7074;">Disable Account</p>
-                            <%end%>
-                          <div class="more_btn_blk" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                            <%= image_tag 'more.svg' %>
-                          </div>
-                          <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <% if user.active %>
-                            <li>
-                              <%= link_to 'Disable account',deactive_account_path(id: user), :remote => true %>
-                                
-                                
-                              </li>
-                              
-                              <% else %>
-                              <li>
-                                <%= link_to 'Active', active_account_path(id: user), remote: :true %>
-                            </li>
-                              <%end %>
+              </td>
 
-
-                          </ul>
-                        </div>
-                  </td>
-                </tr>
+              <td class=" user_name">
+                <p class="fw_500 mb-0">
+                  <%= user.full_name %>
+                </p>
+                <p class="fw_400" style="color: #626262" style="color: #626262">
+                  <%= user.email %>
+                </p>
+              </td>
+              <td><%= user.phone_number %></td>
+              <td><%= user.full_name %></td>
+              <td>
+                Washington, USA
+              </td>
+              <td>
+                <div class="d-flex align-items-center justify-content-between">
+                  <% if user.active %>
+                  <p class="mb-0" style="color:#93DF70;">Active</p>
+                  <%else%>
+                  <p class="mb-0" style="color:#df7074;">Disable Account</p>
+                  <%end%>
+                  <div class="more_btn_blk" id="dropdownMenuButton1"data-bs-toggle="dropdown"aria-expanded="false">
+                    <%= image_tag 'more.svg' %>
+                  </div>
+                  <ul class="remove dropdown-menu px-5" aria-labelledby="dropdownMenuButton1">
+                    <% if user.active %>
+                    <li>
+                      <%= link_to 'Disable account',deactive_account_path(id: user), :remote => true %>
+                    </li>
+                    <% else %>
+                    <li>
+                      <%= link_to 'Active', active_account_path(id: user), remote: :true %>
+                    </li>
+                    <%end %>
+                  </ul>
+                </div>
+              </td>
+            </tr>
             <% end %>
-          <% end %>
+            <% end %>
           </tbody>
         </table>
       </div>

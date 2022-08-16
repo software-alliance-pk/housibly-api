@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   get 'user_preferences/create'
   get "/active_account/:id", to: 'users_lists#active_user', as: 'active_account'
   get "/deactive_account/:id", to: 'users_lists#deactive_user',as: 'deactive_account'
+  get "/ad_active_account/:id", to: 'sub_admins#active_admin', as: 'ad_active_account'
+  get "/ad_deactive_account/:id", to: 'sub_admins#deactive_admin',as: 'ad_deactive_account'
+  get "/sp_active_account/:id", to: 'support_closers#active_user', as: 'sp_active_account'
+  get "/sp_deactive_account/:id", to: 'support_closers#deactive_user',as: 'sp_deactive_account'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do

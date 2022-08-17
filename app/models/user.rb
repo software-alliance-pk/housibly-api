@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :properties, dependent: :destroy
   has_many :supports, dependent: :destroy
   has_many :card_infos, dependent: :destroy
+  accepts_nested_attributes_for :professions, :schedule
 
   validates :full_name, :email, :phone_number, :user_type,
             :profile_type, :password_digest, presence: true
@@ -86,21 +87,22 @@ class User < ApplicationRecord
       
 
   def self.to_csv
-    CSV.generate(headers: true) do |csv|
+       CSV.generate(headers: true) do |csv|
         csv << self.attribute_names
-
         all.each do |record|
-          csv << record.attributes.values
-        end
-         
+          csv << record.attributes.values_at(*attribute_names)
       end
-      if csv_count = Setting.last.present?
-        csv_count = Setting.last.csv_count
-        Setting.update(csv_count:csv_count +1)
-      else
-        csv_count = Setting.create(csv_count: 1)
-      end
+    end
   end
+      # def test
+      #   if csv_count = Setting.last.present?
+      #     csv_count = Setting.last.csv_count
+      #     Setting.update(csv_count:csv_count +1)
+      #   else
+      #     csv_count = Setting.create(csv_count: 1)
+      #   end
+      # end
+  
 
 
 end

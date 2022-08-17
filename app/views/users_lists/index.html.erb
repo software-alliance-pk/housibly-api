@@ -38,14 +38,21 @@
                 <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
                 <% end %>
               </li>
+              <% if @all_users.present? %>
               <li>
                 <button type="button" class="filter">
                   <div class="img_blk">
                     <%= image_tag 'csv-file-icon.svg' %>
                   </div>
+                  
+
                   <%= link_to "Download CSV",users_lists_path(format: 'csv', search:params[:search])%>
+
+                 
+
                 </button>
               </li>
+            <%end%>
             </ul>
           </div>
         </div>

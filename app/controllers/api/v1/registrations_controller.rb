@@ -16,7 +16,9 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       if @current_user.want_support_closer?
         @current_user.build_schedule(schedule_params) unless @current_user.schedule
         @current_user.professions.destroy_all if @current_user.professions.present? 
-        @current_user.professions.build(eval(user_profession[:profession]))
+        user_profession[:titles].each do |user|  
+          @current_user.professions.build(title:user)
+        end
         @current_user.schedule.update(schedule_params) if @current_user.schedule
         @current_user.update(user_params.merge(is_confirmed: true))
       else
@@ -66,10 +68,10 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     params.require(:user).
       permit(:full_name, :email, :password, :phone_number, :description,
        :licensed_realtor,:contacted_by_real_estate, :user_type, :profile_type,
-        :otp, :country_code, :country_name,:avatar, images: [], certificates: [])
+        :otp, :country_code, :currency_type, :currency_amount, :country_name,:avatar, images: [], certificates: [])
   end
   def user_profession
-     params.require(:user).permit(:profession)
+     params.require(:user).permit(titles: [])
   end
 
   def schedule_params

@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       post '/card', to: 'payments#create'
       post '/apple_pay', to: 'payments#apple_pay'
       post '/delete_card', to: 'payments#destroy_card'
-      put '/register_user', to: 'registrations#update_personal_info'
+      post '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'

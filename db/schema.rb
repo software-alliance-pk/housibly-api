@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_18_090547) do
+ActiveRecord::Schema.define(version: 2022_08_18_142855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,8 @@ ActiveRecord::Schema.define(version: 2022_08_18_090547) do
     t.float "lot_size_unit"
     t.text "condo_corporation_or_hqa"
     t.string "currency_type"
+    t.integer "total_number_of_rooms"
+    t.integer "total_parking_spaces"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 

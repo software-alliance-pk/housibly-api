@@ -57,7 +57,11 @@ Rails.application.routes.draw do
       get '/tickets', to: 'supports#get_tickets'
       get '/static_page/:permalink', to: 'static_pages#static_page'
       get '/recent_property', to: 'properties#recent_property'
-      resources :bookmarks, only:  [:create, :destroy]
+      resources :bookmarks, only:  [:create, :index, :destroy] do
+        collection do
+          get :get_current_user_bookmark
+        end
+      end
       resources :user_preferences, only: [:create, :index]
       get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'

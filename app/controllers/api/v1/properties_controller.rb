@@ -65,7 +65,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     if property_params
       begin
         data = JSON.parse(property_params[:other_options])
-        format_data = data&.map { |item| { item["title"].downcase.sub(" ", "_") => item["value"] } }
+        format_data = data&.map { |item| { item["title"].downcase.gsub(" ", "_") => item["value"] } }
         data = Hash[*format_data.map(&:to_a).flatten]
         data.store("price", property_params[:price])
         data.store("title", property_params[:title])
@@ -83,6 +83,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         data.store("property_tax", property_params[:property_tax])
         data.store("tax_year", property_params[:tax_year])
         data.store("locker", property_params[:locker])
+        data.store("total_number_of_rooms", property_params[:total_number_of_rooms])
+        data.store("total_parking_spaces", property_params[:total_parking_spaces])
         data.store("property_type", property_params[:property_type])
         data.store("condo_corporation_or_hqa", property_params[:condo_corporation_or_hqa])
         data.store("currency_type", property_params[:currency_type])
@@ -101,7 +103,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       :property_type, :title, :price, :year_built, :address, :unit, :lot_frontage,
       :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size_unit, :is_lot_irregular,
       :lot_description, :property_tax, :tax_year, :locker, :condo_corporation_or_hqa,
-      :lot_size, :currency_type, :other_options, images: []
+      :lot_size, :currency_type, :total_number_of_rooms, :total_parking_spaces, :other_options, images: []
     )
   end
 

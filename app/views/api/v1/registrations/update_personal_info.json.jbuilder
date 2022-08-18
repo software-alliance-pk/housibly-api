@@ -1,4 +1,5 @@
 json.user do
+  json.auth_token @token
   json.id @current_user.id
   json.name @current_user.full_name
   json.email_address @current_user.email

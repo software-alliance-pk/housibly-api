@@ -12,7 +12,7 @@ class Property < ApplicationRecord
   validates :house_type, presence: true, unless: ->(property){property.property_type == "vacant_land" || "condo"}
   validates :house_style, presence:  true, unless: ->(property){property.property_type == "vacant_land" || "condo"}
   validates :air_conditioner, presence:  true, unless: ->(property){property.property_type == "vacant_land"}
-  validates :parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
   validates :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
   validates :condo_type, presence: true, unless: ->(property){property.property_type == "vacant_land" || "house"}
   validates :condo_style, presence: true, unless: ->(property){property.property_type == "vacant_land" || "house"}

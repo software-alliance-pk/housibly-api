@@ -14,7 +14,6 @@ json.lot_description property.lot_description
 json.bath_rooms property.bath_rooms
 json.bed_rooms property.bed_rooms
 json.living_spaces property.living_space
-json.parking_spaces property.parking_spaces
 json.garage_spaces property.garage_spaces
 json.garage property.garage
 json.parking_type property.parking_type

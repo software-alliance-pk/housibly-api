@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_18_142855) do
+ActiveRecord::Schema.define(version: 2022_08_18_162338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,7 +139,6 @@ ActiveRecord::Schema.define(version: 2022_08_18_142855) do
     t.string "bath_rooms"
     t.string "bed_rooms"
     t.string "living_space"
-    t.string "parking_spaces"
     t.string "garage_spaces"
     t.string "garage"
     t.string "parking_type"

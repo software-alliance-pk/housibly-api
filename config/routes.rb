@@ -5,13 +5,26 @@ Rails.application.routes.draw do
   resources :school_pins
   resources :dashboards
   resources :support_closers
-  resources :guidelines
+  resources :guidelines do
+    collection do
+      get :job_lists
+    end
+  end
   resources :users_data
-  resources :users_lists
+  resources :users_lists do
+    member do
+      get :active_account
+      get :deactive_account
+    end
+    collection do
+      get :user_profile
+    end
+  end
   devise_for :admins
+
   get 'user_preferences/create'
-  get "/active_account/:id", to: 'users_lists#active_user', as: 'active_account'
-  get "/deactive_account/:id", to: 'users_lists#deactive_user',as: 'deactive_account'
+  # get "/active_account/:id", to: 'users_lists#active_user', as: 'active_account'
+  # get "/deactive_account/:id", to: 'users_lists#deactive_user',as: 'deactive_account'
   get "/ad_active_account/:id", to: 'sub_admins#active_admin', as: 'ad_active_account'
   get "/ad_deactive_account/:id", to: 'sub_admins#deactive_admin',as: 'ad_deactive_account'
   get "/sp_active_account/:id", to: 'support_closers#active_user', as: 'sp_active_account'
@@ -36,7 +49,7 @@ Rails.application.routes.draw do
       post '/card', to: 'payments#create'
       post '/apple_pay', to: 'payments#apple_pay'
       post '/delete_card', to: 'payments#destroy_card'
-      put '/register_user', to: 'registrations#update_personal_info'
+      post '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'

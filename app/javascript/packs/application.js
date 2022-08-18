@@ -9,8 +9,29 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "./bootstrap.bundle.min"
 import "./datepicker.min"
+import "./main"
 
 
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+$(document).on('turbolinks:load', function() {
+  $(".pressdeactivelink").click(function (){
+      var id = $(this).attr("id");
+      $("#active_user_"+id).attr('hidden',true);
+      $("#deactive_user_"+id).attr('hidden',false);
+      $(".pressactivelinkwith_"+id).attr('hidden',false);
+      $(".pressdeactivelinkwith_"+id).attr('hidden',true);
+  });
+
+  $(".pressactivelink").click(function (){
+      var id = $(this).attr("id");
+      $("#active_user_"+id).attr('hidden',false);
+      $("#deactive_user_"+id).attr('hidden',true);
+      $(".pressactivelinkwith_"+id).attr('hidden',true);
+      $(".pressdeactivelinkwith_"+id).attr('hidden',false);
+  });
+})
+
+

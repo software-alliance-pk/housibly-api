@@ -1,0 +1,101 @@
+<section id="account_section">
+  <%= render 'shared/sidebar' %>
+  <div id="guide_lines" class="main_side">
+    <div id="top_header">
+      <h1>Guidelines</h1>
+      <%= render 'shared/header-side' %>
+    </div>
+
+    <div class="right-con-inner">
+      <button class="seletor dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> Terms & Condition </button>
+      <ul class="list dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="#">Privacy Policy</a></li>
+        <li><a class="dropdown-item" href="#">FAQ</a></li>
+        <li><a class="dropdown-item" href="#">Job Lists</a></li>
+      </ul>
+
+      <div class="row">
+        <div class="col-lg-8">
+          <ul class="job_list">
+            <li>
+              <div class="jobs">Home Inspector</div>
+              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="./assets/images/more.svg" alt="">
+              </div>
+              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Remove</a></li>
+
+              </ul>
+            </li>
+            <li>
+              <div class="jobs">Carpenter</div>
+              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="./assets/images/more.svg" alt="">
+              </div>
+              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Remove</a></li>
+
+              </ul>
+            </li>
+            <li>
+              <div class="jobs">Line Men</div>
+              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="./assets/images/more.svg" alt="">
+              </div>
+              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Remove</a></li>
+
+              </ul>
+            </li>
+            <li>
+              <div class="jobs">Home Agent</div>
+              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="./assets/images/more.svg" alt="">
+              </div>
+              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Remove</a></li>
+
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <div class="date-section">
+            <div class="btn_blk">
+              <button class="site_btn save_btn pop_btn" data-popup="add_jobs">Add Job</button>
+            </div>
+            <h3>December 23, 2021</h3>
+            <p class="mb-2">Update Logs</p>
+            <p class="fw_600 mb-2">11/12/2021</p>
+            <p class="mb-3">Term & Conditions - Updated!</p>
+            <hr class="hr">
+            <p class="fw_600 mb-2">09/19/2021</p>
+            <p>FAQ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="popup" data-popup="add_jobs">
+      <div class="table_dv">
+        <div class="table_cell">
+          <div class="contain-fluid">
+            <div class="row justify-content-center">
+              <div class="col-lg-4 col-md-8 col-sm-10">
+                <div class="_inner">
+                  <!-- <button type="button" class="x_btn"></button> -->
+                  <h4 class="heading">Add Job List</h4>
+                  <h5>Up to 30 characters</h5>
+                  <hr class="hr">
+                  <textarea class="text_blk" rows="4" cols="4" placeholder="Input Here" class="w-100"></textarea>
+                  <div class="btn_blk modal_btn">
+                    <button type="button" class="cancel">cancel</button>
+                    <button type="button" class="save site_btn">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

@@ -5,6 +5,8 @@ class GuidelinesController < ApplicationController
 
   def guidelines
     @page = Page.find_by(permalink: params[:permalink])
-    render 'index'
+  end
+
+  def job_lists
   end
 end

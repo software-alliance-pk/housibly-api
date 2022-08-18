@@ -1,1 +1,1 @@
-json.bookmarks @bookmarks
+json.bookmark_properties @bookmark_properties

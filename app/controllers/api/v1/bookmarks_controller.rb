@@ -17,7 +17,7 @@ class Api::V1::BookmarksController < Api::V1::ApiController
   end
 
   def get_current_user_bookmark
-    @bookmarks = @current_user.bookmarks
+    @bookmark_properties = @current_user.properties.where(is_bookmark: true)
   end
 
   def get_bookmarks

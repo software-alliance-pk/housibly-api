@@ -52,3 +52,4 @@ json.lot_depth_unit property.lot_depth_unit
 json.lot_size_unit property.lot_size_unit
 json.total_number_of_rooms property.total_number_of_rooms
 json.total_parking_spaces property.total_parking_spaces
+json.is_bookmark property.is_bookmark

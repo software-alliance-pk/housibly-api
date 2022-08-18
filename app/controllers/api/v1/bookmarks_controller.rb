@@ -1,13 +1,13 @@
 class Api::V1::BookmarksController < Api::V1::ApiController
   def create
     @property = Property.find_by(id: params[:bookmark][:property_id])
-    if @property.is_bookmark == false
+    if !@property.is_bookmark
       @bookmark = Bookmark.new(bookmark_params)
       @property.update(is_bookmark: true)
       @bookmark.property_id = @property.id
       @bookmark.user_id = @current_user.id
       if @bookmark.save
-        render json: { message: @property }
+        @property
       else
         render_error_messages(@property)
       end

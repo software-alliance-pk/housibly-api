@@ -17,7 +17,7 @@ class Api::V1::BookmarksController <  Api::V1::ApiController
 
   
 
-  def index
+  def get_bookmarks
   	if params[:keyword].present?
   		@bookmarks =  @current_user.bookmarks if params[:keyword].downcase == "all"
   		@bookmarks =  @current_user.bookmarks.where("bookmark_type = (?)","property_bookmark") if params[:keyword].downcase == "property"

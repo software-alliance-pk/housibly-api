@@ -22,9 +22,6 @@ Rails.application.routes.draw do
   end
   devise_for :admins
 
-  get 'user_preferences/create'
-  # get "/active_account/:id", to: 'users_lists#active_user', as: 'active_account'
-  # get "/deactive_account/:id", to: 'users_lists#deactive_user',as: 'deactive_account'
   get "/ad_active_account/:id", to: 'sub_admins#active_admin', as: 'ad_active_account'
   get "/ad_deactive_account/:id", to: 'sub_admins#deactive_admin',as: 'ad_deactive_account'
   get "/sp_active_account/:id", to: 'support_closers#active_user', as: 'sp_active_account'
@@ -41,7 +38,6 @@ Rails.application.routes.draw do
       post '/reset_password/email', to: 'forgot_password#reset_password_with_email'
       post '/reset_password/phone', to: 'forgot_password#reset_password_with_phone'
       post '/social_login', to: 'social_logins#social_login'
-      post '/preference', to: 'user_preferences#create_preference'
       post '/verify_otp', to: 'registrations#verify_otp'
       post '/verify_otp/resend_otp', to: 'registrations#resend_otp'
       post '/tickets', to: 'supports#create_ticket'
@@ -62,8 +58,8 @@ Rails.application.routes.draw do
       get '/static_page/:permalink', to: 'static_pages#static_page'
       get '/recent_property', to: 'properties#recent_property'
       resources :bookmarks, only:  [:create, :destroy]
+      resources :user_preferences, only: [:create, :index]
       get '/*a', to: 'api#not_found'
-      
       post "/active", to: 'users_lists#index'
       
     end

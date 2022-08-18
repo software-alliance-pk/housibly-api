@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get "/ad_deactive_account/:id", to: 'sub_admins#deactive_admin',as: 'ad_deactive_account'
   get "/sp_active_account/:id", to: 'support_closers#active_user', as: 'sp_active_account'
   get "/sp_deactive_account/:id", to: 'support_closers#deactive_user',as: 'sp_deactive_account'
+  get "/privacy_policy/:permalink", to: 'guidelines#guidelines', as: 'privacy_policy'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do

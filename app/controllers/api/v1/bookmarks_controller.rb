@@ -38,8 +38,14 @@ class Api::V1::BookmarksController < Api::V1::ApiController
 
   def destroy
     @bookmark = Bookmark.find_by(id: params[:id])
-    if @bookmark.destroy
-      render json: { message: 'bookmark deleted successfully.' }, status: :ok
+    if @bookmark.present?
+      if @bookmark.destroy
+        render json: { message: 'bookmark deleted successfully.' }, status: :ok
+      else
+        render_error_messages(@bookmark)
+      end
+    else
+      render json: { message: "Bookmark not found" }, status: 404
     end
   end
 

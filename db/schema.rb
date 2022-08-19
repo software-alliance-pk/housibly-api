@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_19_162550) do
+ActiveRecord::Schema.define(version: 2022_08_19_164249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -243,22 +243,22 @@ ActiveRecord::Schema.define(version: 2022_08_19_162550) do
   end
 
   create_table "user_preferences", force: :cascade do |t|
-    t.integer "property_type"
+    t.string "property_type"
     t.decimal "min_price"
     t.decimal "max_price"
-    t.integer "min_bedrooms"
-    t.integer "max_bedrooms"
-    t.integer "min_bathrooms"
-    t.integer "max_bathrooms"
+    t.string "min_bedrooms"
+    t.string "max_bedrooms"
+    t.string "min_bathrooms"
+    t.string "max_bathrooms"
     t.string "property_style"
-    t.integer "min_lot_frontage"
+    t.string "min_lot_frontage"
     t.integer "min_lot_size"
     t.integer "max_lot_size"
     t.integer "min_living_space"
     t.integer "max_living_space"
-    t.integer "parking_spot"
-    t.integer "garbage_spot"
-    t.integer "max_age"
+    t.string "parking_spot"
+    t.string "garbage_spot"
+    t.string "max_age"
     t.string "balcony"
     t.string "security"
     t.string "laundry"
@@ -268,6 +268,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_162550) do
     t.string "price_unit"
     t.string "living_space_unit"
     t.string "lot_size_unit"
+    t.string "property_types"
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end
 

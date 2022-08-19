@@ -28,6 +28,6 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
                                          :min_living_space, :max_living_space,
                                          :parking_spot, :garbage_spot, :balcony,
                                          :laundry, :price_unit, :lot_size_unit,
-                                         :living_space_unit)
+                                         :living_space_unit, :property_types)
     end
 end

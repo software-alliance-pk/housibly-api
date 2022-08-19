@@ -57,6 +57,10 @@ json.properties @bookmarks do |bookmark|
     json.total_number_of_rooms property.total_number_of_rooms
     json.total_parking_spaces property.total_parking_spaces
     json.is_bookmark property.is_bookmark
+    json.image property.images do |image|
+      json.id image.id
+      json.url image&.url rescue  ""
+    end
 
   end
 end

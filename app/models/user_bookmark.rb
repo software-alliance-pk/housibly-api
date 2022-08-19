@@ -1,0 +1,3 @@
+class UserBookmark < Bookmark
+
+end

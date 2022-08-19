@@ -1,2 +1,7 @@
 json.message "Property is bookmarked"
-json.property @property
+if @property.present?
+  json.property @property
+elsif @user.present?
+  json.user @user
+end
+json.is_bookmark true

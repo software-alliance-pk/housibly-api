@@ -20,7 +20,7 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
   private
 
     def preference_params
-      params.require(:preference).permit(:user_id, :property_type, :min_price, 
+      params.require(:preference).permit(:user_id, :property_type, :min_price,
                                          :max_price, :min_bedrooms, :max_bedrooms,
                                          :min_bathrooms, :max_bathrooms, :max_age,
                                          :property_style, :min_lot_frontage, 

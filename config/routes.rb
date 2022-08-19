@@ -30,6 +30,12 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
+      resources :bookmarks, only:  [:create, :destroy] do
+        collection do
+          get :get_current_user_bookmark
+          post :filter_bookmarks
+        end
+      end
       resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property]
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#login'
@@ -57,16 +63,11 @@ Rails.application.routes.draw do
       get '/tickets', to: 'supports#get_tickets'
       get '/static_page/:permalink', to: 'static_pages#static_page'
       get '/recent_property', to: 'properties#recent_property'
-      resources :bookmarks, only:  [:create, :destroy] do
-        collection do
-          get :get_current_user_bookmark
-          post :get_bookmarks
-        end
-      end
+
       resources :user_preferences, only: [:create, :index]
-      get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'
-      
+      get '/*a', to: 'api#not_found'
+
     end
   end
 end

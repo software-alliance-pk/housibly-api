@@ -22,5 +22,6 @@ json.preference do
   json.price_unit @preference.price_unit
   json.lot_size_unit @preference.lot_size_unit
   json.living_space_unit @preference.living_space_unit
+  json.property_types @preference.property_types
 
 end

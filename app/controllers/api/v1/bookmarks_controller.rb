@@ -8,6 +8,7 @@ class Api::V1::BookmarksController < Api::V1::ApiController
     unless Bookmark.check_property_already_booked(@property).present? || Bookmark.check_user_already_booked(@user).present?
       @bookmark = bookmark_params[:bookmark_type].titleize.gsub(" ", "").constantize.new
       property_id ? @bookmark.property_id = property_id : @bookmark.user_id = user_id
+      @bookmark.user_id = @current_user.id
       if @bookmark.save
         @bookmark
       else
@@ -19,7 +20,7 @@ class Api::V1::BookmarksController < Api::V1::ApiController
   end
 
   def get_current_user_bookmark
-    @bookmark_properties = @current_user.properties.where(is_bookmark: true)
+    @bookmarks = @current_user.bookmarks
   end
 
   def filter_bookmarks

@@ -26,12 +26,12 @@ class Api::V1::BookmarksController < Api::V1::ApiController
   def filter_bookmarks
     if params[:keyword].present?
       @bookmarks = @current_user.bookmarks if params[:keyword].downcase == "all"
-      @bookmarks = @current_user.bookmarks.where("bookmark_type = (?)", "property_bookmark") if params[:keyword].downcase == "property"
-      @bookmarks = @current_user.bookmarks.where("bookmark_type = (?)", "user_bookmark") if params[:keyword] == "support_closers"
+      @bookmarks = @current_user.bookmarks.where("type = (?)", "PropertyBookmark") if params[:keyword].downcase == "property"
+      @bookmarks = @current_user.bookmarks.where("type = (?)", "UserBookmark") if params[:keyword] == "support_closers"
       if @bookmarks
         @bookmarks
       else
-        render_error_messages(@bookmarks)
+        render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
       end
     end
   end

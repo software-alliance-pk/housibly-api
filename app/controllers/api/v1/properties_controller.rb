@@ -60,7 +60,6 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   private
-
   def parse_parameters
     if property_params
       begin

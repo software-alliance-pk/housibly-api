@@ -13,7 +13,7 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
     if @preference
       @preference
     else
-      render_error_messages(@preference)
+      render json: { message: "User has no preference" }
     end
   end
 

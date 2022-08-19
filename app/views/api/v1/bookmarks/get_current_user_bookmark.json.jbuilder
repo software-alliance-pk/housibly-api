@@ -3,6 +3,7 @@ json.properties @bookmarks do |bookmark|
   if bookmark.property.present?
     property = bookmark.property
     json.id property.id
+    json.bookmark_id bookmark.id
     json.property_type property.type
     json.title property.title
     json.price property.price

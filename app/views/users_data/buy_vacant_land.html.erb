@@ -1,0 +1,86 @@
+  <section id="account_section">
+    <%= render 'shared/sidebar' %>
+    <div id="buy_house" class="main_side">
+      <div id="top_header">
+        <h1>Buy Vacant Land</h1>
+        <%= render 'shared/header-side' %>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <ul class="top_blk">
+            <li>
+              <div class="dropdown">
+                <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
+                  <div class="img_blk">
+                    <%= image_tag 'filter.svg', alt: '' %>
+                  </div>
+                  filters
+                </button>
+                <ul class="dropdown-menu">
+                  <li><button type="button">All Data</button></li>
+                  <li><button type="button">User's Info</button></li>
+                  <li><button type="button">Vacant Land</button></li>
+                  <li><button type="button"> Dream Address</button></li>
+                  <li><button type="button">I Want to Buy</button></li>
+                  <li><button type="button">I Want to Sell</button></li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div class="form_blk">
+                <div class="icon_blk">
+                  <%= image_tag 'search.svg', alt: '' %>
+                </div>
+                <input type="search" placeholder="Search" class="input">
+              </div>
+            </li>
+            <li>
+              <button type="button" class="filter">
+                <div class="img_blk">
+                  <%= image_tag 'csv-file-icon.svg', alt: '' %>
+                </div>
+                Download CSV
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="table_blk">
+        <table class="mt-5  ">
+          <thead>
+            <tr>
+              <th style="width: 18.7rem">
+                Full Name
+              </th>
+              <th style="width: 17.2rem">
+                Property Type
+              </th>
+              <th style="width: 20.6rem">
+                Price Range
+              </th>
+              <th style="width: 17.1rem">
+                Min Lot Frontage
+              </th>
+              <th style="width: 24.5rem">
+                Lot Size
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @vacant_lands.each do |vacant_land|%>
+            <%#debugger%>
+            <tr>
+              <td class="fw_500 user_name "><%= vacant_land.user.full_name%></td>
+              <td><%= vacant_land.type%></td>
+              <td style="color: #00A66C;"><%= vacant_land.price%></td>
+              <td><%= vacant_land.lot_frontage %></td>
+              <td><%= vacant_land.lot_size%></td>
+            </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+      <!-- -->
+    </div>
+  </section>
+  <!-- dash -->

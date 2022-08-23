@@ -11,6 +11,7 @@ class Admin < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   scope :sub_admins, -> { where(admin_type: "sub_admin")}
+  validates :full_name, :user_name, :phone_number, :location, :date_of_birth, presence: true
   
   
 

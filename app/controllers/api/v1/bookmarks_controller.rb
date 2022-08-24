@@ -1,15 +1,18 @@
 class Api::V1::BookmarksController < Api::V1::ApiController
   def create
-    @property = Property.find_by(id: params[:bookmark][:property_id])
-    if !@property.is_bookmark
-      @bookmark = Bookmark.new(bookmark_params)
-      @property.update(is_bookmark: true)
-      @bookmark.property_id = @property.id
+    type = bookmark_params[:bookmark_type]
+    @property = Property.find_by(id: params[:id]) if type == "property_bookmark"
+    property_id = params[:id] if @property
+    @user = User.find_by(id: params[:id]) if type == "user_bookmark"
+    user_id = params[:id] if @user
+    unless Bookmark.check_property_already_booked(@property).present? || Bookmark.check_user_already_booked(@user).present?
+      @bookmark = bookmark_params[:bookmark_type].titleize.gsub(" ", "").constantize.new
+      property_id ? @bookmark.property_id = property_id : @bookmark.user_id = user_id
       @bookmark.user_id = @current_user.id
       if @bookmark.save
-        @property
+        @bookmark
       else
-        render_error_messages(@property)
+        render_error_messages(@bookmark)
       end
     else
       render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
@@ -17,26 +20,32 @@ class Api::V1::BookmarksController < Api::V1::ApiController
   end
 
   def get_current_user_bookmark
-    @bookmark_properties = @current_user.properties.where(is_bookmark: true)
+    @bookmarks = @current_user.bookmarks
   end
 
-  def get_bookmarks
+  def filter_bookmarks
     if params[:keyword].present?
       @bookmarks = @current_user.bookmarks if params[:keyword].downcase == "all"
-      @bookmarks = @current_user.bookmarks.where("bookmark_type = (?)", "property_bookmark") if params[:keyword].downcase == "property"
-      @bookmarks = @current_user.bookmarks.where("bookmark_type = (?)", "user_bookmark") if params[:keyword] == "support_closers"
+      @bookmarks = @current_user.bookmarks.where("type = (?)", "PropertyBookmark") if params[:keyword].downcase == "property"
+      @bookmarks = @current_user.bookmarks.where("type = (?)", "UserBookmark") if params[:keyword] == "support_closers"
       if @bookmarks
         @bookmarks
       else
-        render_error_messages(@bookmarks)
+        render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
       end
     end
   end
 
   def destroy
     @bookmark = Bookmark.find_by(id: params[:id])
-    if @bookmark.destroy
-      render json: { message: 'bookmark deleted successfully.' }, status: :ok
+    if @bookmark.present?
+      if @bookmark.destroy
+        render json: { message: 'bookmark deleted successfully.' }, status: :ok
+      else
+        render_error_messages(@bookmark)
+      end
+    else
+      render json: { message: "Bookmark not found" }, status: 404
     end
   end
 

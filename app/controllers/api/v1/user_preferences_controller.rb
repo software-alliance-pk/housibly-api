@@ -13,14 +13,14 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
     if @preference
       @preference
     else
-      render_error_messages(@preference)
+      render json: { message: "User has no preference" }
     end
   end
 
   private
 
     def preference_params
-      params.require(:preference).permit(:user_id, :property_type, :min_price, 
+      params.require(:preference).permit(:user_id, :property_type, :min_price,
                                          :max_price, :min_bedrooms, :max_bedrooms,
                                          :min_bathrooms, :max_bathrooms, :max_age,
                                          :property_style, :min_lot_frontage, 
@@ -28,6 +28,6 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
                                          :min_living_space, :max_living_space,
                                          :parking_spot, :garbage_spot, :balcony,
                                          :laundry, :price_unit, :lot_size_unit,
-                                         :living_space_unit)
+                                         :living_space_unit, :property_types)
     end
 end

@@ -3,7 +3,6 @@ class SupportsController < ApplicationController
 
   end
   def active_user
-    debugger
     @user = User.find_by(id: params[:id])
       if @user.update(active: true)
       redirect_to support_closers_path
@@ -15,7 +14,6 @@ class SupportsController < ApplicationController
 
 
   def deactive_user
-    debugger
      @user = User.find_by(id: params[:id])
       if @user.update(active: false)
       redirect_to support_closers_path

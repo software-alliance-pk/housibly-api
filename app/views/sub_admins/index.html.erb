@@ -92,7 +92,7 @@
           <tr>
             <td>
               <div class="d-flex align-items-center">
-                <input type="checkbox" class="me-3">
+                <%=  check_box_tag class:"me-3" %>
 
                 <div class="img_blk">
                   <img src="assets/images/profilePic.svg" alt="">
@@ -155,41 +155,80 @@
                     <h4 class="heading">Add Sub Admins</h4>
                     <h5>Personal Data</h5>
                     <hr class="hr">
-                    <form type="submit" class="sub_admin_form">
-                      <div class="form_blk d-flex align-items-center justify-content-between">
+
+                    <%= form_with model: @sub_admin, class:"sub_admin_form"  do |form| %>
+                      <form type="submit" class="sub_admin_form">
+                      <div class="form_blk d-flex align-items-center justify-content-between sub_admin_form">
                         <label for="">First Name</label>
-                        <input type="text" class="input" placeholder="Input Here">
+                        <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"Full name") %>
+                          </span>
+                        <% end %>
+                        <%= form.text_field :full_name, class: "input" %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
-                        <label for="">Last Name</label>
-                        <input type="text" class="input" placeholder="Input Here">
+                        <label for="">User Name</label>
+                         <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"User name") %>
+                          </span>
+                        <% end %>
+                         <%= form.text_field :user_name, class: "input" %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Date of Birth</label>
-                        <input type="text" class="input" placeholder="MM/DD/YY">
+                        <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"Date of birth") %>
+                          </span>
+                        <% end %>
+                         <%= form.text_field :date_of_birth, class: "input" %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Location</label>
-                        <input type="text" class="input" placeholder="Input Here">
+                        <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"Location") %>
+                          </span>
+                        <% end %>
+                         <%= form.text_field :location, class: "input" %>
                       </div>
                       <h5>Personal Data</h5>
                       <hr class="hr">
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Email Address</label>
-                        <input type="text" class="input" placeholder="@mail.com">
+                        <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"Email") %>
+                          </span>
+                        <% end %>
+                         <%= form.text_field :email, class: "input" %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Phone Number</label>
-                        <input type="text" class="input" placeholder="+123">
+                        <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"Phone number") %>
+                          </span>
+                        <% end %>
+                         <%= form.text_field :phone_number, class: "input" %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Temporary Password</label>
-                        <input type="text" class="input" placeholder="hcihwiy7e">
+                        <%if flash.alert.present? %>
+                          <span>
+                          <%= show_sub_admin_message(flash.alert,"Password") %>
+                          </span>
+                        <% end %>
+                         <%= form.text_field :password, class: "input" %>
                       </div>
-                    </form>
                     <div class="btn_blk modal_btn">
                       <button type="button" class="cancel">cancel</button>
-                      <button type="button" class="save site_btn">Save</button>
+                      <button  type="submit" class="save site_btn">Save</button>
+
+                    <% end %>
+
                     </div>
                   </div>
                 </div>

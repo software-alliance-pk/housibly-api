@@ -25,7 +25,6 @@ class SubAdminsController < ApplicationController
     end
   end
 
-
   def deactive_admin
     @sub_admin = Admin.find_by(id: params[:id])
       if @sub_admin.update(status: 0)
@@ -38,7 +37,7 @@ class SubAdminsController < ApplicationController
   def create
     @sub_admin = Admin.new(sub_admin_params)
     if @sub_admin.save
-      redirect_to sub_admins_path
+      redirect_to sub_admins_path()
     else
       flash.alert = @sub_admin.errors.full_messages
      redirect_to sub_admins_path 
@@ -46,6 +45,6 @@ class SubAdminsController < ApplicationController
   end
   private
   def sub_admin_params
-    params.permit(:full_name, :user_name, :location, :phone_number, :date_of_birth)
+    params.permit(:full_name, :email, :password, :user_name, :location, :phone_number, :date_of_birth)
   end
 end

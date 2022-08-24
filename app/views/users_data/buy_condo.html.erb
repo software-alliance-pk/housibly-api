@@ -1,0 +1,117 @@
+  <section id="account_section">
+  	<%= render 'shared/sidebar' %>
+  	<div id="buy_house" class="main_side">
+  		<div id="top_header">
+  			<h1>Buy Vacant Land</h1>
+  			<%= render 'shared/header-side' %>
+  		</div>
+  		<div class="row">
+  			<div class="col-6">
+  				<ul class="top_blk">
+  					<li>
+  						<div class="dropdown">
+  							<button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
+  								<div class="img_blk">
+  									<%= image_tag 'filter.svg', alt: '' %>
+  								</div>
+  								filters
+  							</button>
+  							<ul class="dropdown-menu">
+  								<li><button type="button">All Data</button></li>
+  								<li><button type="button">User's Info</button></li>
+  								<li><button type="button">Vacant Land</button></li>
+  								<li><button type="button"> Dream Address</button></li>
+  								<li><button type="button">I Want to Buy</button></li>
+  								<li><button type="button">I Want to Sell</button></li>
+  							</ul>
+  						</div>
+  					</li>
+  					<li>
+  						<div class="form_blk">
+  							<div class="icon_blk">
+  								<%= image_tag 'search.svg', alt: '' %>
+  							</div>
+  							<input type="search" placeholder="Search" class="input">
+  						</div>
+  					</li>
+  					<li>
+  						<button type="button" class="filter">
+  							<div class="img_blk">
+  								<%= image_tag 'csv-file-icon.svg', alt: '' %>
+  							</div>
+  							Download CSV
+  						</button>
+  					</li>
+  				</ul>
+  			</div>
+  		</div>
+  		<div class="table_blk">
+  			<table class="mt-5">
+  				<thead>
+  					<tr>
+  						<th style="width: 18.7rem">
+  							Full Name
+  						</th>
+  						<th style="width: 17.2rem">
+  							Property Type
+  						</th>
+  						<th style="width: 20.6rem">
+  							Price Range
+  						</th>
+  						<th style="width: 17.1rem">
+  							Min Bedrooms
+  						</th>
+  						<th style="width: 24.5rem">
+  							Min Bathrooms
+  						</th>
+  						<th style="width: 22.3rem">
+  							Property Types
+  						</th>
+  						<th style="width: 18rem">
+  							Property Styles
+  						</th>
+  						<th style="width: 16rem">
+  							Living Space
+  						</th>
+  						<th style="width: 20.1rem">
+  							Parking Spots Req.
+  						</th>
+  						<th style="width: 12.8rem">
+  							Balcony
+  						</th>
+  						<th style="width: 13rem">
+  							Security
+  						</th>
+  						<th style="width: 13rem">
+  							Laundry
+  						</th>
+  						<th style="width: 13rem">
+  							Max Age
+  						</th>
+  					</tr>
+  				</thead>
+  				<tbody>
+  					<% @condos.each do |condo|%>
+  					<tr>
+  						<td><%= condo.user.full_name%></td>
+                        <td><%= condo.type%></td>
+                        <td style="color: #00A66C;"><%= condo.price%></td>
+  						<td><%= condo.bed_rooms%></td>
+  						<td> <%= condo.bath_rooms%></td>
+  						<td>Multi-Family</td>
+  						<td>2 Storey</td>
+  						<td><%= condo.living_space %></td>
+  						<td>30ft - 40ft</td>
+  						<td><% condo.balcony %></td>
+  						<td><% condo.security%></td>
+  						<td><% condo.laundry%></td>
+  						<td>30</td>
+  					</tr>
+  					<%end%>
+  				</tbody>
+  			</table>
+  		</div>
+  		<!-- -->
+  	</div>
+  </section>
+  <!-- dash -->

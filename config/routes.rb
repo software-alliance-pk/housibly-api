@@ -10,7 +10,13 @@ Rails.application.routes.draw do
       get :job_lists
     end
   end
-  resources :users_data
+   resources :users_data do
+    collection do
+      get :buy_vacant_land
+      get :buy_house
+      get :buy_condo
+    end
+  end
   resources :users_lists do
     member do
       get :active_account

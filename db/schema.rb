@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_19_164249) do
+ActiveRecord::Schema.define(version: 2022_08_23_111735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,20 +25,6 @@ ActiveRecord::Schema.define(version: 2022_08_19_164249) do
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
-  end
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,6 +33,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_164249) do
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["record_type", "record_id"], name: "index_active_storage_attachments_on_record_type_and_record_id"
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -65,6 +52,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_164249) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index ["blob_id"], name: "index_active_storage_variant_records_on_blob_id"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -296,6 +284,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_164249) do
     t.boolean "active", default: true
     t.string "currency_type"
     t.integer "currency_amount"
+    t.string "address"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

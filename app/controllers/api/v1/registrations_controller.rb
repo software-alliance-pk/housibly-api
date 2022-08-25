@@ -70,7 +70,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     params.require(:user).
       permit(:full_name, :email, :password, :phone_number, :description,
        :licensed_realtor,:contacted_by_real_estate, :user_type, :profile_type,
-        :otp, :country_code, :currency_type, :currency_amount, :country_name,:avatar, images: [], certificates: [])
+        :otp, :country_code, :currency_type, :currency_amount, :country_name, :address, :avatar, images: [], certificates: [])
   end
   def user_profession
      params.require(:user).permit(titles: [])

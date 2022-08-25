@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_23_111735) do
+ActiveRecord::Schema.define(version: 2022_08_25_093134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,6 +185,16 @@ ActiveRecord::Schema.define(version: 2022_08_23_111735) do
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "description"
+    t.integer "rating"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "support_closer_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "rooms", force: :cascade do |t|
     t.string "name"
     t.float "length_in_feet"
@@ -285,6 +295,8 @@ ActiveRecord::Schema.define(version: 2022_08_23_111735) do
     t.string "currency_type"
     t.integer "currency_amount"
     t.string "address"
+    t.float "longitude"
+    t.float "latitude"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -295,6 +307,7 @@ ActiveRecord::Schema.define(version: 2022_08_23_111735) do
   add_foreign_key "dream_addresses", "users"
   add_foreign_key "professions", "users"
   add_foreign_key "properties", "users"
+  add_foreign_key "reviews", "users"
   add_foreign_key "schedules", "users"
   add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"

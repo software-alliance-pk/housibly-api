@@ -100,6 +100,7 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (2.0.3)
     ffi (1.15.5)
+    geocoder (1.8.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     http-accept (1.7.0)
@@ -271,6 +272,7 @@ DEPENDENCIES
   cloudinary
   devise
   down (~> 5.0)
+  geocoder
   jbuilder (~> 2.7)
   jwt
   letter_opener

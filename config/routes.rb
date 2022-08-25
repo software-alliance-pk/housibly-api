@@ -36,12 +36,6 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
-      resources :bookmarks, only:  [:create, :destroy] do
-        collection do
-          get :get_current_user_bookmark
-          post :filter_bookmarks
-        end
-      end
       resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property]
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#login'
@@ -59,6 +53,9 @@ Rails.application.routes.draw do
       post '/delete_card', to: 'payments#destroy_card'
       post '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
+      get '/search_support_closer', to: 'users#search_support_closer'
+      get 'get_support_closers', to: 'users#get_support_closers'
+      get 'support_closer_profile', to: 'users#support_closer_profile'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'
       get '/get_card', to: 'payments#get_card'
@@ -69,10 +66,20 @@ Rails.application.routes.draw do
       get '/tickets', to: 'supports#get_tickets'
       get '/static_page/:permalink', to: 'static_pages#static_page'
       get '/recent_property', to: 'properties#recent_property'
-
+      resources :bookmarks, only:  [:create, :destroy] do
+        collection do
+          get :get_current_user_bookmark
+          post :get_bookmarks
+        end
+      end
+      resources :reviews, only: [:create, :index] do
+        collection do
+         get :review_filter
+       end
+     end
       resources :user_preferences, only: [:create, :index]
-      post "/active", to: 'users_lists#index'
       get '/*a', to: 'api#not_found'
+      post "/active", to: 'users_lists#index'
 
     end
   end

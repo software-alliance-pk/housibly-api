@@ -16,10 +16,6 @@ class UsersListsController < ApplicationController
     end
   end
 
-  def user_profile
-
-  end
-
   def active_account
     @user = User.find_by(id: params[:id])
       if @user.update(active: true)

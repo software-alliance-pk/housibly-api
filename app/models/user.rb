@@ -3,16 +3,23 @@ class User < ApplicationRecord
   include PgSearch::Model
      pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
+                  associated_against: {
+                  professions: :title},
                   using: {
                     tsearch: { prefix: true }
                   }
-  has_secure_password
-  has_many_attached :images
-  has_many_attached :certificates
-  has_many :professions
-  has_one :schedule
-  has_many :bookmarks
-  has_one_attached :avatar
+  has_secure_password 
+  geocoded_by :address
+  has_many :reviews, class_name: "User",
+                          foreign_key: "support_closer_id"
+  has_many :reviews, dependent: :destroy
+  after_validation :geocode, :if => :address_changed?
+  has_many_attached :images, dependent: :destroy
+  has_many_attached :certificates,  dependent: :destroy
+  has_many :professions,  dependent: :destroy
+  has_one :schedule,  dependent: :destroy
+  has_many :bookmarks,  dependent: :destroy
+  has_one_attached :avatar,  dependent: :destroy
   has_one :user_preference, dependent: :destroy
   has_many :dream_addresses, dependent: :destroy
   has_many :properties, dependent: :destroy

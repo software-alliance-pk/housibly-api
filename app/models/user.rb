@@ -8,7 +8,9 @@ class User < ApplicationRecord
                   using: {
                     tsearch: { prefix: true }
                   }
-  has_secure_password 
+  has_secure_password
+  has_many :conversations, dependent: :destroy,foreign_key: :sender_id
+  has_many :conversations, dependent: :destroy,foreign_key: :recipient_id
   geocoded_by :address
   has_many :reviews, class_name: "User",
                           foreign_key: "support_closer_id"

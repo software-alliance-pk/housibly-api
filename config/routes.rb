@@ -78,6 +78,7 @@ Rails.application.routes.draw do
        end
      end
      resources :conversations, only: [:create, :index, :destroy]
+     resources :messages
       resources :user_preferences, only: [:create, :index]
       get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'

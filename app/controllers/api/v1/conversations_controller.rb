@@ -2,7 +2,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
 	def create
 		if Conversation.where(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id).present? ||
       Conversation.where(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id]).present?
-      @conversation = Conversation.where(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id)
+      @conversation = Conversation.where(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id) ||
       @conversation = Conversation.where(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id])
       render json: {conversation:@conversation}
     else
@@ -16,7 +16,6 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
   def index
-  	debugger
     @conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
   end
 

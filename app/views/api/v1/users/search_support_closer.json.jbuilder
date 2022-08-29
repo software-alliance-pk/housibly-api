@@ -12,6 +12,7 @@ json.support_closer @support_closers do |support_closer|
   json.user_type support_closer.user_type
   json.profile_type support_closer.profile_type
   json.description support_closer.description
+  json.support_closer_image support_closer.avatar.attached? ? rails_blob_url(support_closer.avatar) : ""
   json.professions  support_closer.professions do |profession|
   	json.title profession.title
   end

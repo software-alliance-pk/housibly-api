@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_25_132238) do
+ActiveRecord::Schema.define(version: 2022_08_30_131758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,6 +250,26 @@ ActiveRecord::Schema.define(version: 2022_08_25_132238) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "support_conversations", force: :cascade do |t|
+    t.bigint "support_id"
+    t.integer "recipient_id"
+    t.integer "sender_id"
+    t.integer "conv_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["support_id"], name: "index_support_conversations_on_support_id"
+  end
+
+  create_table "support_messages", force: :cascade do |t|
+    t.text "body"
+    t.bigint "user_id"
+    t.bigint "support_conversation_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["support_conversation_id"], name: "index_support_messages_on_support_conversation_id"
+    t.index ["user_id"], name: "index_support_messages_on_user_id"
+  end
+
   create_table "supports", force: :cascade do |t|
     t.string "ticket_number"
     t.integer "status", default: 0
@@ -331,6 +351,9 @@ ActiveRecord::Schema.define(version: 2022_08_25_132238) do
   add_foreign_key "properties", "users"
   add_foreign_key "reviews", "users"
   add_foreign_key "schedules", "users"
+  add_foreign_key "support_conversations", "supports"
+  add_foreign_key "support_messages", "support_conversations"
+  add_foreign_key "support_messages", "users"
   add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"
 end

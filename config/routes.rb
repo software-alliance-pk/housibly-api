@@ -77,7 +77,12 @@ Rails.application.routes.draw do
         collection do
          get :review_filter
        end
-     end
+      end
+      resources :support_conversations do
+        post 'create_message'
+        get 'get_messages'
+      end
+
      resources :conversations, only: [:create, :index, :destroy]
      resources :messages, only: [:create, :index, :destroy]
       resources :user_preferences, only: [:create, :index]

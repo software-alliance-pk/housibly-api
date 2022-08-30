@@ -11,7 +11,10 @@ class User < ApplicationRecord
   has_secure_password
   has_many :conversations, dependent: :destroy,foreign_key: :sender_id
   has_many :conversations, dependent: :destroy,foreign_key: :recipient_id
+   has_many :support_conversations, dependent: :destroy,foreign_key: :sender_id
+   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
   has_many :messages, dependent: :destroy
+   has_many :support_messages, dependent: :destroy
   geocoded_by :address
   has_many :reviews, class_name: "User",
                           foreign_key: "support_closer_id"

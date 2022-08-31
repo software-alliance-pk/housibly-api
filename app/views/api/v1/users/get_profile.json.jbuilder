@@ -13,11 +13,5 @@ json.user do
   json.profile_type @current_user.profile_type
   json.description @current_user.description
   json.image @current_user.avatar.attached? ? @current_user.avatar.url : ""
-  json.images @current_user.images do |image|
-    json.image rails_blob_url(image) rescue ""
-  end
-   json.files @current_user.certificates do |certificate|
-    json.image certificate.url rescue ""
-  end
 
 end

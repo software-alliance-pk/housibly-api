@@ -46,6 +46,34 @@ class Api::V1::UsersController < Api::V1::ApiController
     end
   end
 
+
+  def blocked_users
+    @blocked_users = User.where(is_blocked: true)
+    if @blocked_users.present?
+      @blocked_users
+    else
+      render json: {message: "No Found"}
+    end
+  end
+
+  def unblocked_users
+    @unblocked_users = User.where(is_blocked: false)
+    if @unblocked_users.present?
+      @unblocked_users
+    else
+      render json: {message: "No Found"}
+    end
+  end
+
+  def reported_users
+    @reported_users = User.where(is_reported: true)
+    if @reported_users.present?
+      @reported_users
+    else
+      render json: {reported_users: "No Found"}
+    end
+  end
+
   private
 
   def user_params

@@ -2,10 +2,20 @@ Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
   root "dashboards#index"
   resources :supports
-  resources :sub_admins
+  resources :sub_admins do
+    member do
+      get :deactive_admin
+      get :active_admin
+    end
+  end
   resources :school_pins
   resources :dashboards
-  resources :support_closers
+  resources :support_closers do
+    member do
+      get :active_account
+      get :deactive_account
+    end
+  end
   resources :guidelines do
     collection do
       get :job_lists
@@ -28,9 +38,6 @@ Rails.application.routes.draw do
     end
   end
   devise_for :admins
-
-  get "/ad_active_account/:id", to: 'sub_admins#active_admin', as: 'ad_active_account'
-  get "/ad_deactive_account/:id", to: 'sub_admins#deactive_admin',as: 'ad_deactive_account'
   get "/sp_active_account/:id", to: 'support_closers#active_user', as: 'sp_active_account'
   get "/sp_deactive_account/:id", to: 'support_closers#deactive_user',as: 'sp_deactive_account'
   get "/privacy_policy/:permalink", to: 'guidelines#guidelines', as: 'privacy_policy'

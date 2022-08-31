@@ -12,10 +12,9 @@ json.support_closer @support_closers do |support_closer|
   json.user_type support_closer.user_type
   json.profile_type support_closer.profile_type
   json.description support_closer.description
+  json.rating support_closer.support_closer_reviews.pluck(:rating).sum/5
   json.support_closer_image support_closer.avatar.attached? ? rails_blob_url(support_closer.avatar) : ""
-  json.professions  support_closer.professions do |profession|
-  	json.title profession.title
-  end
+  json.professions  support_closer.professions.try(:first).try(:title)
   json.images support_closer.images do |image|
     json.image rails_blob_url(image) rescue ""
   end

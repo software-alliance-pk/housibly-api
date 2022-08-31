@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-   require 'csv'
+  require 'csv'
   include PgSearch::Model
      pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
@@ -11,14 +11,15 @@ class User < ApplicationRecord
   has_secure_password
   has_many :conversations, dependent: :destroy,foreign_key: :sender_id
   has_many :conversations, dependent: :destroy,foreign_key: :recipient_id
-   has_many :support_conversations, dependent: :destroy,foreign_key: :sender_id
-   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
+  has_many :support_conversations, dependent: :destroy,foreign_key: :sender_id
+  has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
   has_many :messages, dependent: :destroy
-   has_many :support_messages, dependent: :destroy
+  has_many :support_messages, dependent: :destroy
   geocoded_by :address
-  has_many :reviews, class_name: "User",
-                          foreign_key: "support_closer_id"
-  has_many :reviews, dependent: :destroy
+  has_many :support_closer_reviews, class_name: "Review",dependent: :destroy,foreign_key: :support_closer_id
+  has_many :reviews,dependent: :destroy,foreign_key: :user_id
+  # has_many :reviews, class_name: "User",
+  #                         foreign_key: "support_closer_id"
   after_validation :geocode, :if => :address_changed?
   has_many_attached :images, dependent: :destroy
   has_many_attached :certificates,  dependent: :destroy
@@ -87,7 +88,6 @@ class User < ApplicationRecord
     self.password = password
     self.save!
   end
-
   private
 
   def generate_otp
@@ -97,6 +97,8 @@ class User < ApplicationRecord
   def otp_length(length)
     rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
   end
+
+
       
 
   def self.to_csv

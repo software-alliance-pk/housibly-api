@@ -109,37 +109,32 @@
                   </p>
                 </td>
                 <td><%= record.phone_number %></td>
-                <td>Home Inspector</td>
+                <td><%= record&.professions&.first %></td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="rating_blk me-2">
                       <%= image_tag 'rating.svg' %>
                     </div>
-                    5
+                    <%#= record.rating %> Need to do || Need to  Download the selected
                   </div>
                 </td>
                 <td>
+
                   <div class="d-flex align-items-center justify-content-between">
-                    <% if record.active %>
-                        <p class="mb-0" style="color:#93DF70;">Active</p>
-                      <%else%>
-                        <p class="mb-0" style="color:#df7074;">Disable Account</p>
-                      <%end%>
+                    <p class="mb-0" id="active_user_<%= record.id %>" style="color:#93DF70;" <%= 'hidden' unless record.active %> >Active</p>
+                    <p class="mb-0" id="deactive_user_<%= record.id %>" style="color:#df7074;" <%= 'hidden' if record.active%> >Disable Account</p>
                     <div class="more_btn_blk" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                          aria-expanded="false">
                       <%= image_tag 'more.svg' %>
                     </div>
                     <ul class="remove dropdown-menu px-5" aria-labelledby="dropdownMenuButton1">
-                    <% if record.active %>
-                    <li>
-                      <%= link_to 'Disable account',sp_deactive_account_path(id: record), :remote => true %>
-                    </li>
-                    <% else %>
-                    <li>
-                      <%= link_to 'Active', sp_active_account_path(id: record), remote: :true %>
-                    </li>
-                    <%end %>
-                  </ul>
+                      <li <%= 'hidden' unless record.active%> class="pressdeactivelinkwith_<%=record.id %>">
+                        <%= link_to 'Disable account',deactive_account_support_closer_path(id:  record),class: "pressdeactivelink",id: record.id, :remote => true %>
+                      </li>
+                      <li <%= 'hidden' if record.active%> class="pressactivelinkwith_<%= record.id %>">
+                        <%= link_to 'Active',active_account_support_closer_path(id: record),id: record.id,class: "pressactivelink", remote: :true %>
+                      </li>
+                    </ul>
                   </div>
                 </td>
               </tr>

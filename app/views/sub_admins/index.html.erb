@@ -115,26 +115,19 @@
             </td>
             <td>
               <div class="d-flex align-items-center justify-content-between">
-                
-                  <% if sub_admin.status == 1 %>
-                  <p class="mb-0" style="color:#93DF70;">Active</p>
-                  <%else%>
-                  <p class="mb-0" style="color:#df7074;">Disable Account</p>
-                  <%end%>
+                <p class="mb-0" id="active_user_<%= sub_admin.id %>" style="color:#93DF70;" <%= 'hidden' unless sub_admin.status %> >Active</p>
+                <p class="mb-0" id="deactive_user_<%= sub_admin.id %>" style="color:#df7074;" <%= 'hidden' if sub_admin.status%> >Disable Account</p>
                 <div class="more_btn_blk" id="dropdownMenuButton1"data-bs-toggle="dropdown"aria-expanded="false">
                     <%= image_tag 'more.svg' %>
-                  </div>
+                </div>
                 <ul class="remove dropdown-menu px-5" aria-labelledby="dropdownMenuButton1">
-                    <% if sub_admin.status == 1 %>
-                    <li>
-                      <%= link_to 'Disable account',ad_deactive_account_path(id: sub_admin), :remote => true %>
-                    </li>
-                    <% else %>
-                    <li>
-                      <%= link_to 'Active', ad_active_account_path(id: sub_admin), remote: :true %>
-                    </li>
-                    <%end %>
-                  </ul>
+                  <li <%= 'hidden' unless sub_admin.status%> class="pressdeactivelinkwith_<%=sub_admin.id %>">
+                    <%= link_to 'Disable account',deactive_admin_sub_admin_path(id:  sub_admin),class: "pressdeactivelink",id: sub_admin.id, :remote => true %>
+                  </li>
+                  <li <%= 'hidden' if sub_admin.status%> class="pressactivelinkwith_<%= sub_admin.id %>">
+                    <%= link_to 'Active',active_admin_sub_admin_path(id:  sub_admin),id: sub_admin.id,class: "pressactivelink", remote: :true %>
+                  </li>
+                </ul>
               </div>
             </td>
           </tr>
@@ -157,7 +150,6 @@
                     <hr class="hr">
 
                     <%= form_with model: @sub_admin, class:"sub_admin_form"  do |form| %>
-                      <form type="submit" class="sub_admin_form">
                       <div class="form_blk d-flex align-items-center justify-content-between sub_admin_form">
                         <label for="">First Name</label>
                         <%if flash.alert.present? %>
@@ -223,13 +215,11 @@
                         <% end %>
                          <%= form.text_field :password, class: "input" %>
                       </div>
-                    <div class="btn_blk modal_btn">
+                      <div class="btn_blk modal_btn">
                       <button type="button" class="cancel">cancel</button>
                       <button  type="submit" class="save site_btn">Save</button>
-
-                    <% end %>
-
                     </div>
+                    <% end %>
                   </div>
                 </div>
               </div>

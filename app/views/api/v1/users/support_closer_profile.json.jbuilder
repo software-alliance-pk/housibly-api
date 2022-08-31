@@ -12,6 +12,7 @@ json.support_closer do
   json.user_type @support_closer.user_type
   json.profile_type @support_closer.profile_type
   json.description @support_closer.description
+  json.rating @support_closer.support_closer_reviews.pluck(:rating).sum/5
   json.profile_images @support_closer.avatar.attached? ? @support_closer.avatar.url : ""
   json.professions  @support_closer.professions do |profession|
   	json.title profession.title

@@ -15,7 +15,7 @@ class Api::V1::ReviewsController < Api::V1::ApiController
   end
 
   def index
-    @reviews = Review.all
+    @reviews = Review.where(support_closer_id: params[:support_closer_id])
     if @reviews.present?
       @reviews
     else

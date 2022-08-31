@@ -29,13 +29,32 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def support_closer_profile
     @support_closer = User.find_by(id: params[:support_closer_id])
-    if @support_closer.want_support_closer?
+    
+    if @support_closer.present?
       @support_closer
     else
       render json: {message: "Support Closer not found"},
       status: :unprocessable_entity
     end
   end
+
+  def update_support_closer_profile
+    if @current_user.present?
+      @current_user.professions.destroy_all if @current_user.professions.present? 
+      user_profession[:titles].each do |user|  
+        @current_user.professions.build(title:user)
+      end
+      @current_user.assign_attributes(sup_closer_params)
+        if @current_user.save(validate: false)
+          @current_user
+      else
+        render_error_messages(@current_user)
+      end
+    else
+      render json: {message: "Support Closer not found"}, status: :unprocessable_entity
+    end
+  end
+
 
   def get_support_closers
     @support_closers = User.want_support_closer.near("karachi", 70, units: :km)
@@ -76,6 +95,14 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   private
 
+  def sup_closer_params
+     params.require(:user).
+      permit(:full_name, :email, :phone_number, :description,
+     :currency_amount, :avatar,images: [])
+  end
+  def user_profession
+     params.require(:user).permit(titles: [])
+  end
   def user_params
     params.require(:user).
     permit(:email, :phone_number, :description, :country_code, :country_name,

@@ -1,3 +1,4 @@
+json.total_reviews @reviews.count
 json.reviews @reviews do |review|
 	json.id review.id
 	json.review review.description

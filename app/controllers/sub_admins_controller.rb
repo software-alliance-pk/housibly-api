@@ -1,5 +1,4 @@
 class SubAdminsController < ApplicationController
-  before_action :set_admin, only: [:active_admin,:deactive_admin]
   def index
     unless params[:search].blank?
       @sub_admins = Admin.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
@@ -17,6 +16,7 @@ class SubAdminsController < ApplicationController
   end
 
    def active_admin
+     @sub_admin = Admin.find_by(id: params[:id])
     if @sub_admin
       @sub_admin.update(status: true)
       redirect_to sub_admins_path
@@ -26,6 +26,7 @@ class SubAdminsController < ApplicationController
   end
 
   def deactive_admin
+    @sub_admin = Admin.find_by(id: params[:id])
     if @sub_admin
       @sub_admin.update(status: false)
       redirect_to sub_admins_path
@@ -44,9 +45,6 @@ class SubAdminsController < ApplicationController
    end
   end
   private
-  def set_admin
-    @sub_admin = Admin.find_by(id: params[:id])
-  end
 
   def sub_admin_params
     params.permit(:full_name, :email, :password, :user_name, :location, :phone_number, :date_of_birth)

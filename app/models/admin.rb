@@ -1,4 +1,6 @@
 class Admin < ApplicationRecord
+  after_commit :send_notification
+  has_many :notifications, foreign_key: :recipient_id
   require "csv"
     include PgSearch::Model
      pg_search_scope :custom_search,
@@ -23,7 +25,6 @@ class Admin < ApplicationRecord
    def self.to_csv
       CSV.generate(headers: true) do |csv|
         csv << self.attribute_names
-
         all.each do |record|
           csv << record.attributes.values
         end
@@ -34,5 +35,11 @@ class Admin < ApplicationRecord
       else
         csv_count = Setting.create(csv_count: 1)
       end
+   end
+
+  def send_notification
+    Admin.admin.each do |admin|
+      Notification.create(recipient: admin, actor: admin,action: "#{admin.full_name} is active",notifiable: self)
+    end
   end
 end

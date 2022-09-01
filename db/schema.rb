@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_31_173657) do
+ActiveRecord::Schema.define(version: 2022_09_01_075153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -353,6 +353,14 @@ ActiveRecord::Schema.define(version: 2022_08_31_173657) do
     t.boolean "is_blocked", default: false
   end
 
+  create_table "visitors", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "visit_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_visitors_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookmarks", "properties"
@@ -370,4 +378,5 @@ ActiveRecord::Schema.define(version: 2022_08_31_173657) do
   add_foreign_key "support_messages", "users"
   add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"
+  add_foreign_key "visitors", "users"
 end

@@ -29,7 +29,6 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def support_closer_profile
     @support_closer = User.find_by(id: params[:support_closer_id])
-    
     if @support_closer.present?
       @support_closer
     else
@@ -90,6 +89,23 @@ class Api::V1::UsersController < Api::V1::ApiController
       @reported_users
     else
       render json: {reported_users: "No Found"}
+    end
+  end
+
+  def view_user_profile
+    @user = User.find_by(id: params[:user_id])
+  visitor = Visitor.find_by(user_id: @user.id, visit_id: @current_user.id)
+  if !visitor.present?
+    @user.visitor.build(visit_id: @current_user.id)
+  end
+  end
+
+  def profile_visitor_list
+    @visitor = @current_user.visitor
+    if @visitor.present?
+      @visitor
+    else
+      render json: {message: "Visitor No Found"},status: :unprocessable_entity
     end
   end
 

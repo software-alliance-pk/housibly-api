@@ -11,36 +11,23 @@
 
       <div class="right-con-inner">
 
-        <div class="dropdown">
-          <button class="seletor text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">
-            <% if params[:privacy_policy].present? %>
-               Privacy Policy
-            <% elsif params[:faq].present? %>
-               FAQ
-            <% else %>
-              Terms & Condition
-            <%end%>
-          </button>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-          <select  onchange="getval(this);">
-            <ul class="list dropdown-menu">
-             <option value="1"><li><%= link_to 'Terms and Conditions', privacy_policy_path(permalink: "terms&condition"), value: "1" %></li></option>
-             <option value="1"><li><%= link_to 'Privacy Policy', privacy_policy_path(permalink: "privacy_policy"), value: "2" %></li></option>
-  </ul>
+        <div class="dropdown mb-4">
+          <select class="text dropdown-toggle input w-auto fs_5 fw_600" id="guideline_select">
+            <option value="1" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
+                Terms & Condition
+            </option>
+            <option value="3" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
+                Privacy Policy
+            </option>
+             <option value="2" <%= params[:permalink] == "faq" ? "selected" : "" %>>
+                   FAQ
+            </option>
           </select>
-           <select  onchange="getval(this);">
-            <ul class="list dropdown-menu">
-              <li><%= link_to 'Terms and Conditions', privacy_policy_path(permalink: "terms&condition"), value: "1" %></li>
-              <li><%= link_to 'Privacy Policy', privacy_policy_path(permalink: "privacy_policy"), value: "2" %></li>
-              <li><%= link_to 'FAQ', privacy_policy_path(permalink: "faq"), value: "3" %></li>
-
-            </ul>
-          </select>
-          
-            
         </div>
-        <div class="row">
+        <a id="guide_lines_1" href="<%=privacy_policy_path(permalink: "terms&condition") %>" hidden></a>
+        <a id="guide_lines_2" href="<%=privacy_policy_path(permalink: "faq") %>" hidden></a>
+        <a id="guide_lines_3" href="<%=privacy_policy_path(permalink: "privacy_policy")%>" hidden></a>
+      <div class="row">
           <div class="col-lg-8">
             <div class="details">
               <% if @page.present?%>
@@ -67,11 +54,4 @@
 
   </div>
 </section>
-<!-- dash -->
-
-
 </main>
-function getval(sel)
-{
-    alert(sel.value);
-}

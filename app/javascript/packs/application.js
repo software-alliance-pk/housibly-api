@@ -17,6 +17,10 @@ Turbolinks.start()
 ActiveStorage.start()
 
 $(document).on('turbolinks:load', function() {
+    $("#guideline_select").change(function (){
+        var id = $(this).val();
+        document.getElementById("guide_lines_"+id).click()
+    });
   $(".pressdeactivelink").click(function (){
       var id = $(this).attr("id");
       $("#active_user_"+id).attr('hidden',true);
@@ -33,5 +37,3 @@ $(document).on('turbolinks:load', function() {
       $(".pressdeactivelinkwith_"+id).attr('hidden',false);
   });
 })
-
-

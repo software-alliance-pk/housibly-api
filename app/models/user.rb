@@ -18,6 +18,8 @@ class User < ApplicationRecord
   geocoded_by :address
   has_many :support_closer_reviews, class_name: "Review",dependent: :destroy,foreign_key: :support_closer_id
   has_many :reviews,dependent: :destroy,foreign_key: :user_id
+  has_many :view_visitor, class_name: "Visitor",dependent: :destroy,foreign_key: :visit_id
+  has_many :visitor,dependent: :destroy,foreign_key: :user_id
   after_validation :geocode, :if => :address_changed?
   has_many_attached :images, dependent: :destroy
   has_many_attached :certificates,  dependent: :destroy

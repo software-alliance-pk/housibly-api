@@ -68,6 +68,8 @@ Rails.application.routes.draw do
       get 'blocked_users', to: 'users#blocked_users'
       get 'unblocked_users', to: 'users#unblocked_users'
       get 'reported_users', to: 'users#reported_users'
+      get 'profile_visitor_list', to: 'users#profile_visitor_list'
+      get 'view_user_profile', to: 'users#view_user_profile'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'
       get '/get_card', to: 'payments#get_card'

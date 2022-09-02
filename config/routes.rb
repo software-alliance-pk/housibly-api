@@ -26,7 +26,11 @@ Rails.application.routes.draw do
       get :buy_vacant_land
       get :buy_house
       get :buy_condo
+      get :sell_vacant_land
+      get :sell_house
+      get :sell_condo
       get :user_info
+      get :dream_address
     end
   end
   resources :users_lists do

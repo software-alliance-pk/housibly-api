@@ -154,7 +154,7 @@
                         <label for="">First Name</label>
                         <%if flash.alert.present? %>
                           <span>
-                          <%= show_sub_admin_message(flash.alert,"Full name") %>
+                           <%= show_sub_admin_message(flash.alert,"Full name") %>
                           </span>
                         <% end %>
                         <%= form.text_field :full_name, class: "input" %>

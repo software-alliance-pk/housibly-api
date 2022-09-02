@@ -1,7 +1,7 @@
 class Api::V1::ReviewsController < Api::V1::ApiController
    def create
     @support_closer = User.find_by(id: params[:support_closer_id])
-    if @support_closer.want_support_closer?
+    if @support_closer.present?
       @review = @current_user.reviews.build(review_params)
       @review.support_closer_id = @support_closer.id
       if @review.save

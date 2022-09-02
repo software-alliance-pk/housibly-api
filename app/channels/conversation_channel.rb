@@ -12,6 +12,9 @@ class ConversationChannel < ApplicationCable::Channel
 
   def receive(data)
     @conversation = Conversation.find_by(id: data.fetch("conversation_id"))
+    puts "<<<<<<<<<<<<<<<<<< @conversation<<<<<<<<<<<<<<<<"
+    puts "<<<<<<<<<<<<<<<<<< @conversation.sender_id<<<<<<<<<<<<<<<<"
+    puts "<<<<<<<<<<<<<<<<<< @conversation.recipient_id<<<<<<<<<<<<<<<<"
     if (@conversation.sender_id == current_user.id) || (@conversation.recipient_id == current_user.id)
       message = @conversation.messages.build(user_id: current_user.id)
       message.body = data["body"].present? ? data.fetch("body") : nil

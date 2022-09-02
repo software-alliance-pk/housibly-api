@@ -89,7 +89,7 @@ Rails.application.routes.draw do
       end
       resources :reviews, only: [:create, :index] do
         collection do
-         get :review_filter
+         post :review_filter
        end
       end
       resources :support_conversations do

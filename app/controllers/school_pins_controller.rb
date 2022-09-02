@@ -1,6 +1,6 @@
 class SchoolPinsController < ApplicationController
   def index
-   
+    @school_pins = SchoolPin.all
   end
 
   def create

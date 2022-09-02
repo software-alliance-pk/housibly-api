@@ -7,6 +7,10 @@ class UsersDataController < ApplicationController
     @vacant_lands = VacantLand.all 
   end
 
+  def user_info
+
+  end
+
   def buy_condo
     @condos = Condo.all
   end

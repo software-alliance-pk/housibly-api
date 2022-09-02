@@ -1,3 +1,5 @@
+<script src="https://cdn.maptiler.com/maplibre-gl-js/v2.2.0-pre.2/maplibre-gl.js"></script>
+<link href="https://cdn.maptiler.com/maplibre-gl-js/v2.2.0-pre.2/maplibre-gl.css" rel="stylesheet" />
 <main>
   <section id="account_section">
     <%= render 'shared/sidebar' %>
@@ -42,14 +44,69 @@
           <% end %>
         </div>
         <div class="col-9">
-          <div class="map_blk">
-            <img src="/assets/map.jpg" alt="">
+          <div class="map_blk" id="map">
+
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- dash -->
-
-
 </main>
+<script>
+  $(document).ready(function () {
+      let pinsData = '<%= @school_pins&.map { |item| [item.id,item.longtitude,item.pin_name, item.latitude] } %>';
+      pinsData = JSON.parse(pinsData.replaceAll("&quot;", '"'))
+      var single_object = []
+      for (let i = 0; i < pinsData.length; i++) {
+          custom_object = {
+              'type': 'Feature',
+              'properties': {
+                  'name': pinsData[i][2],
+                  'iconSize': [30, 30]
+              },
+              'geometry': {
+                  'type': 'Point',
+                  'coordinates': [pinsData[i][3],pinsData[i][1]]
+
+              }
+          }
+          console.log(custom_object)
+          single_object.push(custom_object);
+      }
+      const key = 'hVNasrAxfh6v5Fcj3eXN';
+
+      var map = new maplibregl.Map({
+          container: 'map',
+          style:
+              'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+          center: [34.570868,40.297333],
+          zoom: 5
+      });
+      var geojson = {
+          'type': 'FeatureCollection',
+          'features': single_object
+      }
+
+
+// add markers to map
+      geojson.features.forEach(function (marker) {
+// create a DOM element for the marker
+          var el = document.createElement('div');
+          el.className = 'marker';
+          el.style.backgroundImage = "url('https://www.svgrepo.com/show/296931/push-pin.svg')";
+          el.style.width = marker.properties.iconSize[0] + 'px';
+          el.style.height = marker.properties.iconSize[1] + 'px';
+
+          el.addEventListener('click', function () {
+              window.alert(marker.properties.message);
+          });
+
+
+// add marker to map
+          new maplibregl.Marker(el)
+              .setLngLat(marker.geometry.coordinates)
+              .addTo(map);
+      });
+
+  });
+</script>

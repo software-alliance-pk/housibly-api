@@ -114,7 +114,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   def sup_closer_params
      params.require(:user).
       permit(:full_name, :email, :phone_number, :description,
-     :currency_amount, :avatar,images: [])
+     :currency_amount, :country_code, :country_name, :avatar,images: [])
   end
   def user_profession
      params.require(:user).permit(titles: [])

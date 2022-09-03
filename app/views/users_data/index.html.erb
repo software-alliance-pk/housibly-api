@@ -3,7 +3,7 @@
     <%= render 'shared/sidebar' %>
     <div id="buy_house" class="main_side">
       <div id="top_header">
-        <h1>Sell House</h1>
+        <h1>User's All Data</h1>
         <%= render 'shared/header-side' %>
       </div>
       <div class="row">
@@ -17,16 +17,7 @@
                   </div>
                   filters
                 </button>
-                <ul class="dropdown-menu">
-                  <li><button type="button">All Data</button></li>
-                  <li><button type="button">User's Info</button></li>
-                  <li><button type="button"><%= link_to "Vacant Land", buy_vacant_land_users_data_path%></button></li>
-                  <li><button type="button"> Dream Address</button></li>
-                  <li><button type="button">I Want to Buy</button></li>
-                  <li><button type="button">I Want to Sell</button></li>
-                  <li><button type="button"> <%= link_to "Condo", buy_condo_users_data_path %></button></li>
-                  <li><button type="button"> <%= link_to "House", buy_house_users_data_path%></button></li>
-                </ul>
+                  <%= render 'shared/drop_down' %>
               </div>
             </li>
             <li>

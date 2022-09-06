@@ -11,6 +11,7 @@ gem 'twilio-ruby'
 gem 'stripe'
 gem 'pg_search'
 gem 'geocoder'
+gem 'fcm'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'

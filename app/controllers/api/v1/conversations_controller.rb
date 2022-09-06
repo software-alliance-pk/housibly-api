@@ -4,12 +4,12 @@ class Api::V1::ConversationsController < Api::V1::ApiController
       Conversation.where(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id]).present?
       @conversation = Conversation.where(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id) ||
       @conversation = Conversation.where(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id])
-      render json: {conversation:@conversation}
+      @conversation
     else
 	    @conversation = Conversation.new(conversation_params)
 	    @conversation.sender_id = @current_user.id
       if @conversation.save
-        render json: {conversation:@conversation}
+        @conversation
       else
         render_error_messages(@conversation)
       end

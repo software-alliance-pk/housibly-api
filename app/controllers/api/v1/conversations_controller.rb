@@ -28,6 +28,14 @@ class Api::V1::ConversationsController < Api::V1::ApiController
       render json: { error: "No Found" }, status: :unprocessable_entity
     end
   end
+  def notification_token
+    if params[:token].present?
+      token = @current_user.mobile_devices.find_or_create_by(mobile_device_token: params[:token])
+      if token.save
+        render json: { message: 'Success', status: 'ok', token: token }
+      end
+    end
+  end
 
 
   private

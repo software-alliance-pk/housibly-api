@@ -16,7 +16,11 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :support_messages, dependent: :destroy
   geocoded_by :address
+  has_many :notifications, foreign_key: :recipient_id, class_name: "Notification"
+  has_many :notifications, foreign_key: :actor_id, class_name: 'Notification'
   has_many :support_closer_reviews, class_name: "Review",dependent: :destroy,foreign_key: :support_closer_id
+  has_many :reportings, dependent: :destroy, foreign_key: :user_id
+  has_many :user_reports, class_name: "Reporting", dependent: :destroy, foreign_key: :reported_user_id
   has_many :reviews,dependent: :destroy,foreign_key: :user_id
   has_many :view_visitor, class_name: "Visitor",dependent: :destroy,foreign_key: :visit_id
   has_many :visitor,dependent: :destroy,foreign_key: :user_id

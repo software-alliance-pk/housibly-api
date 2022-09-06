@@ -40,13 +40,13 @@
             <div class="btn_blk">
               <button class="site_btn save_btn">Save</button>
             </div>
-            <h3>December 23, 2021</h3>
+            <h3><%=  Date.today.strftime("%B %d,%Y")%></h3>
             <p class="mb-2">Update Logs</p>
-            <p class="fw_600 mb-2">11/12/2021</p>
-            <p class="mb-3">Term & Conditions - Updated!</p>
-            <hr class="hr">
-            <p class="fw_600 mb-2">09/19/2021</p>
-            <p>FAQ</p>
+            <%  @paper_trail.each do |record| %>
+              <p class="fw_600 mb-2"><%= record.created_at.strftime("%d/%m/%Y")%> - <%= record.event %></p>
+              <p><%=  page_title(record.item_id) %></p>
+              <hr class="hr">
+            <%end%>
           </div>
         </div>
       </div>

@@ -152,6 +152,8 @@ ActiveRecord::Schema.define(version: 2022_09_06_101235) do
     t.string "permalink"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "admin_id", null: false
+    t.index ["admin_id"], name: "index_pages_on_admin_id"
     t.index ["permalink"], name: "index_pages_on_permalink"
   end
 
@@ -368,6 +370,16 @@ ActiveRecord::Schema.define(version: 2022_09_06_101235) do
     t.boolean "is_blocked", default: false
   end
 
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
   create_table "visitors", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "visit_id"
@@ -385,6 +397,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_101235) do
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
   add_foreign_key "mobile_devices", "users"
+  add_foreign_key "pages", "admins"
   add_foreign_key "professions", "users"
   add_foreign_key "properties", "users"
   add_foreign_key "reportings", "users"

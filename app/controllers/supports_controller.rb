@@ -1,24 +1,15 @@
 class SupportsController < ApplicationController
   def index
-
-  end
-  def active_user
-    @user = User.find_by(id: params[:id])
-      if @user.update(active: true)
-      redirect_to support_closers_path
-    else
-      redirect_to support_closers_path
-
-    end
+    @support_closers = SupportConversation.support_closer.order(created_at: :desc)
+    @end_users =  SupportConversation.end_user.order(created_at: :desc)
+    @message = @end_users.first.messages
   end
 
+  def get_conversation
 
-  def deactive_user
-     @user = User.find_by(id: params[:id])
-      if @user.update(active: false)
-      redirect_to support_closers_path
-    else
-      redirect_to support_closers_path
-    end
+  end
+
+  def send_message
+
   end
 end

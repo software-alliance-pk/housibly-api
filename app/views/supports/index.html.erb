@@ -19,16 +19,19 @@
             </a>
           </li>
         </ul>
-        <div id="end_users" class="tab-pane fade show  ">
+        <div class="tab-content">
+        <div id="end_users" class="tab-pane fade show active">
           <ul class="chats active">
-            <li>
+            <% @end_users.each do |record| %>
+              <%debugger %>
+              <li>
               <div class="chat_blk">
                 <div class="chat_blk_left">
                   <div class="profile_blk">
                     <img src="./assets/images/chatProfile.svg" alt="">
                   </div>
                   <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
+                    <p><%= record.recipient.full_name %></p>
                     <span>Where is my refund?</span>
                   </div>
                 </div>
@@ -39,181 +42,13 @@
                 </div>
               </div>
             </li>
-            <li>
-              <div class="chat_blk active-bg">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name ">
-                    <p class="active_color">Alena Rhiel Madsen</p>
-                    <span class="active_color">Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p class="active_color">17/06/2020</p>
-                  <!-- <div class="message_count ">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>21:36</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
+            <%end%>
           </ul>
         </div>
         <div id="support_closers" class="tab-pane fade ">
           <ul class=" chats">
-            <li>
+            <% @support_closers.each do |record| %>
+              <li>
               <div class="chat_blk">
                 <div class="chat_blk_left">
                   <div class="profile_blk">
@@ -231,179 +66,10 @@
                 </div>
               </div>
             </li>
-            <li>
-              <div class="chat_blk active-bg">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name ">
-                    <p class="active_color">Alena Rhiel Madsen</p>
-                    <span class="active_color">Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p class="active_color">17/06/2020</p>
-                  <!-- <div class="message_count ">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>21:36</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="chat_blk">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p>17/06/2020</p>
-                  <!-- <div class="message_count">3</div> -->
-                </div>
-              </div>
-            </li>
+            <%end%>
           </ul>
         </div>
-
+        </div>
       </div>
       <div class="col-8">
         <div class="chat_sec">

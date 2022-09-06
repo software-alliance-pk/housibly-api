@@ -1,18 +1,23 @@
 class Api::V1::SupportConversationsController < Api::V1::ApiController
   def create
-    support = Support.find_by(id: params[:support_id])
-    @conversation = support.build_support_conversation
-    @conversation.sender_id = current_user.id
-    @conversation.recipient_id = params[:recipient_id]
-    if current_user.want_support_closer?
-      @conversation.update(conv_type: "support_closer")
+    @conversation = SupportConversation.find_by(support_id: params[:support_id])
+    unless @conversation.present?
+      support = Support.find_by(id: params[:support_id])
+      @conversation = support.build_support_conversation
+      @conversation.sender_id = current_user.id
+      @conversation.recipient_id = params[:recipient_id]
+      if current_user.want_support_closer?
+        @conversation.update(conv_type: "support_closer")
+      else
+        @conversation.update(conv_type: "end_user")
+      end
+      if @conversation.save
+       @conversation
+      else
+        render_error_messages(@conversation)
+      end
     else
-      @conversation.update(conv_type: "end_user")
-    end
-    if @conversation.save
-     @conversation
-    else
-      render_error_messages(@conversation)
+      render json: {message: "You can not create conversation again."}
     end
   end
   def index

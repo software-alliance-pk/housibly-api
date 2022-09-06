@@ -96,6 +96,11 @@ Rails.application.routes.draw do
         post 'create_message'
         get 'get_messages'
       end
+      resources :reporting do
+        collection do
+          post 'report_conversation'
+        end
+      end
 
      resources :conversations, only: [:create, :index, :destroy]
      resources :messages, only: [:create, :index, :destroy]

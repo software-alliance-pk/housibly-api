@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_01_075153) do
+ActiveRecord::Schema.define(version: 2022_09_05_074559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,6 +217,14 @@ ActiveRecord::Schema.define(version: 2022_09_01_075153) do
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 
+  create_table "reportings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "reported_user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_reportings_on_user_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.bigint "user_id"
     t.text "description"
@@ -371,6 +379,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_075153) do
   add_foreign_key "messages", "users"
   add_foreign_key "professions", "users"
   add_foreign_key "properties", "users"
+  add_foreign_key "reportings", "users"
   add_foreign_key "reviews", "users"
   add_foreign_key "schedules", "users"
   add_foreign_key "support_conversations", "supports"

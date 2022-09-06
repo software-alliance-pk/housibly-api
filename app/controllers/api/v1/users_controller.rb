@@ -104,9 +104,8 @@ class Api::V1::UsersController < Api::V1::ApiController
     @visitor = @current_user.visitor
     if @visitor.present?
       @visitor
-      # @visitor == nil? ? "[]" : @visitor
     else
-      render json: {visitor: []},status: :unprocessable_entity
+      render json: {visitor: []},status: :ok
     end
   end
 

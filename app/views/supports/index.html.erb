@@ -23,7 +23,6 @@
         <div id="end_users" class="tab-pane fade show active">
           <ul class="chats active">
             <% @end_users.each do |record| %>
-              <%debugger %>
               <li>
               <div class="chat_blk">
                 <div class="chat_blk_left">
@@ -31,7 +30,7 @@
                     <img src="./assets/images/chatProfile.svg" alt="">
                   </div>
                   <div class="profile_name">
-                    <p><%= record.recipient.full_name %></p>
+                    <p><%= record.sender.full_name %></p>
                     <span>Where is my refund?</span>
                   </div>
                 </div>
@@ -75,7 +74,7 @@
         <div class="chat_sec">
           <div class="top_blk">
             <div class="tag">
-              J9F4J98JH9JJ
+              <%= @message.support.ticket_number %>
             </div>
             <div class="dropdown">
               <button class="select dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,90 +87,65 @@
               </ul>
             </div>
           </div>
-          <div class="mt-5 d-flex chat_date">
-                                <span>
-                                    16 August 2021
-                                </span>
-          </div>
           <div class="chat_msg">
-            <div class="support_msg">
-              <div class="d-flex flex-column">
-                <div class="msg">
-                  <p>Lorem Ipsum is simply dummy text of the printing.</p>
+            <%@message.support_messages.each  do |record| %>
+              <% unless record.created_at.to_date == Date.today %>
+                <div class="mt-5 d-flex chat_date">
+                  <span>16 August 2021</span>
                 </div>
-                <p class="msg_time mt-2"> 3 m ago</p>
-              </div>
+              <%end%>
+              <% unless  current_admin == record.user %>
+                <div class="support_msg">
+                  <div class="d-flex flex-column">
+                    <div class="msg">
+                      <p><%= record.body %></p>
+                    </div>
+                    <p class="msg_time mt-2"><%= time_ago_in_words(record.created_at) %></p>
+                  </div>
 
-              <div class="profile_pic">
-                <div class="img_blk">
-                  <img src="./assets/images/logosmall.svg" alt="">
+                  <div class="profile_pic">
+                    <div class="img_blk">
+                      <%= image_tag record.user.avatar&.url , alt: "" %>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="user_msg">
-              <div class="profile_pic">
-                <div class="img_blk">
-                  <img src="./assets/images/chatProfile.svg" alt="">
+              <%else%>
+                 <div class="user_msg">
+                    <div class="profile_pic">
+                      <div class="img_blk">
+                        <img src="./assets/images/chatProfile.svg" alt="">
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <div class="msg">
+                        <p><%= record.body %></p>
+                      </div>
+                      <p class="msg_time mt-2"> <%= time_ago_in_words(record.created_at) %></p>
+                    </div>
                 </div>
-              </div>
-              <div class="d-flex flex-column">
-                <div class="msg">
-                  <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                </div>
-                <p class="msg_time mt-2"> 3 m ago</p>
-              </div>
-
-            </div>
-
-            <div class="support_msg">
-              <div class="d-flex flex-column">
-                <div class="msg">
-                  <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                </div>
-                <p class="msg_time mt-2"> 3 m ago</p>
-              </div>
-
-              <div class="profile_pic">
-                <div class="img_blk">
-                  <img src="./assets/images/logosmall.svg" alt="">
-                </div>
-              </div>
-            </div>
-            <div class="user_msg">
-              <div class="profile_pic">
-                <div class="img_blk">
-                  <img src="./assets/images/chatProfile.svg" alt="">
-                </div>
-              </div>
-              <div class="d-flex flex-column">
-                <div class="msg">
-                  <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                </div>
-                <p class="msg_time mt-2"> 3 m ago</p>
-              </div>
-
-            </div>
+              <%end%>
+            <%end%>
           </div>
 
         </div>
-        <hr>
+          <hr>
         <div class="msg_blk">
           <div class="msg_type">
             <div class="icon_blk">
-              <img src="./assets/images/attactFile.svg" alt="">
+              <%= image_tag "attactFile.svg" ,alt: "attachFile"%>
             </div>
             <div class="icon_blk">
-              <img src="./assets/images/emoji.svg" alt="">
+              <%= image_tag "emoji.svg" ,alt: "icons"%>
             </div>
             <div class="icon_blk">
-              <img src="./assets/images/addphoto.svg" alt="">
+              <%= image_tag "addphoto.svg" ,alt: "Photo"%>
             </div>
             <div class="form_blk w-100">
               <input type="text" class="input" placeholder="Write your message here">
             </div>
           </div>
           <button type="button">
-            <img src="./assets/images/sendMessage.svg" alt="">
+            <%= image_tag "sendMessage.svg", alt: "send message" %>
           </button>
         </div>
       </div>

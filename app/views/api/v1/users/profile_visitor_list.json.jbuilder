@@ -1,6 +1,7 @@
 json.visitor @visitor do |visit|
 	json.id visit.id
 	json.visitor_id visit.visit_id
+	json.visitor_viewed_time visit.created_at
 	json.visitor_name visit.visitor.full_name
 	json.visitor_email visit.visitor.email
 	json.visitor_phone_number visit.visitor.phone_number

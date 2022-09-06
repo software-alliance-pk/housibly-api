@@ -96,7 +96,7 @@ class Api::V1::UsersController < Api::V1::ApiController
     @user = User.find_by(id: params[:user_id])
   visitor = Visitor.find_by(user_id: @user.id, visit_id: @current_user.id)
   if !visitor.present?
-    @user.visitor.build(visit_id: @current_user.id)
+    @user.visitor.build(visit_id: @current_user.id).save
   end
   end
 

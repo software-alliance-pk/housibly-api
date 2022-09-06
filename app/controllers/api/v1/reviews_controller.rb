@@ -24,11 +24,11 @@ class Api::V1::ReviewsController < Api::V1::ApiController
   end
 
   def review_filter
-    @reviews = Review.where(rating: params[:rating])
+    @reviews = @current_user.reviews.where(rating: params[:rating])
     if @reviews.present?
       @reviews
     else
-      render json: {message: "Reviews Not Found"}
+      render json: {reviews: []}, status: :ok
     end
   end
   private

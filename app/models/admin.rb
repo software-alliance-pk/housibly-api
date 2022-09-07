@@ -3,7 +3,6 @@ class Admin < ApplicationRecord
   has_many :pages, dependent: :destroy
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
-  has_many :support_messages, dependent: :destroy, foreign_key: :user_id
   require "csv"
     include PgSearch::Model
      pg_search_scope :custom_search,

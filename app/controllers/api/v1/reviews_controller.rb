@@ -25,6 +25,7 @@ class Api::V1::ReviewsController < Api::V1::ApiController
 
   def review_filter
     @reviews = Review.where(rating: params[:rating],support_closer_id: @current_user.id )
+    puts "<<<<<<<<<<<<<<<<#{@current_user.id}<<<<<<<<<<<<<<<<"
     if @reviews.present?
       @reviews
     else

@@ -64,6 +64,20 @@ class Api::V1::UsersController < Api::V1::ApiController
     end
   end
 
+  def block_unblock_user
+    user = User.find_by(id: params[:user_id])
+    if params[:is_blocked].present? && params[:is_blocked] == "true"
+      if user.update(is_blocked: params[:is_blocked])
+        render json: {message: "User added in blacklist"},status: :ok
+      end
+    elsif params[:is_blocked].present? && params[:is_blocked] == "false"
+      if user.update(is_blocked: params[:is_blocked])
+        render json: {message: "User removed from blacklist"},status: :ok
+      end
+    end
+  end
+
+
 
   def blocked_users
     @blocked_users = User.where(is_blocked: true)

@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       put 'update_support_closer_profile', to: 'users#update_support_closer_profile'
       get 'blocked_users', to: 'users#blocked_users'
       get 'unblocked_users', to: 'users#unblocked_users'
+      post 'block_unblock_user', to: 'users#block_unblock_user'
       get 'reported_users', to: 'users#reported_users'
       get 'profile_visitor_list', to: 'users#profile_visitor_list'
       post 'view_user_profile', to: 'users#view_user_profile'

@@ -36,4 +36,12 @@ $(document).on('turbolinks:load', function() {
       $(".pressactivelinkwith_"+id).attr('hidden',true);
       $(".pressdeactivelinkwith_"+id).attr('hidden',false);
   });
+
+    $("#clickaddphoto").click(function (){
+        $("#submitaddphoto").trigger('click');
+    });
+
+    $("#clickaddfile").click(function (){
+        $("#submitaddfile").trigger('click');
+    })
 })

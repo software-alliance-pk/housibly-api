@@ -1,0 +1,3 @@
+class UserSupportMessage < SupportMessage
+
+end

@@ -1,0 +1,3 @@
+class AdminSupportMessage < SupportMessage
+
+end

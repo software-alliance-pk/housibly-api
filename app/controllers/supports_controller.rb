@@ -9,7 +9,11 @@ class SupportsController < ApplicationController
 
   end
 
-  def send_message
-
+  def create
+    debugger
+    @conversation = current_admin.support_conversations.find_by(id: params[:id])
+    if @conversation.present?
+      @conversation.support_messages.create!(user_id: current_admin.id,body: params[:text])
+    end
   end
 end

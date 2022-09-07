@@ -89,7 +89,7 @@
           </div>
           <div class="chat_msg">
             <%@message.support_messages.each  do |record| %>
-              <% unless record.created_at.to_date == Date.today %>
+              <% unless record.created_at.to_date == Date.today%>
                 <div class="mt-5 d-flex chat_date">
                   <span>16 August 2021</span>
                 </div>
@@ -130,23 +130,29 @@
         </div>
           <hr>
         <div class="msg_blk">
+          <%= form_with url: supports_path,method: :post do |f| %>
+            <%debugger %>
+            <%= f.hidden_field :id ,value: @message.id %>
           <div class="msg_type">
             <div class="icon_blk">
-              <%= image_tag "attactFile.svg" ,alt: "attachFile"%>
+              <%= image_tag "attactFile.svg" ,alt: "attachFile",id: "clickaddfile"%>
+              <input type="file" name="file" id="submitaddfile" hidden accept="application/pdf,application/vnd.ms-excel">
             </div>
             <div class="icon_blk">
               <%= image_tag "emoji.svg" ,alt: "icons"%>
             </div>
             <div class="icon_blk">
-              <%= image_tag "addphoto.svg" ,alt: "Photo"%>
+              <%= image_tag "addphoto.svg" ,alt: "Photo",id: "clickaddphoto"%>
+              <input type="file" name="image" id="submitaddphoto" hidden accept="image/*" multiple>
             </div>
             <div class="form_blk w-100">
-              <input type="text" class="input" placeholder="Write your message here">
+              <%= f.text_field :text, class: 'input', placeholder: "Write your message here" %>
             </div>
           </div>
-          <button type="button">
+          <button type="submit">
             <%= image_tag "sendMessage.svg", alt: "send message" %>
           </button>
+          <%end%>
         </div>
       </div>
     </div>

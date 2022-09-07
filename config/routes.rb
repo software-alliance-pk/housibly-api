@@ -115,9 +115,14 @@ Rails.application.routes.draw do
      resources :conversations, only: [:create, :index, :destroy] do
       collection do
         post :notification_token
+        post :read_messages
       end
     end
-     resources :messages, only: [:create, :index, :destroy]
+     resources :messages, only: [:create, :destroy] do
+      collection do
+        post :get_messages
+      end
+    end
       resources :user_preferences, only: [:create, :index]
       get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'

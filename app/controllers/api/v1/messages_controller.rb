@@ -18,7 +18,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		end
 	end
 
-	def index
+	def get_messages
 	  @conversation = Conversation.find_by(id: params[:conversation_id])
     if @conversation.present?
       @messages = @conversation.messages.all.order(created_at: :desc)

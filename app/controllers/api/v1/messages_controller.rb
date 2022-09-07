@@ -29,7 +29,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
 	private
 	def message_params
-		params.require(:message).permit(:body, images: [])
+		params.require(:message).permit(:body, :image)
 	end
 
 	def compile_message(message)
@@ -42,7 +42,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
     data["recipient_id"] = message.conversation.recipient_id
     data["created_at"] = message.created_at
     data["updated_at"] = message.updated_at
-    data["image"] = message&.images.first&.url
+    data["image"] = message&.image&.url
     data["user_profile"] = message&.user&.avatar&.url
     return data
 	end

@@ -7,8 +7,5 @@ json.messages @messages.each do |message|
   json.conversation_id message.conversation_id
   json.created_at message.created_at
   json.updated_at message.updated_at
-
-    json.uploded_images message.try(:images) do |image|
-      json.image rails_blob_url(image) rescue ""
-    end
+  json.image message.image.attached? ? rails_blob_url(message.image) : ""
 end

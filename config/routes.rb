@@ -98,7 +98,6 @@ Rails.application.routes.draw do
       end
       resources :support_conversations do
         post 'create_message'
-        get 'get_messages'
       end
       resources :reporting do
         collection do

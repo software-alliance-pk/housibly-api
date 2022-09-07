@@ -94,7 +94,7 @@
                   <span>16 August 2021</span>
                 </div>
               <%end%>
-              <% unless  current_admin == record.user %>
+              <% unless record.type == "AdminSupportMessage" %>
                 <div class="support_msg">
                   <div class="d-flex flex-column">
                     <div class="msg">
@@ -130,28 +130,27 @@
         </div>
           <hr>
         <div class="msg_blk">
-          <%= form_with url: supports_path,method: :post do |f| %>
-            <%debugger %>
-            <%= f.hidden_field :id ,value: @message.id %>
-          <div class="msg_type">
-            <div class="icon_blk">
-              <%= image_tag "attactFile.svg" ,alt: "attachFile",id: "clickaddfile"%>
-              <input type="file" name="file" id="submitaddfile" hidden accept="application/pdf,application/vnd.ms-excel">
+          <%= form_tag({:controller => 'supports', :action => 'create'},:id => 'filter_form', :remote => true) do %>
+            <%= hidden_field_tag :id ,@message.id %>
+            <div class="msg_type">
+              <div class="icon_blk">
+                <%= image_tag "attactFile.svg" ,alt: "attachFile",id: "clickaddfile"%>
+                <input type="file" name="file" id="submitaddfile" hidden accept="application/pdf,application/vnd.ms-excel">
+              </div>
+              <div class="icon_blk">
+                <%= image_tag "emoji.svg" ,alt: "icons"%>
+              </div>
+              <div class="icon_blk">
+                <%= image_tag "addphoto.svg" ,alt: "Photo",id: "clickaddphoto"%>
+                <input type="file" name="image" id="submitaddphoto" hidden accept="image/*" multiple>
+              </div>
+              <div class="form_blk w-100">
+                <%= text_field_tag :text, nil, class: 'input',id: "typemessage", placeholder: "Write your message here" %>
+              </div>
             </div>
-            <div class="icon_blk">
-              <%= image_tag "emoji.svg" ,alt: "icons"%>
-            </div>
-            <div class="icon_blk">
-              <%= image_tag "addphoto.svg" ,alt: "Photo",id: "clickaddphoto"%>
-              <input type="file" name="image" id="submitaddphoto" hidden accept="image/*" multiple>
-            </div>
-            <div class="form_blk w-100">
-              <%= f.text_field :text, class: 'input', placeholder: "Write your message here" %>
-            </div>
-          </div>
-          <button type="submit">
-            <%= image_tag "sendMessage.svg", alt: "send message" %>
-          </button>
+            <button type="submit">
+              <%= image_tag "sendMessage.svg", alt: "send message" %>
+            </button>
           <%end%>
         </div>
       </div>

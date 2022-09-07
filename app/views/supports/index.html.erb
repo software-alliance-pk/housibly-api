@@ -73,7 +73,7 @@
       <div class="col-8">
         <div class="chat_sec">
           <div class="top_blk">
-            <div class="tag">
+            <div class="tag chat_box<%= @message.id %> " data-id="<%= @message.id %>" id="chatmessagebox">
               <%= @message.support.ticket_number %>
             </div>
             <div class="dropdown">
@@ -105,7 +105,8 @@
 
                   <div class="profile_pic">
                     <div class="img_blk">
-                      <%= image_tag record.user.avatar&.url , alt: "" %>
+
+                      <%#= image_tag record&.user&.avatar&.url , alt: "" %>
                     </div>
                   </div>
                 </div>

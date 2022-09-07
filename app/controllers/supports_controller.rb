@@ -5,7 +5,6 @@ class SupportsController < ApplicationController
     @message = @end_users.first
   end
   def create
-    debugger
     conversation = current_admin.support_conversations.find_by(id: params[:id])
     if conversation.present?
        conversation.admin_support_messages.create(sender_id: current_admin.id ,body: params[:text])

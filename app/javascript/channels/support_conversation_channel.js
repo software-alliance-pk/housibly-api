@@ -1,15 +1,19 @@
-import consumer from "./consumer"
+import consumer from "./consumer";
 
-consumer.subscriptions.create("SupportConversationChannel", {
-  connected() {
-    // Called when the subscription is ready for use on the server
-  },
+document.addEventListener('turbolinks:load', () => {
+  const chat_id = $("#chatmessagebox").attr('data-id');
+  consumer.subscriptions.create({channel: "SupportConversationChannel",chat_id: chat_id}, {
+    connected() {
+      // Called when the subscription is ready for use on the server
+      console.log("Channel Connected!!! To SupportConversationChannel"+chat_id);
+    },
 
-  disconnected() {
-    // Called when the subscription has been terminated by the server
-  },
+    disconnected() {
+      // Called when the subscription has been terminated by the server
+    },
 
-  received(data) {
-    // Called when there's incoming data on the websocket for this channel
-  }
+    received(data) {
+      console.log(data);
+    }
+  });
 });

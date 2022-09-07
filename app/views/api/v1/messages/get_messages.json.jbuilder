@@ -7,5 +7,5 @@ json.messages @messages.each do |message|
   json.conversation_id message.conversation_id
   json.created_at message.created_at
   json.updated_at message.updated_at
-  json.image message.image.attached? ? rails_blob_url(message.image) : ""
+  json.image message.image.attached? ? message.image.url : ""
 end

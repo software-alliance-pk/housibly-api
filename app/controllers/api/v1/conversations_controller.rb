@@ -16,10 +16,10 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
   def index
-    @conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
+    @conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)      
   end
     def read_messages
-    @conversation = @current_user.conversations.find_by(id: params[:conversation_id])
+    @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
     if @conversation.present?
       @conversation.update(unread_message: 0)
       render json: { message: "message has been read" }, status: :ok

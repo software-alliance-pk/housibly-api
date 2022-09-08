@@ -9,7 +9,7 @@ class SupportsController < ApplicationController
   def create
     conversation = current_admin.support_conversations.find_by(id: params[:id])
     if conversation.present?
-       @message = conversation.admin_support_messages.create(sender_id: current_admin.id ,body: params[:text],image: params[:image])
+       @message = conversation.admin_support_messages.new(sender_id: current_admin.id ,body: params[:text],image: params[:image],file: params[:file])
        if @message.save
         data = {}
           data["id"] = @message.id
@@ -17,10 +17,10 @@ class SupportsController < ApplicationController
           data["body"] = @message.body
           data["user_id"] = @message.sender_id
           data["sender_id"] = @message.support_conversation.sender.id
+          data["recipient_id"] =  @message.support_conversation.recipient.id
           data["created_at"] = @message.created_at
           data["updated_at"] = @message.updated_at
           data["image"] = @message&.image&.url
-          data["user_profile"] = @message&.user&.avatar&.url
           ActionCable.server.broadcast "support_conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
          @conversation =  conversation.admin_support_messages.last
        end

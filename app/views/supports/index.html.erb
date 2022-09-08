@@ -149,22 +149,22 @@
         </div>
           <hr>
         <div class="msg_blk">
-          <%= form_tag({:controller => 'supports', :action => 'create'},:id => 'filter_form', :remote => true) do %>
+          <%= form_with(url: supports_path,:id => 'filter_form') do |f| %>
             <%= hidden_field_tag :id ,@message&.id %>
             <div class="msg_type">
               <div class="icon_blk">
                 <%= image_tag "attactFile.svg" ,alt: "attachFile",id: "clickaddfile"%>
-                <input type="file" name="file" id="submitaddfile" hidden accept="application/pdf,application/vnd.ms-excel">
+                <%= f.file_field :file, accept: 'application/pdf,application/vnd.ms-excel',id: "submitaddfile" ,style:"opacity:0"%>
               </div>
               <div class="icon_blk">
                 <%= image_tag "emoji.svg" ,alt: "icons"%>
               </div>
               <div class="icon_blk">
                 <%= image_tag "addphoto.svg" ,alt: "Photo",id: "clickaddphoto"%>
-                <input type="file" name="image" id="submitaddphoto" hidden accept="image/*" multiple>
+                <%= f.file_field :image, accept: 'image/png,image/gif,image/jpeg',id: "submitaddphoto" ,style:"opacity:0"%>
               </div>
               <div class="form_blk w-100">
-                <%= text_field_tag :text, nil, class: 'input',id: "typemessage", placeholder: "Write your message here" %>
+                <%= f.text_field :text,class: 'input',id: "typemessage", placeholder: "Write your message here" %>
               </div>
             </div>
             <button type="submit">

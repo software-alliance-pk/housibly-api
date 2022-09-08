@@ -37,6 +37,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     if @user && @user.signup_token_valid?
       @user.update(is_otp_verified: true)
       @token = JsonWebTokenService.encode({ email: @user.email })
+      AdminNotification.create(actor_id: Admin.admin.first.id, recipient_id: @user.id, action: "Please complete your profile")
     else
       render json: { message: "Incorrect Email or OTP" }, status: 401
     end

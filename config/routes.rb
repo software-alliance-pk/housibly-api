@@ -79,9 +79,10 @@ Rails.application.routes.draw do
       put 'update_support_closer_profile', to: 'users#update_support_closer_profile'
       get 'blocked_users', to: 'users#blocked_users'
       get 'unblocked_users', to: 'users#unblocked_users'
+      post 'block_unblock_user', to: 'users#block_unblock_user'
       get 'reported_users', to: 'users#reported_users'
       get 'profile_visitor_list', to: 'users#profile_visitor_list'
-      get 'view_user_profile', to: 'users#view_user_profile'
+      post 'view_user_profile', to: 'users#view_user_profile'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'
       get '/get_card', to: 'payments#get_card'
@@ -112,9 +113,22 @@ Rails.application.routes.draw do
           post 'report_conversation'
         end
       end
-
-     resources :conversations, only: [:create, :index, :destroy]
-     resources :messages, only: [:create, :index, :destroy]
+     resources :notifications do
+      collection do
+        post :notification_token
+      end
+    end
+     resources :conversations, only: [:create, :index, :destroy] do
+      collection do
+        post :notification_token
+        post :read_messages
+      end
+    end
+     resources :messages, only: [:create, :destroy] do
+      collection do
+        post :get_messages
+      end
+    end
       resources :user_preferences, only: [:create, :index]
       get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'

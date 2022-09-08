@@ -9,6 +9,7 @@ class User < ApplicationRecord
                     tsearch: { prefix: true }
                   }
   has_secure_password
+  has_many :mobile_devices
   has_many :conversations, dependent: :destroy,foreign_key: :sender_id
   has_many :conversations, dependent: :destroy,foreign_key: :recipient_id
   has_many :support_conversations, dependent: :destroy,foreign_key: :sender_id

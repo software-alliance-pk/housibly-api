@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_07_092435) do
+ActiveRecord::Schema.define(version: 2022_09_07_083553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 2022_09_07_092435) do
   create_table "conversations", force: :cascade do |t|
     t.integer "recipient_id"
     t.integer "sender_id"
-    t.integer "unread_message"
+    t.integer "unread_message", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
@@ -126,6 +126,14 @@ ActiveRecord::Schema.define(version: 2022_09_07_092435) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "mobile_devices", force: :cascade do |t|
+    t.string "mobile_device_token"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_mobile_devices_on_user_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -389,6 +397,7 @@ ActiveRecord::Schema.define(version: 2022_09_07_092435) do
   add_foreign_key "dream_addresses", "users"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
+  add_foreign_key "mobile_devices", "users"
   add_foreign_key "pages", "admins"
   add_foreign_key "professions", "users"
   add_foreign_key "properties", "users"

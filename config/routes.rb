@@ -91,9 +91,10 @@ Rails.application.routes.draw do
           post :get_bookmarks
         end
       end
-      resources :reviews, only: [:create, :index] do
+      resources :reviews, only: [:create] do
         collection do
          post :review_filter
+         post :get_reviews
        end
       end
       resources :support_conversations do

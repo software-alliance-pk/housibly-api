@@ -1,7 +1,9 @@
 class Admin < ApplicationRecord
-  after_commit :send_notification
+  #after_commit :send_notification
   has_many :pages, dependent: :destroy
-  has_many :notifications, foreign_key: :actor_id, class_name: "Notification"
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
+  has_many :admin_support_messages, dependent: :destroy,foreign_key: :sender_id
   require "csv"
     include PgSearch::Model
      pg_search_scope :custom_search,
@@ -38,9 +40,9 @@ class Admin < ApplicationRecord
       end
    end
 
-  def send_notification
-    Admin.admin.each do |admin|
-      Notification.create(recipient: admin, actor: admin,action: "#{admin.full_name} is active",notifiable: self)
-    end
-  end
+  # def send_notification
+  #   Admin.admin.each do |admin|
+  #     Notification.create(recipient: admin, actor: admin,action: "#{admin.full_name} is active",notifiable: self)
+  #   end
+  # end
 end

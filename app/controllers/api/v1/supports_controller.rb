@@ -1,8 +1,7 @@
 class Api::V1::SupportsController < Api::V1::ApiController
 
   def create_ticket
-    @ticket = Support.new(support_params.merge(ticket_number: generate_ticket_number))
-    @ticket.user = @current_user
+    @ticket = current_user.supports.new(support_params.merge(ticket_number: generate_ticket_number.upcase))
     if @ticket.save
       @ticket
     else
@@ -11,7 +10,7 @@ class Api::V1::SupportsController < Api::V1::ApiController
   end
 
   def get_tickets
-    @tickets = @current_user.supports.order("created_at desc")
+    @tickets = current_user.supports.order("created_at desc")
     if @tickets
       @tickets
     else

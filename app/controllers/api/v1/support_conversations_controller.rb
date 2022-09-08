@@ -2,22 +2,18 @@ class Api::V1::SupportConversationsController < Api::V1::ApiController
   def create
     @conversation = SupportConversation.find_by(support_id: params[:support_id])
     unless @conversation.present?
-      support = Support.find_by(id: params[:support_id])
-      @conversation = support.build_support_conversation
-      @conversation.sender_id = current_user.id
-      @conversation.recipient_id = params[:recipient_id]
-      if current_user.want_support_closer?
-        @conversation.update(conv_type: "support_closer")
-      else
-        @conversation.update(conv_type: "end_user")
-      end
+      support = current_user.supports.find_by(id: params[:support_id])
+      conv_type = current_user.want_support_closer? ? "support_closer" : "end_user"
+      @conversation = support.
+        build_support_conversation(recipient_id: Admin.admin.first.id,sender_id:current_user.id,
+                                   conv_type: conv_type)
       if @conversation.save
        @conversation
       else
         render_error_messages(@conversation)
       end
     else
-      render json: {message: "You can not create conversation again."}
+      @conversation
     end
   end
   def index
@@ -37,21 +33,21 @@ class Api::V1::SupportConversationsController < Api::V1::ApiController
 
 def create_message
 		@conversation = SupportConversation.find_by(id: params[:support_conversation_id])
-		@message = @current_user.support_messages.build(message_params)
+		@message = @current_user.user_support_messages.build(message_params)
 		@message.support_conversation_id = @conversation.id
 		if @message.save
 		    data = {}
 	        data["id"] = @message.id
 	        data["support_conversation_id"] = @message.support_conversation_id
 	        data["body"] = @message.body
-	        data["user_id"] = @message.user_id
+	        data["user_id"] = @message.sender_id
 	        data["sender_id"] = @message.support_conversation.sender.id
-	        data["recipient_id"] = @message.support_conversation.recipient_id
+	        data["recipient_id"] = Admin.admin.first
 	        data["created_at"] = @message.created_at
 	        data["updated_at"] = @message.updated_at
 	        data["image"] = @message&.image&.url
 	        data["user_profile"] = @message&.user&.avatar&.url
-	        ActionCable.server.broadcast "conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
+	        ActionCable.server.broadcast "support_conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
 		else
 			render_error_messages(@message)
 		end

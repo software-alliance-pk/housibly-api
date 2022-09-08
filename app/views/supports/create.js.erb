@@ -1,0 +1,16 @@
+$("#typemessage").val("");
+$(".chat_msg").append(
+    '<div class="user_msg">'+
+    '<div class="d-flex flex-column">'+
+    '<div class="msg">'+
+    '<p><%= @conversation.body %></p>'+
+    '</div>'+
+    '<p class="msg_time mt-2"><%= time_ago_in_words(@conversation.created_at) %></p>'+
+    '</div>'+
+    '<div class="profile_pic">'+
+    '<div class="img_blk">'+
+    '</div>'+
+    '</div>'+
+    '</div>'
+);
+$(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);

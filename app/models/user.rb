@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_many :support_conversations, dependent: :destroy,foreign_key: :sender_id
   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
   has_many :messages, dependent: :destroy
-  has_many :support_messages, dependent: :destroy
+  has_many :user_support_messages, dependent: :destroy,foreign_key: :sender_id
   geocoded_by :address
   has_many :notifications, foreign_key: :recipient_id, class_name: "Notification"
   has_many :notifications, foreign_key: :actor_id, class_name: 'Notification'

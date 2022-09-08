@@ -3,7 +3,23 @@ class Api::V1::ReportingController < Api::V1::ApiController
 		@report = @current_user.reportings.build
 		@report.reported_user_id = params[:reported_user]
 		if @report.save
-			@ticket = Support.create(ticket_number: generate_ticket_number, user_id: @current_user.id,status: "pending", description:"please take action against this user")
+			@ticket = Support.create(ticket_number: generate_ticket_number,
+		  user_id: @current_user.id,status: "pending",
+		  description:"please take action against this user")
+		  if @ticket.save
+		  	@ticket
+		  else
+		  	render_error_messages(@ticket)
+		  end
+		  conv_type = current_user.want_support_closer? ? "support_closer" : "end_user"
+			@conversation = SupportConversation.create(
+			recipient_id: Admin.admin.first.id,sender_id:current_user.id,
+			conv_type: conv_type, support_id: @ticket.id)
+			if @conversation.save
+				@conversation
+			else
+				render_error_messages(@conversation)
+			end
 		else
 			render_error_messages(@report)
 		end

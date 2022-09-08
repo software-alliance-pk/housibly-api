@@ -2,10 +2,10 @@ import consumer from "./consumer";
 
 document.addEventListener('turbolinks:load', () => {
   const chat_id = $("#chatmessagebox").attr('data-id');
-  consumer.subscriptions.create({channel: "SupportConversationChannel",chat_id: chat_id}, {
+  consumer.subscriptions.create({channel: "SupportConversationChannel", id: "support_conversations_"+chat_id}, {
     connected() {
       // Called when the subscription is ready for use on the server
-      console.log("Channel Connected!!! To SupportConversationChannel"+chat_id);
+      console.log("Channel Connected!!! To SupportConversationChannel");
     },
 
     disconnected() {
@@ -13,7 +13,55 @@ document.addEventListener('turbolinks:load', () => {
     },
 
     received(data) {
-      console.log(data);
+      if(data.body.support_conversation_id== chat_id)
+      {
+        data = data.body;
+        console.log(data);
+        var aDay = 24*60*60*1000;
+        $(".chat_msg").append(
+            '<div class="support_msg">'+
+            '<div class="d-flex flex-column">'+
+            '<div class="msg">'+
+            '<p>'+data.body+'</p>'+
+            '</div>'+
+            '<p class="msg_time mt-2">'+timeSince(new Date(Date.now()))+'</p>'+
+            '</div>'+
+            '<div class="profile_pic">'+
+            '<div class="img_blk">'+
+            '</div>'+
+            '</div>'+
+            '</div>'
+        );
+      }
+      $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
     }
   });
+
+  function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes";
+    }
+    return " less than a minute";
+  }
 });

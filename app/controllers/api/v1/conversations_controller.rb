@@ -1,9 +1,9 @@
 class Api::V1::ConversationsController < Api::V1::ApiController
 	def create
-		if Conversation.where(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id).present? ||
-      Conversation.where(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id]).present?
-      @conversation = Conversation.where(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id) ||
-      @conversation = Conversation.where(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id])
+		if Conversation.find_by(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id).present? ||
+      Conversation.find_by(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id]).present?
+      @conversation = Conversation.find_by(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id) ||
+      @conversation = Conversation.find_by(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id])
       @conversation
     else
 	    @conversation = Conversation.new(conversation_params)

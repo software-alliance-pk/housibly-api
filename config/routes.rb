@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
   root "dashboards#index"
-  resources :supports
+  resources :supports do
+    member do
+      get :get_specific_chat
+      get :ticket_in_progress
+      get :ticket_closed
+      get :ticket_pending
+    end
+  end
   resources :sub_admins do
     member do
       get :deactive_admin

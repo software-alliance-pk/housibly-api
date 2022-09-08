@@ -7,6 +7,7 @@ class SupportsController < ApplicationController
   end
 
   def create
+    respond_to do |format|
     conversation = current_admin.support_conversations.find_by(id: params[:id])
     if conversation.present?
        @message = conversation.admin_support_messages.new(sender_id: current_admin.id ,body: params[:text],image: params[:image],file: params[:file])
@@ -24,6 +25,11 @@ class SupportsController < ApplicationController
           ActionCable.server.broadcast "support_conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
          @conversation =  conversation.admin_support_messages.last
        end
+    end
+    format.js {
+    render  :template => "support/create.js.erb",
+            :layout => false
+    }
     end
   end
 

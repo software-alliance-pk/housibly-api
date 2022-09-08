@@ -15,23 +15,46 @@ document.addEventListener('turbolinks:load', () => {
     received(data) {
       if(data.body.support_conversation_id== chat_id)
       {
+        $("#typemessage").val("");
         data = data.body;
-        console.log(data);
         var aDay = 24*60*60*1000;
-        $(".chat_msg").append(
-            '<div class="support_msg">'+
-            '<div class="d-flex flex-column">'+
-            '<div class="msg">'+
-            '<p>'+data.body+'</p>'+
-            '</div>'+
-            '<p class="msg_time mt-2">'+timeSince(new Date(Date.now()))+'</p>'+
-            '</div>'+
-            '<div class="profile_pic">'+
-            '<div class="img_blk">'+
-            '</div>'+
-            '</div>'+
-            '</div>'
-        );
+        console.log(data);
+        if(data.recipient_id == data.user_id)
+        {
+          $(".chat_msg").append(
+              '<div class="user_msg">'+
+              '<div class="d-flex flex-column">'+
+              '<div class="msg">'+
+              '<p>'+data.body+'</p>'+
+              '</div>'+
+              '<p class="msg_time mt-2">'+timeSince(new Date(Date.now()))+'</p>'+
+              '</div>'+
+              '<div class="profile_pic">'+
+              '<div class="img_blk">'+
+              '</div>'+
+              '</div>'+
+              '</div>'
+          );
+
+        }
+        else
+        {
+          $(".chat_msg").append(
+              '<div class="support_msg">'+
+              '<div class="d-flex flex-column">'+
+              '<div class="msg">'+
+              '<p>'+data.body+'</p>'+
+              '</div>'+
+              '<p class="msg_time mt-2">'+timeSince(new Date(Date.now()))+'</p>'+
+              '</div>'+
+              '<div class="profile_pic">'+
+              '<div class="img_blk">'+
+              '</div>'+
+              '</div>'+
+              '</div>'
+          );
+
+        }
       }
       $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
     }

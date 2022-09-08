@@ -149,7 +149,7 @@
         </div>
           <hr>
         <div class="msg_blk">
-          <%= form_with(url: supports_path,:id => 'filter_form') do |f| %>
+          <%= form_with(url: supports_path,:id => 'filter_form',local: false,method: :post ) do |f| %>
             <%= hidden_field_tag :id ,@message&.id %>
             <div class="msg_type">
               <div class="icon_blk">

@@ -22,20 +22,20 @@
         <div class="tab-content">
         <div id="end_users" class="tab-pane fade show active">
           <ul class="chats active">
-            <% @end_users.each do |record| %>
+            <% @end_users.each_with_index do |record,index| %>
               <li>
-              <div class="chat_blk">
+              <div class="chat_blk <%= index == 0 ? 'active-bg' : "" %>">
                 <div class="chat_blk_left">
                   <div class="profile_blk">
                     <img src="./assets/images/chatProfile.svg" alt="">
                   </div>
                   <div class="profile_name">
                     <p><%= record.sender.full_name %></p>
-                    <span>Where is my refund?</span>
+                    <span><%= record.user_support_messages.last&.body %></span>
                   </div>
                 </div>
                 <div class="time">
-                  <p>21:36</p>
+                  <p><%= record.created_at.strftime("%H:%M") %></p>
                   <div class="message_count">3</div>
                   <div class="online"></div>
                 </div>
@@ -54,12 +54,12 @@
                     <img src="./assets/images/chatProfile.svg" alt="">
                   </div>
                   <div class="profile_name">
-                    <p>Alena Rhiel Madsen</p>
-                    <span>Where is my refund?</span>
+                    <p><%= record.sender.full_name %></p>
+                    <span><%= record.user_support_messages.last&.body %></span>
                   </div>
                 </div>
                 <div class="time">
-                  <p>21:36</p>
+                  <p><%= record.created_at.strftime("%H:%M") %></p>
                   <div class="message_count">3</div>
                   <div class="online"></div>
                 </div>
@@ -88,11 +88,13 @@
             </div>
           </div>
           <div class="chat_msg">
-            <%@message.support_messages.each  do |record| %>
-              <% unless record.created_at.to_date == Date.today%>
+            <% last_index = '' %>
+            <%@message.support_messages.each do |record| %>
+              <% if last_index != record.created_at.strftime("%D")%>
                 <div class="mt-5 d-flex chat_date">
-                  <span>16 August 2021</span>
+                  <span><%= record.created_at.strftime("%d %B %Y") %></span>
                 </div>
+                <% last_index = record.created_at.strftime("%D") %>
               <%end%>
               <% unless record.type == "AdminSupportMessage" %>
                 <div class="support_msg">

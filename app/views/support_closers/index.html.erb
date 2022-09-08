@@ -65,7 +65,7 @@
           <tr>
             <th style="width:12.2rem">
               <div class="d-flex align-items-center">
-                <input type="checkbox" class="me-2">
+                <input type="checkbox" class="me-2"> 
                 Select all
               </div>
             </th>
@@ -93,7 +93,9 @@
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
-                    <input type="checkbox" class="me-3">
+<!--                     <input type="checkbox" class="me-3">
+ -->
+                <input class="select"  type="checkbox" data_value="<%= record.id  %>" />
 
                     <div class="img_blk">
                       <%= image_tag record&.avatar&.url %>
@@ -109,13 +111,17 @@
                   </p>
                 </td>
                 <td><%= record.phone_number %></td>
-                <td><%= record&.professions&.first %></td>
+                <td><%= record&.professions&.first.title %></td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="rating_blk me-2">
                       <%= image_tag 'rating.svg' %>
                     </div>
-                    <%#= record.rating %> Need to do || Need to  Download the selected
+                    <% if Review.where(support_closer_id: record.id).pluck(:rating).sum/5 == 0%>
+                    <%= 1%>
+                    <% else %>
+                      <%= Review.where(support_closer_id: record.id).pluck(:rating).sum/5%>
+                      <%end%>
                   </div>
                 </td>
                 <td>

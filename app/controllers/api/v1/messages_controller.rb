@@ -2,19 +2,28 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
 	def create
 		conversation = Conversation.find_by(id: params[:conversation_id])
-		@message = @current_user.messages.build(message_params)
-		@message.conversation_id = conversation.id 
-		if @message.save
-			data = compile_message(@message)
-      if conversation.sender == @current_user
-         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: "Read new message" )
-      else
-         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: "Read new message" )
-      end
-      ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { title: 'dsadasdas', body: data.as_json }
-      render json: {message: "success"},status: :ok
-	else
-			render_error_messages(@message)
+		if conversation.is_blocked != true
+			@message = @current_user.messages.build(message_params)
+			@message.conversation_id = conversation.id 
+			if @message.save
+				data = compile_message(@message)
+				if conversation.unread_message != 0
+					UserNotification.find_by(actor_id: @current_user.id,recipient_id:conversation.recipient_id) ||
+					UserNotification.find_by(actor_id: @current_user.id,recipient_id:conversation.sender_id)
+				else
+		      if conversation.sender == @current_user
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: "Read new message" )
+		      else
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: "Read new message" )
+		      end
+		    end
+	      ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { title: 'dsadasdas', body: data.as_json }
+	      render json: {message: "success"},status: :ok
+		else
+				render_error_messages(@message)
+			end
+		else
+			render json: {message: "You cannot send message to your lovely friend.Because you are blocked"},status: :ok
 		end
 	end
 

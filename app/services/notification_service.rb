@@ -17,7 +17,6 @@ class NotificationService
 
         registration_ids = user_notification.recipient.mobile_devices.pluck(:mobile_device_token)
         registration_ids.each do |registration_id|
-            debugger
          response = fcm_client.send(registration_id, options)
           puts response
       end

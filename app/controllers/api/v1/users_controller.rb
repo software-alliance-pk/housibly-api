@@ -66,14 +66,20 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def block_unblock_user
     user = User.find_by(id: params[:user_id])
-    if params[:is_blocked].present? && params[:is_blocked] == "true"
-      if user.update(is_blocked: params[:is_blocked])
-        render json: {message: "User added in blacklist"},status: :ok
+    conversation = Conversation.find_by(recipient_id: user.id,sender_id: @current_user.id) ||
+    conversation = Conversation.find_by(recipient_id: @current_user.id ,sender_id: user.id)
+    if conversation.present?
+      if params[:is_blocked].present? && params[:is_blocked] == "true"
+        if conversation.update(is_blocked: params[:is_blocked])
+          render json: {message: "User added in blacklist"},status: :ok
+        end
+      elsif params[:is_blocked].present? && params[:is_blocked] == "false"
+        if conversation.update(is_blocked: params[:is_blocked])
+          render json: {message: "User removed from blacklist"},status: :ok
+        end
       end
-    elsif params[:is_blocked].present? && params[:is_blocked] == "false"
-      if user.update(is_blocked: params[:is_blocked])
-        render json: {message: "User removed from blacklist"},status: :ok
-      end
+    else
+      render json: {message:[]}, status: :ok
     end
   end
 

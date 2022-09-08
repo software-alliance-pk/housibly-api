@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_07_083553) do
+ActiveRecord::Schema.define(version: 2022_09_08_154822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2022_09_07_083553) do
     t.integer "unread_message", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_blocked"
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
     t.index ["sender_id"], name: "index_conversations_on_sender_id"
   end
@@ -142,10 +143,9 @@ ActiveRecord::Schema.define(version: 2022_09_07_083553) do
     t.integer "actor_id"
     t.datetime "read_at"
     t.string "action"
-    t.integer "notifiable_id"
-    t.string "notifiable_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -368,7 +368,6 @@ ActiveRecord::Schema.define(version: 2022_09_07_083553) do
     t.float "longitude"
     t.float "latitude"
     t.boolean "is_reported", default: false
-    t.boolean "is_blocked", default: false
   end
 
   create_table "versions", force: :cascade do |t|

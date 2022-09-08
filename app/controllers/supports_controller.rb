@@ -11,4 +11,11 @@ class SupportsController < ApplicationController
        @conversation =  conversation.admin_support_messages.last
     end
   end
+
+  def get_specific_chat
+    @support_closers = SupportConversation.support_closer.order(created_at: :desc)
+    @end_users = SupportConversation.end_user.order(created_at: :desc)
+    @message = SupportConversation.find_by(id: params["id"])
+    render 'index'
+  end
 end

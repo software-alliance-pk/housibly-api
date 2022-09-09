@@ -4,7 +4,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		conversation = Conversation.find_by(id: params[:conversation_id])
 		if conversation.is_blocked != true
 			@message = @current_user.messages.build(message_params)
-			@message.conversation_id = conversation.id 
+			@message.conversation_id = conversation.id
 			if @message.save
 				data = compile_message(@message)
 		      if conversation.sender == @current_user

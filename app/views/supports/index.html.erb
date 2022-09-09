@@ -20,58 +20,58 @@
           </li>
         </ul>
         <div class="tab-content">
-        <div id="end_users" class="tab-pane fade <%= @message&.conv_type == "end_user" ? " show active" : "" %>">
-          <ul class="chats active">
-            <% @end_users.each do |record| %>
-              <li>
-                <%= link_to get_specific_chat_support_path(id: record) do %>
-                     <div class="chat_blk <%= record == @message ? 'active-bg' : "" %>">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p><%= record.sender.full_name %></p>
-                    <span><%= record.user_support_messages.last&.body %></span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p><%= record.created_at.strftime("%H:%M") %></p>
-                  <div class="message_count">3</div>
-                  <div class="online"></div>
-                </div>
-              </div>
-                <%end%>
-            </li>
-            <%end%>
-          </ul>
-        </div>
-        <div id="support_closers" class="tab-pane fade <%= @message&.conv_type == "support_closer" ? " show active" : "" %> ">
-          <ul class=" chats">
-            <% @support_closers.each do |record| %>
-              <li>
-                <%= link_to get_specific_chat_support_path(id: record) do %>
-                  <div class="chat_blk <%= record == @message ? 'active-bg' : ''%>">
-                <div class="chat_blk_left">
-                  <div class="profile_blk">
-                    <img src="./assets/images/chatProfile.svg" alt="">
-                  </div>
-                  <div class="profile_name">
-                    <p><%= record.sender.full_name %></p>
-                    <span><%= record.user_support_messages.last&.body %></span>
-                  </div>
-                </div>
-                <div class="time">
-                  <p><%= record.created_at.strftime("%H:%M") %></p>
-                  <div class="message_count">3</div>
-                  <div class="online"></div>
-                </div>
-              </div>
-                <%end%>
-            </li>
-            <%end%>
-          </ul>
-        </div>
+          <div id="end_users" class="tab-pane fade <%= @message&.conv_type == "end_user" ? " show active" : "" %>">
+            <ul class="chats active">
+              <% @end_users.each do |record| %>
+                <li>
+                  <%= link_to get_specific_chat_support_path(id: record) do %>
+                    <div class="chat_blk <%= record == @message ? 'active-bg' : "" %>">
+                      <div class="chat_blk_left">
+                        <div class="profile_blk">
+                          <%= image_tag record&.sender&.avatar&.url, alt: "" %>
+                        </div>
+                        <div class="profile_name">
+                          <p><%= record.sender.full_name %></p>
+                          <span><%= record.user_support_messages.last&.body %></span>
+                        </div>
+                      </div>
+                      <div class="time">
+                        <p><%= record.created_at.strftime("%H:%M") %></p>
+                        <div class="message_count">3</div>
+                        <div class="online"></div>
+                      </div>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div id="support_closers" class="tab-pane fade <%= @message&.conv_type == "support_closer" ? " show active" : "" %> ">
+            <ul class=" chats">
+              <% @support_closers.each do |record| %>
+                <li>
+                  <%= link_to get_specific_chat_support_path(id: record) do %>
+                    <div class="chat_blk <%= record == @message ? 'active-bg' : '' %>">
+                      <div class="chat_blk_left">
+                        <div class="profile_blk">
+                          <%= image_tag record&.sender&.avatar&.url, alt: "" %>
+                        </div>
+                        <div class="profile_name">
+                          <p><%= record.sender.full_name %></p>
+                          <span><%= record.user_support_messages.last&.body %></span>
+                        </div>
+                      </div>
+                      <div class="time">
+                        <p><%= record.created_at.strftime("%H:%M") %></p>
+                        <div class="message_count">3</div>
+                        <div class="online"></div>
+                      </div>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="col-8">
@@ -87,90 +87,97 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
                   <% if @message %>
-                  <%= link_to "Pending", ticket_pending_support_path(id: @message.support.id),class: "dropdown-item", remote:true%>
-                  <%end%>
+                    <%= link_to "Pending", ticket_pending_support_path(id: @message.support.id), class: "dropdown-item", remote: true %>
+                  <% end %>
                 </li>
                 <li>
                   <% if @message %>
-                  <%= link_to "In progress", ticket_in_progress_support_path(id: @message.support.id),class: "dropdown-item",remote:true%>
-                  <%end%>
+                    <%= link_to "In progress", ticket_in_progress_support_path(id: @message.support.id), class: "dropdown-item", remote: true %>
+                  <% end %>
                 </li>
                 <li>
                   <% if @message %>
-                  <%= link_to "Closed", ticket_closed_support_path(id: @message&.support.id),class: "dropdown-item",remote:true%>
-                  <%end%>
+                    <%= link_to "Closed", ticket_closed_support_path(id: @message&.support.id), class: "dropdown-item", remote: true %>
+                  <% end %>
                 </li>
               </ul>
             </div>
           </div>
           <div class="chat_msg">
             <% last_index = '' %>
-            <%@message&.support_messages&.each do |record| %>
-              <% if last_index != record.created_at.strftime("%D")%>
+            <% @message&.support_messages&.each do |record| %>
+              <% if last_index != record.created_at.strftime("%D") %>
                 <div class="mt-5 d-flex chat_date">
                   <span><%= record.created_at.strftime("%d %B %Y") %></span>
                 </div>
                 <% last_index = record.created_at.strftime("%D") %>
-              <%end%>
-              <% unless record.type == "AdminSupportMessage" %>
+              <% end %>
+              <% if record.type == "AdminSupportMessage" %>
                 <div class="support_msg">
                   <div class="d-flex flex-column">
                     <div class="msg">
                       <p><%= record.body %></p>
+                      <% if record&.image.attached? %>
+                        <%= image_tag record&.image&.url, alt: "" %>
+                      <% end %>
                     </div>
                     <p class="msg_time mt-2"><%= time_ago_in_words(record.created_at) %></p>
                   </div>
 
                   <div class="profile_pic">
                     <div class="img_blk">
-
-                      <%#= image_tag record&.user&.avatar&.url , alt: "" %>
+                      <%= image_tag "logosmall.svg" %>
                     </div>
                   </div>
                 </div>
-              <%else%>
-                 <div class="user_msg">
-                    <div class="profile_pic">
-                      <div class="img_blk">
-                        <img src="./assets/images/chatProfile.svg" alt="">
-                      </div>
+              <% else %>
+                <div class="user_msg">
+                  <div class="profile_pic">
+                    <div class="img_blk">
+                      <%= image_tag record&.user&.avatar&.url, alt: "" %>
                     </div>
-                    <div class="d-flex flex-column">
-                      <div class="msg">
-                        <p><%= record.body %></p>
-                      </div>
-                      <p class="msg_time mt-2"> <%= time_ago_in_words(record.created_at) %></p>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <div class="msg">
+                      <p><%= record.body %></p>
+                      <% if record&.image.attached? %>
+                        <%= image_tag record&.image&.url, alt: "" %>
+                      <% end %>
                     </div>
+                    <p class="msg_time mt-2"> <%= time_ago_in_words(record.created_at) %></p>
+                  </div>
                 </div>
-              <%end%>
-            <%end%>
+              <% end %>
+            <% end %>
           </div>
 
         </div>
-          <hr>
+        <hr>
         <div class="msg_blk">
-          <%= form_with(url: supports_path,:id => 'filter_form',local: false,method: :post ) do |f| %>
-            <%= hidden_field_tag :id ,@message&.id %>
-            <div class="msg_type">
-              <div class="icon_blk">
-                <%= image_tag "attactFile.svg" ,alt: "attachFile",id: "clickaddfile"%>
-                <%= f.file_field :file, accept: 'application/pdf,application/vnd.ms-excel',id: "submitaddfile" ,style:"opacity:0"%>
+          <%= form_with(url: supports_path, :id => 'filter_form', local: false, method: :post) do |f| %>
+            <%= hidden_field_tag :id, @message&.id %>
+            <div class="d-flex">
+              <div class="msg_type">
+                <div class="icon_blk">
+                  <%= image_tag "attactFile.svg", alt: "attachFile", id: "clickaddfile" %>
+                  <%= f.file_field :file, accept: 'application/pdf,application/vnd.ms-excel', id: "submitaddfile", style: "opacity:0" %>
+                </div>
+                <div class="icon_blk">
+                  <%= image_tag "emoji.svg", alt: "icons" %>
+                </div>
+                <div class="icon_blk">
+                  <%= image_tag "addphoto.svg", alt: "Photo", id: "clickaddphoto" %>
+                  <%= f.file_field :image, accept: 'image/png,image/gif,image/jpeg', id: "submitaddphoto", style: "opacity:0" %>
+                </div>
+                <div class="form_blk w-100">
+                  <%= f.text_field :text, class: 'input', id: "typemessage", placeholder: "Write your message here" %>
+                </div>
               </div>
-              <div class="icon_blk">
-                <%= image_tag "emoji.svg" ,alt: "icons"%>
-              </div>
-              <div class="icon_blk">
-                <%= image_tag "addphoto.svg" ,alt: "Photo",id: "clickaddphoto"%>
-                <%= f.file_field :image, accept: 'image/png,image/gif,image/jpeg',id: "submitaddphoto" ,style:"opacity:0"%>
-              </div>
-              <div class="form_blk w-100">
-                <%= f.text_field :text,class: 'input',id: "typemessage", placeholder: "Write your message here" %>
-              </div>
+              <button type="submit">
+                <%= image_tag "sendMessage.svg", alt: "send message" %>
+              </button>
             </div>
-            <button type="submit">
-              <%= image_tag "sendMessage.svg", alt: "send message" %>
-            </button>
-          <%end%>
+          <% end %>
         </div>
       </div>
     </div>

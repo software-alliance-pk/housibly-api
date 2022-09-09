@@ -2,7 +2,7 @@ import consumer from "./consumer";
 
 document.addEventListener('turbolinks:load', () => {
   const chat_id = $("#chatmessagebox").attr('data-id');
-  consumer.subscriptions.create({channel: "SupportConversationChannel", id: "support_conversations_"+chat_id}, {
+  consumer.subscriptions.create({channel: "SupportConversationChannel", id: "support_conversations_" + chat_id}, {
     connected() {
       // Called when the subscription is ready for use on the server
       console.log("Channel Connected!!! To SupportConversationChannel");
@@ -17,42 +17,42 @@ document.addEventListener('turbolinks:load', () => {
       {
         $("#typemessage").val("");
         data = data.body;
-        var aDay = 24*60*60*1000;
+        var aDay = 24 * 60 * 60 * 1000;
         console.log(data);
-        if(data.recipient_id == data.user_id)
-        {
+        if (data.recipient_id == data.user_id) {
           $(".chat_msg").append(
-              '<div class="user_msg">'+
-              '<div class="d-flex flex-column">'+
-              '<div class="msg">'+
-              '<p>'+data.body+'</p>'+
-              '</div>'+
-              '<p class="msg_time mt-2">'+timeSince(new Date(Date.now()))+'</p>'+
-              '</div>'+
-              '<div class="profile_pic">'+
-              '<div class="img_blk">'+
-              '</div>'+
-              '</div>'+
+              '<div class="support_msg">' +
+              '<div class="d-flex flex-column">' +
+              '<div class="msg">' +
+              '<p>' + data.body + '</p>' +
+              (data.image !== null ? "<img src="+data.image+">" : '') +
+              '<p class="msg_time mt-2">' + timeSince(new Date(Date.now())) + '</p>' +
+              '</div>' +
+              '</div>' +
+              '<div class="profile_pic">' +
+              '<div class="img_blk">' +
+              '<img src="/assets/logosmall-9e07e335886787ba1a8cbd58506cb2edac7f8e62a7c82b33affda5ba8c3bbb49.svg">'+
+              '</div>' +
+              '</div>'
+          );
+        } else {
+          $(".chat_msg").append(
+              '<div class="user_msg">' +
+              '<div class="profile_pic">' +
+              '<div class="img_blk">' +
+              "<img src="+data.user_profile+">" +
+              '</div>' +
+              '</div>' +
+              '<div class="d-flex flex-column">' +
+              '<div class="msg">' +
+              '<p>' + data.body + '</p>' +
+              (data.image !== null ? "<img src="+data.image+">" : '') +
+              '</div>' +
+              '<p class="msg_time mt-2">' + timeSince(new Date(Date.now())) + '</p>' +
+              '</div>' +
               '</div>'
           );
 
-        }
-        else
-        {
-          $(".chat_msg").append(
-              '<div class="support_msg">'+
-              '<div class="d-flex flex-column">'+
-              '<div class="msg">'+
-              '<p>'+data.body+'</p>'+
-              '</div>'+
-              '<p class="msg_time mt-2">'+timeSince(new Date(Date.now()))+'</p>'+
-              '</div>'+
-              '<div class="profile_pic">'+
-              '<div class="img_blk">'+
-              '</div>'+
-              '</div>'+
-              '</div>'
-          );
 
         }
       }

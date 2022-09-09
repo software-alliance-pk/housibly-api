@@ -2,13 +2,12 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
 	def create
 		conversation = Conversation.find_by(id: params[:conversation_id])
-		if conversation.is_blocked != true
 			@message = @current_user.messages.build(message_params)
 			@message.conversation_id = conversation.id 
 			if @message.save
 				data = compile_message(@message)
 		      if conversation.sender == @current_user
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: "Read new message" )
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body )
 		      else
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: "Read new message" )
 		      end
@@ -17,9 +16,6 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		  else
 				render_error_messages(@message)
 			end
-		else
-			render json: {message: "You cannot send message to your lovely friend.Because you are blocked"},status: :ok
-		end
 	end
 
 	def get_messages

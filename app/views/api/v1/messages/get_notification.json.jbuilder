@@ -1,5 +1,4 @@
 json.notification @notifications.each do |notification|
-	debugger
 	json.id notification&.id
 	json.title notification&.title
 	json.recipient_id notification&.recipient_id

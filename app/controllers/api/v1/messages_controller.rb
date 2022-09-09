@@ -30,6 +30,23 @@ class Api::V1::MessagesController < Api::V1::ApiController
       not_found
     end
   end
+  def get_notification
+  	@notifications = []
+  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
+  	conversations.each do |conversation|
+  		if UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).present?
+  	   notification = UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).last
+  	  elsif UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).present?
+  	   notification = UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).last
+  	  end
+  	   @notifications << notification
+  	end
+	if @notifications
+	  render json: {message: @notifications}, status: :ok
+	else
+	  render json: {message: []},status: :ok
+	end
+end
 
 	private
 	def message_params

@@ -127,6 +127,7 @@ Rails.application.routes.draw do
      resources :messages, only: [:create, :destroy] do
       collection do
         post :get_messages
+        get :get_notification
       end
     end
       resources :user_preferences, only: [:create, :index]

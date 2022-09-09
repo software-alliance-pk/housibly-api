@@ -13,13 +13,13 @@
 
         <div class="dropdown mb-4">
           <select class="text dropdown-toggle input w-auto fs_5 fw_600" id="guideline_select">
-            <option value="1" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
+            <option value="1" data-page="terms&condition" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
               Terms & Condition
             </option>
-            <option value="3" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
+            <option value="3" data-page="privacy_policy" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
               Privacy Policy
             </option>
-            <option value="2" <%= params[:permalink] == "faq" ? "selected" : "" %>>
+            <option value="2" data-page="faq" <%= params[:permalink] == "faq" ? "selected" : "" %>>
               FAQ
             </option>
           </select>
@@ -31,13 +31,13 @@
           <div class="row">
             <div class="col-lg-8">
 
-              <div class="details" contenteditable="true">
-                <p id="submitcontentfieldvalue"><%= @page.content %></p>
-                <%= f.hidden_field :content, id: "submitcontentfield" %>
+              <div class="details" id="submitcontentfieldvalue" contenteditable="true">
+                <%= @page.content %>
                 <%# if @page.present? %>
                   <%#= f.text_area @page.content, value:  @page.content,class: 'details'%>
                 <%# end %>
               </div>
+              <%= f.hidden_field :content, id: "submitcontentfield" %>
             </div>
             <div class="col-lg-4">
               <div class="date-section">

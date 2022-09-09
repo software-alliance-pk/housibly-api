@@ -7,9 +7,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			if @message.save
 				data = compile_message(@message)
 		      if conversation.sender == @current_user
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body )
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message." )
 		      else
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: "Read new message" )
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message." )
 		      end
 	      ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { title: 'dsadasdas', body: data.as_json }
 	      render json: {message: "success"},status: :ok
@@ -38,7 +38,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
   	   @notifications << notification
   	end
 	if @notifications
-	  render json: {message: @notifications}, status: :ok
+		@notifications
 	else
 	  render json: {message: []},status: :ok
 	end

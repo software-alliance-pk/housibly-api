@@ -7,6 +7,10 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			if @message.save
 				data = compile_message(@message)
 		      if conversation.sender == @current_user
+		      	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		      	puts conversation.id
+		      	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		      	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
 		      else
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )

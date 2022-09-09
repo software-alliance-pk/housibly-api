@@ -5,14 +5,16 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			@message = @current_user.messages.build(message_params)
 			@message.conversation_id = conversation.id 
 			if @message.save
-				data = {}
-        data["id"] = @message.id
-        data["conversation_id"] = @message.conversation_id
-        data["body"] = @message.body
-        data["user_id"] = @message.user_id
-        data["image"] = @message.image.url
-        data["created_at"] = @message.created_at
-        data["updated_at"] = @message.updated_at
+				data = compile_message(@message)
+		      if conversation.sender == @current_user
+		      	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		      	puts conversation.id
+		      	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		      	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+		      else
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+		      end
         ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 	      render json: {message: "success"},status: :ok
 		  else

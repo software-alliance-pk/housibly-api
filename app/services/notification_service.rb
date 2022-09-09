@@ -5,7 +5,7 @@ class NotificationService
          puts "<<<<<<<<<<<<<<#{recipient}<<<<<<<<<<<<<<<<<<"
         puts "<<<<<<<<<<<<<<#{type}<<<<<<<<<<<<<<<<<<"
         # conversation = user_notification.message.conversation
-        data = {action: user_notification.action,type: user_notification.type, event_const: type }
+        data = {action: user_notification.action,type: user_notification.type, event_const: type ,recipient: recipient, sender:actor}
         fcm_client = FCM.new('AAAAyBDcdag:APA91bFtIo0jPppavG5gExCfcRJMsMvnzJTENiBscXdM6P86rOsrVgF1kH-rI9gSYkpcShtvpukhZlR8G9aK9pC7cTw8C0L_dFEMT4thE_KK0g7rPlz7JUCDO1AU3mF2778JnShuUMzs') # set your FCM_SERVER_KEY
 
         options = { data: data,

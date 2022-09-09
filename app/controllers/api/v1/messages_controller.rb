@@ -48,6 +48,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
   	   @notifications << notification
   	end
 	if @notifications
+		# render json: {message: @notifications}, status: :ok
 		@notifications
 	else
 	  render json: {message: []},status: :ok

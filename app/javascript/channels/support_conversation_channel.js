@@ -38,16 +38,17 @@ document.addEventListener('turbolinks:load', () => {
         } else {
           $(".chat_msg").append(
               '<div class="user_msg">' +
+              '<div class="profile_pic">' +
+              '<div class="img_blk">' +
+              "<img src="+data.user_profile+">" +
+              '</div>' +
+              '</div>' +
               '<div class="d-flex flex-column">' +
               '<div class="msg">' +
               '<p>' + data.body + '</p>' +
               (data.image !== null ? "<img src="+data.image+">" : '') +
               '</div>' +
               '<p class="msg_time mt-2">' + timeSince(new Date(Date.now())) + '</p>' +
-              '</div>' +
-              '</div>' +
-              '<div class="profile_pic">' +
-              '<div class="img_blk">' +
               '</div>' +
               '</div>'
           );

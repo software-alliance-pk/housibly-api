@@ -7,11 +7,11 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			if @message.save
 				data = compile_message(@message)
 		      if conversation.sender == @current_user
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message." )
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
 		      else
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message." )
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
 		      end
-	      ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { title: 'dsadasdas', body: data.as_json }
+        ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 	      render json: {message: "success"},status: :ok
 		  else
 				render_error_messages(@message)
@@ -26,6 +26,12 @@ class Api::V1::MessagesController < Api::V1::ApiController
       not_found
     end
   end
+  def delete_notification
+  	notification = Notification.find(id: params[:notification_id])
+  	if @notification.destroy
+  		render json: {message: "not found"},status: :ok
+  		end
+  end 
   def get_notification
   	@notifications = []
   	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)

@@ -16,6 +16,8 @@ class NotificationService
         }
 
         registration_ids = user_notification.recipient.mobile_devices.pluck(:mobile_device_token)
+                puts "<<<<<<<<<<<<<<<<<#{user_notification.recipient.full_name}<<<<<<<<<<<<<<<<<"
+
         registration_ids.each do |registration_id|
             puts "<<<<<<<<<<<<<<<<<<<<<<<<#{registration_id}<<<<<<<<<<<<<<<<<<<<<<<"
          response = fcm_client.send(registration_id, options)
@@ -24,8 +26,8 @@ class NotificationService
     end
 
     def self.fcm_push_notification_for_complete_profile(recipient,actor,type,user_notification,action)
-        puts "<<<<<<<<<<<<<<#{actor}<<<<<<<<<<<<<<<<<<"
-         puts "<<<<<<<<<<<<<<#{recipient}<<<<<<<<<<<<<<<<<<"
+        puts "<<<<<<<<<<<<<<#{actor.full_name}<<<<<<<<<<<<<<<<<<"
+         puts "<<<<<<<<<<<<<<#{recipient.full_name}<<<<<<<<<<<<<<<<<<"
         puts "<<<<<<<<<<<<<<#{type}<<<<<<<<<<<<<<<<<<"
         # conversation = user_notification.message.conversation
         data = {action: user_notification.action,type: user_notification.type, event_const: type }
@@ -40,7 +42,6 @@ class NotificationService
 
         registration_ids = user_notification.recipient.mobile_devices.pluck(:mobile_device_token)
         registration_ids.each do |registration_id|
-            debugger
          response = fcm_client.send(registration_id, options)
           puts response
       end

@@ -1,9 +1,5 @@
 json.total_reviews @reviews.count
-if @reviews.pluck(:rating).sum/5 == 0
-  json.average_rating 1
-else
-  json.average_rating @reviews.pluck(:rating).sum/5
-end
+json.average_rating @reviews.pluck(:rating).sum/@reviews.count
 json.reviews @reviews do |review|
 	json.id review.id
 	json.review review.description

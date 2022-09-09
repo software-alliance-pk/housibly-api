@@ -13,7 +13,11 @@ json.support_closer do
   json.profile_type @support_closer.profile_type
   json.description @support_closer.description
   json.hourly_rate @support_closer.currency_amount
-  json.rating @support_closer.support_closer_reviews.pluck(:rating).sum/5
+  if @support_closer.support_closer_reviews.pluck(:rating).sum == 0
+    json.rating 0
+  else
+    json.rating @support_closer.support_closer_reviews.pluck(:rating).sum/@support_closer.support_closer_reviews.count
+  end
   json.profile_images @support_closer.avatar.attached? ? @support_closer.avatar.url : ""
   json.professions  @support_closer.professions do |profession|
   	json.title profession.title

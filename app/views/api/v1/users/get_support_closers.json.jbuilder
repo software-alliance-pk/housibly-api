@@ -12,7 +12,11 @@ json.support_closer @support_closers do |support_closer|
   json.user_type support_closer.user_type
   json.profile_type support_closer.profile_type
   json.description support_closer.description
-  json.rating support_closer.support_closer_reviews.pluck(:rating).sum/5
+  if support_closer.support_closer_reviews.pluck(:rating).sum == 0
+    json.average_rating 0
+  else
+    json.rating support_closer.support_closer_reviews.pluck(:rating).sum/support_closer.support_closer_reviews.pluck(:rating).count
+  end
   json.hourly_rate support_closer.currency_amount
   json.professions  support_closer.professions.try(:first).try(:title)
   json.support_closer_image support_closer.avatar.attached? ? rails_blob_url(support_closer.avatar) : ""

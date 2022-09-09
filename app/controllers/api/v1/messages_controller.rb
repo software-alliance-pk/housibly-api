@@ -7,19 +7,14 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			@message.conversation_id = conversation.id 
 			if @message.save
 				data = compile_message(@message)
-				if conversation.unread_message != 0
-					UserNotification.find_by(actor_id: @current_user.id,recipient_id:conversation.recipient_id) ||
-					UserNotification.find_by(actor_id: @current_user.id,recipient_id:conversation.sender_id)
-				else
 		      if conversation.sender == @current_user
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: "Read new message" )
 		      else
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: "Read new message" )
 		      end
-		    end
 	      ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { title: 'dsadasdas', body: data.as_json }
 	      render json: {message: "success"},status: :ok
-		else
+		  else
 				render_error_messages(@message)
 			end
 		else

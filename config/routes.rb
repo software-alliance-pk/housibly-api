@@ -107,6 +107,7 @@ Rails.application.routes.draw do
       end
       resources :support_conversations do
         post 'create_message'
+        post 'get_messages'
       end
       resources :reporting do
         collection do
@@ -128,6 +129,7 @@ Rails.application.routes.draw do
       collection do
         post :get_messages
         get :get_notification
+        delete :delete_notification
       end
     end
       resources :user_preferences, only: [:create, :index]

@@ -54,7 +54,7 @@ def create_message
 	end
 
 	def get_messages
-	  @conversation = UserSupportConversation.find_by(id: params[:support_conversation_id])
+	  @conversation = SupportConversation.find_by(id: params[:support_conversation_id])
     if @conversation.present?
       @messages = @conversation.support_messages.all.order(created_at: :desc)
     else

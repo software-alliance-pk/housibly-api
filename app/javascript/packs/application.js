@@ -20,9 +20,9 @@ ActiveStorage.start()
 $(document).on('turbolinks:load', function() {
     $("#guideline_select").change(function (){
         var id = $(this).val();
-        var select_id_value =  $(this).attr('data-page');
-        console.log(select_id_value);
+        var select_id_value =  $(this).find(":selected").attr('data-page');
         document.getElementById("guide_lines_"+id).click()
+        $("#guidelinepagevalue").val(select_id_value);
     });
   $(".pressdeactivelink").click(function (){
       var id = $(this).attr("id");
@@ -53,7 +53,7 @@ $(document).on('turbolinks:load', function() {
       $("#submitcontentfield").val(html_content)
       $("#customsavebutton").trigger('click');
     })
-    var selected_id_option =  $("#guideline_select").attr('data-page');
-    console.log(selected_id_option);
+    var selected_id_option =  $("#guideline_select").find(":selected").attr('data-page');
+    $("#guidelinepagevalue").val(selected_id_option);
     $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
 })

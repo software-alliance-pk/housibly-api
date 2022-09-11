@@ -33,11 +33,9 @@
 
               <div class="details" id="submitcontentfieldvalue" contenteditable="true">
                 <%= @page.content %>
-                <%# if @page.present? %>
-                  <%#= f.text_area @page.content, value:  @page.content,class: 'details'%>
-                <%# end %>
               </div>
               <%= f.hidden_field :content, id: "submitcontentfield" %>
+              <%= f.hidden_field :permalink, id: "guidelinepagevalue" %>
             </div>
             <div class="col-lg-4">
               <div class="date-section">

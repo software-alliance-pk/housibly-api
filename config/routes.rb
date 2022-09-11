@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       get :job_lists
     end
   end
+  post "privacy_policy/:permalink", to: "guidelines#create"
    resources :users_data do
     collection do
       get :buy_vacant_land

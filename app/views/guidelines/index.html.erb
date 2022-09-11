@@ -13,45 +13,52 @@
 
         <div class="dropdown mb-4">
           <select class="text dropdown-toggle input w-auto fs_5 fw_600" id="guideline_select">
-            <option value="1" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
-                Terms & Condition
+            <option value="1" data-page="terms&condition" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
+              Terms & Condition
             </option>
-            <option value="3" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
-                Privacy Policy
+            <option value="3" data-page="privacy_policy" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
+              Privacy Policy
             </option>
-             <option value="2" <%= params[:permalink] == "faq" ? "selected" : "" %>>
-                   FAQ
+            <option value="2" data-page="faq" <%= params[:permalink] == "faq" ? "selected" : "" %>>
+              FAQ
             </option>
           </select>
         </div>
-        <a id="guide_lines_1" href="<%=privacy_policy_path(permalink: "terms&condition") %>" hidden></a>
-        <a id="guide_lines_2" href="<%=privacy_policy_path(permalink: "faq") %>" hidden></a>
-        <a id="guide_lines_3" href="<%=privacy_policy_path(permalink: "privacy_policy")%>" hidden></a>
-      <div class="row">
-          <div class="col-lg-8">
-            <div class="details">
-              <% if @page.present?%>
-               <%= @page.content%>
-             <% end %>
-           </div>
-         </div>
-         <div class="col-lg-4">
-          <div class="date-section">
-            <div class="btn_blk">
-              <button class="site_btn save_btn">Save</button>
-            </div>
-            <h3><%=  Date.today.strftime("%B %d,%Y")%></h3>
-            <p class="mb-2">Update Logs</p>
-            <%  @paper_trail.each do |record| %>
-              <p class="fw_600 mb-2"><%= record.created_at.strftime("%d/%m/%Y")%> - <%= record.event %></p>
-              <p><%=  page_title(record.item_id) %></p>
-              <hr class="hr">
-            <%end%>
-          </div>
-        </div>
-      </div>
-    </div>
+        <a id="guide_lines_1" href="<%= privacy_policy_path(permalink: "terms&condition") %>" hidden></a>
+        <a id="guide_lines_2" href="<%= privacy_policy_path(permalink: "faq") %>" hidden></a>
+        <a id="guide_lines_3" href="<%= privacy_policy_path(permalink: "privacy_policy") %>" hidden></a>
+        <%= form_with do |f| %>
+          <div class="row">
+            <div class="col-lg-8">
 
-  </div>
-</section>
+              <div class="details" id="submitcontentfieldvalue" contenteditable="true">
+                <%= @page.content %>
+                <%# if @page.present? %>
+                  <%#= f.text_area @page.content, value:  @page.content,class: 'details'%>
+                <%# end %>
+              </div>
+              <%= f.hidden_field :content, id: "submitcontentfield" %>
+            </div>
+            <div class="col-lg-4">
+              <div class="date-section">
+                <div class="btn_blk">
+                  <button class="site_btn save_btn" type="button" id="submitbtnclick">Save</button>
+                  <button type="submit" id="customsavebutton" hidden></button>
+                </div>
+                <h3><%= Date.today.strftime("%B %d,%Y") %></h3>
+                <p class="mb-2">Update Logs</p>
+                <% @paper_trail.each do |record| %>
+                  <p class="fw_600 mb-2"><%= record.created_at.strftime("%d/%m/%Y") %> - <%= record.event %></p>
+                  <p><%= page_title(record.item_id) %></p>
+                  <hr class="hr">
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+
+    </div>
+  </section>
 </main>

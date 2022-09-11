@@ -1,26 +1,25 @@
 class GuidelinesController < ApplicationController
+  before_action :get_paper_trail
+  before_action :get_page, only: [:index, :create, :guidelines]
   def index
-    @paper_trail =  PaperTrail::Version.order(created_at: :desc).last(3)
-    @page = Page.find_by(permalink: params[:permalink].blank? ? "terms&condition" : params[:permalink])
   end
 
   def create
-    @paper_trail =  PaperTrail::Version.order(created_at: :desc).last(3)
-    @page = Page.find_by(permalink: params[:permalink].blank? ? "terms&condition" : params[:permalink])
     @page.update(content: params[:content])
     render 'index'
   end
 
   def guidelines
-    @paper_trail =  PaperTrail::Version.order(created_at: :desc).last(3)
-    @page = Page.find_by(permalink: params[:permalink])
+
     render 'index'
   end
 
-  def update
+  def get_page
     @page = Page.find_by(permalink: params[:permalink].blank? ? "terms&condition" : params[:permalink])
-    @page.update(content: params[:content])
+  end
 
+  def get_paper_trail
+    @paper_trail =  PaperTrail::Version.order(created_at: :desc).limit(3)
   end
 
 

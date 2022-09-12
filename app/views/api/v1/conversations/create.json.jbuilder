@@ -4,6 +4,7 @@ json.conversation do
   json.sender_id @conversation.sender_id
   json.created_at @conversation.created_at
   json.updated_at @conversation.updated_at
+  json.is_blocked @conversation.is_blocked
   json.unread_message @conversation.unread_message
   if @conversation.sender == @current_user
     json.full_name @conversation.recipient&.full_name

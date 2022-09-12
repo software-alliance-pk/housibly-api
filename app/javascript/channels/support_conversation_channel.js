@@ -15,7 +15,6 @@ document.addEventListener('turbolinks:load', () => {
     received(data) {
       if(data.body.support_conversation_id== chat_id)
       {
-        $("#typemessage").val("");
         data = data.body;
         var aDay = 24 * 60 * 60 * 1000;
         console.log(data);

@@ -24,6 +24,10 @@ $(document).on('turbolinks:load', function() {
         document.getElementById("guide_lines_"+id).click()
         $("#guidelinepagevalue").val(select_id_value);
     });
+    $("#submitmessagebutton").click(function ()
+    {
+        $("#typemessage").val("");
+    });
   $(".pressdeactivelink").click(function (){
       var id = $(this).attr("id");
       $("#active_user_"+id).attr('hidden',true);
@@ -56,4 +60,4 @@ $(document).on('turbolinks:load', function() {
     var selected_id_option =  $("#guideline_select").find(":selected").attr('data-page');
     $("#guidelinepagevalue").val(selected_id_option);
     $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
-})
+});

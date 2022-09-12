@@ -86,9 +86,13 @@ class Api::V1::UsersController < Api::V1::ApiController
 
 
   def blocked_users
+     puts "<<<<<<<<<<<<<<<<<<#{@current_user}<<<<<<<<<<<<<<<<<<<<"
     @conversation_blocked = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
     if @conversation_blocked.present?
+       puts "<<<<<<<<<<<#{@conversation_blocked.is_blocked}<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+       puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
       @conversation_blocked
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     else
       render json: {message: "No Found"}
     end

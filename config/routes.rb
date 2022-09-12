@@ -124,6 +124,7 @@ Rails.application.routes.draw do
       collection do
         post :notification_token
         post :read_messages
+        post :logout
       end
     end
      resources :messages, only: [:create, :destroy] do

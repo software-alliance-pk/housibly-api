@@ -24,6 +24,6 @@ json.support_closer @support_closers do |support_closer|
     json.image rails_blob_url(image) rescue ""
   end
   json.certificates support_closer.certificates do |certificate|
-    json.image certificate.url rescue ""
+    json.image rails_blob_path(certificate) rescue ""
   end
 end

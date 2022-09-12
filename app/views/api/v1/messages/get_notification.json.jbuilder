@@ -6,6 +6,7 @@ json.notification @notifications.each do |notification|
 	json.conversation_id notification.conversation_id
 	json.sender_avatar notification&.actor&.avatar&.attached? ? rails_blob_url(notification&.actor&.avatar) : ""
 	json.action notification&.action
+	json.sender_name notification&.actor&.full_name
 	json.created_at notification&.created_at
 	json.updated_at notification&.updated_at
 end

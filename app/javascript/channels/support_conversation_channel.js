@@ -34,6 +34,8 @@ document.addEventListener('turbolinks:load', () => {
               '</div>' +
               '</div>'
           );
+          
+           $("#typemessage").val("");
         } else {
           $(".chat_msg").append(
               '<div class="user_msg">' +

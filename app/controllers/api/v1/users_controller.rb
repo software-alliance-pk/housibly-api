@@ -86,11 +86,12 @@ class Api::V1::UsersController < Api::V1::ApiController
 
 
   def blocked_users
-     puts "<<<<<<<<<<<<<<<<<<#{@current_user}<<<<<<<<<<<<<<<<<<<<"
+     puts "<<<<<<<<<<<<<<<<<<#{@current_user.id}<<<<<<<<<<<<<<<<<<<<"
     @conversation_blocked = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
     if @conversation_blocked.present?
-       puts "<<<<<<<<<<<#{@conversation_blocked.is_blocked}<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+       puts "<<<<<<<<<<<#{@conversation_blocked}<<<<<<<<<<<<<<<<<<<<<<<<<<<"
        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+      puts @conversation_blocked
       @conversation_blocked
       puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     else

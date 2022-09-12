@@ -68,22 +68,12 @@ class Api::V1::UsersController < Api::V1::ApiController
     user = User.find_by(id: params[:user_id])
     conversation = Conversation.find_by(recipient_id: user.id,sender_id: @current_user.id)
     conversation = Conversation.find_by(recipient_id: @current_user.id ,sender_id: user.id)
-
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts conversation
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     if conversation.present?
       if params[:is_blocked].present? && params[:is_blocked] == "true"
-        puts "<<<<<<<<<<<<<<<<<<<true<<<<<<<<<<<<<<<<<<<<<<<<<"
-        puts params
-        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         if conversation.update!(is_blocked: true)
           render json: {message: "User added in blacklist"},status: :ok
         end
       elsif params[:is_blocked].present? && params[:is_blocked] == "false"
-        puts "<<<<<<<<<<<<<<<<false<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-        puts params
-        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         if conversation.update!(is_blocked: false)
           render json: {message: "User removed from blacklist"},status: :ok
         end
@@ -96,14 +86,9 @@ class Api::V1::UsersController < Api::V1::ApiController
 
 
   def blocked_users
-     puts "<<<<<<<<<<<<<<<<<<#{@current_user.id}<<<<<<<<<<<<<<<<<<<<"
-    @conversation_blocked = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
+    @conversation_blocked = Conversation.where("(recipient_id = (?) OR  sender_id = (?)) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
     if @conversation_blocked.present?
-       puts "<<<<<<<<<<<#{@conversation_blocked}<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-       puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-      puts @conversation_blocked
       @conversation_blocked
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     else
       render json: {message: "No Found"}
     end

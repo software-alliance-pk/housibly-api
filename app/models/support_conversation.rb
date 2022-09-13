@@ -9,5 +9,5 @@ class SupportConversation < ApplicationRecord
     support_closer: 0,
     end_user: 1
   }
-
+  acts_as_paranoid
 end

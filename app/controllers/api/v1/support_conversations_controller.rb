@@ -33,6 +33,7 @@ class Api::V1::SupportConversationsController < Api::V1::ApiController
 
 def create_message
 		@conversation = SupportConversation.find_by(id: params[:support_conversation_id])
+    @conversation = SupportConversation.restore(params[:support_conversation_id]) unless @conversation.present?
 		@message = @current_user.user_support_messages.build(message_params)
 		@message.support_conversation_id = @conversation.id
 		if @message.save

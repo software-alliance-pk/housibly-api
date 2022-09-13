@@ -32,8 +32,10 @@ class Api::V1::SupportConversationsController < Api::V1::ApiController
 
 
 def create_message
+    going_to_recover = false
 		@conversation = SupportConversation.find_by(id: params[:support_conversation_id]) rescue nil
-    @conversation = SupportConversation.restore(params[:support_conversation_id]) unless @conversation.present?
+    going_to_recover = true unless @conversation.present?
+    @conversation = SupportConversation.with_deleted.find_by(id: params[:support_conversation_id]) unless @conversation.present?
 		@message = @current_user.user_support_messages.build(message_params)
 		@message.support_conversation_id = @conversation.id
 		if @message.save

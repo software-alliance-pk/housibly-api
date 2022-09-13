@@ -1,13 +1,12 @@
 class Api::V1::MessagesController < Api::V1::ApiController
 
 	def create
-			puts "<<<<<<<<<<<<<#{params[:conversation_id]}<<<<<<<<<<<<<<<<<<<<<<<<"
+		going_to_recover = false
 		conversation = Conversation.find_by(id: params[:conversation_id]) rescue nil
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		conversation = Conversation.restore(params[:conversation_id]) unless conversation.present?
-		puts "<<<<<<<<<<<<#{conversation}<<<<<<<<<<<<<<<<<<<<<<"
+		going_to_recover = true unless conversation.present?
+		conversation = Conversation.with_deleted.find_by(id: params[:conversation_id]) unless conversation.present?
+		conversation.recover unless conversation.present? && !going_to_recover
+		if conversation.is_blocked
 			@message = @current_user.messages.build(message_params)
 			@message.conversation_id = conversation.id
 			if @message.save
@@ -22,6 +21,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		  else
 				render_error_messages(@message)
 			end
+		else
+				render json: {message: "You cann't send message"},status: :ok
+		end
 	end
 
 	def get_messages

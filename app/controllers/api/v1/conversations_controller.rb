@@ -31,7 +31,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   def destroy
     @conversation = Conversation.find_by(id: params[:id])
     if @conversation.present?
-      @conversation.destroy
+      @conversation.delete
       render json: { message: "Conversation is successfully deleted" }, status: :ok
     else
       render json: { error: "No Found" }, status: :unprocessable_entity

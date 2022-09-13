@@ -12,7 +12,7 @@ gem 'stripe'
 gem 'pg_search'
 gem 'geocoder'
 gem 'fcm'
-gem "paranoia", "~> 2.2"
+gem 'acts_as_paranoid'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'

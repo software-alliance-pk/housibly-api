@@ -11,12 +11,14 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			@message.conversation_id = @conversation.id
 			if @message.save
 				data = compile_message(@message)
-		      if @message.present? && @conversation.sender == @current_user
+				if @message.present?
+		      if @conversation.sender == @current_user
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:@conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: @conversation.id )
 		      else
 		         UserNotification.create(actor_id: @current_user.id,recipient_id:@conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: @conversation.id )
 		      end
         ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
+      end
 		  else
 				render_error_messages(@message)
 			end
@@ -41,10 +43,10 @@ class Api::V1::MessagesController < Api::V1::ApiController
   	@notifications = []
   	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
   	conversations.each do |conversation|
-  		if UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.sender).present?
-  	   notification = UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.sender_id).last
-  	  elsif UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.recipient_id).present?
-  	   notification = UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.recipient_id).last
+  		if UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.sender).present?
+  	   notification = UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.sender_id).last
+  	  elsif UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.recipient_id).present?
+  	   notification = UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.recipient_id).last
   	  end
 
   	  # if UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).present?
@@ -52,7 +54,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
   	  # elsif UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).present?
   	  #  notification = UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).last
   	  # end
+  	  unless notification == nil
   	   @notifications << notification
+  	 end
   	end
 	if @notifications
 		@notifications

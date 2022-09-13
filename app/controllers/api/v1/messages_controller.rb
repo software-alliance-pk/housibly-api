@@ -7,6 +7,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
 		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 		conversation = Conversation.restore(params[:conversation_id]) unless conversation.present?
+		puts "<<<<<<<<<<<<#{conversation}<<<<<<<<<<<<<<<<<<<<<<"
 			@message = @current_user.messages.build(message_params)
 			@message.conversation_id = conversation.id
 			if @message.save

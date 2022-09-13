@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_13_131852) do
+ActiveRecord::Schema.define(version: 2022_09_13_141501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,8 +291,6 @@ ActiveRecord::Schema.define(version: 2022_09_13_131852) do
     t.integer "conv_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_support_conversations_on_deleted_at"
     t.index ["support_id"], name: "index_support_conversations_on_support_id"
   end
 

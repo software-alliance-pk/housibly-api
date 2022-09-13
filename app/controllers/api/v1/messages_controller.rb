@@ -1,7 +1,11 @@
 class Api::V1::MessagesController < Api::V1::ApiController
 
 	def create
+			puts "<<<<<<<<<<<<<#{params[:conversation_id]}<<<<<<<<<<<<<<<<<<<<<<<<"
 		conversation = Conversation.find_by(id: params[:conversation_id]) rescue nil
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 		conversation = Conversation.restore(params[:conversation_id]) unless conversation.present?
 			@message = @current_user.messages.build(message_params)
 			@message.conversation_id = conversation.id

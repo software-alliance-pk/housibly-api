@@ -2,27 +2,24 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
 	def create
 		going_to_recover = false
-		conversation = Conversation.find_by(id: params[:conversation_id]) rescue nil
-		going_to_recover = true unless conversation.present?
-		conversation = Conversation.with_deleted.find_by(id: params[:conversation_id]) unless conversation.present?
-		conversation.recover unless conversation.present? && !going_to_recover
-		if conversation.is_blocked == false
+		@conversation = Conversation.find_by(id: params[:conversation_id]) rescue nil
+		going_to_recover = true unless @conversation.present?
+		@conversation = Conversation.with_deleted.find_by(id: params[:conversation_id]) unless @conversation.present?
+		@conversation.recover unless @conversation.present? && !going_to_recover
+		if @conversation.is_blocked == false
 			@message = @current_user.messages.build(message_params)
-			@message.conversation_id = conversation.id
+			@message.conversation_id = @conversation.id
 			if @message.save
 				data = compile_message(@message)
-		      if conversation.sender == @current_user
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+		      if @conversation.sender == @current_user
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:@conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: @conversation.id )
 		      else
-		         UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+		         UserNotification.create(actor_id: @current_user.id,recipient_id:@conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: @conversation.id )
 		      end
         ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
-	      render json: {message: "success"},status: :ok
 		  else
 				render_error_messages(@message)
 			end
-		else
-				render json: {message: "You cann't send message"},status: :ok
 		end
 	end
 

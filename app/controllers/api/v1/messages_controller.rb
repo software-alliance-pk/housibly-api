@@ -6,7 +6,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		going_to_recover = true unless conversation.present?
 		conversation = Conversation.with_deleted.find_by(id: params[:conversation_id]) unless conversation.present?
 		conversation.recover unless conversation.present? && !going_to_recover
-		if conversation.is_blocked
+		if conversation.is_blocked == false
 			@message = @current_user.messages.build(message_params)
 			@message.conversation_id = conversation.id
 			if @message.save

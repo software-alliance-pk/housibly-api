@@ -43,10 +43,10 @@ class Api::V1::MessagesController < Api::V1::ApiController
   	@notifications = []
   	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
   	conversations.each do |conversation|
-  		if UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.sender).present?
-  	   notification = UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.sender_id).last
-  	  elsif UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.recipient_id).present?
-  	   notification = UserNotification.find_by(recipient_id: @current_user.id, actor_id: conversation.recipient_id).last
+  		if UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.sender).present?
+  	   notification = UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.sender_id).last
+  	  elsif UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.recipient_id).present?
+  	   notification = UserNotification.where(recipient_id: @current_user.id, actor_id: conversation.recipient_id).last
   	  end
 
   	  # if UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).present?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_13_093827) do
+ActiveRecord::Schema.define(version: 2022_09_13_131852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 2022_09_13_093827) do
     t.integer "unread_message", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "is_blocked"
+    t.boolean "is_blocked", default: false
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_conversations_on_deleted_at"
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"

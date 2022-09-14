@@ -13,6 +13,7 @@ document.addEventListener('turbolinks:load', () => {
     },
 
     received(data) {
+      console.log(data)
       if(data.body.support_conversation_id== chat_id)
       {
         data = data.body;

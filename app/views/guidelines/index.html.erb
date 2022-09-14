@@ -22,11 +22,18 @@
             <option value="2" data-page="faq" <%= params[:permalink] == "faq" ? "selected" : "" %>>
               FAQ
             </option>
+            <option value="4" data-page="job_list" <%= params[:permalink] == "job_list" ? "selected" : "" %>>
+              Job List
+            </option>
           </select>
         </div>
         <a id="guide_lines_1" href="<%= privacy_policy_path(permalink: "terms&condition") %>" hidden></a>
         <a id="guide_lines_2" href="<%= privacy_policy_path(permalink: "faq") %>" hidden></a>
         <a id="guide_lines_3" href="<%= privacy_policy_path(permalink: "privacy_policy") %>" hidden></a>
+        <a id="guide_lines_4" href="<%= job_lists_guidelines_path(permalink: "job_list") %>" hidden></a>
+        <a
+        <%#= link_to "Vacant Land",job_lists_guidelines_path,id="guide_lines_4"%>
+
         <%= form_with do |f| %>
           <div class="row">
             <div class="col-lg-8">

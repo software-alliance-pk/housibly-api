@@ -25,9 +25,12 @@ Rails.application.routes.draw do
   end
   resources :guidelines do
     collection do
+      post :job_list
       get :job_lists
+      delete :job_list
     end
   end
+  get '/delete_job_list/:id', to: 'guidelines#delete_job_list', as: :delete_job_list
   post "privacy_policy/:permalink", to: "guidelines#create"
    resources :users_data do
     collection do

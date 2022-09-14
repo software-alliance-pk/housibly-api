@@ -7,56 +7,42 @@
     </div>
 
     <div class="right-con-inner">
-      <button class="seletor dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> Terms & Condition </button>
-      <ul class="list dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#">Privacy Policy</a></li>
-        <li><a class="dropdown-item" href="#">FAQ</a></li>
-        <li><a class="dropdown-item" href="#">Job Lists</a></li>
-      </ul>
+     <div class="dropdown mb-4">
+          <select class="text dropdown-toggle input w-auto fs_5 fw_600" id="guideline_select">
+            <option value="1" data-page="terms&condition" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
+              Terms & Condition
+            </option>
+            <option value="3" data-page="privacy_policy" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
+              Privacy Policy
+            </option>
+            <option value="2" data-page="faq" <%= params[:permalink] == "faq" ? "selected" : "" %>>
+              FAQ
+            </option>
+            <option value="4" data-page="job_list" <%= params[:permalink] == "job_list" ? "selected" : "" %>>
+              Job List
+            </option>
+            
+          </select>
+
+        </div>
+
 
       <div class="row">
         <div class="col-lg-8">
           <ul class="job_list">
-            <li>
-              <div class="jobs">Home Inspector</div>
-              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="./assets/images/more.svg" alt="">
-              </div>
-              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Remove</a></li>
+            <%@job_lists.each do |job_list|%>
+              <li>
+                <div class="jobs"><%=job_list.title%></div>
+                <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= image_tag 'more.svg' %>
+                </div>
+                <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><%= link_to 'Remove',delete_job_list_path(id: job_list),id: job_list.id,class: "pressactivelink", remote: :true %></li>
 
-              </ul>
-            </li>
-            <li>
-              <div class="jobs">Carpenter</div>
-              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="./assets/images/more.svg" alt="">
-              </div>
-              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Remove</a></li>
+                </ul>
+              </li>
+              <%end%>
 
-              </ul>
-            </li>
-            <li>
-              <div class="jobs">Line Men</div>
-              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="./assets/images/more.svg" alt="">
-              </div>
-              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Remove</a></li>
-
-              </ul>
-            </li>
-            <li>
-              <div class="jobs">Home Agent</div>
-              <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="./assets/images/more.svg" alt="">
-              </div>
-              <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Remove</a></li>
-
-              </ul>
-            </li>
           </ul>
         </div>
         <div class="col-lg-4">
@@ -82,17 +68,23 @@
           <div class="contain-fluid">
             <div class="row justify-content-center">
               <div class="col-lg-4 col-md-8 col-sm-10">
+                
                 <div class="_inner">
+                  <%= form_with url: job_list_guidelines_path do |form| %>
                   <!-- <button type="button" class="x_btn"></button> -->
                   <h4 class="heading">Add Job List</h4>
                   <h5>Up to 30 characters</h5>
                   <hr class="hr">
-                  <textarea class="text_blk" rows="4" cols="4" placeholder="Input Here" class="w-100"></textarea>
+                  
+                  <%= form.text_area :title, class: "input",placeholder: 'Input Here' %>
+                  
                   <div class="btn_blk modal_btn">
                     <button type="button" class="cancel">cancel</button>
-                    <button type="button" class="save site_btn">Save</button>
+                    <button  type="submit" class="save site_btn">Save</button>
                   </div>
+                   <% end%>
                 </div>
+               
               </div>
             </div>
           </div>

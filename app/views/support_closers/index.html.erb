@@ -93,7 +93,8 @@
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
-                <input class="select"  type="checkbox" data_value="<%= record.id  %>" />
+                <!-- <input class="select"  type="checkbox"> -->
+                <%= check_box_tag(class: 'myCheckbox')%>
 
                     <div class="img_blk">
                       <%= image_tag record&.avatar&.url %>
@@ -109,7 +110,7 @@
                   </p>
                 </td>
                 <td><%= record.phone_number %></td>
-                <td><%= record&.professions&.first.title %></td>
+                <td><%= record&.professions&.first&.title %></td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="rating_blk me-2">
@@ -118,7 +119,7 @@
                     <% if Review.where(support_closer_id: record.id).pluck(:rating).sum/5 == 0%>
                     <%= 1%>
                     <% else %>
-                      <%= Review.where(support_closer_id: record.id).pluck(:rating).sum/5%>
+                      <%= Review.where(support_closer_id: record.id).pluck(:rating).sum/Review.where(support_closer_id: record.id).pluck(:rating).count%>
                       <%end%>
                   </div>
                 </td>
@@ -151,3 +152,18 @@
     </div>
   </section>
 </main>
+<!-- <script>
+  var check;
+$(".test_with_is").on("click", function(){
+    check = $(".mycheckbox").is(":checked");
+    if(check) {
+        alert("Checkbox is checked.");
+    } else {
+        alert("Checkbox is unchecked.");
+    }
+}); 
+</script> -->
+
+<script>
+$('.myCheckbox').prop('checked', true);
+</script>

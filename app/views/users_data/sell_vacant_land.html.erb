@@ -57,15 +57,24 @@
             <th style="width: 26.2rem">
               Street Address
             </th>
-            <th style="width: 17.3rem">
-              Lot Frontage (ft)
-            </th>
-            <th style="width: 15.4rem">
-              Lot Depth (ft)
-            </th>
             <th style="width: 14.2rem">
-              Lot Size (ft)
-            </th>
+            Lot Depth
+          </th>
+          <th style="width: 14.2rem">
+            Lot Depth Unit
+          </th>
+          <th style="width: 16.1rem">
+            Lot Frontage
+          </th>
+          <th style="width: 16.1rem">
+            Lot Frontage Unit
+          </th>
+          <th style="width: 14.8rem">
+            Lot Size
+          </th>
+          <th style="width: 14.8rem">
+            Lot Size Unit
+          </th>
             <th style="width: 19.4rem">
               Is Your Lot Irregular
             </th>
@@ -84,111 +93,26 @@
           </tr>
           </thead>
           <tbody>
+            <% @vacant_lands.each do |vacant_land|%>
           <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
+          <td class="fw_500 user_name "><% vacant_land.user.full_name%></td>
+          <td><%= vacant_land.type%></td>
+          <td><%= vacant_land.title%></td>
+          <td style="color: #00A66C;"><%= vacant_land.price%></td>
+          <td><%= vacant_land.address%>5</td>
+          <td><%= vacant_land.lot_depth%></td>
+          <td><%= vacant_land.lot_depth_unit%></td>
+          <td><%= vacant_land.lot_frontage%></td>
+          <td><%= vacant_land.lot_frontage_unit%></td>
+          <td><%= vacant_land.lot_size%></td>
+          <td><%= vacant_land.lot_size_unit%></td>
+          <td><%= vacant_land.is_lot_irregular%></td>
+          <td><%= vacant_land.lot_description%></td>
+          <td><%= vacant_land.property_tax%></td>
+          <td><%= vacant_land.tax_year%></td>
+          <td><%= vacant_land.property_description%></td>
           </tr>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          </tr>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          </tr>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          </tr>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          </tr>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          </tr>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>Vacant Land</td>
-            <td>Clean Land 01</td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          </tr>
+          <%end%>
           </tbody>
         </table>
       </div>

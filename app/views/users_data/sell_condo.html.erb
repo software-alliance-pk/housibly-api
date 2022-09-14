@@ -41,6 +41,7 @@
     <div class="table_blk">
       <table class="mt-5  ">
         <thead>
+
         <tr>
           <th style="width: 18.9rem">
             Full Name
@@ -161,19 +162,25 @@
             Appliances & Other Items
           </th>
           <th style="width: 16.5rem">
-            Room Name
+            No. of Rooms
           </th>
           <th style="width: 14.2rem">
-            Lenght(ft)
+            Lot Depth
+          </th>
+          <th style="width: 14.2rem">
+            Lot Depth Unit
           </th>
           <th style="width: 16.1rem">
-            Lenght(in)
+            Lot Frontage
+          </th>
+          <th style="width: 16.1rem">
+            Lot Frontage Unit
           </th>
           <th style="width: 14.8rem">
-            Width (ft)
+            Lot Size
           </th>
-          <th style="width: 14.9rem">
-            Width (in)
+          <th style="width: 14.8rem">
+            Lot Size Unit
           </th>
           <th>
             Level
@@ -181,335 +188,56 @@
         </tr>
         </thead>
         <tbody>
+           <% @condos.each do |condo|%>
         <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
+          <td class="fw_500 user_name "><% condo.user.full_name%></td>
+          <td><%= condo.type%></td>
+          <td><%= condo.title%></td>
+          <td style="color: #00A66C;"><%= condo.price%></td>
+          <td><%= condo.year_built%></td>
+          <td><%= condo.address%></td>
+          <td><%= condo.unit%></td>
+          <td><%= condo.locker%></td>
+          <td><%= condo.condo_corporation_or_hqa%></td>
+          <td><%= condo.bed_rooms%></td>
+          <td><%= condo.bath_rooms%></td>
+          <td><%= condo.living_space%></td>
+          <td><%= condo.total_parking_spaces%></td>
+          <td><%= condo.garage_spaces%></td>
+          <td><%= condo.parking_type%></td>
+          <td><%= condo.parking_ownership%></td>
+          <td><%= condo.garage%></td>
+          <td><%= condo.condo_type%></td>
+          <td><%= condo.condo_style%></td>
+          <td><%= condo.exterior%></td>
+          <td><%= condo.balcony%></td>
+          <td><%= condo.exposure%></td>
+          <td><%= condo.security%></td>
+          <td><%= condo.pets_allowed%></td>
+          <td><%= condo.included_utilities%></td>
+          <td><%= condo.water%></td>
+          <td><%= condo.sewer%></td>
+          <td><%= condo.heat_source%></td>
+          <td><%= condo.heat_type%></td>
+          <td><%= condo.air_conditioner%></td>
+          <td><%= condo.laundry%></td>
+          <td><%= condo.fireplace%></td>
+          <td><%= condo.central_vacuum%></td>
+          <td><%= condo.basement%></td>
+          <td><%= condo.pool%></td>
+          <td><%= condo.condo_fees%></td>
+          <td><%= condo.tax_year%></td>
+          <td><%= condo.property_description%></td>
+          <td><%= condo.appliances_and_other_items%></td>
+          <td><%= condo.total_number_of_rooms%></td>
+          <td><%= condo.lot_depth%></td>
+          <td><%= condo.lot_depth_unit%></td>
+          <td><%= condo.lot_frontage%></td>
+          <td><%= condo.lot_frontage_unit%></td>
+          <td><%= condo.lot_size%></td>
+          <td><%= condo.lot_size_unit%></td>
         </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td>Condo</td>
-          <td>Compact Condo 02</td>
-          <td style="color: #00A66C;">$12,000</td>
-          <td>1999</td>
-          <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-          <td>23</td>
-          <td>Yes</td>
-          <td>ABC</td>
-          <td>1 Bed + Den</td>
-          <td>1 Bath + Powder Room</td>
-          <td>34ft</td>
-          <td>3</td>
-          <td>3</td>
-          <td>Underground</td>
-          <td>Owned</td>
-          <td>Detached</td>
-          <td>Condominium</td>
-          <td>Single Storey</td>
-          <td>Aluminum Siding</td>
-          <td>Yes</td>
-          <td>North-West</td>
-          <td>Doorman</td>
-          <td>Size Restriction</td>
-          <td>Common Elements</td>
-          <td>Municipal</td>
-          <td>Septic</td>
-          <td>Ground Source</td>
-          <td>Forced Air</td>
-          <td>Central Air</td>
-          <td>In Suite</td>
-          <td>Wood Stove</td>
-          <td>Yes</td>
-          <td>Partial Basement</td>
-          <td>Above Ground</td>
-          <td>$342</td>
-          <td>2006</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-          <td>Kitchen</td>
-          <td>40ft</td>
-          <td>40in</td>
-          <td>20ft</td>
-          <td>20in</td>
-          <td>Main Floor</td>
-        </tr>
+        <% end %>
         </tbody>
       </table>
     </div>

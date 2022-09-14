@@ -66,86 +66,16 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td class="fw_500 user_name ">Davis Vaccaro</td>
-            <td>davisvaccaro@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>Yes</td>
-            <td class="address">31901 Thornridge Cir. Shiloh, Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-              sint. Velit officia consequat duis enim velit mollit. Exercitation venia</td>
+            <% @users.each do |user|%>
+            <tr>
+           <td class="fw_500 user_name "><%= user.full_name%></td>
+            <td><%= user.email%></td>
+            <td><%= user.phone_number%></td>
+            <td><%= user.contacted_by_real_estate%></td>
+            <td class="address"><%= user.address%></td>
+            <td class="bio"><%= user.description%></td>
           </tr>
-          <tr>
-            <td class="fw_500 user_name ">Kianna Aminoff</td>
-            <td>kiannaaminoff@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>No</td>
-            <td class="address">31901 Thornridge Cir. Shiloh, Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-              sint. Velit officia consequat duis enim velit mollit. Exercitation venia</td>
-
-          </tr>
-          <tr>
-            <td class="fw_500 user_name">Ahmad Calzoni</td>
-            <td>davisvaccaro@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>Yes</td>
-            <td class="address">31901 Thornridge Cir. Shiloh,
-              Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt
-              ullamco est sit aliqua dolor do amet sint. Velit
-              officia consequat duis enim velit mollit.
-              Exercitation venia</td>
-
-          </tr>
-          <tr>
-            <td class="fw_500 user_name">Brandon Arcand</td>
-            <td>davisvaccaro@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>Yes</td>
-            <td class="address">31901 Thornridge Cir. Shiloh,
-              Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt
-              ullamco est sit aliqua dolor do amet sint. Velit
-              officia consequat duis enim velit mollit.
-              Exercitation venia</td>
-
-          </tr>
-          <tr>
-            <td class="fw_500 user_name">Leo Gouse</td>
-            <td>davisvaccaro@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>Yes</td>
-            <td class="address">31901 Thornridge Cir. Shiloh,
-              Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt
-              ullamco est sit aliqua dolor do amet sint. Velit
-              officia consequat duis enim velit mollit.
-              Exercitation venia</td>
-
-          </tr>
-          <tr>
-            <td class="fw_500 user_name">Kaylynn Baptista</td>
-            <td>davisvaccaro@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>Yes</td>
-            <td class="address">31901 Thornridge Cir. Shiloh,
-              Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt
-              ullamco est sit aliqua dolor do amet sint. Velit
-              officia consequat duis enim velit mollit.
-              Exercitation venia</td>
-
-          </tr>
-          <tr>
-            <td class="fw_500 user_name ">Allison Herwitz</td>
-            <td>davisvaccaro@gmail.com</td>
-            <td>(505) 555-0125</td>
-            <td>No</td>
-            <td class="address">31901 Thornridge Cir. Shiloh, Hawaii 81063</td>
-            <td class="bio">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-              sint. Velit officia consequat duis enim velit mollit. Exercitation venia</td>
-          </tr>
+          <%end%>
           </tbody>
         </table>
       </div>

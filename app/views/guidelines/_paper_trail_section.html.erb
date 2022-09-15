@@ -1,0 +1,13 @@
+<div class="date-section">
+  <div class="btn_blk">
+    <button class="site_btn save_btn" type="button" id="submitbtnclick">Save</button>
+    <button type="submit" id="customsavebutton" hidden></button>
+  </div>
+  <h3><%= Date.today.strftime("%B %d,%Y") %></h3>
+  <p class="mb-2">Update Logs</p>
+  <% @paper_trail.each do |record| %>
+    <p class="fw_600 mb-2"><%= record.created_at.strftime("%d/%m/%Y") %> - <%= record.event %></p>
+    <p><%= page_title(record.item_id) %></p>
+    <hr class="hr">
+  <% end %>
+</div>

@@ -1,5 +1,6 @@
 module PageHelper
   def page_title(id)
-    Page.find_by(id:id)&.title
+    page = Page.find_by(id:id)&.title
+    page.present? ? page : "JobList"
   end
 end

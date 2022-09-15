@@ -19,8 +19,8 @@ ActiveStorage.start()
 
 $(document).on('turbolinks:load', function() {
     $("#guideline_select").change(function (){
-        var id = $(this).val();
-        var select_id_value =  $(this).find(":selected").attr('data-page');
+        let id = $(this).val();
+        let select_id_value =  $(this).find(":selected").attr('data-page');
         document.getElementById("guide_lines_"+id).click()
         $("#guidelinepagevalue").val(select_id_value);
     });
@@ -29,7 +29,7 @@ $(document).on('turbolinks:load', function() {
         $("#typemessage").val("");
     });
   $(".pressdeactivelink").click(function (){
-      var id = $(this).attr("id");
+      let id = $(this).attr("id");
       $("#active_user_"+id).attr('hidden',true);
       $("#deactive_user_"+id).attr('hidden',false);
       $(".pressactivelinkwith_"+id).attr('hidden',false);
@@ -37,7 +37,7 @@ $(document).on('turbolinks:load', function() {
   });
 
   $(".pressactivelink").click(function (){
-      var id = $(this).attr("id");
+      let id = $(this).attr("id");
       $("#active_user_"+id).attr('hidden',false);
       $("#deactive_user_"+id).attr('hidden',true);
       $(".pressactivelinkwith_"+id).attr('hidden',true);
@@ -59,5 +59,11 @@ $(document).on('turbolinks:load', function() {
     })
     var selected_id_option =  $("#guideline_select").find(":selected").attr('data-page');
     $("#guidelinepagevalue").val(selected_id_option);
-    $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+    // $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+
+    $(".customjobclass").click(function (){
+        let id = $(this).attr('id');
+        $(".removethis_"+id).click();
+        $("#title_of_job_"+id).hide();
+    })
 });

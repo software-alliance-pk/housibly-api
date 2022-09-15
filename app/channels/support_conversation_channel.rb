@@ -4,12 +4,12 @@ class SupportConversationChannel < ApplicationCable::Channel
     SupportConversation.where(sender_id: current_user).or(SupportConversation.where(recipient_id: current_user)).find_each do |conversation|
       stream_from "support_conversations_#{conversation.id}"
     end
-    current_user.update(available: true)
+    #current_user.update(available: true)
   end
 
   def unsubscribed
     stop_all_streams
-    current_user.update(available: false)
+    #current_user.update(available: false)
   end
 
   def receive(data)

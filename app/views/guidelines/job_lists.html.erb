@@ -5,44 +5,25 @@
       <h1>Guidelines</h1>
       <%= render 'shared/header-side' %>
     </div>
-
     <div class="right-con-inner">
-     <div class="dropdown mb-4">
-          <select class="text dropdown-toggle input w-auto fs_5 fw_600" id="guideline_select">
-            <option value="1" data-page="terms&condition" <%= params[:permalink] == "terms&condition" ? "selected" : "" %>>
-              Terms & Condition
-            </option>
-            <option value="3" data-page="privacy_policy" <%= params[:permalink] == "privacy_policy" ? "selected" : "" %>>
-              Privacy Policy
-            </option>
-            <option value="2" data-page="faq" <%= params[:permalink] == "faq" ? "selected" : "" %>>
-              FAQ
-            </option>
-            <option value="4" data-page="job_list" <%= params[:permalink] == "job_list" ? "selected" : "" %>>
-              Job List
-            </option>
-            
-          </select>
-
-        </div>
-
-
+      <%= render 'drop_down_mean' %>
       <div class="row">
         <div class="col-lg-8">
           <ul class="job_list">
             <%@job_lists.each do |job_list|%>
-              <li>
+              <li id="title_of_job_<%= job_list.id%>">
                 <div class="jobs"><%=job_list.title%></div>
                 <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                   <%= image_tag 'more.svg' %>
                 </div>
                 <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><%= link_to 'Remove',delete_job_list_path(id: job_list),id: job_list.id,class: "pressactivelink", remote: :true %></li>
-
+                  <li class="customjobclass pressactivelink"  id="<%= job_list.id%>">Remove</li>
                 </ul>
+                <span style="opacity:0;">
+                <%= link_to 'Remove',delete_job_list_path(id: job_list),class: "pressactivelink removethis_#{job_list.id}", remote: :true%>
+              </span>
               </li>
-              <%end%>
-
+          <%end%>
           </ul>
         </div>
         <div class="col-lg-4">
@@ -61,33 +42,29 @@
         </div>
       </div>
     </div>
-
     <section class="popup" data-popup="add_jobs">
       <div class="table_dv">
         <div class="table_cell">
           <div class="contain-fluid">
             <div class="row justify-content-center">
               <div class="col-lg-4 col-md-8 col-sm-10">
-                
                 <div class="_inner">
                   <%= form_with url: job_list_guidelines_path do |form| %>
-                  <!-- <button type="button" class="x_btn"></button> -->
                   <h4 class="heading">Add Job List</h4>
                   <h5>Up to 30 characters</h5>
                   <hr class="hr">
-                  
                   <%= form.text_area :title, class: "input",placeholder: 'Input Here' %>
-                  
                   <div class="btn_blk modal_btn">
                     <button type="button" class="cancel">cancel</button>
                     <button  type="submit" class="save site_btn">Save</button>
                   </div>
                    <% end%>
                 </div>
-               
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+  </div>
+</section>

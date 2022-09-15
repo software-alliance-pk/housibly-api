@@ -1,0 +1,20 @@
+<div class="dropdown mb-4">
+  <select class="text dropdown-toggle input w-auto fs_5 fw_600" id="guideline_select">
+    <option value="1" data-page="terms&condition" <%=  terms_and_condition_option_slected(params) %>>
+      Terms & Condition
+    </option>
+    <option value="3" data-page="privacy_policy" <%= privacy_policy_option_selected(params) %>>
+      Privacy Policy
+    </option>
+    <option value="2" data-page="faq" <%= faq_option_selected(params) %>>
+      FAQ
+    </option>
+    <option value="4" data-page="job_list" <%= job_lists_option_selected(params) %>>
+      Job List
+    </option>
+  </select>
+</div>
+<a id="guide_lines_1" href="<%= privacy_policy_path(permalink: "terms&condition") %>" hidden></a>
+<a id="guide_lines_2" href="<%= privacy_policy_path(permalink: "faq") %>" hidden></a>
+<a id="guide_lines_3" href="<%= privacy_policy_path(permalink: "privacy_policy") %>" hidden></a>
+<a id="guide_lines_4" href="<%= job_lists_guidelines_path %>" hidden></a>

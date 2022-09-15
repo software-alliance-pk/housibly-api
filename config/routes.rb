@@ -87,6 +87,7 @@ Rails.application.routes.draw do
       get 'reported_users', to: 'users#reported_users'
       get 'profile_visitor_list', to: 'users#profile_visitor_list'
       post 'view_user_profile', to: 'users#view_user_profile'
+      post '/update_notification', to: 'users#update_notification'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'
       get '/get_card', to: 'payments#get_card'
@@ -137,6 +138,7 @@ Rails.application.routes.draw do
         delete :delete_notification
       end
     end
+    resources :dream_addresses
       resources :user_preferences, only: [:create, :index]
       get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'

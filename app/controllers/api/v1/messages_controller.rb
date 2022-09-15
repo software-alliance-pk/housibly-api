@@ -45,24 +45,27 @@ class Api::V1::MessagesController < Api::V1::ApiController
   end 
   def get_notification
   	@notifications = []
-  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
-  	conversations.each do |conversation|
-			_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)
-			_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.recipient_id) unless _notification.present?
-			_notification = 	_notification.last
-  	  # if UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).present?
-  	  #  notification = UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).last
-  	  # elsif UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).present?
-  	  #  notification = UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).last
-  	  # end
-  	  unless _notification == nil
-  	   @notifications <<	_notification
-  	 end
-  	end
-	if @notifications
-		@notifications
-	else
-	  render json: {message: []},status: :ok
+  	debugger
+  	unless @current_user.user_setting.inapp_notification == false
+	  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
+	  	conversations.each do |conversation|
+				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)
+				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.recipient_id) unless _notification.present?
+				_notification = 	_notification.last
+	  	  # if UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).present?
+	  	  #  notification = UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).last
+	  	  # elsif UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).present?
+	  	  #  notification = UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).last
+	  	  # end
+	  	  unless _notification == nil
+	  	   @notifications <<	_notification
+	  	 end
+	  	end
+		if @notifications
+			@notifications
+		else
+		  render json: {message: []},status: :ok
+		end
 	end
 end
 
@@ -96,10 +99,12 @@ end
 	end
 
 	def send_notification_to_user(conversation,message)
-		if conversation.sender == @current_user
-			UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
-		else
-			UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+		unless @current_user.user_setting.push_notification == false
+			if conversation.sender == @current_user
+				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+			else
+				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+			end
 		end
 	end
 end

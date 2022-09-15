@@ -12,7 +12,7 @@
             <div class="dropdown">
               <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
                 <div class="img_blk">
-                  <img src="assets/images/filter.svg" alt="">
+                  <%= image_tag 'filter.svg', alt: '' %>
                 </div>
                 filters
               </button>
@@ -22,7 +22,7 @@
           <li>
             <div class="form_blk">
               <div class="icon_blk">
-                <img src="assets/images/search.svg" alt="">
+                <%= image_tag 'search.svg', alt: '' %>
               </div>
               <input type="search" placeholder="Search" class="input">
             </div>
@@ -30,7 +30,7 @@
           <li>
             <button type="button" class="filter">
               <div class="img_blk">
-                <img src="assets/images/csv-file-icon.svg" alt="">
+                <%= image_tag 'csv-file-icon.svg', alt: '' %>
               </div>
               Download CSV
             </button>
@@ -48,62 +48,22 @@
           <th style="width: 20rem">
             Dream Address
           </th>
-
-
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td class="dream_address">
-            <p>
-              4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td class="dream_address">
-            <p>
-              4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td class="dream_address">
-            <p>
-              4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td class="dream_address">
-            <p>
-              4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td class="dream_address">
-            <p>
-              4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="fw_500 user_name ">Davis Vaccaro</td>
-          <td class="dream_address">
-            <p>
-              4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299
-            </p>
-          </td>
-        </tr>
+          <% @address.each do |record| %>
+           <tr>
+            <td class="fw_500 user_name "><%= record.user.full_name%></td>
+            <td class="dream_address">
+              <p>
+                <%= record.location %>
+              </p>
+            </td>
+          </tr>
+          <%end%>
         </tbody>
       </table>
     </div>
-    <%#= render 'shared/pagination' %>
+    <%= render 'shared/pagination' ,data: @address%>
   </div>
 </section>

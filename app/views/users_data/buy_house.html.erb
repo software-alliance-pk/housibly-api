@@ -81,16 +81,14 @@
   						<th style="width: 19rem">
   							Max Age
   						</th>
-
-
   					</tr>
   				</thead>
   				<tbody>
   					<% @houses.each do |house|%>
   					<tr>
   						<td><%= house.user.full_name%></td>
-                        <td><%= house.type%></td>
-                        <td style="color: #00A66C;"><%= house.price%></td>
+							<td><%= house.type%></td>
+							<td style="color: #00A66C;"><%= house.price%></td>
   						<td><%= house.bed_rooms%></td>
   						<td> <%= house.bath_rooms%></td>
   						<td>Multi-Family</td>
@@ -106,7 +104,6 @@
   				</tbody>
   			</table>
   		</div>
-  		<!-- -->
+			<%= render 'shared/pagination' ,data: @houses%>
   	</div>
   </section>
-  <!-- dash -->

@@ -87,8 +87,8 @@
   					<% @condos.each do |condo|%>
   					<tr>
   						<td><%= condo.user.full_name%></td>
-                        <td><%= condo.type%></td>
-                        <td style="color: #00A66C;"><%= condo.price%></td>
+							<td><%= condo.type%></td>
+							<td style="color: #00A66C;"><%= condo.price%></td>
   						<td><%= condo.bed_rooms%></td>
   						<td> <%= condo.bath_rooms%></td>
   						<td>Multi-Family</td>
@@ -104,7 +104,6 @@
   				</tbody>
   			</table>
   		</div>
-  		<!-- -->
+			<%= render 'shared/pagination' ,data: @condos%>
   	</div>
   </section>
-  <!-- dash -->

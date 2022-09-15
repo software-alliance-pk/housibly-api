@@ -1,5 +1,4 @@
 <main>
-
   <section id="account_section">
     <%= render 'shared/sidebar' %>
     <div id="user_info" class="main_side">
@@ -62,27 +61,25 @@
             <th style="width: 20rem">
               Bio
             </th>
-
           </tr>
           </thead>
           <tbody>
             <% @users.each do |user|%>
             <tr>
-           <td class="fw_500 user_name "><%= user.full_name%></td>
-            <td><%= user.email%></td>
-            <td><%= user.phone_number%></td>
-            <td><%= user.contacted_by_real_estate%></td>
-            <td class="address"><%= user.address%></td>
-            <td class="bio"><%= user.description%></td>
-          </tr>
+             <td class="fw_500 user_name "><%= user.full_name%></td>
+              <td><%= user.email%></td>
+              <td><%= user.phone_number%></td>
+              <td><%= user.contacted_by_real_estate%></td>
+              <td class="address"><%= user.address%></td>
+              <td class="bio"><%= user.description%></td>
+             </tr>
           <%end%>
           </tbody>
         </table>
       </div>
-<!--      <?php require_once 'includes/pagination.php'; ?>-->
+      <%= render 'shared/pagination' ,data: @users%>
     </div>
   </section>
-  <!-- dash -->
 
 
 </main>

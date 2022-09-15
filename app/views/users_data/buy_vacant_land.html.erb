@@ -61,7 +61,6 @@
           </thead>
           <tbody>
             <% @vacant_lands.each do |vacant_land|%>
-            <%#debugger%>
             <tr>
               <td class="fw_500 user_name "><%= vacant_land.user.full_name%></td>
               <td><%= vacant_land.type%></td>
@@ -73,7 +72,6 @@
           </tbody>
         </table>
       </div>
-      <!-- -->
+      <%= render 'shared/pagination' ,data: @vacant_lands%>
     </div>
   </section>
-  <!-- dash -->

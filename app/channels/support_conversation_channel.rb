@@ -14,7 +14,7 @@ class SupportConversationChannel < ApplicationCable::Channel
 
   def receive(data)
     @conversation = SupportConversation.find_by(id: data.fetch("conversation_id"))
-    if (@conversation.sender_id == current_user.id) || (@conversation.recipient_id == current_user.id)
+    if check_conversation(@conversation)
       message = @conversation.user_support_messages.build(sender_id: current_user.id)
       message.body = data["body"].present? ? data.fetch("body") : nil
       if message.save
@@ -27,7 +27,9 @@ class SupportConversationChannel < ApplicationCable::Channel
         data["updated_at"] = message.updated_at
         ActionCable.server.broadcast "support_conversations_#{message.support_conversation_id}", data.as_json
       end
-    
     end
+  end
+  def check_conversation(user)
+    (user.sender_id == current_user.id) || (user.recipient_id == current_user.id)
   end
 end

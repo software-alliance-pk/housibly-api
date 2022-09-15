@@ -27,6 +27,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
         # @token = JsonWebTokenService.encode({ email: @current_user.email })
       end
       @current_user.update(user_params.merge(is_confirmed: true))
+      @current_user.build_user_setting.save
       @token = JsonWebTokenService.encode({ email: @current_user.email })
     else
       render json: { message: "OTP not verified" }, status: 401

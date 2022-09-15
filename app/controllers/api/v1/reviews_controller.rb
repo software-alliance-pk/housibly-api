@@ -1,25 +1,28 @@
 class Api::V1::ReviewsController < Api::V1::ApiController
    def create
-    @support_closer = User.find_by(id: params[:support_closer_id])
-    if @support_closer.present?
-      @review = @current_user.reviews.build(review_params)
-      @review.support_closer_id = @support_closer.id
-      if @review.save
-        @review
+    @user = User.find_by(id: params[:support_closer_id])
+    if @user.present?
+      if @user.want_support_closer?
+        @review = @current_user.reviews.build(review_params.merge(support_closer_id: @user.id))
+        if @review.save
+          @review
+        else
+          render_error_messages(@review)
+        end
       else
-        render_error_messages(@review)
+        render json: {message: "This user is not Support Closer"}, status: :unprocessable_entity
       end
     else
-      render json: {message: "Not Found"}, status: :unprocessable_entity
+      render json: {message: "User does n't exists"}, status: :unprocessable_entity
     end
   end
 
   def get_reviews
-    @reviews = Review.where(support_closer_id: params[:support_closer_id])
+    @reviews = Review.get_reviews(params[:support_closer_id])
     if @reviews.present?
       @reviews
     else
-      render json: {message: "Not Found"}
+      render json: {message: "Support Closer does n't exists"}
     end
   end
 

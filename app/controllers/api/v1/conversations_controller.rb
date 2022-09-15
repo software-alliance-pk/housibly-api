@@ -1,22 +1,24 @@
 class Api::V1::ConversationsController < Api::V1::ApiController
+  include ChatListBoardCast
 	def create
-		if Conversation.find_by(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id).present? ||
-      Conversation.find_by(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id]).present?
-      @conversation = Conversation.find_by(recipient_id: params[:conversation][:recipient_id] ,sender_id: @current_user.id) ||
-      @conversation = Conversation.find_by(recipient_id: @current_user.id ,sender_id: params[:conversation][:recipient_id])
-      @conversation
+    check_conversation_exists
+    if @conversation.present?
+       @conversation
     else
-	    @conversation = Conversation.new(conversation_params)
-	    @conversation.sender_id = @current_user.id
+	    @conversation = Conversation.new(conversation_params.merge(sender_id: current_user.id))
       if @conversation.save
         @conversation
       else
         render_error_messages(@conversation)
       end
     end
+    @list,user = notify_second_user(@conversation)
+    ActionCable.server.broadcast "user_chat_list_3",  { data: @list.as_json}
+    ActionCable.server.broadcast "user_chat_list_#{user.id}",  { data: @list.as_json}
   end
   def index
-    @conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)      
+    #@conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
+    @conversations = Conversation.find_specific_conversation(@current_user.id)
   end
     def read_messages
     @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
@@ -53,10 +55,17 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
 
-
   private
-
   def conversation_params
     params.require(:conversation).permit(:recipient_id)
+  end
+
+  def check_conversation_exists
+    @conversation = Conversation.get_chat_between_user(params[:conversation][:recipient_id],@current_user.id)
+    unless @conversation.present?
+      @conversation = Conversation.with_deleted.
+        get_chat_between_user(params[:conversation][:recipient_id],@current_user.id)
+      @conversation.recover if @conversation.present?
+    end
   end
 end

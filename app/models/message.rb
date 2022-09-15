@@ -7,5 +7,5 @@ class Message < ApplicationRecord
 	def update_conversation_message_counter
     prev_value = (self.conversation.unread_message) + 1
     self.conversation.update_attribute(:unread_message,prev_value)
-  end
+	end
 end

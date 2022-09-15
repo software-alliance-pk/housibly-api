@@ -1,9 +1,10 @@
-json.total_reviews @reviews.count
-if @reviews.pluck(:rating).sum == 0
-  json.average_rating 0
-else
-  json.average_rating @reviews.pluck(:rating).sum/@reviews.pluck(:rating).count
-end
+json.total_reviews Review.get_reviews_count(@reviews&.last&.support_closer_id)
+json.average_rating Review.get_support_closer_average_rating(@reviews&.last&.support_closer_id)
+# if @reviews.pluck(:rating).sum == 0
+#   json.average_rating 0
+# else
+#   json.average_rating @reviews.pluck(:rating).sum/@reviews.pluck(:rating).count
+# end
 json.reviews @reviews do |review|
 	json.id review.id
 	json.review review.description

@@ -59,6 +59,24 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
+  def matching_property
+    UserPreference.all.each do |preference|
+      @property=Property.where(bath_rooms: preference.min_bathrooms, bed_rooms: preference.min_bedrooms)
+    end
+    if @property
+      render json: {message: @property},status: :ok
+    else
+      render json: {message: "No Matches"},status: :ok
+    end
+  end
+  def matching_dream_address
+    @properties = Property.where(address: DreamAddress.pluck(:location))
+    if @properties
+      render json: {message: @properties},status: :ok
+    else
+      render json: {message: "No Matches"},status: :ok
+    end
+  end
   private
   def parse_parameters
     if property_params

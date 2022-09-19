@@ -60,7 +60,12 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
-      resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property]
+      resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property] do
+        collection do
+          get 'matching_property'
+          get 'matching_dream_address'
+        end
+      end
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#login'
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
@@ -74,6 +79,7 @@ Rails.application.routes.draw do
       post '/tickets', to: 'supports#create_ticket'
       post '/card', to: 'payments#create'
       post '/apple_pay', to: 'payments#apple_pay'
+      post '/create_product', to: 'payments#create_product'
       post '/delete_card', to: 'payments#destroy_card'
       post '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'

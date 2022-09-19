@@ -3,16 +3,18 @@ class SupportClosersController < ApplicationController
     unless params[:search].blank?
       @support_closer = User.get_support_closer_user.paginate(page: params[:page], per_page: 10)
       @support_closer = @support_closer.custom_search(params[:search])
-      respond_to do |format|
-        format.html
-        format.csv { send_data @support_closer.to_csv }
-      end
+      response_to_method
     else
       @support_closer = User.get_support_closer_user.paginate(page: params[:page], per_page: 10)
-      respond_to do |format|
-        format.html
-        format.csv { send_data @support_closer.to_csv }
-      end
+      response_to_method
+    end
+  end
+
+  def response_to_method
+    respond_to do |format|
+      format.html
+      @support_closer =  User.get_support_closer_user.where(id: params[:checkbox_value].split(","))  if params[:checkbox_value].present?
+      format.csv { send_data @support_closer?@support_closer.to_csv : "Data not found"  }
     end
   end
 

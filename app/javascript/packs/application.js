@@ -18,6 +18,51 @@ Turbolinks.start()
 ActiveStorage.start()
 
 $(document).on('turbolinks:load', function() {
+    $("#selectedallcheckboxes").click(function (){
+        this.checked ? selects() : deSelect()
+    });
+
+
+    $('input[name="selected_checkbox"]').click(function() {
+        let values = [];
+        let checkboxes = document.querySelectorAll('input[name="selected_checkbox"]:checked');
+        if(checkboxes.length > 0)
+        {
+            checkboxes.forEach((checkbox) => {
+                values.push(checkbox.id);
+            });
+        }
+        let href = $("#downloadbtncustom").attr('href');
+        let new_href =  href.split('=')
+        new_href = new_href[0] + "=" + values
+        $("#downloadbtncustom").attr('href',new_href);
+    });
+
+    function selects(){
+        let values = [];
+        var ele=document.getElementsByName('selected_checkbox');
+        for(var i=0; i<ele.length; i++){
+            if(ele[i].type=='checkbox')
+                ele[i].checked=true;
+            values.push(ele[i].id);
+        }
+        let href = $("#downloadbtncustom").attr('href');
+        let new_href =  href.split('=')
+        new_href = new_href[0] + "=" + values
+        $("#downloadbtncustom").attr('href',new_href);
+    }
+    function deSelect(){
+        let values = [];
+        var ele=document.getElementsByName('selected_checkbox');
+        for(var i=0; i<ele.length; i++){
+            if(ele[i].type=='checkbox')
+                ele[i].checked=false;
+            values.push([]);
+        }
+        let href = $("#downloadbtncustom").attr('href');
+        let new_href =  href.split('=');
+        $("#downloadbtncustom").attr('href',new_href[0]+"=");
+    }
     $("#guideline_select").change(function (){
         let id = $(this).val();
         let select_id_value =  $(this).find(":selected").attr('data-page');

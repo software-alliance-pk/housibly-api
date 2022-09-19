@@ -32,7 +32,7 @@
               <div class="img_blk">
                 <%= image_tag 'csv-file-icon.svg', alt: '' %>
               </div>
-              Download CSV
+              <%= link_to "Download CSV", dream_address_users_data_path(format: 'csv', search: params[:search])%>
             </button>
           </li>
         </ul>

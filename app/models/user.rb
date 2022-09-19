@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   require 'csv'
+  include CsvCounter
   include PgSearch::Model
      pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
@@ -103,11 +104,8 @@ class User < ApplicationRecord
   def otp_length(length)
     rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
   end
-
-
-      
-
   def self.to_csv
+      CsvCounter.update_csv_counter
        CSV.generate(headers: true) do |csv|
         csv << self.attribute_names
         all.each do |record|
@@ -115,15 +113,4 @@ class User < ApplicationRecord
       end
     end
   end
-      # def test
-      #   if csv_count = Setting.last.present?
-      #     csv_count = Setting.last.csv_count
-      #     Setting.update(csv_count:csv_count +1)
-      #   else
-      #     csv_count = Setting.create(csv_count: 1)
-      #   end
-      # end
-  
-
-
 end

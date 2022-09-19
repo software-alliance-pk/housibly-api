@@ -1,25 +1,26 @@
 class Admin < ApplicationRecord
   #after_commit :send_notification
+  require "csv"
   include CsvCounter
+  include PgSearch::Model
+
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
   has_many :pages, dependent: :destroy
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
   has_many :admin_support_messages, dependent: :destroy,foreign_key: :sender_id
-  require "csv"
-    include PgSearch::Model
-     pg_search_scope :custom_search,
+
+  pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number, :location, :status, :user_name],
                   using: {
                     tsearch: { prefix: true }
                   }
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+
   scope :sub_admins, -> { where(admin_type: "sub_admin")}
+
   validates :full_name, :user_name, :phone_number, :location, :date_of_birth, presence: true
-  
-  
 
   enum admin_type: {
     admin: 0,

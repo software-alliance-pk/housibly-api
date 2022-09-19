@@ -1,6 +1,7 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
-  Stripe.api_key = Rails.application.credentials.stripe[:api_key] if Rails.env.development?
-  Stripe.api_key = ENV["STRIPE_API_KEY"] if Rails.env.production?
+  # Stripe.api_key = Rails.application.credentials.stripe[:api_key] if Rails.env.development?
+  Stripe.api_key ="sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h"
+ # Stripe.api_key = ENV["STRIPE_API_KEY"] if Rails.env.production?
 
   before_action :find_card, only: [:get_card, :destroy_card, :update_card, :set_default_card]
 
@@ -16,6 +17,41 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       render_error_messages(@card)
     end
   end
+
+  def create_product
+    @product = StripeService.create_product
+    if @product
+      render json: {message: @product},status: :ok
+    else
+      render_error_messages(@product)
+    end
+  end
+
+  def get_pakeges
+    @packages = Stripe::Product.list({limit: 3})
+    if @packages.present?
+      render json: {message: @packages},status: :ok
+    else
+     render json: {package: "No Package Available"},status: :ok
+    end
+  end
+
+  def create_subscription
+    customer = check_customer_at_stripe
+    subscription = StripeService.create_subscription(customer.id,params[:price_id])
+    if subscription.present?
+     render json: {package: subscription},status: :ok
+    end
+  end
+  def cancel_subscription
+    subscription = Stripe::Subscription.delete(
+    params[:subscription_id],
+    )
+    if subscription.present?
+     render json: {subscription: subscription.status},status: :ok
+    end 
+  end
+
 
   def get_card
     if @card

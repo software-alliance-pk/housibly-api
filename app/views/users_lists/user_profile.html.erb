@@ -8,13 +8,13 @@
     <div class="profile_banner">
       <div class="inner text-center">
         <div class="ico fill round">
-          <img src="assets/images/02.jpg" alt="">
+          <%= image_tag @user.avatar.url %>
         </div>
         <div class="txt">
-          <h5>Davis Vaccaro</h5>
-          <p><a href="mailto:davisvaccaro@gmail.com">davisvaccaro@gmail.com</a></p>
-          <p><a href="tel:+123 456 789">+123 456 789</a></p>
-          <p>31901 Thornridge Cir. Shiloh, C.a 81063</p>
+          <h5><%= @user.full_name %></h5>
+          <p><a href="mailto:davisvaccaro@gmail.com"><%= @user.email %></a></p>
+          <p><a href="tel:+123 456 789"><%= @user.phone_number %></a></p>
+          <p><%= @user.address %></p>
         </div>
       </div>
     </div>
@@ -33,42 +33,17 @@
       <div class="tab-pane fade show active" id="DreamAddress">
         <h3>User’s Dream Addresses</h3>
         <ul class="view_map_blk fs_5">
-          <li>
+          <% @user&.dream_addresses.each do |record| %>
+            <li>
             <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
             <div class="txt">
-              <p class="fw_600">2118 Thornridge Cir. Syracuse, Connecticut 35624</p>
+              <p class="fw_600"><%= record.location %></p>
             </div>
             <div class="btn_blk">
               <a href="?" class="site_btn text text-decoration-underline">View in map</a>
             </div>
           </li>
-          <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
-            <div class="txt">
-              <p class="fw_600">2118 Thornridge Cir. Syracuse, Connecticut 35624</p>
-            </div>
-            <div class="btn_blk">
-              <a href="?" class="site_btn text text-decoration-underline">View in map</a>
-            </div>
-          </li>
-          <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
-            <div class="txt">
-              <p class="fw_600">2118 Thornridge Cir. Syracuse, Connecticut 35624</p>
-            </div>
-            <div class="btn_blk">
-              <a href="?" class="site_btn text text-decoration-underline">View in map</a>
-            </div>
-          </li>
-          <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
-            <div class="txt">
-              <p class="fw_600">2118 Thornridge Cir. Syracuse, Connecticut 35624</p>
-            </div>
-            <div class="btn_blk">
-              <a href="?" class="site_btn text text-decoration-underline">View in map</a>
-            </div>
-          </li>
+          <%end%>
         </ul>
       </div>
       <div class="tab-pane fade" id="BuyingPreference">
@@ -84,48 +59,63 @@
         <table class="list_table w-100">
           <tbody>
           <tr>
+            <td><%= @user.user_preference&.price%></td>
+          </tr>
+          <tr>
             <td>Budget</td>
-            <td class="fw_600"><span>$25,000</span> to <span>$40,000</span></td>
+            <td class="fw_600"><span><%= @user.user_preference&.min_price %></span> to <span><%= @user.user_preference&.max_price %></span></td>
           </tr>
           <tr>
             <td>Bedrooms</td>
-            <td class="fw_600">4</td>
+            <td class="fw_600"><span><%= @user.user_preference&.min_bedrooms%></span> to <span><%= @user.user_preference&.max_bedrooms%></span></td>
           </tr>
           <tr>
             <td>Bathrooms</td>
-            <td class="fw_600">4 Bath + Powder Room</td>
+            <td class="fw_600"><span><%= @user.user_preference&.min_bathrooms%></span> to <span><%= @user.user_preference&.max_bathrooms%></span></td>
           </tr>
           <tr>
             <td>Property Type</td>
-            <td class="fw_600">Multi-Family</td>
+            <td class="fw_600"><%= @user.user_preference&.property_type %></td>
           </tr>
           <tr>
             <td>Property Styles</td>
-            <td class="fw_600">Doesn’t matter</td>
-          </tr>
-          <tr>
-            <td>Min Lot Forntage</td>
-            <td class="fw_600">30</td>
-          </tr>
-          <tr>
-            <td>Lot Size (ft)</td>
-            <td class="fw_600">23 ft to 50 ft</td>
+            <td class="fw_600"><%= @user.user_preference&.property_style%></td>
           </tr>
           <tr>
             <td>Living Space</td>
-            <td class="fw_600">12 ft to 15 ft</td>
+            <td><span><%= @user.user_preference&.min_living_space%></span>to<span><%= @user.user_preference&.min_living_space%></span></td>
+          </tr>
+          <tr>
+            <td>Balcony</td>
+            <td><%= @user.user_preference&.balcony%></td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td><%= @user.user_preference&.security%></td>
+          </tr>
+          <tr>
+            <td>Laundry</td>
+            <td><%= @user.user_preference&.laundry %></td>
+          </tr>
+          <tr>
+            <td>Min Lot Forntage</td>
+            <td class="fw_600"><%= @user.user_preference&.min_lot_frontage%></td>
+          </tr>
+          <tr>
+            <td>Lot Size (ft)</td>
+            <td class="fw_600"><%= @user.user_preference&.lot_size_unit%></td>
           </tr>
           <tr>
             <td>Parking Spots Req.</td>
-            <td class="fw_600">2</td>
+            <td class="fw_600"><%= @user.user_preference&.parking_spot%></td>
           </tr>
           <tr>
             <td>Garage Spots Req.</td>
-            <td class="fw_600">Doesn’t matter</td>
+            <td class="fw_600"><%= @user.user_preference&.garbage_spot%></td>
           </tr>
           <tr>
             <td>Max Age</td>
-            <td class="fw_600">10</td>
+            <td class="fw_600"><%= @user.user_preference&.max_age%></td>
           </tr>
           </tbody>
         </table>

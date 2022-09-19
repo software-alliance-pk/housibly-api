@@ -22,7 +22,10 @@ $(document).on('turbolinks:load', function() {
         this.checked ? selects() : deSelect()
     });
 
-
+    $("#csearchbtn").keyup(function (){
+        var word = $(this).val();
+        $("#searchformc").trigger('click');
+    });
     $('input[name="selected_checkbox"]').click(function() {
         let values = [];
         let checkboxes = document.querySelectorAll('input[name="selected_checkbox"]:checked');

@@ -48,8 +48,6 @@ Rails.application.routes.draw do
     member do
       get :active_account
       get :deactive_account
-    end
-    collection do
       get :user_profile
     end
   end

@@ -16,6 +16,7 @@ class UsersListsController < ApplicationController
   def response_to_method
     respond_to do |format|
       format.html
+      @all_users =  User.where(id: params[:checkbox_value].split(","))  if params[:checkbox_value].present?
       format.csv { send_data @all_users.to_csv }
     end
   end
@@ -30,7 +31,6 @@ class UsersListsController < ApplicationController
     end
   end
 
-
   def deactive_account
      @user = User.find_by(id: params[:id])
       if @user.update(active: false)
@@ -38,6 +38,23 @@ class UsersListsController < ApplicationController
     else
       redirect_to users_lists_path
     end
+  end
+
+  def create
+    debugger
+    @user = User.new(user_params)
+    if @user.save
+      redirect_to users_lists_path()
+    else
+      flash.alert = @user.errors.full_messages
+      redirect_to users_lists_path()
+    end
+  end
+  private
+
+  def user_params
+    params.permit(:full_name, :email, :password, :address,:description, :phone_number,
+                  :user_type,:profile_type,:contacted_by_real_estate,:licensed_realtor)
   end
 
 end

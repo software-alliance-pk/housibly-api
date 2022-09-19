@@ -21,19 +21,19 @@
               </div>
             </li>
             <li>
-              <div class="form_blk">
+              <%= form_for :sub_admin, :url => {:controller => 'support_closers', :action => 'index'}, :html => {:method => 'get',id: 'searchformc', class: "form_blk"} do |f| %>
                 <div class="icon_blk">
-                  <%= image_tag 'search.svg', alt: '' %>
+                  <%= image_tag 'search.svg' %>
                 </div>
-                <input type="search" placeholder="Search" class="input">
-              </div>
+                <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+              <% end %>
             </li>
             <li>
               <button type="button" class="filter">
                 <div class="img_blk">
                   <%= image_tag 'csv-file-icon.svg', alt: '' %>
                 </div>
-                Download CSV
+                <%= link_to "Download CSV",support_closers_path(format: 'csv', search: params[:search],checkbox_value:""),id: "downloadbtncustom" %>
               </button>
             </li>
           </ul>
@@ -139,11 +139,14 @@
             <th style="width: 17.2rem">
               Property Type
             </th>
-            <th style="width: 21.3rem">
-              Price Range
-            </th>
+<!--            <th style="width: 21.3rem">-->
+<!--              Price Range-->
+<!--            </th>-->
+<!--            <th style="width: 19.1rem">-->
+<!--              Min Lot Forntage-->
+<!--            </th>-->
             <th style="width: 19.1rem">
-              Min Lot Forntage
+              Lot Forntage
             </th>
             <th style="width: 14.6rem">
               Lot Size
@@ -450,147 +453,78 @@
           <tbody>
             <% @all_users.each do |user| %>
           <tr>
-
-            <td class="fw_500 user_name "><%= user.full_name %></td>
-              <td><%= user.email %></td>
-              <td><%=user.phone_number%></td>
+            <td class="fw_500 user_name ">
+                  <%= link_to user_profile_users_list_path(id: user) do %>
+                    <%= user.full_name %>
+                  <%end%>
+            </td>
+            <td><%= user.email %></td>
+            <td><%=user.phone_number%></td>
             <td><%=user.contacted_by_real_estate%></td>
             <td><%=user.address%></td>
-            <td>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation venia</td>
-            <td>4140 Parker Rd. Allentown, New Mexico 31134, 6391 Elgin St. Celina, Delaware 10299</td>
-            <td>House</td>
-            <td style="color: #00A66C;">$25,000 - $30,000</td>
-            <td>4</td>
-            <td>2 Bath + Powder Room</td>
-            <td>Multi-Family</td>
-            <td>2 Storey</td>
-            <td>30</td>
-            <td>30ft - 40ft</td>
-            <td>30ft - 40ft</td>
-            <td>3</td>
-            <td>>3</td>
-            <td>30</td>
-            <td>Condo</td>
-            <td style="color: #00A66C;">$25,000 - $30,000</td>
-            <td>4</td>
-            <td>2 Bath + Powder Room</td>
-            <td>Condominium</td>
-            <td>Single Storey</td>
-            <td>30ft - 40ft</td>
-            <td>3</td>
-            <td>Yes</td>
-            <td>Cameras</td>
-            <td>In Suite</td>
-            <td>30</td>
-            <td>Vacant Land</td>
-            <td style="color: #00A66C">$25,000 - $30,000</td>
-            <td>30</td>
-            <td>30ft - 40ft</td>
-            <td>House</td>
-            <td>
-              <div style="display: flex; align-items: center;">
-
-                White Modern House 03
-                <div style=" width: .8rem; height:1rem; margin-left: 1rem;">
-                  <img src="assets/images/downArrow.svg" alt="">
-                </div>
-              </div>
-            </td>
-            <td style="color: #00A66C">$30,000</td>
-            <td>1999</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>>6</td>
-            <td>4 Bath + Powder Room</td>
-            <td>23ft</td>
-            <td>3</td>
-            <td>3</td>
-            <td>Detached</td>
-            <td>Right of Way</td>
-            <td>Townhouse</td>
-            <td>3 Storey</td>
-            <td>Aluminum Siding</td>
-            <td>Municipal</td>
-            <td>Septic</td>
-            <td>Ground Source</td>
-            <td>Forced Air</td>
-            <td>Central Air</td>
-            <td>Has Laundry</td>
-            <td>Wood Stove</td>
-            <td>Yes</td>
-            <td>Partial Basement</td>
-            <td>Above Ground</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>Kitchen</td>
-            <td>G40ft</td>
-            <td>40in</td>
-            <td>20ft</td>
-            <td>20in</td>
-            <td>Main Floor</td>
-            <td>Condo</td>
-
-            <td>
-              <div style="display: flex; align-items: center;">
-
-                Compact Condo 02
-                <div style=" width: .8rem; height:1rem; margin-left: 1rem;">
-                  <img src="assets/images/downArrow.svg" alt="">
-                </div>
-              </div>
-            </td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>1999</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
-            <td>23</td>
-            <td>Yes</td>
+            <td><%= user.description %></td>
+            <td><%= user.dream_addresses&.last&.location %></td>
+            <td><%= user.user_preference&.property_type %></td>
+            <td style="color: #00A66C;"><%=user.user_preference&.min_price %> - <%=user.user_preference&.max_price %></td>
+            <td><%= user.user_preference&.min_bedrooms %></td>
+            <td><%= user.user_preference&.min_bathrooms %></td>
+            <td><%= user.user_preference&.property_types %></td>
+            <td><%= user.user_preference&.property_style %></td>
+            <td><%=user.user_preference&.min_lot_frontage %></td>
+            <td><%= user.user_preference&.min_lot_size %> - <%= user.user_preference&.max_lot_size %></td>
+            <td><%= user.user_preference&.min_living_space %> - <%= user.user_preference&.max_living_space %></td>
+            <td><%= user.user_preference&.parking_spot %></td>
+            <td><%= user.user_preference&.garbage_spot %></td>
+            <td><%= user.user_preference&.max_age %></td>
+            <td><%= user.properties&.last&.type %></td>
+<!--            <td style="color: #00A66C;">$25,000 - $30,000</td>-->
+            <td><%=  user.properties&.last&.lot_frontage %></td>
+            <td><%=  user.properties&.last&.bath_rooms%></td>
+            <td><%=  user.properties&.last&.type %></td>
+            <td><%=  user.properties&.last&.title %></td>
+            <td><%= user.properties&.last&.price  %></td>
+            <td><%=user.properties&.last&.year_built %></td>
+            <td><%=user.properties&.last&.address %></td>
+            <td><%=user.properties&.last&.unit %></td>
+            <td><%=user.properties&.last&.locker %></td>
             <td>ABC</td>
-            <td>1 Bed + Den</td>
-            <td>1 Bath + Powder Room</td>
-            <td>34ft</td>
-            <td>3</td>
-            <td>3</td>
-            <td>Underground</td>
-            <td>Owned</td>
-
-            <td>Detached</td>
-            <td>Condominium</td>
-            <td>Single Storey </td>
-            <td>Aluminum Siding</td>
-            <td>Yes</td>
-            <td>North-West</td>
-            <td>Doorman</td>
-            <td>Size Restriction</td>
-            <td>Common Elements</td>
-            <td>Municipal</td>
-            <td>Septic</td>
-            <td>Ground Source</td>
-            <td>Forced Air</td>
-
-            <td>Central Air</td>
-            <td>In Suite</td>
-            <td>Wood Stove </td>
-            <td>Yes</td>
-            <td>Partial Basement</td>
-            <td>Above Ground</td>
+            <td><%=user.properties&.last&.bed_rooms %></td>
+            <td><%=user.properties&.last&.bath_rooms %></td>
+            <td><%=user.properties&.last&.living_space %></td>
+            <td><%=user.properties&.last&.total_parking_spaces %></td>
+            <td><%=user.properties&.last&.garage_spaces %></td>
+            <td><%=user.properties&.last&.parking_type %></td>
+            <td><%=user.properties&.last&.parking_ownership %></td>
+            <td><%=user.properties&.last&.garage %></td>
+            <td><%= user.properties&.last&.condo_type  %></td>
+            <td><%= user.properties&.last&.condo_style %></td>
+            <td><%= user.properties&.last&.exterior %></td>
+            <td><%= user.properties&.last&.balcony %></td>
+            <td><%= user.properties&.last&.exposure %></td>
+            <td><%= user.properties&.last&.security %></td>
+            <td><%= user.properties&.last&.pets_allowed %></td>
+            <td><%= user.properties&.last&.included_utilities %></td>
+            <td><%= user.properties&.last&.water %></td>
+            <td><%= user.properties&.last&.sewer %></td>
+            <td><%= user.properties&.last&.heat_source %></td>
+            <td><%= user.properties&.last&.heat_type %></td>
+            <td><%= user.properties&.last&.air_conditioner %></td>
+            <td><%= user.properties&.last&.laundry %></td>
+            <td><%= user.properties&.last&.fireplace %> </td>
+            <td><%= user.properties&.last&.central_vacuum %></td>
+            <td><%= user.properties&.last&.basement %></td>
+            <td><%= user.properties&.last&.pool %></td>
             <td>$342</td>
             <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
+            <td><%= user.properties&.last&.description %></td>
+            <td><%= user.properties&.last&.appliances_and_other_items%></td>
             <td>Kitchen</td>
             <td>40ft</td>
             <td>40in</td>
             <td>20ft</td>
             <td>20in </td>
             <td>Main Floor</td>
-            <td>Vacant Land</td>
+            <td><%= user.properties&.last&.type %></td>
             <td>
               <div style="display: flex; align-items: center;">
 
@@ -600,16 +534,17 @@
                 </div>
               </div>
             </td>
-            <td style="color: #00A66C;">$12,000</td>
-            <td>4517 New York Ave. Manchester, Kentucky 39495</td>
+            <td style="color: #00A66C;"><%=  user.properties&.last&.price %></td>
+            <td><%=  user.properties&.last&.address %></td>
             <td>23ft</td>
             <td>23ft</td>
             <td>23ft</td>
-            <td>Yes</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
-            <td>$342</td>
-            <td>2006</td>
-            <td>Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft. (including poolhouse, per independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful cul-de-sac in the Lakeside neighborhood.</td>
+            <td><%=  user.properties&.last&.is_lot_irregular %></td>
+            <td><%=  user.properties&.last&.lot_description %>.</td>
+            <td><%= user.properties&.last&.property_tax %></td>
+            <td><%=  user.properties&.last&.tax_year %></td>
+            <td><%= user.properties&.last&.property_description  %></td>
+
           </tr>
           <%end%>
           </tbody>

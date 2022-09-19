@@ -13,7 +13,7 @@
               <div class="dropdown">
                 <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
                   <div class="img_blk">
-                    <img src="assets/images/filter.svg" alt="">
+                    <%= image_tag 'filter.svg', alt: '' %>
                   </div>
                   filters
                 </button>
@@ -21,19 +21,19 @@
               </div>
             </li>
             <li>
-              <div class="form_blk">
+              <%= form_for :sub_admin, :url => {:controller => 'support_closers', :action => 'index'}, :html => {:method => 'get',id: 'searchformc', class: "form_blk"} do |f| %>
                 <div class="icon_blk">
-                  <img src="assets/images/search.svg" alt="">
+                  <%= image_tag 'search.svg' %>
                 </div>
-                <input type="search" placeholder="Search" class="input">
-              </div>
+                <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+              <% end %>
             </li>
             <li>
               <button type="button" class="filter">
                 <div class="img_blk">
-                  <img src="assets/images/csv-file-icon.svg" alt="">
+                  <%= image_tag 'csv-file-icon.svg', alt: '' %>
                 </div>
-                Download CSV
+                <%= link_to "Download CSV",support_closers_path(format: 'csv', search: params[:search],checkbox_value:""),id: "downloadbtncustom" %>
               </button>
             </li>
           </ul>
@@ -66,7 +66,11 @@
           <tbody>
             <% @users.each do |user|%>
             <tr>
-             <td class="fw_500 user_name "><%= user.full_name%></td>
+             <td class="fw_500 user_name ">
+               <%= link_to user_profile_users_list_path(id: user) do %>
+                 <%= user.full_name%>
+                 <%end%>
+             </td>
               <td><%= user.email%></td>
               <td><%= user.phone_number%></td>
               <td><%= user.contacted_by_real_estate%></td>

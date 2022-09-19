@@ -14,30 +14,11 @@
               <div class="dropdown">
                 <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
                   <div class="img_blk">
-                    <%= image_tag 'filter.svg' %>
+                    <%= image_tag 'filter.svg', alt: '' %>
                   </div>
                   filters
                 </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <button type="button">All Data</button>
-                  </li>
-                  <li>
-                    <button type="button">User's Info</button>
-                  </li>
-                  <li>
-                    <button type="button">Vacant Land</button>
-                  </li>
-                  <li>
-                    <button type="button"> Dream Address</button>
-                  </li>
-                  <li>
-                    <button type="button">I Want to Buy</button>
-                  </li>
-                  <li>
-                    <button type="button">I Want to Sell</button>
-                  </li>
-                </ul>
+                <%= render 'shared/drop_down' %>
               </div>
             </li>
             <li>

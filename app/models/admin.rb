@@ -1,5 +1,6 @@
 class Admin < ApplicationRecord
   #after_commit :send_notification
+  include CsvCounter
   has_many :pages, dependent: :destroy
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
@@ -26,18 +27,13 @@ class Admin < ApplicationRecord
   }
 
    def self.to_csv
-      CSV.generate(headers: true) do |csv|
-        csv << self.attribute_names
-        all.each do |record|
-          csv << record.attributes.values
-        end
-      end
-      if csv_count = Setting.last.present?
-        csv_count = Setting.last.csv_count
-        Setting.update(csv_count:csv_count +1)
-      else
-        csv_count = Setting.create(csv_count: 1)
-      end
+     CsvCounter.update_csv_counter
+     CSV.generate(headers: true) do |csv|
+       csv << self.attribute_names
+       all.each do |record|
+         csv << record.attributes.values
+       end
+     end
    end
 
   # def send_notification

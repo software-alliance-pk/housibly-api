@@ -43,7 +43,7 @@
                   <div class="img_blk">
                     <%= image_tag 'csv-file-icon.svg' %>
                   </div>
-                  <%= link_to "Download CSV",sub_admins_path(format: 'csv', search:params[:search])%>
+                  <%= link_to "Download CSV",sub_admins_path(format: 'csv', search: params[:search], checkbox_value:""), id: "downloadbtncustom"%>
                 </button>
               </li>
             </ul>
@@ -65,7 +65,7 @@
           <tr>
             <th style="width:12.2rem">
               <div class="d-flex align-items-center">
-                <input type="checkbox" class="me-2">
+                <input type="checkbox" class="me-2" id="selectedallcheckboxes">
                 Select all
               </div>
             </th>
@@ -92,8 +92,7 @@
           <tr>
             <td>
               <div class="d-flex align-items-center">
-                <%=  check_box_tag class:"me-3" %>
-
+                <input type="checkbox" name="selected_checkbox" class="me-3" id="<%= sub_admin.id%>">
                 <div class="img_blk">
                   <img src="assets/images/profilePic.svg" alt="">
                 </div>
@@ -237,8 +236,50 @@
 
 <script>
  $( document ).on('turbolinks:load', function() {
-  $("#csearchbtn").keyup(function(){
-    $("#searchformc").submit();
-  });
-})
+     $("#selectedallcheckboxes").click(function (){
+         this.checked ? selects() : deSelect()
+     });
+
+
+     $('input[name="selected_checkbox"]').click(function() {
+         let values = [];
+         let checkboxes = document.querySelectorAll('input[name="selected_checkbox"]:checked');
+         if(checkboxes.length > 0)
+         {
+             checkboxes.forEach((checkbox) => {
+                 values.push(checkbox.id);
+             });
+         }
+         let href = $("#downloadbtncustom").attr('href');
+         let new_href =  href.split('=')
+         new_href = new_href[0] + "=" + values
+         $("#downloadbtncustom").attr('href',new_href);
+     });
+
+     function selects(){
+         let values = [];
+         var ele=document.getElementsByName('selected_checkbox');
+         for(var i=0; i<ele.length; i++){
+             if(ele[i].type=='checkbox')
+                 ele[i].checked=true;
+                values.push(ele[i].id);
+         }
+         let href = $("#downloadbtncustom").attr('href');
+         let new_href =  href.split('=')
+         new_href = new_href[0] + "=" + values
+         $("#downloadbtncustom").attr('href',new_href);
+     }
+     function deSelect(){
+         let values = [];
+         var ele=document.getElementsByName('selected_checkbox');
+         for(var i=0; i<ele.length; i++){
+             if(ele[i].type=='checkbox')
+                 ele[i].checked=false;
+             values.push([]);
+         }
+         let href = $("#downloadbtncustom").attr('href');
+         let new_href =  href.split('=');
+         $("#downloadbtncustom").attr('href',new_href[0]+"=");
+     }
+ });
 </script>

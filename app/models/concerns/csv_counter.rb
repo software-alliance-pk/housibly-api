@@ -7,4 +7,8 @@ module CsvCounter
       csv_count = Setting.create(csv_count: 1)
     end
   end
+
+  def self.titlize_csv_headers(array)
+    array.map { |item| item.titleize }
+  end
 end

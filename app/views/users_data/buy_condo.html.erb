@@ -32,8 +32,8 @@
   							<div class="img_blk">
   								<%= image_tag 'csv-file-icon.svg', alt: '' %>
   							</div>
-  							Download CSV
-  						</button>
+								<%= link_to "Download CSV",buy_condo_users_data_path(format: 'csv', search: params[:search])%>
+							</button>
   					</li>
   				</ul>
   			</div>
@@ -91,10 +91,10 @@
 							<td style="color: #00A66C;"><%= condo.price%></td>
   						<td><%= condo.bed_rooms%></td>
   						<td> <%= condo.bath_rooms%></td>
-  						<td>Multi-Family</td>
-  						<td>2 Storey</td>
+  						<td><%= condo.condo_style%></td>
+  						<td><%= condo.condo_type %></td>
   						<td><%= condo.living_space %></td>
-  						<td>30ft - 40ft</td>
+  						<td><%= condo.total_parking_spaces %></td>
   						<td><% condo.balcony %></td>
   						<td><% condo.security%></td>
   						<td><% condo.laundry%></td>

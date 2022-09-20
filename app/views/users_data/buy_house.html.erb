@@ -32,8 +32,8 @@
   							<div class="img_blk">
   								<%= image_tag 'csv-file-icon.svg', alt: '' %>
   							</div>
-  							Download CSV
-  						</button>
+								<%= link_to "Download CSV",buy_house_users_data_path(format: 'csv', search: params[:search])%>
+							</button>
   					</li>
   				</ul>
   			</div>
@@ -91,14 +91,14 @@
 							<td style="color: #00A66C;"><%= house.price%></td>
   						<td><%= house.bed_rooms%></td>
   						<td> <%= house.bath_rooms%></td>
-  						<td>Multi-Family</td>
-  						<td>2 Storey</td>
+  						<td><%= house.house_type %></td>
+  						<td><%= house.house_style %></td>
   						<td><%= house.lot_frontage%></td>
   						<td><%= house.lot_size%></td>
   						<td><%= house.living_space %></td>
-  						<td>7</td>
-  						<td>>8</td>
-  						<td><9</td>
+  						<td><%= house.total_parking_spaces %></td>
+  						<td>><%= house.garage_spaces%></td>
+  						<td><%= house.max_age %></td>
   					</tr>
   					<%end%>
   				</tbody>

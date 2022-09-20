@@ -35,8 +35,11 @@ Rails.application.routes.draw do
    resources :users_data do
     collection do
       get :buy_vacant_land
+      post :buy_vacant_land
       get :buy_house
+      post :buy_house
       get :buy_condo
+      post :buy_condo
       get :sell_vacant_land
       get :sell_house
       get :sell_condo

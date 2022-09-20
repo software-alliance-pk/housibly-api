@@ -14,7 +14,6 @@ class StripeService
   end
 
   def self.create_subscription(customer_id,price_id)
-    debugger
     Stripe::Subscription.create({
   customer: customer_id,
   items: [

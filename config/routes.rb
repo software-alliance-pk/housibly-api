@@ -16,7 +16,9 @@ Rails.application.routes.draw do
     end
   end
   resources :school_pins
-  resources :dashboards
+  resources :dashboards do
+    post :index
+  end
   resources :support_closers do
     member do
       get :active_account

@@ -65,17 +65,15 @@ $cross_circle: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www
 		font-style: normal;
 		font-weight: $weight;
 		font-display: swap;
-		src: append($src, url(quote($path + "." + $ext)) format(quote($format)));
+		src: append($src, font-url(quote($path + "." + $ext)) format(quote($format)));
 	}
 }
-
-@include font-face("Inter", "../fonts/Inter-Light", woff2, "woff", 300);
-@include font-face("Inter", "../fonts/Inter-Regular", woff2, "woff", 400);
-@include font-face("Inter", "../fonts/Inter-Medium", woff2, "woff", 500);
-@include font-face("Inter", "../fonts/Inter-SemiBold", woff2, "woff", 600);
-@include font-face("Inter", "../fonts/Inter-Bold", woff2, "woff", 700);
-
-@include font-face("Gilroy", "../fonts/Gilroy-Bold", woff, "woff", 700);
+@include font-face("Inter", "Inter-Light", woff2, "woff", 300);
+@include font-face("Inter", "Inter-Regular", woff2, "woff", 400);
+@include font-face("Inter", "Inter-Medium", woff2, "woff", 500);
+@include font-face("Inter", "Inter-SemiBold", woff2, "woff", 600);
+@include font-face("Inter", "Inter-Bold", woff2, "woff", 700);
+@include font-face("Gilroy","Gilroy-Bold", woff, "woff", 700);
 
 @mixin flex($align: null, $justify: null, $flow: null, $direction: null) {
 	display: -webkit-box;

@@ -1,8 +1,7 @@
 class ChatListChannel < ApplicationCable::Channel
   def subscribed
     stop_all_streams
-    #stream_from "chat_list_#{current_user.id}"
-    stream_from "user_chat_list_3"
+    stream_from "user_chat_list_#{current_user.id}"
   end
 
   def receive(data)

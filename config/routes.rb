@@ -145,8 +145,12 @@ Rails.application.routes.draw do
         delete :delete_notification
       end
     end
-    resources :dream_addresses
-      resources :user_preferences, only: [:create, :index]
+    resources :dream_addresses do
+        collection do
+          get :fetch_address
+        end
+      end
+      resources :user_preferences, only: [:create, :index] 
       get '/*a', to: 'api#not_found'
       post "/active", to: 'users_lists#index'
 

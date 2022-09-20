@@ -39,6 +39,9 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def create_subscription
     customer = check_customer_at_stripe
     subscription = StripeService.create_subscription(customer.id,params[:price_id])
+    @current_user.build_subscription(current_period_end: subscription.current_period_end,
+                                      current_period_start: Time.now,interval: subscription.plan.interval,
+                                      interval_count:subscription.plan.interval_count).save
     if subscription.present?
      render json: {package: subscription},status: :ok
     end
@@ -145,6 +148,11 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       brand: card.brand, country: payment_params[:country],
       fingerprint: card.fingerprint, name: payment_params[:name]
     )
+  end
+  def create_user_subscription(subscription)
+    @current_user.build_subscription(current_period_end: subscription.current_period_end,
+                                      current_period_start: subscription.current_period_start,
+                                      interval_count:subscription.interval_count,interval: subscription.interval)
   end
 
   def payment_params

@@ -10,6 +10,7 @@ class User < ApplicationRecord
                     tsearch: { prefix: true }
                   }
   has_secure_password
+  has_one :subscription
   has_one :user_setting
   has_many :mobile_devices
   has_many :conversations, dependent: :destroy,foreign_key: :sender_id

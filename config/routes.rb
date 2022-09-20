@@ -41,8 +41,11 @@ Rails.application.routes.draw do
       get :buy_condo
       post :buy_condo
       get :sell_vacant_land
+      post :sell_vacant_land
       get :sell_house
+      post :sell_house
       get :sell_condo
+      post :sell_condo
       get :user_info
       get :dream_address
     end

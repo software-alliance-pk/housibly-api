@@ -12,7 +12,7 @@
               <div class="dropdown">
                 <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
                   <div class="img_blk">
-                    <img src="assets/images/filter.svg" alt="">
+                    <%= image_tag 'filter.svg', alt: '' %>
                   </div>
                   filters
                 </button>
@@ -22,7 +22,7 @@
             <li>
               <div class="form_blk">
                 <div class="icon_blk">
-                  <img src="assets/images/search.svg" alt="">
+                  <%= image_tag 'search.svg', alt: '' %>
                 </div>
                 <input type="search" placeholder="Search" class="input">
               </div>
@@ -30,9 +30,9 @@
             <li>
               <button type="button" class="filter">
                 <div class="img_blk">
-                  <img src="assets/images/csv-file-icon.svg" alt="">
+                  <%= image_tag 'csv-file-icon.svg', alt: '' %>
                 </div>
-                Download CSV
+                <%= link_to "Download CSV",sell_house_users_data_path(format: 'csv', search: params[:search])%>
               </button>
             </li>
           </ul>
@@ -211,11 +211,8 @@
               <td><%= house.property_description%></td>
               <td><%= house.appliances_and_other_items%></td>
               <td><%= house.total_number_of_rooms%></td>
-
             </tr>
             <% end%>
-
-
           </tr>
         </tbody>
       </table>

@@ -120,6 +120,15 @@ end
 
   def sender_compile_message(conversation)
     message = conversation.messages.last
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts  (message.user == conversation.sender)  && (@current_user == message.user) ? conversation.unread_message : 0
+    puts  message.user
+    puts conversation.sender
+    puts @current_user
+    puts (message.user == conversation.sender)
+    puts (@current_user == message.user)
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     data = {}
     data["recipient_id"] = conversation.recipient_id
     data["sender_id"] = conversation.sender_id
@@ -145,8 +154,13 @@ end
   def recipient_compile_message(conversation)
     message = conversation.messages.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts  (message.user == conversation.recipient)  && (@current_user == message.user) ? conversation.unread_message : 0
+    puts  message.user
+    puts conversation.recipient
+    puts @current_user
+    puts (message.user == conversation.recipient)
+    puts (@current_user == message.user)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts message.class
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     data = {}
     data["recipient_id"] = conversation.recipient_id

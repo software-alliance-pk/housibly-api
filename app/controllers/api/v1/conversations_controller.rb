@@ -127,7 +127,7 @@ end
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["message"] = message.body
-    data["unread_message"] = @current_user == message.user ? conversation.unread_message : 0
+    data["unread_message"] = (conversation.user == conversation.sender)  && (@current_user == conversation.user)  ? conversation.unread_message : 0
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else
@@ -146,7 +146,7 @@ end
     message = conversation.messages.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts message
+    puts message.class
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     data = {}
     data["recipient_id"] = conversation.recipient_id
@@ -155,7 +155,7 @@ end
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["message"] = message.body
-    data["unread_message"] = @current_user == message.user  ? conversation.unread_message : 0
+    data["unread_message"] = (conversation.user != conversation.recipient_id)  && (@current_user == conversation.user) ? conversation.unread_message : 0
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else

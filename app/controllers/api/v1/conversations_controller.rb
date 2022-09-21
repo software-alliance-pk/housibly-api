@@ -23,6 +23,9 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     data["created_at"] = @conversation&.created_at
     data["updated_at"] = @conversation&.updated_at
     data["unread_message"] = @conversation&.unread_message
+          puts "<<<<<<#{@conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
+          puts "<<<<<<#{@conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
+
     data["is_blocked"] = @conversation&.is_blocked
     if @conversation&.sender == @current_user
       puts "<<<<<<#{@conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
@@ -32,11 +35,11 @@ class Api::V1::ConversationsController < Api::V1::ApiController
           puts "<<<<<<#{@conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
 
   end
-  # if conversation.sender == @current_user
-  #   json.avatar conversation.recipient.avatar.attached? ? rails_blob_url(conversation.recipient.avatar) : ""
-  # else
-  #   json.avatar conversation.sender.avatar.attached? ? rails_blob_url(conversation.sender.avatar) : ""
-  # end
+  if @conversation.sender == @current_user
+    data["avatar"] = @conversation&.recipient&.avatar
+  else
+    data["avatar"] = @conversation&.sender&.avatar
+ end
     ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  data.as_json}
   end
     def read_messages

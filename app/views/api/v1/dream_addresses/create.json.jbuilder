@@ -1,1 +1,1 @@
-json.dream_addresses @dream_addresses
+json.dream_address @address

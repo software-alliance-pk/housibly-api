@@ -120,8 +120,8 @@ end
 
   def sender_compile_message(conversation)
     data = {}
-    data["recipient_id"] = conversation.recipient.id
-    data["sender_id"] = conversation.sender.id
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
@@ -143,8 +143,8 @@ end
 
   def recipient_compile_message(conversation)
     data = {}
-    data["recipient_id"] = conversation.recipient.id
-    data["sender_id"] = conversation.sender.id
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked

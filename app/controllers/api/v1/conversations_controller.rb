@@ -20,8 +20,8 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     data= {}
     data["recipient_id"] = @conversation&.recipient_id
     data["sender_id"] = @conversation&.sender_id
-    data["created_at"] = @conversation&.created_at
-    dat["updated_at"] = @conversation&.updated_at
+    data["created_at"] = @conversation.created_at
+    dat["updated_at"] = @conversation.updated_at
     data["unread_message"] = @conversation&.unread_message
     data["is_blocked"] = @conversation&.is_blocked
     if @conversation&.sender == @current_user

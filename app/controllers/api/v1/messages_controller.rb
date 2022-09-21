@@ -15,6 +15,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				  ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
 					data = compile_message(@message)
+					puts data
 					ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
 					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 			else

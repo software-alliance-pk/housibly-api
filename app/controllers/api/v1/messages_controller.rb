@@ -5,18 +5,14 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		unless @conversation.is_blocked?
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
-				data = compile_message(@message)
-				if @message.present?
 					send_notification_to_user(@conversation,@message)
 					@list, user = notify_second_user(@conversation)
-					if @conversation.recipient == @current_user
-						 ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
-					else
-						ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
-					end
+					data = compile_message(@message)
+				  ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
+					data = compile_message(@message)
+					ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
 					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
-      end
-		  else
+			else
 				render_error_messages(@message)
 			end
 		end
@@ -68,22 +64,23 @@ end
 	end
 
 	def compile_message(message)
+		_conversation = message.conversation
 		data = {}
 	  data["id"] = message.id
-    data["conversation_id"] = message.conversation_id
+    data["conversation_id"] = _conversation.id
     data["body"] = message.body
     data["user_id"] = message.user_id
-    data["sender_id"] = message.conversation.sender.id
-    data["recipient_id"] = message.conversation.recipient_id
+    data["sender_id"] = _conversation.sender.id
+    data["recipient_id"] = _conversation.recipient_id
     data["created_at"] = message.created_at
     data["updated_at"] = message.updated_at
     data["image"] = message&.image&.url
     data["user_profile"] = message.user&.avatar&.url
     data["message"] =  message.body
-    data["is_blocked"] = message.conversation.is_blocked
-    data["unread_message"] = message.conversation.unread_message
-    data["full_name"] = message.user == @current_user ? message.conversation&.recipient&.full_name : message.conversation&.sender&.full_name 
-    data["avatar"] =  message.user == @current_user ?  message.conversation&.recipient&.avatar&.url :  message.conversation&.sender&.avatar&.url
+    data["is_blocked"] = _conversation.is_blocked
+    data["unread_message"] = message.user == @current_user ? _conversation.unread_message : 0
+	  data["full_name"] = message.user == @current_user ? _conversation&.recipient&.full_name : _conversation&.sender&.full_name
+    data["avatar"] =  message.user == @current_user ?  _conversation&.recipient&.avatar&.url :  _conversation&.sender&.avatar&.url
     return data
 	end
 
@@ -103,6 +100,15 @@ end
 			else
 				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
 			end
+		end
+	end
+
+
+	def un_read_message_attribute(conversation,message)
+		if conversation.sender == @current_user
+
+		else
+
 		end
 	end
 end

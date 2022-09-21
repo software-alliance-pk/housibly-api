@@ -2,25 +2,15 @@ class Api::V1::MessagesController < Api::V1::ApiController
 	include ChatListBoardCast
 	before_action :find_conversation, only: [:create]
 	def create
-		# going_to_recover = false
-		# @conversation = Conversation.find_by(id: params[:conversation_id]) rescue nil
-		# going_to_recover = true unless @conversation.present?
-		# @conversation = Conversation.with_deleted.find_by(id: params[:conversation_id]) unless @conversation.present?
-		# @conversation.recover unless @conversation.present? && !going_to_recover
 		unless @conversation.is_blocked?
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
 				data = compile_message(@message)
 				if @message.present?
 					send_notification_to_user(@conversation,@message)
-		      # if @conversation.sender == @current_user
-		      #    UserNotification.create(actor_id: @current_user.id,recipient_id:@conversation.recipient_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: @conversation.id )
-		      # else
-		      #    UserNotification.create(actor_id: @current_user.id,recipient_id:@conversation.sender_id, action: @message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: @conversation.id )
-		      # end
 					@list, user = notify_second_user(@conversation)
-					ActionCable.server.broadcast "user_chat_list_#{user.id}",{ data: @list.as_json}
-					ActionCable.server.broadcast "user_chat_list_3",  { data: @list.as_json}
+					ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
+     			ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
 					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
       end
 		  else
@@ -85,7 +75,11 @@ end
     data["created_at"] = message.created_at
     data["updated_at"] = message.updated_at
     data["image"] = message&.image&.url
-    data["user_profile"] = message&.user&.avatar&.url
+    data["user_profile"] = message.user&.avatar&.url
+    data["is_blocked"] = message.conversation.is_blocked
+    data["unread_message"] = message.conversation.unread_message
+    data["full_name"] = message.user == @current_user ? message.conversation&.recipient&.full_name : message.conversation&.sender&.full_name 
+    data["avatar"] =  message.user == @current_user ?  message.conversation&.recipient&.avatar&.url :  message.conversation&.sender&.avatar&.url
     return data
 	end
 

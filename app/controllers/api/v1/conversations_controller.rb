@@ -44,13 +44,8 @@ def index
             puts "<<<<<<<<<<<send_avatar:#{conversation&.sender&.avatar&.url}<<<<<<<<<<<<<<<<<<<<<"
 
     end
-    if conversation&.sender == @current_user
       ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
-    else
       ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
-    end
-
-  end
 end
 def read_messages
   @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])

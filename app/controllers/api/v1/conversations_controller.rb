@@ -22,8 +22,12 @@ def index
   @conversations.each do |conversation|
     if conversation&.sender == @current_user
       sender_arr <<  recipient_compile_message(conversation)
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<SENDER<<<<<<<<<<<<<"
+      puts sender_arr
     else
-    recipient_arr << sender_compile_message(conversation)
+      recipient_arr << sender_compile_message(conversation)
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<RECE<<<<<<<<<<<<<"
+      puts recipient_arr
     end
   end
     ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  sender_arr.as_json}

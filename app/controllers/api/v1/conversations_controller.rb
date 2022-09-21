@@ -28,7 +28,7 @@ def index
     puts "<<<<<<#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
 
     data["is_blocked"] = conversation&.is_blocked
-    if @conversation&.sender == @current_user
+    if conversation&.sender == @current_user
       puts "<<<<<<#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
       data["full_name"] = conversation&.recipient&.full_name
     else

@@ -17,7 +17,14 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   end
   def index
     @conversations = Conversation.find_specific_conversation(@current_user.id)
-    ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  @conversations.as_json}
+    data= {}
+    data["recipient_id"] = @conversation.recipient_id
+    data["sender_id"] = @conversation.sender_id
+    data["created_at"] = @conversation.created_at
+    dat["updated_at"] = @conversation.updated_at
+    data["unread_message"] = @conversation.unread_message
+    data["is_blocked"] = @conversation.is_blocked
+    ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  data.as_json}
   end
     def read_messages
     @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])

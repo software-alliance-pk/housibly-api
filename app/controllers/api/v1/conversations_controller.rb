@@ -29,17 +29,20 @@ def index
 
     data["is_blocked"] = conversation&.is_blocked
     if conversation&.sender == @current_user
-      puts "<<<<<<#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
+      puts "<<<<<<rec_#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
       data["full_name"] = conversation&.recipient&.full_name
     else
       data["full_name"]= conversation&.sender&.full_name
-      puts "<<<<<<#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
+      puts "<<<<<<send_#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
 
     end
     if conversation&.sender == @current_user
       data["avatar"] = conversation&.recipient&.avatar&.url
+      puts "<<<<<<<<<<<rec_avatar:#{conversation&.recipient&.avatar&.url}<<<<<<<<<<<<<<<<<<<<<"
     else
       data["avatar"] = conversation&.sender&.avatar&.url
+            puts "<<<<<<<<<<<send_avatar:#{conversation&.sender&.avatar&.url}<<<<<<<<<<<<<<<<<<<<<"
+
     end
     ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  data.as_json}
   end

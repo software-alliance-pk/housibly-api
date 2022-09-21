@@ -13,12 +13,11 @@ class Api::V1::ConversationsController < Api::V1::ApiController
       end
     end
     @list,user = notify_second_user(@conversation)
-    ActionCable.server.broadcast "user_chat_list_3",  { data: @list.as_json}
     ActionCable.server.broadcast "user_chat_list_#{user.id}",  { data: @list.as_json}
   end
   def index
-    #@conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
     @conversations = Conversation.find_specific_conversation(@current_user.id)
+    ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  @conversations.as_json}
   end
     def read_messages
     @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])

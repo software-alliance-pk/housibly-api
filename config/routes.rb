@@ -73,6 +73,11 @@ Rails.application.routes.draw do
           get 'matching_dream_address'
         end
       end
+      resources :dream_addresses do
+        collection do
+          get :fetch_address
+        end
+      end
       post '/signup', to: 'registrations#create'
       post '/login', to: 'sessions#login'
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
@@ -153,16 +158,10 @@ Rails.application.routes.draw do
         get :get_notification
         delete :delete_notification
       end
-    end
-    resources :dream_addresses do
-        collection do
-          get :fetch_address
-        end
-      end
-      resources :user_preferences, only: [:create, :index] 
-      get '/*a', to: 'api#not_found'
-      post "/active", to: 'users_lists#index'
-
+     end
+    resources :user_preferences, only: [:create, :index]
+    post "/active", to: 'users_lists#index'
+    get '/*a', to: 'api#not_found'
     end
   end
 end

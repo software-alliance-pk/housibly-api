@@ -17,34 +17,18 @@ class Api::V1::ConversationsController < Api::V1::ApiController
 end
 def index
   @conversations = Conversation.find_specific_conversation(@current_user.id)
+  sender_arr = []
+  recipient_arr = []
   @conversations.each do |conversation|
-    # data= {}
-    # data["recipient_id"] = conversation.recipient_id
-    # data["sender_id"] = conversation.sender_id
-    # data["created_at"] = conversation.created_at
-    # data["updated_at"] = conversation.updated_at
-    # data["is_blocked"] = conversation.is_blocked
-    # data["message"] = conversation.messages.last
-    # if @conversation&.sender == @conversation.messages.last.user
-    #   data["unread_message"] = conversation.unread_message
-    # end
-    # if conversation&.sender == @current_user
-    #   data["full_name"] = conversation&.recipient&.full_name
-    # else
-    #   data["full_name"]= conversation&.sender&.full_name
-    # end
-    # if conversation&.sender == @current_user
-    #   data["avatar"] = conversation&.recipient&.avatar&.url
-    # else
-    #   data["avatar"] = conversation&.sender&.avatar&.url
+    sender_arr <<  recipient_compile_message(conversation)
+    puts sender_arr
+    recipient_arr << sender_compile_message(conversation)
+    puts recipient_arr
+  end
+    ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  sender_arr.as_json}
+    ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  recipient_arr.as_json}
 
-    # end
 
-      data = recipient_compile_message(conversation)
-      ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
-      data = sender_compile_message(conversation)
-      ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
-    end
 end
 def read_messages
   @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
@@ -122,9 +106,9 @@ end
     message = conversation.messages.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts  (message.user == conversation.sender)  && (@current_user == message.user) ? conversation.unread_message : 0
-    puts  message.user
-    puts conversation.sender
-    puts @current_user
+    puts  message.user.id
+    puts conversation.sender.id
+    puts @current_user.id
     puts (message.user == conversation.sender)
     puts (@current_user == message.user)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -155,8 +139,8 @@ end
     message = conversation.messages.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts  (message.user == conversation.recipient)  && (@current_user == message.user) ? conversation.unread_message : 0
-    puts  message.user
-    puts conversation.recipient
+    puts  message.user.id
+    puts conversation.recipient.id
     puts @current_user
     puts (message.user == conversation.recipient)
     puts (@current_user == message.user)
@@ -184,3 +168,25 @@ end
   end
 
 end
+
+# data= {}
+# data["recipient_id"] = conversation.recipient_id
+# data["sender_id"] = conversation.sender_id
+# data["created_at"] = conversation.created_at
+# data["updated_at"] = conversation.updated_at
+# data["is_blocked"] = conversation.is_blocked
+# data["message"] = conversation.messages.last
+# if @conversation&.sender == @conversation.messages.last.user
+#   data["unread_message"] = conversation.unread_message
+# end
+# if conversation&.sender == @current_user
+#   data["full_name"] = conversation&.recipient&.full_name
+# else
+#   data["full_name"]= conversation&.sender&.full_name
+# end
+# if conversation&.sender == @current_user
+#   data["avatar"] = conversation&.recipient&.avatar&.url
+# else
+#   data["avatar"] = conversation&.sender&.avatar&.url
+
+# end

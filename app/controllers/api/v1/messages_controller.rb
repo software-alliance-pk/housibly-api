@@ -76,6 +76,7 @@ end
     data["updated_at"] = message.updated_at
     data["image"] = message&.image&.url
     data["user_profile"] = message.user&.avatar&.url
+    data["message"] =  message.body
     data["is_blocked"] = message.conversation.is_blocked
     data["unread_message"] = message.conversation.unread_message
     data["full_name"] = message.user == @current_user ? message.conversation&.recipient&.full_name : message.conversation&.sender&.full_name 

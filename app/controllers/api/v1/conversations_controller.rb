@@ -19,12 +19,13 @@ def index
   @conversations = Conversation.find_specific_conversation(@current_user.id)
   @conversations.each do |conversation|
     data= {}
-    data["recipient_id"] = conversation&.recipient_id
-    data["sender_id"] = conversation&.sender_id
-    data["created_at"] = conversation&.created_at
-    data["updated_at"] = conversation&.updated_at
-    data["unread_message"] = conversation&.unread_message
-    data["is_blocked"] = conversation&.is_blocked
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
+    data["created_at"] = conversation.created_at
+    data["updated_at"] = conversation.updated_at
+    data["unread_message"] = conversation.unread_message
+    data["is_blocked"] = conversation.is_blocked
+    data["message"] = conversation.messages.last
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else

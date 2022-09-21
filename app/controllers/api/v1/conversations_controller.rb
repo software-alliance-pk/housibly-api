@@ -119,14 +119,15 @@ def check_conversation_exists
 end
 
   def sender_compile_message(conversation)
+    message = conversation.messages.last
     data = {}
     data["recipient_id"] = conversation.recipient_id
     data["sender_id"] = conversation.sender_id
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
-    data["message"] = conversation.messages.last
-    data["unread_message"] = conversation&.messages.last.user == conversation.sender  ? conversation.unread_message : 0
+    data["message"] = message.body
+    data["unread_message"] = @current_user == message.user ? conversation.unread_message : 0
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else
@@ -142,14 +143,15 @@ end
   end
 
   def recipient_compile_message(conversation)
+    message = conversation.messages.last
     data = {}
     data["recipient_id"] = conversation.recipient_id
     data["sender_id"] = conversation.sender_id
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
-    data["message"] = conversation.messages.last
-    data["unread_message"] = conversation&.messages.last.user == conversation.recipient ? conversation.unread_message : 0
+    data["message"] = message.body
+    data["unread_message"] = @current_user == message.user ? conversation.unread_message : 0
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else

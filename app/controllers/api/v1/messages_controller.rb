@@ -9,8 +9,11 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				if @message.present?
 					send_notification_to_user(@conversation,@message)
 					@list, user = notify_second_user(@conversation)
-					ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
-     			ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
+					if @conversation.recipient == @current_user
+						 ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
+					else
+						ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
+					end
 					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
       end
 		  else

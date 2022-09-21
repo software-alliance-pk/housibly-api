@@ -21,19 +21,17 @@ def index
   recipient_arr = []
   @conversations.each do |conversation|
     if conversation&.sender == @current_user
-      sender_arr <<  recipient_compile_message(conversation)
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<SENDER<<<<<<<<<<<<<"
-      puts sender_arr
-    else
-      recipient_arr << sender_compile_message(conversation)
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<RECE<<<<<<<<<<<<<"
+      recipient_arr <<  recipient_compile_message(conversation)
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<RECEIP<<<<<<<<<<<<<"
       puts recipient_arr
+    else
+      sender_arr << sender_compile_message(conversation)
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<Sender<<<<<<<<<<<<<"
+      puts sender_arr
     end
   end
-    ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  sender_arr.as_json}
-    ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  recipient_arr.as_json}
-
-
+    ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  sender_arr.as_json}
+    ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  recipient_arr.as_json}
 end
 def read_messages
   @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
@@ -110,7 +108,7 @@ end
   def sender_compile_message(conversation)
     message = conversation.messages.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts  (message.user == conversation.sender)  && (@current_user == message.user) ? conversation.unread_message : 0
+    puts  (message.user == conversation.sender)  && (@current_user == message.user) ?  0 : conversation.unread_message
     puts  message.user.id
     puts conversation.sender.id
     puts @current_user.id

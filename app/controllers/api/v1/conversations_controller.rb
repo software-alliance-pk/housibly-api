@@ -127,7 +127,7 @@ end
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["message"] = message.body
-    data["unread_message"] = @current_user == message.user ? conversation.unread_message : 0
+    data["unread_message"] = conversation.sender == message.user ? conversation.unread_message : 0
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else
@@ -151,7 +151,7 @@ end
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["message"] = message.body
-    data["unread_message"] = @current_user == message.user ? conversation.unread_message : 0
+    data["unread_message"] = conversation.recipient == message.user ? conversation.unread_message : 0
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else

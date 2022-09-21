@@ -40,9 +40,9 @@ def index
 
     # end
 
-      data = sender_compile_message(message)
+      data = sender_compile_message(@conversations)
       ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
-      data = recipient_compile_message(message)
+      data = recipient_compile_message(@conversations)
       ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
     end
 end
@@ -118,43 +118,48 @@ def check_conversation_exists
   end
 end
 
-  def sender_compile_message(message)
+  def sender_compile_message(conversation)
     data = {}
-    data["id"] = message.id
-    data["conversation_id"] = message.conversation_id
-    data["body"] = message.body
-    data["user_id"] = message.user_id
-    data["sender_id"] = message.conversation.sender.id
-    data["recipient_id"] = message.conversation.recipient_id
-    data["created_at"] = message.created_at
-    data["updated_at"] = message.updated_at
-    data["image"] = message&.image&.url
-    data["user_profile"] = message.user&.avatar&.url
-    data["message"] =  message.body
-    data["is_blocked"] = message.conversation.is_blocked
-    data["unread_message"] = message.conversation&.recipient == @current_user ? @conversation.messages.last.usermessage.conversation.unread_message : 0
-    data["full_name"] = message.user == @current_user ? message.conversation&.recipient&.full_name : message.conversation&.sender&.full_name 
-    data["avatar"] =  message.user == @current_user ?  message.conversation&.recipient&.avatar&.url :  message.conversation&.sender&.avatar&.url
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
+    data["created_at"] = conversation.created_at
+    data["updated_at"] = conversation.updated_at
+    data["is_blocked"] = conversation.is_blocked
+    data["message"] = conversation.messages.last
+    data["unread_message"] = conversation&.sender == @current_user ? conversation.messages.last.user : conversation.unread_message : 0
+    if conversation&.sender == @current_user
+      data["full_name"] = conversation&.recipient&.full_name
+    else
+      data["full_name"]= conversation&.sender&.full_name
+    end
+    if conversation&.sender == @current_user
+      data["avatar"] = conversation&.recipient&.avatar&.url
+    else
+      data["avatar"] = conversation&.sender&.avatar&.url
+
+    end
     return data
   end
 
-    def recipient_compile_message(message)
+  def recipient_compile_message(conversation)
     data = {}
-    data["id"] = message.id
-    data["conversation_id"] = message.conversation_id
-    data["body"] = message.body
-    data["user_id"] = message.user_id
-    data["sender_id"] = message.conversation.sender.id
-    data["recipient_id"] = message.conversation.recipient_id
-    data["created_at"] = message.created_at
-    data["updated_at"] = message.updated_at
-    data["image"] = message&.image&.url
-    data["user_profile"] = message.user&.avatar&.url
-    data["message"] =  message.body
-    data["is_blocked"] = message.conversation.is_blocked
-    data["unread_message"] = message.conversation&.sender == @current_user ? @conversation.messages.last.usermessage.conversation.unread_message : 0
-    data["full_name"] = message.user == @current_user ? message.conversation&.recipient&.full_name : message.conversation&.sender&.full_name 
-    data["avatar"] =  message.user == @current_user ?  message.conversation&.recipient&.avatar&.url :  message.conversation&.sender&.avatar&.url
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
+    data["created_at"] = conversation.created_at
+    data["updated_at"] = conversation.updated_at
+    data["is_blocked"] = conversation.is_blocked
+    data["message"] = conversation.messages.last
+    data["unread_message"] = conversation&.recipient == @current_user ? conversation.messages.last.user : conversation.unread_message : 0
+    if conversation&.sender == @current_user
+      data["full_name"] = conversation&.recipient&.full_name
+    else
+      data["full_name"]= conversation&.sender&.full_name
+    end
+    if conversation&.sender == @current_user
+      data["avatar"] = conversation&.recipient&.avatar&.url
+    else
+      data["avatar"] = conversation&.sender&.avatar&.url
+    end
     return data
   end
 

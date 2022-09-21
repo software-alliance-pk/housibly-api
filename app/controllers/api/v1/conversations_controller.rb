@@ -25,9 +25,12 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     data["unread_message"] = @conversation&.unread_message
     data["is_blocked"] = @conversation&.is_blocked
     if @conversation&.sender == @current_user
+      puts "<<<<<<#{@conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
     data["full_name"] = @conversation&.recipient&.full_name
   else
     data["full_name"]= @conversation&.sender&.full_name
+          puts "<<<<<<#{@conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
+
   end
   # if conversation.sender == @current_user
   #   json.avatar conversation.recipient.avatar.attached? ? rails_blob_url(conversation.recipient.avatar) : ""

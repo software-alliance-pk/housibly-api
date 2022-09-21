@@ -24,28 +24,20 @@ def index
     data["created_at"] = conversation&.created_at
     data["updated_at"] = conversation&.updated_at
     data["unread_message"] = conversation&.unread_message
-    puts "<<<<<<#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
-
     data["is_blocked"] = conversation&.is_blocked
     if conversation&.sender == @current_user
-      puts "<<<<<<rec_#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
       data["full_name"] = conversation&.recipient&.full_name
     else
       data["full_name"]= conversation&.sender&.full_name
-      puts "<<<<<<send_#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
-
     end
     if conversation&.sender == @current_user
       data["avatar"] = conversation&.recipient&.avatar&.url
-      puts "<<<<<<<<<<<rec_avatar:#{conversation&.recipient&.avatar&.url}<<<<<<<<<<<<<<<<<<<<<"
     else
       data["avatar"] = conversation&.sender&.avatar&.url
-            puts "<<<<<<<<<<<send_avatar:#{conversation&.sender&.avatar&.url}<<<<<<<<<<<<<<<<<<<<<"
-
     end
       ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
       ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
+    end
 end
 def read_messages
   @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])

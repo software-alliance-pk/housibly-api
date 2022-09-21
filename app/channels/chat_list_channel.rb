@@ -7,7 +7,7 @@ class ChatListChannel < ApplicationCable::Channel
      #  stream_from "user_chat_list__#{conversation&.recipient_id}"
 
 
-    end
+    # end
   end
 
   def receive(data)

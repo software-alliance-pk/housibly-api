@@ -20,13 +20,14 @@ def index
   sender_arr = []
   recipient_arr = []
   @conversations.each do |conversation|
-    sender_arr <<  recipient_compile_message(conversation)
-    puts sender_arr
+    if conversation&.sender == @current_user
+      sender_arr <<  recipient_compile_message(conversation)
+    else
     recipient_arr << sender_compile_message(conversation)
-    puts recipient_arr
+    end
   end
-    ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  sender_arr.as_json}
-    ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  recipient_arr.as_json}
+    ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  sender_arr.as_json}
+    ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  recipient_arr.as_json}
 
 
 end

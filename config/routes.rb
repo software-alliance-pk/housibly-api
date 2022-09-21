@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
+  mount StripeEvent::Engine, at: '/webhooks'
   root "dashboards#index"
   resources :supports do
     member do

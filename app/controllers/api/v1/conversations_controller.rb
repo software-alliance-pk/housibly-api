@@ -36,7 +36,7 @@ def index
       data["avatar"] = conversation&.sender&.avatar&.url
 
     end
-          ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
+          ActionCable.server.broadcast "user_chat_list_#{conversation.id}",  { data:  data.as_json}
 
       #ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
       #ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}

@@ -24,22 +24,16 @@ def index
     data["created_at"] = conversation&.created_at
     data["updated_at"] = conversation&.updated_at
     data["unread_message"] = conversation&.unread_message
-    puts "<<<<<<#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
-
     data["is_blocked"] = conversation&.is_blocked
     if conversation&.sender == @current_user
-      puts "<<<<<<#{conversation&.recipient&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
       data["full_name"] = conversation&.recipient&.full_name
     else
       data["full_name"]= conversation&.sender&.full_name
-      puts "<<<<<<#{conversation&.sender&.full_name}<<<<<<<<<<<<<<<<<<<<<<<"
-
     end
     if conversation&.sender == @current_user
-      data["avatar"] = conversation&.recipient&.avatar
+      data["avatar"] = conversation&.recipient&.avatar&.url
     else
-      data["avatar"] = conversation&.sender&.avatar
+      data["avatar"] = conversation&.sender&.avatar&.url
     end
     ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  data.as_json}
   end

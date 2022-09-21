@@ -1,5 +1,4 @@
 class Api::V1::DreamAddressesController < Api::V1::ApiController
-
   def create
     @address = @current_user.dream_addresses.build(location: params[:location])
     if @address.save
@@ -11,19 +10,22 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
 
   def fetch_address
     addresses = []
-    array = [{longitude: -122.43728701025248, latitude: 37.797889657909224},{longitude: -122.4472276121378, latitude:37.780908226622195},{longitude: -122.43760518729687, latitude: 37.7661877060221},{longitude:-122.41223618388176, latitude: 37.778203173797294},{longitude: -122.41676945239305, latitude: 37.794808219787846}]
-    
+      array = eval(params[:polygon])
       array.each do |address|
       address = Geocoder.search("address")
-      address = address.first.address
-      # address = Property.where(address: address)
+      house_number = address.first.house_number
+      city = address.first.city
+      country = address.first.country
+      address = Property.where("address ILIKE ? AND address ILIKE ?AND address ILIKE ?", "%#{house_number}%","%#{city}%","%#{country}%")
+      unless address == nil
         addresses << address
+      end
     end
-    if addresses.present?
-      render json: {message: addresses}, status: :ok
-    else
-      render json: {message: "Dream Address Not Foud"}, status: :ok
-    end
+  if addresses.present?
+    render json: {message: addresses}, status: :ok
+  else
+    render json: {message: "Dream Address Not Foud"}, status: :ok
+  end
   end
 
 

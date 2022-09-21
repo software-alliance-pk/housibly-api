@@ -44,7 +44,12 @@ def index
             puts "<<<<<<<<<<<send_avatar:#{conversation&.sender&.avatar&.url}<<<<<<<<<<<<<<<<<<<<<"
 
     end
-    ActionCable.server.broadcast "user_chat_list_#{current_user.id}",  { data:  data.as_json}
+    if conversation&.sender == @current_user
+      ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
+    else
+      ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
+    end
+
   end
 end
 def read_messages

@@ -40,9 +40,9 @@ def index
 
     # end
 
-      data = recipient_compile_message(@conversations)
+      data = recipient_compile_message(conversation)
       ActionCable.server.broadcast "user_chat_list_#{conversation&.recipient_id}",  { data:  data.as_json}
-      data = sender_compile_message(@conversations)
+      data = sender_compile_message(conversation)
       ActionCable.server.broadcast "user_chat_list_#{conversation&.sender_id}",  { data:  data.as_json}
     end
 end

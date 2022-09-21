@@ -46,6 +46,29 @@ def read_messages
   if @conversation.present?
     @conversation.update(unread_message: 0)
     render json: { message: "message has been read" }, status: :ok
+    data= {}
+    data["recipient_id"] = @conversation.recipient_id
+    data["sender_id"] = @conversation.sender_id
+    data["created_at"] = @conversation.created_at
+    data["updated_at"] = @conversation.updated_at
+    data["unread_message"] = @conversation.unread_message
+    data["is_blocked"] = @conversation.is_blocked
+    data["message"] = @conversation.messages.last
+    if @conversation&.sender == @current_user
+      data["full_name"] = @conversation&.recipient&.full_name
+    else
+      data["full_name"]= @conversation&.sender&.full_name
+    end
+    if conversation&.sender == @current_user
+      data["avatar"] = @conversation&.recipient&.avatar&.url
+    else
+      data["avatar"] = @conversation&.sender&.avatar&.url
+    end
+    if @conversation&.sender == @current_user
+      ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
+    else
+      ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
+    end
   else
     render json: { error: "No such conversation exists" }, status: :unprocessable_entity
   end

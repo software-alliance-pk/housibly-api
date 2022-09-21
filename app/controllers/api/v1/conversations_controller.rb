@@ -120,7 +120,7 @@ end
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["message"] = message.body
-    data["unread_message"] = (message.user == conversation.sender)  && (@current_user == message.user)  ? conversation.unread_message : 0
+    data["unread_message"] = (message.user == conversation.sender)  && (@current_user == message.user)  ? 0 : conversation.unread_message
     if conversation&.sender == @current_user
       data["full_name"] = conversation&.recipient&.full_name
     else
@@ -138,7 +138,7 @@ end
   def recipient_compile_message(conversation)
     message = conversation.messages.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts  (message.user == conversation.recipient)  && (@current_user == message.user) ? conversation.unread_message : 0
+    puts  (message.user == conversation.recipient)  && (@current_user == message.user) ? 0 : conversation.unread_message
     puts  message.user.id
     puts conversation.recipient.id
     puts @current_user

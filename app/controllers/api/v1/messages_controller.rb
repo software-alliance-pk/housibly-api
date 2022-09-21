@@ -8,6 +8,11 @@ class Api::V1::MessagesController < Api::V1::ApiController
 					send_notification_to_user(@conversation,@message)
 					@list, user = notify_second_user(@conversation)
 					data = compile_message(@message)
+					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+					puts "user_chat_list_#{@conversation&.sender_id}"
+					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+					puts "user_chat_list_#{@conversation&.recipient_id}"
+					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				  ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
 					data = compile_message(@message)
 					ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}

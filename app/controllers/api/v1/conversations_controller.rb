@@ -25,9 +25,13 @@ def index
 end
 def read_messages
   @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
-  if @conversation.present?
-    @conversation.update(unread_message: 0)
-    data << compile_conversation_boardcasting_data(@conversation)
+  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  puts @conversation
+  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  if @conversation.last.present?
+    @conversation.last.update(unread_message: 0)
+    data << compile_conversation_boardcasting_data(@conversation.last)
     ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
     render json: { message: "message has been read" }, status: :ok
   else

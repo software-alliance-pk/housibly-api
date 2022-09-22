@@ -15,13 +15,12 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   @list,user = notify_second_user(@conversation)
 end
 def index
-  user_id = @current_user.id
-  @conversations = Conversation.find_specific_conversation(user_id)
+  @conversations = Conversation.find_specific_conversation(@current_user.id)
   data = []
   @conversations.each do |conversation|
     data << compile_conversation_boardcasting_data(conversation)
   end
-  ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
+  ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
 end
 def read_messages
   puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

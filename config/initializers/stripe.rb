@@ -9,6 +9,10 @@ StripeEvent.configure do |events|
       StripePaymentJob.perform_now(event)
     when 'customer.subscription.deleted'
       SubscriptionCanceledJob.perform_now(event)
+    when 'customer.subscription.created'
+      SubscriptionCreatedJob.perform_now(event)
+    when 'product.updated'
+       ProductUpdatedJob.perform_now(event)
     else
       puts "Unhandled event type: #{event.type}"
     end

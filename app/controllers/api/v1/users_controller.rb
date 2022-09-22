@@ -1,4 +1,5 @@
 class Api::V1::UsersController < Api::V1::ApiController
+  include ChatListBoardCast
   def get_profile
     @current_user
   end
@@ -78,6 +79,8 @@ class Api::V1::UsersController < Api::V1::ApiController
           render json: {message: "User removed from blacklist"},status: :ok
         end
       end
+      send_message = compile_conversation_boardcasting_data(conversation)
+      ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: send_message}
     else
       render json: {message:[]}, status: :ok
     end

@@ -7,21 +7,13 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			if @message.save
 					send_notification_to_user(@conversation,@message)
 					@conversation_list, user = notify_second_user(@conversation)
-
-
 					data = []
 					if @conversation&.sender == @current_user
-						puts "<<<<<<<<<<<<<<<<<<<RECEIPE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-						puts "user_chat_list_#{@conversation&.recipient_id}"
-						puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 						@conversation_list.each do |conversation|
 							data << compile_conversation_boardcasting_data(conversation)
 						end
 						ActionCable.server.broadcast "user_chat_list_#{@conversation.recipient.id}",  { data:  data.as_json}
 					else
-						puts "<<<<<<<<<<<<<<<<<<<<<<SENDER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-						puts "user_chat_list_#{@conversation&.sender_id}"
-						puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 						@conversation_list.each do |conversation|
 							data << compile_conversation_boardcasting_data(conversation)
 						end
@@ -50,7 +42,6 @@ class Api::V1::MessagesController < Api::V1::ApiController
   end 
   def get_notification
   	@notifications = []
-  	debugger
   	unless @current_user.user_setting.inapp_notification == false
 	  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
 	  	conversations.each do |conversation|

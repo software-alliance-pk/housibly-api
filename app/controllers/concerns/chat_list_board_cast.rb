@@ -28,13 +28,14 @@ module ChatListBoardCast
   end
 
   def get_message_count(message)
-    message.user == @current_user ? message.conversation.unread_message : 0
+    conversation&.recipient == @current_user ?  message.conversation.unread_message : 0
   end
 
   def compile_conversation_boardcasting_data(conversation)
     message = conversation.messages.last
     debug_purpose(conversation,message)
     data = {}
+    data["conversation_id"] = conversation.id
     data["recipient_id"] = conversation.recipient_id
     data["sender_id"] = conversation.sender_id
     data["created_at"] = conversation.created_at
@@ -43,7 +44,7 @@ module ChatListBoardCast
     data["user_id"] = message.user_id
     data["message"] = message.body
     data["body"] = message.body
-    data["unread_message"] = get_message_count(message)
+    data["unread_message"] = get_message_count(conversation)
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
     return data

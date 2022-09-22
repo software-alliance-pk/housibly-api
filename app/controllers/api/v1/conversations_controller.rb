@@ -36,14 +36,12 @@ def read_messages
      @conversation.update(unread_message: 0)
      if @conversation&.sender == @current_user
        @conversations = Conversation.find_specific_conversation(@conversation.recipient.id)
-       data = []
        @conversations.each do |conversation|
          data << compile_conversation_boardcasting_data(conversation)
        end
        ActionCable.server.broadcast "user_chat_list_#{@conversation.recipient.id}",  { data:  data.as_json}
      else
        @conversations = Conversation.find_specific_conversation(@conversation.sender.id)
-       data = []
        @conversations.each do |conversation|
          data << compile_conversation_boardcasting_data(conversation)
        end

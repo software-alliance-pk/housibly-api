@@ -50,6 +50,14 @@ class Api::V1::PaymentsController < Api::V1::ApiController
      render json: {package: subscription},status: :ok
     end
   end
+  def get_subscription
+    subscriptions = Subscription.all
+    if subscriptions.present?
+      render json: {subscription: subscriptions},status: :ok
+    else
+     render json: {package: "No Package Available"},status: :ok
+    end
+  end
   def cancel_subscription
     subscription = Stripe::Subscription.delete(
     params[:subscription_id],

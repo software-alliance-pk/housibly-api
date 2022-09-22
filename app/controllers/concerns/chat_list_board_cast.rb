@@ -28,7 +28,7 @@ module ChatListBoardCast
   end
 
   def get_message_count(message)
-    message.user == @current_user ? 0 : message.conversation.unread_message
+    message.user == @current_user ? message.conversation.unread_message : 0
   end
 
   def compile_conversation_boardcasting_data(conversation)

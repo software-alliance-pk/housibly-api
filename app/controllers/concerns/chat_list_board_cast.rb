@@ -20,11 +20,11 @@ module ChatListBoardCast
   end
 
   def get_full_name(conversation)
-    conversation&.sender == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
+    conversation&.recipient == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
   end
 
   def get_avatar(conversation)
-    conversation&.sender == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
+    conversation&.recipient == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
   end
 
   def compile_conversation_boardcasting_data(conversation)

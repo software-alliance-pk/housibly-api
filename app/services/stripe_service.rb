@@ -22,19 +22,12 @@ class StripeService
 })
   end
 
-  def self.create_product
+  def self.create_product(package_name)
    product=  Stripe::Product.create(
       {
-        name: '1 YEAR'
+        name: package_name,
       }
       )
-   Stripe::Price.create({
-  unit_amount: 8000,
-  currency: 'usd',
-  recurring: {interval: 'month'},
-  product: product.id,
-})
-
 
   end
   

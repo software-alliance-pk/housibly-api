@@ -6,24 +6,25 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
 					send_notification_to_user(@conversation,@message)
-					@list, user = notify_second_user(@conversation)
-					data = compile_message(@message)
+					@conversation_list, user = notify_second_user(@conversation)
 					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 					puts "user_chat_list_#{@conversation&.sender_id}"
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 					puts "user_chat_list_#{@conversation&.recipient_id}"
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-					# data << compile_conversation_boardcasting_data(conversation)
-					# ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
-
-					# user_id = @current_user.id
-					# @conversations = Conversation.find_specific_conversation(user_id)
-					# data = []
-					# @conversations.each do |conversation|
-					# 	data << compile_conversation_boardcasting_data(conversation)
-					# end
-					# ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
+					data = []
+					if @conversation&.sender == @current_user
+						@conversation_list.each do |conversation|
+							data << compile_conversation_boardcasting_data(conversation)
+						end
+						ActionCable.server.broadcast "user_chat_list_#{@conversation.recipient.id}",  { data:  data.as_json}
+					else
+						@conversation_list.each do |conversation|
+							data << compile_conversation_boardcasting_data(conversation)
+						end
+						ActionCable.server.broadcast "user_chat_list_#{@conversation.sender.id}",  { data:  data.as_json}
+					end
 			else
 				render_error_messages(@message)
 			end

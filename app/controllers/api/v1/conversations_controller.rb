@@ -24,15 +24,25 @@ def index
   ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
 end
 def read_messages
-  @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
-  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  puts @conversation
-  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  if @conversation.last.present?
-    @conversation.last.update(unread_message: 0)
-    data << compile_conversation_boardcasting_data(@conversation.last)
-    ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
+  @conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
+  data = []
+  if @conversation.present?
+     @conversation.update(unread_message: 0)
+     if @conversation&.sender == @current_user
+       @conversations = Conversation.find_specific_conversation(@conversation.recipient.id)
+       data = []
+       @conversations.each do |conversation|
+         data << compile_conversation_boardcasting_data(conversation)
+       end
+       ActionCable.server.broadcast "user_chat_list_#{@conversation.recipient.id}",  { data:  data.as_json}
+     else
+       @conversations = Conversation.find_specific_conversation(@conversation.sender.id)
+       data = []
+       @conversations.each do |conversation|
+         data << compile_conversation_boardcasting_data(conversation)
+       end
+       ActionCable.server.broadcast "user_chat_list_#{@conversation.sender.id}",  { data:  data.as_json}
+     end
     render json: { message: "message has been read" }, status: :ok
   else
     render json: { error: "No such conversation exists" }, status: :unprocessable_entity

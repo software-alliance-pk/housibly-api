@@ -27,6 +27,10 @@ module ChatListBoardCast
     conversation&.recipient == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
   end
 
+  def get_message_count(message)
+    message.user == @current_user ? 0 : message.conversation.unread_message
+  end
+
   def compile_conversation_boardcasting_data(conversation)
     message = conversation.messages.last
     debug_purpose(conversation,message)
@@ -36,9 +40,10 @@ module ChatListBoardCast
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
+    data["user_id"] = message.user_id
     data["message"] = message.body
     data["body"] = message.body
-    data["unread_message"] = conversation.unread_message
+    data["unread_message"] = get_message_count(message)
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
     return data

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_20_113820) do
+ActiveRecord::Schema.define(version: 2022_09_22_111348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 2022_09_20_113820) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_blocked", default: false
     t.datetime "deleted_at"
+    t.integer "block_by"
     t.index ["deleted_at"], name: "index_conversations_on_deleted_at"
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
     t.index ["sender_id"], name: "index_conversations_on_sender_id"

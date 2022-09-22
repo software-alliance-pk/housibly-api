@@ -20,10 +20,10 @@ def index
   @conversations.each do |conversation|
     if conversation.sender == @current_user
       data << compile_conversation_boardcasting_data(conversation)
-      ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
+      ActionCable.server.broadcast "user_chat_list_#{conversation.recipient.id}",  { data:  data.as_json}
     else
       data << compile_conversation_boardcasting_data(conversation)
-      ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
+      ActionCable.server.broadcast "user_chat_list_#{conversation.sender.id}",  { data:  data.as_json}
     end
   end
 end

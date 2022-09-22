@@ -80,6 +80,10 @@ class Api::V1::UsersController < Api::V1::ApiController
         end
       end
       send_message = compile_conversation_boardcasting_data(conversation)
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+      puts send_message
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
       ActionCable.server.broadcast "conversations_#{conversation.id}", { messages: send_message}
     else
       render json: {message:[]}, status: :ok

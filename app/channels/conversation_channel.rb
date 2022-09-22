@@ -1,6 +1,5 @@
 class ConversationChannel < ApplicationCable::Channel
   def subscribed
-    stop_all_streams
     Conversation.get_all_conversation_of_specific_user(current_user.id).find_each do |conversation|
       stream_from "conversations_#{conversation.id}"
     end

@@ -28,10 +28,10 @@ module ChatListBoardCast
   end
 
   def get_message_count(message)
-    if message.user_id != @current_user.id && message.conversation_id == @current_user.id
-      0
+    if message.user_id != @current_user.id && message.conversation.recipient_id == @current_user.id
+      message.conversation.unread_messag
     else
-      message.conversation.unread_message
+      0
     end
   end
 

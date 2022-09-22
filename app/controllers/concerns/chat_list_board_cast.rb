@@ -40,6 +40,7 @@ module ChatListBoardCast
     data["unread_message"] = conversation.unread_message
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
+    data["body"] = message.body
     return data
   end
 

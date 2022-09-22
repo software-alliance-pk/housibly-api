@@ -48,10 +48,11 @@ module ChatListBoardCast
     data["user_id"] = message.user_id
     data["message"] = message.body
     data["body"] = message.body
+    data["id"] = message.id
     data["unread_message"] = get_message_count(message)
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
+    data["image"] = message.image.attached? ? message.image.url : ""
     return data
   end
-
 end

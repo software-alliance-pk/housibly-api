@@ -18,14 +18,12 @@ def index
   @conversations = Conversation.find_specific_conversation(@current_user.id)
   data = []
   @conversations.each do |conversation|
-    if conversation.sender == @current_user
-      data << compile_conversation_boardcasting_data(conversation)
-      ActionCable.server.broadcast "user_chat_list_#{conversation.recipient.id}",  { data:  data.as_json}
-    else
-      data << compile_conversation_boardcasting_data(conversation)
-      ActionCable.server.broadcast "user_chat_list_#{conversation.sender.id}",  { data:  data.as_json}
-    end
+    data << compile_conversation_boardcasting_data(conversation)
   end
+  ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
+  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 end
 def read_messages
   puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

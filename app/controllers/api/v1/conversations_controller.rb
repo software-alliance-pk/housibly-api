@@ -33,13 +33,13 @@ def read_messages
      if @conversation&.sender == @current_user
        @conversations = Conversation.find_specific_conversation(@conversation.recipient.id)
        @conversations.each do |conversation|
-         data << compile_conversation_boardcasting_data(conversation)
+         data << read_message_compile_message(conversation)
        end
        ActionCable.server.broadcast "user_chat_list_#{@conversation.recipient.id}",  { data:  data.as_json}
      else
        @conversations = Conversation.find_specific_conversation(@conversation.sender.id)
        @conversations.each do |conversation|
-         data << compile_conversation_boardcasting_data(conversation)
+         data << read_message_compile_message(conversation)
        end
        ActionCable.server.broadcast "user_chat_list_#{@conversation.sender.id}",  { data:  data.as_json}
      end

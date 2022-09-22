@@ -23,8 +23,16 @@ module ChatListBoardCast
     conversation&.sender == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
   end
 
+  def get_full_name_read_message(conversation)
+    conversation&.sender == @current_user ? conversation&.sender&.full_name : conversation.recipient&.full_name
+  end
+
   def get_avatar(conversation)
     conversation&.sender == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
+  end
+
+  def get_avatar_read_message(conversation)
+    conversation&.sender == @current_user ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
   end
 
   def get_message_count(message)
@@ -33,6 +41,10 @@ module ChatListBoardCast
     else
       0
     end
+  end
+
+  def get_message_count_for_read_message
+    0
   end
 
   def compile_conversation_boardcasting_data(conversation)
@@ -52,6 +64,27 @@ module ChatListBoardCast
     data["unread_message"] = get_message_count(message)
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
+    data["image"] = message.image.attached? ? message.image.url : ""
+    return data
+  end
+
+
+  def read_message_compile_message(conversation)
+    message = conversation.messages.last
+    data = {}
+    data["conversation_id"] = conversation.id
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
+    data["created_at"] = conversation.created_at
+    data["updated_at"] = conversation.updated_at
+    data["is_blocked"] = conversation.is_blocked
+    data["user_id"] = message.user_id
+    data["message"] = message.body
+    data["body"] = message.body
+    data["id"] = message.id
+    data["unread_message"] = get_message_count_for_read_message
+    data["full_name"] = get_full_name_read_message(conversation)
+    data["avatar"] = get_avatar_read_message(conversation)
     data["image"] = message.image.attached? ? message.image.url : ""
     return data
   end

@@ -18,17 +18,19 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     end
   end
 
-  def create_product
-    @product = StripeService.create_product
+  def create_package
+    @product = StripeService.create_product(params[:package_name])
+    price = Stripe::Price.create({unit_amount: params[:price],currency: 'usd',recurring: {interval: params[:recurring_interval]},product: @product.id,})
+    Package.create(name: @product.name, price:price.unit_amount, stripe_package_id: @product.id, stripe_price_id: price.id)
     if @product
-      render json: {message: @product},status: :ok
+      render json: {package: @product, price: price},status: :ok
     else
       render_error_messages(@product)
     end
   end
 
   def get_pakeges
-    @packages = Stripe::Product.list({limit: 3})
+    @packages = Package.all
     if @packages.present?
       render json: {message: @packages},status: :ok
     else
@@ -41,7 +43,9 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     subscription = StripeService.create_subscription(customer.id,params[:price_id])
     @current_user.build_subscription(current_period_end: subscription.current_period_end,
                                       current_period_start: Time.now,interval: subscription.plan.interval,
-                                      interval_count:subscription.plan.interval_count).save
+                                      interval_count:subscription.plan.interval_count, price: subscription.plan.amount,
+                                      status: subscription.status,subscription_title: "#{subscription.plan.interval_count} #{subscription.plan.interval}".upcase,
+                                      ).save
     if subscription.present?
      render json: {package: subscription},status: :ok
     end
@@ -50,6 +54,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     subscription = Stripe::Subscription.delete(
     params[:subscription_id],
     )
+    @current_user.subscription.update(status: subscription.status)
     if subscription.present?
      render json: {subscription: subscription.status},status: :ok
     end 

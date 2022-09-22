@@ -9,6 +9,7 @@ class CreateSubscriptions < ActiveRecord::Migration[6.1]
       t.string :interval
       t.string :subscription_title
       t.string :status
+      t.string :price
       t.references :user, foreign_key: true, index: true
 
       t.timestamps

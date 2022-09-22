@@ -7,7 +7,7 @@ module ChatListBoardCast
     return @list,user
   end
 
-  def debug_purpose(conversation)
+  def debug_purpose(conversation,message)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts  (message.user == conversation.sender)  && (@current_user == message.user) ? conversation.unread_message : 0
     puts  message.user.id
@@ -29,7 +29,7 @@ module ChatListBoardCast
 
   def compile_conversation_boardcasting_data(conversation)
     message = conversation.messages.last
-    debug_purpose(conversation)
+    debug_purpose(conversation,message)
     data = {}
     data["recipient_id"] = conversation.recipient_id
     data["sender_id"] = conversation.sender_id

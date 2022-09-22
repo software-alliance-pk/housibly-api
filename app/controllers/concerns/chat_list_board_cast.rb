@@ -7,18 +7,6 @@ module ChatListBoardCast
     return @list,user
   end
 
-  def debug_purpose(conversation,message)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts  (message.user == conversation.sender)  && (@current_user == message.user) ? conversation.unread_message : 0
-    puts  message.user.id
-    puts conversation.sender.id
-    puts @current_user.id
-    puts (message.user == conversation.sender)
-    puts (@current_user == message.user)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  end
-
   def get_full_name(conversation)
     conversation&.sender == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
   end
@@ -36,11 +24,12 @@ module ChatListBoardCast
   end
 
   def get_message_count(message)
-    if message.user_id != @current_user.id && message.conversation.recipient_id == @current_user.id
-      message.conversation.unread_message
-    else
-      0
-    end
+    @current_user.have_read?(message) == true ? 0 : count_un_read_message_for_conversation(message.conversation)
+  end
+
+  def count_un_read_message_for_conversation(conversation)
+   conversation.messages.with_read_marks_for(@current_user).
+       map { |item| true if item.unread?(@current_user)}&.compact&.count
   end
 
   def get_message_count_for_read_message
@@ -49,7 +38,6 @@ module ChatListBoardCast
 
   def compile_conversation_boardcasting_data(conversation)
     message = conversation.messages.last
-    debug_purpose(conversation,message)
     data = {}
     data["conversation_id"] = conversation.id
     data["recipient_id"] = conversation.recipient_id
@@ -65,6 +53,7 @@ module ChatListBoardCast
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
     data["image"] = message.image.attached? ? message.image.url : ""
+    puts data
     return data
   end
 
@@ -86,6 +75,7 @@ module ChatListBoardCast
     data["full_name"] = get_full_name_read_message(conversation)
     data["avatar"] = get_avatar_read_message(conversation)
     data["image"] = message.image.attached? ? message.image.url : ""
+    puts data
     return data
   end
 end

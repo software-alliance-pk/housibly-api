@@ -25,8 +25,9 @@ end
 def read_messages
   @conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
   data = []
-  if @conversation.present? && @conversation&.messages&.last&.user != @current_user
-     @conversation.update(unread_message: 0)
+  if @conversation.present? && @conversation&.messages.last&.user != @current_user
+    #@conversation.update(unread_message: 0)
+    @conversation.messages.mark_as_read! :all, for: @current_user
      if @conversation&.sender == @current_user
        @conversations = Conversation.find_specific_conversation(@conversation.recipient.id)
        @conversations.each do |conversation|
@@ -39,6 +40,7 @@ def read_messages
          data << read_message_compile_message(conversation)
        end
        ActionCable.server.broadcast "user_chat_list_#{@conversation.sender.id}",  { data:  data.as_json}
+       RemoveMessageFromUnreadTableJob.perform_now
      end
     render json: { message: "message has been read" }, status: :ok
   else

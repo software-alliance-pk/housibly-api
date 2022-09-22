@@ -5,7 +5,8 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		unless @conversation.is_blocked?
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
-					send_notification_to_user(@conversation,@message)
+				@conversation.messages.mark_as_read! :all, for: @current_user
+				send_notification_to_user(@conversation,@message)
 					@conversation_list, user = notify_second_user(@conversation)
 					data = []
 					if @conversation&.sender == @current_user
@@ -32,14 +33,14 @@ class Api::V1::MessagesController < Api::V1::ApiController
     if @conversation.present?
       @messages = @conversation.messages.all.order(created_at: :desc)
     else
-      not_found
+			render json: {message: "Conversation not found"},status: :ok
     end
   end
   def delete_notification
   	notification = Notification.find(id: params[:notification_id])
   	if @notification.destroy
-  		render json: {message: "not found"},status: :ok
-  		end
+  		render json: {message: "Notificatoin deleted successfully"},status: :ok
+		end
   end 
   def get_notification
   	@notifications = []

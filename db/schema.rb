@@ -161,6 +161,15 @@ ActiveRecord::Schema.define(version: 2022_09_22_111348) do
     t.integer "conversation_id"
   end
 
+  create_table "packages", force: :cascade do |t|
+    t.string "name"
+    t.string "price"
+    t.string "stripe_package_id"
+    t.string "stripe_price_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "pages", force: :cascade do |t|
     t.string "title"
     t.string "permalink"
@@ -304,6 +313,7 @@ ActiveRecord::Schema.define(version: 2022_09_22_111348) do
     t.string "interval"
     t.string "subscription_title"
     t.string "status"
+    t.string "price"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

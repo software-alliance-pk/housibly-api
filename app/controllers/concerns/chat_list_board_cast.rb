@@ -20,11 +20,11 @@ module ChatListBoardCast
   end
 
   def get_full_name(conversation)
-    conversation&.sender != @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
+    conversation&.sender == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
   end
 
   def get_avatar(conversation)
-    conversation&.sender != @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
+    conversation&.sender == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
   end
 
   def get_message_count(message)

@@ -26,15 +26,9 @@ def index
   puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 end
 def read_messages
-  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  puts  @current_user.id
-  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  puts params[:conversation_id]
-  puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
   @conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
-  puts @conversation
   data = []
-  if @conversation.present?
+  if @conversation.present? && @conversation&.messages&.last&.user == @current_user
      @conversation.update(unread_message: 0)
      if @conversation&.sender == @current_user
        @conversations = Conversation.find_specific_conversation(@conversation.recipient.id)

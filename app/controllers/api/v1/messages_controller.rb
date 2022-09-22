@@ -7,7 +7,6 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			if @message.save
 					send_notification_to_user(@conversation,@message)
 					@conversation_list, user = notify_second_user(@conversation)
-					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 					puts "user_chat_list_#{@conversation&.sender_id}"
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -25,6 +24,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 						end
 						ActionCable.server.broadcast "user_chat_list_#{@conversation.sender.id}",  { data:  data.as_json}
 					end
+					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 			else
 				render_error_messages(@message)
 			end

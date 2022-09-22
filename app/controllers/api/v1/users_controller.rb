@@ -89,8 +89,8 @@ class Api::V1::UsersController < Api::V1::ApiController
 
 
   def blocked_users
-    @conversation_blocked = Conversation.find_by("(recipient_id = (?) OR  sender_id = (?)) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
-    if @conversation_blocked.present? && @conversation_blocked.block_by ==  @current_user.id
+    @conversation_blocked = Conversation.where("(recipient_id = (?) OR  sender_id = (?)) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
+    if @conversation_blocked.present?
       @conversation_blocked
     else
       render json: {message: "No Found"}

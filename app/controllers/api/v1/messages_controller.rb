@@ -19,7 +19,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 						end
 						ActionCable.server.broadcast "user_chat_list_#{@conversation.sender.id}",  { data:  data.as_json}
 					end
-					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
+					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { message: data.as_json}
 			else
 				render_error_messages(@message)
 			end

@@ -37,10 +37,10 @@ module ChatListBoardCast
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["message"] = message.body
+    data["body"] = message.body
     data["unread_message"] = conversation.unread_message
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
-    data["body"] = message.body
     return data
   end
 

@@ -20,15 +20,15 @@ module ChatListBoardCast
   end
 
   def get_full_name(conversation)
-    conversation&.recipient == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
+    conversation&.sender != @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
   end
 
   def get_avatar(conversation)
-    conversation&.recipient == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
+    conversation&.sender != @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
   end
 
   def get_message_count(message)
-    if message.user == @current_user
+    if message.user == @current_user && message.conversation.sender == @current_user
       0
     else
       message.conversation.unread_message

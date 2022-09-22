@@ -24,12 +24,11 @@ def index
   ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
 end
 def read_messages
-  user_id = @current_user.id
-  @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", user_id, user_id, params[:conversation_id])
+  @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
   if @conversation.present?
     @conversation.update(unread_message: 0)
     data << compile_conversation_boardcasting_data(@conversation)
-    ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
+    ActionCable.server.broadcast "user_chat_list_#{@current_user.id}",  { data:  data.as_json}
     render json: { message: "message has been read" }, status: :ok
   else
     render json: { error: "No such conversation exists" }, status: :unprocessable_entity

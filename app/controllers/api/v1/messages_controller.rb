@@ -8,16 +8,22 @@ class Api::V1::MessagesController < Api::V1::ApiController
 					send_notification_to_user(@conversation,@message)
 					@list, user = notify_second_user(@conversation)
 					data = compile_message(@message)
+					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 					puts "user_chat_list_#{@conversation&.sender_id}"
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 					puts "user_chat_list_#{@conversation&.recipient_id}"
 					puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-				  ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
-					data = compile_message(@message)
-					puts data
-					ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
-					ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
+					# data << compile_conversation_boardcasting_data(conversation)
+					# ActionCable.server.broadcast "conversations_#{@message.conversation_id}", data.as_json
+
+					# user_id = @current_user.id
+					# @conversations = Conversation.find_specific_conversation(user_id)
+					# data = []
+					# @conversations.each do |conversation|
+					# 	data << compile_conversation_boardcasting_data(conversation)
+					# end
+					# ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
 			else
 				render_error_messages(@message)
 			end
@@ -84,7 +90,7 @@ end
     data["user_profile"] = message.user&.avatar&.url
     data["message"] =  message.body
     data["is_blocked"] = _conversation.is_blocked
-    data["unread_message"] = message.user == @current_user ? _conversation.unread_message : 0
+    data["unread_message"] = (_conversation.user == _conversation.sender)  && (@current_user == _conversation.user)? _conversation.unread_message : 0
 	  data["full_name"] = message.user == @current_user ? _conversation&.recipient&.full_name : _conversation&.sender&.full_name
     data["avatar"] =  message.user == @current_user ?  _conversation&.recipient&.avatar&.url :  _conversation&.sender&.avatar&.url
     return data

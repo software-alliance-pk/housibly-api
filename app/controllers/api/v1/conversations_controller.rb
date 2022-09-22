@@ -13,54 +13,24 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
   @list,user = notify_second_user(@conversation)
-  ActionCable.server.broadcast "user_chat_list_#{user.id}",  { data: @list.as_json}
 end
 def index
-  @conversations = Conversation.find_specific_conversation(@current_user.id)
-  sender_arr = []
-  recipient_arr = []
+  user_id = @current_user.id
+  @conversations = Conversation.find_specific_conversation(user_id)
+  data = []
   @conversations.each do |conversation|
-    if conversation&.sender == @current_user
-      recipient_arr <<  recipient_compile_message(conversation)
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<RECEIP<<<<<<<<<<<<<"
-      puts recipient_arr
-    else
-      sender_arr << sender_compile_message(conversation)
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<Sender<<<<<<<<<<<<<"
-      puts sender_arr
-    end
+    data << compile_conversation_boardcasting_data(conversation)
   end
-    ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  sender_arr.as_json}
-    ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  recipient_arr.as_json}
+  ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
 end
 def read_messages
-  @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
+  user_id = @current_user.id
+  @conversation = Conversation.where("recipient_id = (?) OR  sender_id = (?) AND id = (?)", user_id, user_id, params[:conversation_id])
   if @conversation.present?
     @conversation.update(unread_message: 0)
+    data << compile_conversation_boardcasting_data(conversation)
+    ActionCable.server.broadcast "user_chat_list_#{user_id}",  { data:  data.as_json}
     render json: { message: "message has been read" }, status: :ok
-    data= {}
-    data["recipient_id"] = @conversation.recipient_id
-    data["sender_id"] = @conversation.sender_id
-    data["created_at"] = @conversation.created_at
-    data["updated_at"] = @conversation.updated_at
-    data["unread_message"] = @conversation.unread_message
-    data["is_blocked"] = @conversation.is_blocked
-    data["message"] = @conversation.messages.last
-    if @conversation&.sender == @current_user
-      data["full_name"] = @conversation&.recipient&.full_name
-    else
-      data["full_name"]= @conversation&.sender&.full_name
-    end
-    if conversation&.sender == @current_user
-      data["avatar"] = @conversation&.recipient&.avatar&.url
-    else
-      data["avatar"] = @conversation&.sender&.avatar&.url
-    end
-    if @conversation&.sender == @current_user
-      ActionCable.server.broadcast "user_chat_list_#{@conversation&.recipient_id}",  { data:  data.as_json}
-    else
-      ActionCable.server.broadcast "user_chat_list_#{@conversation&.sender_id}",  { data:  data.as_json}
-    end
   else
     render json: { error: "No such conversation exists" }, status: :unprocessable_entity
   end

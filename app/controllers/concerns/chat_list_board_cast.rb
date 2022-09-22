@@ -7,4 +7,40 @@ module ChatListBoardCast
     return @list,user
   end
 
+  def debug_purpose(conversation)
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts  (message.user == conversation.sender)  && (@current_user == message.user) ? conversation.unread_message : 0
+    puts  message.user.id
+    puts conversation.sender.id
+    puts @current_user.id
+    puts (message.user == conversation.sender)
+    puts (@current_user == message.user)
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  end
+
+  def get_full_name(conversation)
+    conversation&.sender == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
+  end
+
+  def get_avatar(conversation)
+    conversation&.sender == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
+  end
+
+  def compile_conversation_boardcasting_data(conversation)
+    message = conversation.messages.last
+    debug_purpose(conversation)
+    data = {}
+    data["recipient_id"] = conversation.recipient_id
+    data["sender_id"] = conversation.sender_id
+    data["created_at"] = conversation.created_at
+    data["updated_at"] = conversation.updated_at
+    data["is_blocked"] = conversation.is_blocked
+    data["message"] = message.body
+    data["unread_message"] = conversation.unread_message
+    data["full_name"] = get_full_name(conversation)
+    data["avatar"] = get_avatar(conversation)
+    return data
+  end
+
 end

@@ -5,6 +5,9 @@ class Api::V1::PaymentsController < Api::V1::ApiController
 
   def create
     customer = check_customer_at_stripe
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts customer
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     card = StripeService.create_card(customer.id, payment_params[:token]) rescue ""
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts card

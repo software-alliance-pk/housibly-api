@@ -13,6 +13,7 @@ gem 'pg_search'
 gem 'geocoder'
 gem 'fcm'
 gem 'acts_as_paranoid'
+gem 'unread'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'

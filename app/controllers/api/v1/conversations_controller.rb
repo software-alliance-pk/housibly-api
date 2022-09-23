@@ -26,7 +26,6 @@ def read_messages
   @conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id,  @current_user.id, params[:conversation_id])
   data = []
   if @conversation.present? && @conversation&.messages.last&.user != @current_user
-    #@conversation.update(unread_message: 0)
     @conversation.messages.mark_as_read! :all, for: @current_user
      if @conversation&.sender == @current_user
        @conversations = Conversation.find_specific_conversation(@conversation.recipient.id)

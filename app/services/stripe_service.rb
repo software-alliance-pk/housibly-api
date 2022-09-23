@@ -17,8 +17,12 @@ class StripeService
     user = User.find_by(stripe_customer_id: customer_id)
     card = user.card_infos
     if card.present?
-       subscription = Subscription.find_by(user_id:user.id).destroy
-      Stripe::Subscription.create({customer: customer_id,items: [{price: price_id},],})
+       subscription = Subscription.find_by(user_id:user.id)
+        if subscription
+          subscription.destroy
+        else
+          Stripe::Subscription.create({customer: customer_id,items: [{price: price_id},],})
+        end
     else
       return false
     end

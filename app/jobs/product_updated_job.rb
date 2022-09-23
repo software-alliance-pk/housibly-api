@@ -1,5 +1,5 @@
-class SubscriptionCanceledJob < ApplicationJob
-  queue_as :default
+class ProductUpdatedJob< ApplicationRecord
+	queue_as :default
   def self.perform_now(*args)
   end
 

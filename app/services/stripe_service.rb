@@ -33,13 +33,7 @@ class StripeService
   
 
   def self.create_card(customer_id,token)
-    puts "INSIDE CREATE CARD"
-    puts customer_id
-    card = Stripe::Customer.create_source(customer_id, { source: "tok_1Ll9AHJxAUizx0q5QbwfqovF" },)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "CARD INFO #{card}"
-    puts  customer_id
-    puts token
+    card = Stripe::Customer.create_source(customer_id, { source: token },)
     return card
   end
 

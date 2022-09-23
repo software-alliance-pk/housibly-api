@@ -41,6 +41,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     customer = check_customer_at_stripe
     subscription = StripeService.create_subscription(customer.id,params[:price_id])
     if  subscription != false
+      puts subscription
       @current_user.build_subscription(current_period_end: subscription.current_period_end,
                                       current_period_start: Time.now,interval: subscription.plan.interval,
                                       interval_count:subscription.plan.interval_count, price: subscription.plan.amount,

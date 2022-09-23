@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_secure_password
   has_one :subscription
   has_one :user_setting
+  has_many :subscription_histories
   has_many :mobile_devices
   has_many :conversations, dependent: :destroy,foreign_key: :sender_id
   has_many :conversations, dependent: :destroy,foreign_key: :recipient_id

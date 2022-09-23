@@ -24,12 +24,17 @@ module ChatListBoardCast
   end
 
   def get_message_count(message)
-     count_un_read_message_for_conversation(message.conversation)
+    count_un_read_message_for_conversation(message.conversation)
   end
 
   def count_un_read_message_for_conversation(conversation)
-   conversation.messages.with_read_marks_for(@current_user).
-       map { |item| true if item.unread?(@current_user)}&.compact&.count
+    if conversation&.sender == @current_user
+      conversation.messages.with_read_marks_for(conversation.recipient).
+        map { |item| true if item.unread?(conversation.recipient)}&.compact&.count
+    else
+      conversation.messages.with_read_marks_for(conversation.sender).
+        map { |item| true if item.unread?(conversation.sender)}&.compact&.count
+    end
   end
 
   def get_message_count_for_read_message

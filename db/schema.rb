@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_22_081834) do
+ActiveRecord::Schema.define(version: 2022_09_23_112713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -303,6 +303,22 @@ ActiveRecord::Schema.define(version: 2022_09_22_081834) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "subscription_histories", force: :cascade do |t|
+    t.boolean "cancel_by_user"
+    t.datetime "current_period_end"
+    t.datetime "current_period_start"
+    t.string "plan_title"
+    t.string "interval_count"
+    t.string "interval"
+    t.string "subscription_title"
+    t.string "status"
+    t.string "price"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_subscription_histories_on_user_id"
+  end
+
   create_table "subscriptions", force: :cascade do |t|
     t.boolean "cancel_by_user"
     t.datetime "current_period_end"
@@ -456,6 +472,7 @@ ActiveRecord::Schema.define(version: 2022_09_22_081834) do
   add_foreign_key "reportings", "users"
   add_foreign_key "reviews", "users"
   add_foreign_key "schedules", "users"
+  add_foreign_key "subscription_histories", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "support_conversations", "supports"
   add_foreign_key "support_messages", "support_conversations"

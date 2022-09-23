@@ -1,7 +1,7 @@
 module Api::V1::ConversationsHelper
   def conversation_read_message_counter(message)
     conversation = message.conversation
-    if conversation.sender == @current_user
+    if message.user == @current_user
       conversation.recipient.have_read?(message) == true ? 0 : count_un_read_message_for_conversation(message.conversation)
     else
       conversation.sender.have_read?(message) == true ? 0 : count_un_read_message_for_conversation(message.conversation)

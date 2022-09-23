@@ -21,7 +21,7 @@ class StripeService
         if subscription
           subscription.destroy
         else
-          Stripe::Subscription.create({customer: customer_id,items: [{price: price_id},],})
+          subscription = Stripe::Subscription.create({customer: customer_id,items: [{price: price_id},],})
         end
     else
       return false

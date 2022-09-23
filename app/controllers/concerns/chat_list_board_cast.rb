@@ -30,7 +30,6 @@ module ChatListBoardCast
     else
       conversation.sender.have_read?(message) == true ? 0 :  count_un_read_message_for_conversation(message.conversation)
     end
-      count_un_read_message_for_conversation(message.conversation,message)
   end
 
   def count_un_read_message_for_conversation(conversation)

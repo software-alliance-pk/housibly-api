@@ -133,10 +133,18 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def check_customer_at_stripe
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts @current_user.stripe_customer_id
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     if @current_user.stripe_customer_id.present?
       customer = Stripe::Customer.retrieve(@current_user.stripe_customer_id) rescue nil
     else
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+      puts payment_params
+      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
       customer = StripeService.create_customer(payment_params[:name], @current_user.email)
+      puts "<<<<<<<<<<<<<<<<<<<<<<STRIPE RESPONSE<<<<<<<<<<<<<<"
+      puts customer
       @current_user.update(stripe_customer_id: customer.id) rescue nil
     end
     return customer

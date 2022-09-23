@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_23_112713) do
+ActiveRecord::Schema.define(version: 2022_09_23_152507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -333,8 +333,8 @@ ActiveRecord::Schema.define(version: 2022_09_23_112713) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.boolean "cancel_by_user"
-    t.datetime "current_period_end"
-    t.datetime "current_period_start"
+    t.string "current_period_end"
+    t.string "current_period_start"
     t.string "plan_title"
     t.string "interval_count"
     t.string "interval"
@@ -344,6 +344,9 @@ ActiveRecord::Schema.define(version: 2022_09_23_112713) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "subscription_id"
+    t.string "payment_nature"
+    t.string "payment_currency"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 

@@ -1,4 +1,5 @@
 class Api::V1::UsersController < Api::V1::ApiController
+  include ChatListBoardCast
   def get_profile
     @current_user
   end
@@ -70,14 +71,16 @@ class Api::V1::UsersController < Api::V1::ApiController
     conversation = Conversation.find_by(recipient_id: @current_user.id ,sender_id: user.id)
     if conversation.present?
       if params[:is_blocked].present? && params[:is_blocked] == "true"
-        if conversation.update!(is_blocked: true)
+        if conversation.update!(is_blocked: true,block_by: @current_user.id )
           render json: {message: "User added in blacklist"},status: :ok
         end
       elsif params[:is_blocked].present? && params[:is_blocked] == "false"
-        if conversation.update!(is_blocked: false)
+        if conversation.update!(is_blocked: false, block_by: 0)
           render json: {message: "User removed from blacklist"},status: :ok
         end
       end
+      send_message = compile_conversation_boardcasting_data(conversation)
+      ActionCable.server.broadcast "conversations_#{conversation.id}", { messages: send_message}
     else
       render json: {message:[]}, status: :ok
     end

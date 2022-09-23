@@ -1,4 +1,5 @@
 class Message < ApplicationRecord
+	acts_as_readable on: :created_at
 	after_create :update_conversation_message_counter
 	belongs_to :conversation
 	has_one_attached :image

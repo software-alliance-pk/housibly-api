@@ -40,13 +40,23 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def create_subscription
     customer = check_customer_at_stripe
     subscription = StripeService.create_subscription(customer.id,params[:price_id])
-    @current_user.build_subscription(current_period_end: subscription.current_period_end,
+    if  subscription == true
+      @current_user.build_subscription(current_period_end: subscription.current_period_end,
                                       current_period_start: Time.now,interval: subscription.plan.interval,
                                       interval_count:subscription.plan.interval_count, price: subscription.plan.amount,
                                       status: subscription.status,subscription_title: "#{subscription.plan.interval_count} #{subscription.plan.interval}".upcase,
                                       ).save
-    if subscription.present?
-     render json: {package: subscription},status: :ok
+      render json: {package: subscription},status: :ok
+    else
+      render json: {message: "Please enter your card"}, status: :unprocessable_entity
+    end
+  end
+  def get_subscription
+    subscriptions = Subscription.all
+    if subscriptions.present?
+      render json: {subscription: subscriptions},status: :ok
+    else
+     render json: {package: "No Package Available"},status: :ok
     end
   end
   def cancel_subscription

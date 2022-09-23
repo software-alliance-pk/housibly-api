@@ -14,12 +14,14 @@ class StripeService
   end
 
   def self.create_subscription(customer_id,price_id)
-    Stripe::Subscription.create({
-  customer: customer_id,
-  items: [
-    {price: price_id},
-  ],
-})
+    user = User.find_by(stripe_customer_id: customer_id)
+    card = user.card_infos
+    if card.present?
+       subscription = Subscription.find_by(user_id:user.id).destroy
+      Stripe::Subscription.create({customer: customer_id,items: [{price: price_id},],})
+    else
+      return false
+    end
   end
 
   def self.create_product(package_name)

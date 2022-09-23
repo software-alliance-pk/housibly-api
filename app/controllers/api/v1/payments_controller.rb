@@ -4,10 +4,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   before_action :find_card, only: [:get_card, :destroy_card, :update_card, :set_default_card]
 
   def create
-    puts params
-    puts payment_params[:token]
     customer = check_customer_at_stripe
-    puts customer
     card = StripeService.create_card(customer.id, payment_params[:token]) rescue ""
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts card

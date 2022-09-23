@@ -5,7 +5,9 @@ class Api::V1::PaymentsController < Api::V1::ApiController
 
   def create
     customer = check_customer_at_stripe
-    card = StripeService.create_card(customer.id, payment_params[:token])
+    stripe_token = payment_params[:token]
+    puts "<<<<<<<<<<<STRIPE TOKEN #{stripe_token}<<<<<<<<<<<<<"
+    card = StripeService.create_card(customer.id,stripe_token)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts card
     puts card.blank?

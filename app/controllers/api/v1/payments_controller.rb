@@ -6,6 +6,10 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def create
     customer = check_customer_at_stripe
     card = StripeService.create_card(customer.id, payment_params[:token]) rescue ""
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts card
+    puts card.blank?
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     return render json: { message: "You cannot use one token more than once" }, status: 422 if card.blank?
     @card = create_user_payment_card(card)
     make_first_card_as_default
@@ -60,7 +64,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
 
 
   def get_card
-    if @card
+    if @card.present?
       @card
     else
       render json: { message: "card not found" }, status: 404
@@ -131,18 +135,10 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def check_customer_at_stripe
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts @current_user.stripe_customer_id
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     if @current_user.stripe_customer_id.present?
       customer = Stripe::Customer.retrieve(@current_user.stripe_customer_id) rescue nil
     else
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-      puts payment_params
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
       customer = StripeService.create_customer(payment_params[:name], @current_user.email)
-      puts "<<<<<<<<<<<<<<<<<<<<<<STRIPE RESPONSE<<<<<<<<<<<<<<"
-      puts customer
       @current_user.update(stripe_customer_id: customer.id) rescue nil
     end
     return customer

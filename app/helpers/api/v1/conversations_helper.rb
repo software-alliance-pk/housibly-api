@@ -1,37 +1,35 @@
 module Api::V1::ConversationsHelper
-  def conversation_read_message_counter(message)
-    conversation = message.conversation
-    if message.user == @current_user
-      conversation.recipient.have_read?(message) == true ? 0 : count_un_read_message_for_conversation(message.conversation)
-    else
-      conversation.sender.have_read?(message) == true ? 0 : count_un_read_message_for_conversation(message.conversation)
-    end
+  def  get_extra_data_of_compile_message(message)
+    conversation = message&.conversation
+    _full_name,_image,_un_read_message_count = '','',''
+    return _full_name, _image, _un_read_message_count unless  conversation.present?
+    _full_name = get_full_name(conversation)
+    _image = get_avatar(conversation)
+    _un_read_message_count= un_read_counter(conversation)
+    return _full_name,_image,_un_read_message_count
   end
 
-  def count_un_read_message_for_conversation(conversation)
-    if conversation.sender == @current_user
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-      conversation.messages.with_read_marks_for(conversation.recipient).
-        map { |item| true if item.unread?(conversation.recipient)}&.compact&.count
-    else
-      conversation.messages.with_read_marks_for(conversation.sender).
-        map { |item| true if item.unread?(conversation.sender)}&.compact&.count
-    end
+  def get_full_name(conversation)
+    conversation&.sender == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
   end
 
-  def conversation_get_full_name(conversation)
-    if conversation.sender == @current_user
-      conversation.recipient&.full_name
-    else
-      conversation.sender&.full_name
-    end
+  def get_avatar(conversation)
+    conversation&.sender == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
   end
 
-  def conversation_get_user_avatar(conversation)
-    if conversation.sender == @current_user
-       conversation.recipient.avatar.attached? ? rails_blob_url(conversation.recipient.avatar) : ""
-    else
-      conversation.sender.avatar.attached? ? rails_blob_url(conversation.sender.avatar) : ""
-    end
+  def un_read_counter(conversation)
+    _user =  conversation&.sender == @current_user ?  conversation.sender : conversation.recipient
+    conversation.messages&.where(read_status: false).where.not(user_id:_user).count
+  end
+
+  def compile_message(conversation)
+    message = conversation.messages.last
+    full_name,image,un_read_message_count, = get_extra_data_of_compile_message(message)
+    return full_name,image,un_read_message_count
+  end
+
+  def mark_conversation_for_sender(conversation,message)
+    conversation.messages.mark_as_read! :all, for: conversation.sender  if @current_user == conversation.sender
+    conversation.messages.mark_as_read! :all, for: conversation.recipient if  @current_user == conversation.recipient
   end
 end

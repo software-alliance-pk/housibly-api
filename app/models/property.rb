@@ -1,4 +1,96 @@
 class Property < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_property_by_total_number_of_rooms,
+                  against: :total_number_of_rooms,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_total_parking_spaces,
+                  against: :total_parking_spaces,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_bed_rooms,
+                  against: :bed_rooms,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_title,
+                  against: :title,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_house_style,
+                  against: :house_style,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_house_type,
+                  against: :house_type,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_air_conditioner,
+                  against: :air_conditioner,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_price,
+                  against: :price,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+
+  pg_search_scope :search_property_by_condo_type,
+                  against: :condo_type,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_condo_style,
+                  against: :condo_style,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_garage_spaces,
+                  against: :garage_spaces,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+  pg_search_scope :search_property_by_lot_depth_unit,
+                  against: :lot_depth_unit,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+
+  pg_search_scope :search_property_by_lot_frontage_unit,
+                  against: :lot_frontage_unit,
+                  using: {
+                    tsearch: {any_word: true},
+                    dmetaphone: {any_word: true, sort_only: true}
+                  }
+  
   cattr_accessor :property_type
   cattr_accessor :bookmark_type
   geocoded_by :address

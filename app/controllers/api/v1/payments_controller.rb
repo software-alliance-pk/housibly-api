@@ -6,6 +6,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def create
     customer = check_customer_at_stripe
     stripe_token = payment_params[:token]
+    card_name =  payment_params[:name]
     card = StripeService.create_card(customer.id,stripe_token)
     return render json: { message: "Card is not created on Stripe" }, status: 422 if card.blank?
     @card = create_user_payment_card(card)
@@ -127,6 +128,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     if @card
       @current_user.card_infos.update_all(is_default: false) unless @card.is_default
       @card.update(is_default: true)
+      SetDefaultCardJob.perform_now(@current_user.id,@card.card_id)
     end
   end
 

@@ -12,7 +12,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 					data << compile_message(conversation)
 				end
 				puts data
-				broadcast_to_user = @conversation&.sender == @current_user ? @conversation.recipient.id : @conversation.sender.id
+				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id
 				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation)}
 				ActionCable.server.broadcast "user_chat_list_#{broadcast_to_user}",  { data:  data.as_json}
 			else

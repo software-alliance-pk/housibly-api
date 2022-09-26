@@ -15,6 +15,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 								puts "<<<<<<<<<<<<<<<<<<<<<<"
 								puts conversation&.messages&.last&.user
 								puts @message.user
+								puts conversation&.messages&.last&.user.id == @message.user.id
 								puts "<<<<<<<<<<<<<<<<<<<<<<<<"
 							if conversation&.messages&.last&.user.id == @message.user.id
 								data["avatar"] = (@message.user == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url)

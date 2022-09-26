@@ -1,6 +1,5 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
-  # Stripe.api_key = Rails.application.credentials.stripe[:api_key] if Rails.env.development?
-  Stripe.api_key = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h'     # e.g. sk_live_...
+  Stripe.api_key = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h'
   before_action :find_card, only: [:get_card, :destroy_card, :update_card, :set_default_card]
 
   def create
@@ -34,7 +33,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     if @packages.present?
       render json: {message: @packages},status: :ok
     else
-     render json: {package: "No Package Available"},status: :ok
+     render json: {package: @packages},status: :ok
     end
   end
 
@@ -98,29 +97,27 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def get_card
     if @card.present?
       @card
-    else
-      render json: { message: "card not found" }, status: 404
     end
   end
 
   def get_all_cards
-    if @cards = @current_user.card_infos
+    @cards = @current_user.card_infos
+    if @cards.present?
       @cards
     end
   end
 
   def destroy_card
     if @card.present?
-      if @card.destroy
-        user_cards_info = @current_user.card_infos
-        find_first_card = user_cards_info&.first unless user_cards_info.pluck(:is_default).include?(true)
-        if find_first_card
-          find_first_card.update(is_default: true)
-        end
-        render json: { message: "Card deleted successfully!" }, status: 200
-      else
-        render_error_messages(@card)
+      @card.destroy
+      user_cards_info = @current_user.card_infos
+      find_first_card = user_cards_info&.first unless user_cards_info.pluck(:is_default).include?(true)
+      if find_first_card
+        find_first_card.update(is_default: true)
       end
+      render json: { message: "Card deleted successfully!" }, status: 200
+    else
+      render json: { message: "Such card does not exists" }, status: 200
     end
   end
 
@@ -159,11 +156,15 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   private
 
   def find_card
-    @card = CardInfo.find_by(id: payment_params[:id])
-    if @card
-      @card
+    if payment_params[:id].present?
+      @card = CardInfo.find_by(id: payment_params[:id])
+      if @card
+        @card
+      else
+        render json: { message: "No such card exists" }, status: :ok
+      end
     else
-      render json: { message: "card not found" }
+      render json: { message: "Payment id parameter is missing" }, status: :ok
     end
   end
 

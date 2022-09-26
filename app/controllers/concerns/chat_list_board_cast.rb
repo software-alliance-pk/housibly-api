@@ -26,7 +26,10 @@ module ChatListBoardCast
     return _full_name, _image, _un_read_message_count unless  conversation.present?
     _full_name = get_full_name(conversation)
     _image = get_avatar(conversation)
-    _un_read_message_count= un_read_counter(conversation)
+    _un_read_message_count = un_read_counter(conversation)
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts _un_read_message_count
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     return _full_name,_image,_un_read_message_count
   end
 

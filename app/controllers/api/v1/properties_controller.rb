@@ -115,7 +115,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def property_params
     params.require(:property).permit(
-      :property_type, :title, :price, :year_built, :address, :unit, :lot_frontage,
+      :zip_code,:property_type, :title, :price, :year_built, :address, :unit, :lot_frontage,
       :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size_unit, :is_lot_irregular,
       :lot_description, :property_tax, :tax_year, :locker, :condo_corporation_or_hqa,
       :lot_size, :currency_type, :other_options, images: []

@@ -6,6 +6,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def create
     customer = check_customer_at_stripe
     stripe_token = payment_params[:token]
+    card_name =  payment_params[:name]
     card = StripeService.create_card(customer.id,stripe_token)
     return render json: { message: "Card is not created on Stripe" }, status: 422 if card.blank?
     @card = create_user_payment_card(card)
@@ -38,17 +39,33 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def create_subscription
-    customer = check_customer_at_stripe
-    subscription = StripeService.create_subscription(customer.id,params[:price_id])
-    if  subscription != false
-      @current_user.build_subscription(current_period_end: subscription.current_period_end,
-                                      current_period_start: Time.now,interval: subscription.plan.interval,
-                                      interval_count:subscription.plan.interval_count, price: subscription.plan.amount,
-                                      status: subscription.status,subscription_title: "#{subscription.plan.interval_count} #{subscription.plan.interval}".upcase,
-                                      ).save
-      render json: {package: subscription},status: :ok
+    if @current_user.card_infos.present?
+      subscription = StripeService.create_subscription(@current_user.stripe_customer_id,params[:price_id])
+      if  subscription.present?
+        package = @current_user.
+          build_subscription(
+            payment_currency: subscription&.currency,
+            current_period_end: DateTime.new(subscription&.current_period_end),
+            subscription_id:subscription&.id,
+            status: subscription&.status,
+            interval_count: subscription&.plan.interval_count,
+            current_period_start:DateTime.new(subscription&.current_period_start),
+            price: subscription&.items&.data.first.plan.amount,
+            interval: subscription&.plan&.interval,
+            payment_nature: subscription.items.list.data.last.price.type,
+            plan_title: "#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
+            subscription_title:"#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase
+          )
+        if package.save
+          render json: {package: package},status: :ok
+        else
+          render json: {message: "Something went wrong contact with developer"}, status: :unprocessable_entity
+        end
+      else
+        render json: {message: "Unable to subscribe the package"}, status: :unprocessable_entity
+      end
     else
-      render json: {message: "Please enter your card"}, status: :unprocessable_entity
+      render json: {message: "Please Add the Card first"}, status: :unprocessable_entity
     end
   end
   def get_subscription
@@ -119,6 +136,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     if @card
       @current_user.card_infos.update_all(is_default: false) unless @card.is_default
       @card.update(is_default: true)
+      SetDefaultCardJob.perform_now(@current_user.id,@card.card_id)
     end
   end
 

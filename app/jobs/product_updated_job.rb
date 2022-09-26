@@ -1,4 +1,4 @@
-class ProductUpdatedJob< ApplicationRecord
+class ProductUpdatedJob < ApplicationJob
 	queue_as :default
   def self.perform_now(*args)
   end

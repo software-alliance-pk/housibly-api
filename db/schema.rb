@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 2022_09_26_082443) do
     t.bigint "conversation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "read_status", default: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
@@ -248,18 +249,8 @@ ActiveRecord::Schema.define(version: 2022_09_26_082443) do
     t.boolean "is_bookmark", default: false
     t.float "longitude"
     t.float "latitude"
+    t.string "zip_code"
     t.index ["user_id"], name: "index_properties_on_user_id"
-  end
-
-  create_table "read_marks", id: :serial, force: :cascade do |t|
-    t.string "readable_type", null: false
-    t.integer "readable_id"
-    t.string "reader_type", null: false
-    t.integer "reader_id"
-    t.datetime "timestamp"
-    t.index ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id"
-    t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", unique: true
-    t.index ["reader_type", "reader_id"], name: "index_read_marks_on_reader_type_and_reader_id"
   end
 
   create_table "reportings", force: :cascade do |t|
@@ -346,8 +337,9 @@ ActiveRecord::Schema.define(version: 2022_09_26_082443) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "payment_currency"
+    t.string "subscription_id"
     t.string "payment_nature"
+    t.string "payment_currency"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -361,6 +353,8 @@ ActiveRecord::Schema.define(version: 2022_09_26_082443) do
     t.datetime "deleted_at"
     t.boolean "available"
     t.integer "un_read"
+    t.boolean "read_status", default: false
+    t.boolean "online", default: false
     t.index ["deleted_at"], name: "index_support_conversations_on_deleted_at"
     t.index ["support_id"], name: "index_support_conversations_on_support_id"
   end

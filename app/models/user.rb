@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  acts_as_reader
   require 'csv'
   include CsvCounter
   include PgSearch::Model

@@ -16,7 +16,8 @@ module ChatListBoardCast
   end
 
   def un_read_counter(conversation)
-    conversation.messages&.where(read_status: false).where.not(user_id:@current_user).count
+    user = conversation&.sender == @current_user ? conversation.recipient : conversation.sender
+    conversation.messages&.where(read_status: false).where.not(user_id:user).count
   end
 
 

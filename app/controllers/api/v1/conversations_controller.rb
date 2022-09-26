@@ -27,7 +27,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   end
 
   def read_messages
-    _conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id,  params[:conversation_id)
+    _conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id,  params[:conversation_id])
     if _conversation.present?
       if _conversation&.messages.last&.user != @current_user
         data = []

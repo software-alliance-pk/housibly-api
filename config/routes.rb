@@ -16,7 +16,11 @@ Rails.application.routes.draw do
       get :active_admin
     end
   end
-  resources :school_pins
+  resources :school_pins do
+    collection do
+    get 'get_school_pins'
+  end
+end
   resources :dashboards do
     post :index
   end
@@ -100,6 +104,7 @@ Rails.application.routes.draw do
       post '/delete_card', to: 'payments#destroy_card'
       post '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'
+      get '/get_school_pins', to: 'users#get_school_pins'
       get '/search_support_closer', to: 'users#search_support_closer'
       get 'get_support_closers', to: 'users#get_support_closers'
       post 'support_closer_profile', to: 'users#support_closer_profile'

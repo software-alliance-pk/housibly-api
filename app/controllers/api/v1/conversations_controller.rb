@@ -2,18 +2,27 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   include ChatListBoardCast
 
   def create
-    check_conversation_exists
-    if @conversation.present?
-      @conversation
-    else
-      @conversation = Conversation.new(conversation_params.merge(sender_id: current_user.id))
-      if @conversation.save
+    if conversation_params[:recipient_id].present?
+      check_conversation_exists
+      if @conversation.present?
         @conversation
       else
-        render_error_messages(@conversation)
+        unless conversation_params[:recipient_id].to_i == @current_user.id
+          conversation_parameter = conversation_params.merge(sender_id: current_user.id)
+          @conversation = Conversation.new(conversation_parameter)
+          if @conversation.save
+            @conversation
+          else
+            render_error_messages(@conversation)
+          end
+        else
+          render json: { message: "You can't create your own conversation" }, status: :ok
+        end
+        # @list, user = notify_second_user(@conversation)
       end
+    else
+      render json: { message: "Recipient id parameter is missing" }, status: :ok
     end
-    @list, user = notify_second_user(@conversation)
   end
 
   def index
@@ -26,33 +35,41 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   end
 
   def read_messages
-    _conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id,  params[:conversation_id])
-    if _conversation.present?
-      if _conversation&.messages.last&.user != @current_user
-        data = []
-        _conversation.messages.where.not(id: @current_user.id).update_all(read_status: true)
-        @conversations = Conversation.find_specific_conversation(_conversation.recipient.id)
-        @conversations.each do |conversation|
-          data << compile_message(conversation)
+    if params[:conversation_id].present?
+      _conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
+      if _conversation.present?
+        if _conversation&.messages.last&.user != @current_user
+          data = []
+          _conversation.messages.where.not(id: @current_user.id).update_all(read_status: true)
+          @conversations = Conversation.find_specific_conversation(_conversation.recipient.id)
+          @conversations.each do |conversation|
+            data << compile_message(conversation)
+          end
+          broadcast_to_user = _conversation&.sender == @current_user ? _conversation.recipient.id : _conversation.sender.id
+          ActionCable.server.broadcast "user_chat_list_#{broadcast_to_user}", { data: data.as_json }
+          render json: { message: "Read Messages Successfully" }, status: :ok
+        else
+          render json: { message: "You already ready your messages" }, status: :ok
         end
-        broadcast_to_user = _conversation&.sender == @current_user ? _conversation.recipient.id : _conversation.sender.id
-        ActionCable.server.broadcast "user_chat_list_#{broadcast_to_user}", { data: data.as_json }
-        render json: { message: "Read Messages Successfully" }, status: :ok
       else
-        render json: { message: "You already ready your messages" }, status: :ok
+        render json: { message: "No such conversation exists" }, status: :ok
       end
     else
-      render json: { message: "No such conversation exists" }, status: :ok
+      render json: { message: "Conversation id is missing" }, status: :ok
     end
   end
 
   def destroy
-    @conversation = Conversation.find_by(id: params[:id])
-    if @conversation.present?
-      @conversation.delete
-      render json: { message: "Conversation is successfully deleted" }, status: :ok
+    if params[:id].present?
+      @conversation = Conversation.find_by(id: params[:id])
+      if @conversation.present?
+        @conversation.delete
+        render json: { message: "Conversation is successfully deleted" }, status: :ok
+      else
+        render json: { error: "Conversation does n't exists" }, status: :unprocessable_entity
+      end
     else
-      render json: { error: "No Found" }, status: :unprocessable_entity
+      render json: { error: "Conversation with id #{id} does n't exists" }, status: :unprocessable_entity
     end
   end
 
@@ -62,15 +79,24 @@ class Api::V1::ConversationsController < Api::V1::ApiController
       if token.save
         render json: { message: 'Success', status: 'ok', token: token }
       end
+    else
+      render json: { message: "Mobile token parameter is missing" }, status: :ok
     end
   end
 
   def logout
-    mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mtoken])
-    if mtoken.present?
-      mtoken.destroy
-      render json: { message: "Log out successfully" }, status: :ok
+    if params[:mtoken].present?
+      mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mtoken])
+      if mtoken.present?
+        mtoken.destroy
+        render json: { message: "Log out successfully" }, status: :ok
+      else
+        render json: { message: "Provide mobile token is not correct" }, status: :ok
+      end
+    else
+      render json: { message: "Mobile token parameter is missing" }, status: :ok
     end
+
   end
 
   private

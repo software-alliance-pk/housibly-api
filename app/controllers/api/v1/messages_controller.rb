@@ -15,11 +15,11 @@ class Api::V1::MessagesController < Api::V1::ApiController
 								puts "<<<<<<<<<<<<<<<<<<<<<<"
 								puts conversation&.messages&.last&.user.id
 								puts @message.user.id
+								puts @current_user.id
+								puts conversation.sender
 								puts "<<<<<<<<<<<<<<<<<<<<<<<<"
-							if conversation&.messages&.last&.user.id == @message.user.id
-								data["avatar"] = (@message.user == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url)
-								data["full_name"] = (@message.user == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name)
-							end
+								data["avatar"] = (conversation&.sender == @message.user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url)
+								data["full_name"] = (conversation&.sender == @message.user ? conversation.recipient&.full_name : conversation&.sender&.full_name)
 							rescue
 								puts "N"
 							end

@@ -80,6 +80,7 @@ end
       resources :dream_addresses do
         collection do
           get :fetch_address
+          get 'fetch_by_zip_code'
         end
       end
       post '/signup', to: 'registrations#create'

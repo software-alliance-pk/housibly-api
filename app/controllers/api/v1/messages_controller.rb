@@ -27,10 +27,18 @@ class Api::V1::MessagesController < Api::V1::ApiController
 	end
 
 	def get_messages
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		puts "<<<<<<<<<<<<<<<<<#{params[:conversation_id]}<<<<<<<<<<<<<<<<<<<<"
 	  @conversation = Conversation.find_by(id: params[:conversation_id])
+
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     if @conversation.present?
       @messages = @conversation.messages.all.order(created_at: :desc)
-    else
+		else
+			puts "SOme SOme"
 			render json: {message: "Conversation not found"},status: :ok
     end
   end

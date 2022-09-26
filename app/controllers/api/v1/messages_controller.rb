@@ -16,9 +16,15 @@ class Api::V1::MessagesController < Api::V1::ApiController
 						end
 					data << custom_data
 				end
-				puts data
+				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+				puts "message is send by #{@message.user.full_name}"
+				puts " Message #{data}"
+				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id
 				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation)}
+				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+				puts "Message board casted to user_chat_list_#{broadcast_to_user}"
+				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				ActionCable.server.broadcast "user_chat_list_#{broadcast_to_user}",  { data:  data.as_json}
 			else
 				render_error_messages(@message)
@@ -27,24 +33,28 @@ class Api::V1::MessagesController < Api::V1::ApiController
 	end
 
 	def get_messages
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		puts "<<<<<<<<<<<<<<<<<#{params[:conversation_id]}<<<<<<<<<<<<<<<<<<<<"
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	  @conversation = Conversation.find_by(id: params[:conversation_id])
-    if @conversation.present?
-      @messages = @conversation.messages.all.order(created_at: :desc)
+		if params[:conversation_id].present?
+			@conversation = Conversation.find_by(id: params[:conversation_id])
+			if @conversation.present?
+				@messages = @conversation.messages.all.order(created_at: :desc)
+			else
+				render json: {message: "Conversation not found"},status: :ok
+			end
 		else
-			render json: {message: "Conversation not found"},status: :ok
-    end
+			render json: {message: "Conversation id parameter is missing"},status: :ok
+		end
   end
   def delete_notification
-  	notification = Notification.find(id: params[:notification_id])
-  	if @notification.destroy
-  		render json: {message: "Notificatoin deleted successfully"},status: :ok
+		if params[:notification_id].present?
+			@notification = Notification.find(id: params[:notification_id])
+			if @notification.present?
+				@notification
+				render json: {message: "Notificatoin deleted successfully"},status: :ok
+			else
+				render json: {message: "Notification is not present"},status: :ok
+			end
+		else
+			render json: {message: "Notification id parameter is missing"},status: :ok
 		end
   end 
   def get_notification
@@ -73,12 +83,16 @@ end
 	end
 
 	def find_conversation
-		@conversation = Conversation.find_by(id: params[:conversation_id])
-		unless @conversation.present?
-			@conversation = Conversation.with_deleted.find_by(id: params[:conversation_id])
-			@conversation.recover if @conversation.present?
+		if params[:conversation_id].present?
+			@conversation = Conversation.find_by(id: params[:conversation_id])
+			unless @conversation.present?
+				@conversation = Conversation.with_deleted.find_by(id: params[:conversation_id])
+				@conversation.recover if @conversation.present?
+			end
+			render json: {message: "Conversation does n't exists"}, status: 200 unless @conversation
+		else
+			render json: {message: "Conversation id parameter is missing"}, status: 200
 		end
-		render json: {message: "Conversation does n't exists"}, status: 200 unless @conversation
 	end
 
 	def send_notification_to_user(conversation,message)

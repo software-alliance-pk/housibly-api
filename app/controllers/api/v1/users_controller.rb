@@ -160,6 +160,14 @@ class Api::V1::UsersController < Api::V1::ApiController
       end
     end
   end
+  def get_school_pins
+    @school_pins = SchoolPin.all
+    if @school_pin.present?
+      @school_pins
+    else
+      render json: {message: "School Pins are not available"}
+    end
+  end
 
 
   private

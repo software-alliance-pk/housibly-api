@@ -12,8 +12,9 @@ class SubscriptionCreatedJob < ApplicationJob
         interval:data.plan.interval,
 	    	interval_count: data.plan.interval_count,
         subscription_title: "#{data.plan.interval_count} #{data.plan.interval}".upcase,
-        current_period_end: DateTime.new(data&.current_period_end),
-        current_period_start: DateTime.new(data&.current_period_start),
+        #current_period_end: DateTime.new(data&.current_period_end),
+        current_period_end: Time.at(data&.current_period_end),
+        current_period_start: Time.at(data&.current_period_start),
         payment_nature: data&.items.data.last.price.type,
         payment_currency: data&.currency
       )
@@ -25,8 +26,8 @@ class SubscriptionCreatedJob < ApplicationJob
         interval:data.plan.interval,
 	    	interval_count: data.plan.interval_count,
         subscription_title: "#{data.plan.interval_count} #{data.plan.interval}".upcase,
-        current_period_end: DateTime.new(data&.current_period_end),
-        current_period_start: DateTime.new(data&.current_period_start),
+        current_period_end: Time.at(data&.current_period_end),
+        current_period_start: Time.at(data&.current_period_start),
         payment_nature: data&.items.data.last.price.type,
         payment_currency: data&.currency
         ).save
@@ -41,8 +42,8 @@ class SubscriptionCreatedJob < ApplicationJob
       interval:data.plan.interval,
 	    interval_count: data.plan.interval_count,
       subscription_title: "#{data.plan.interval_count} #{data.plan.interval}".upcase,
-      current_period_end: DateTime.new(data&.current_period_end),
-      current_period_start: DateTime.new(data&.current_period_start),
+      current_period_end: Time.at(data&.current_period_end),
+      current_period_start: Time.at(data&.current_period_start),
       payment_nature: data&.items.data.last.price.type,
       payment_currency: data&.currency).save
 

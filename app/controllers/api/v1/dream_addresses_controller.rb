@@ -12,11 +12,13 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
     addresses = []
       array = eval(params[:polygon])
       array.each do |address|
-      address = Geocoder.search("address")
+      lat = address[:latitude]
+      long = address[:longitude]
+      address = Geocoder.search([lat, long])
       house_number = address.first.house_number
       city = address.first.city
       country = address.first.country
-      address = Property.where("address ILIKE ? AND address ILIKE ?AND address ILIKE ?", "%#{house_number}%","%#{city}%","%#{country}%")
+      address = Property.where("address ILIKE ? AND address ILIKE ? AND address ILIKE ?", "%#{house_number}%","%#{city}%","%#{country}%")
       unless address == nil
         addresses << address
       end

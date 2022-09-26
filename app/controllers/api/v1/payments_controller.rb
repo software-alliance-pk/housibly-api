@@ -45,11 +45,11 @@ class Api::V1::PaymentsController < Api::V1::ApiController
         package = @current_user.
           build_subscription(
             payment_currency: subscription&.currency,
-            current_period_end: DateTime.new(subscription&.current_period_end),
+            current_period_end: Time.at(subscription&.current_period_end),
             subscription_id:subscription&.id,
             status: subscription&.status,
             interval_count: subscription&.plan.interval_count,
-            current_period_start:DateTime.new(subscription&.current_period_start),
+            current_period_start:Time.at(subscription&.current_period_start),
             price: subscription&.items&.data.first.plan.amount,
             interval: subscription&.plan&.interval,
             payment_nature: subscription.items.list.data.last.price.type,

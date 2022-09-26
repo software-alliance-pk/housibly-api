@@ -9,7 +9,7 @@ class SchoolPinsController < ApplicationController
       redirect_to school_pins_path
     else
       flash.alert = @school_pin.errors.full_messages
-     redirect_to school_pins_path 
+      redirect_to school_pins_path
    end
   end
   private

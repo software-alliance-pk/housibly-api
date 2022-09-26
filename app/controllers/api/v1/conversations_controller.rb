@@ -22,7 +22,6 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     @conversations.each do |conversation|
       data << compile_message(conversation)
     end
-    #.where(read_status: false).where.not(user_id: current_user.id).count
     ActionCable.server.broadcast "user_chat_list_#{@current_user.id}", { data: data.as_json }
   end
 

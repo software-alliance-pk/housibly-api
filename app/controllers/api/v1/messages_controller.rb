@@ -11,20 +11,8 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				@conversation_list.each do |conversation|
 					custom_data = compile_message(conversation)
 						if conversation&.messages.present?
-							begin
-								puts "<<<<<<<<<<<<<<<<<<<<<<"
-								puts conversation&.messages&.last&.user.id
-								puts @message.user.id
-								puts @current_user.id
-								puts conversation.sender.id
-								puts conversation.recipient.id
-								puts "<<<<<<<<<<<<<<<<<<<<<<<<"
-								puts  conversation&.sender.id == @message.user.id ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
 								custom_data["avatar"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
 								custom_data["full_name"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.full_name :  conversation.recipient&.full_name
-							rescue
-								puts "N"
-							end
 						end
 					data << custom_data
 				end
@@ -60,11 +48,6 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)
 				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.recipient_id) unless _notification.present?
 				_notification = 	_notification.last
-	  	  # if UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).present?
-	  	  #  notification = UserNotification.where(recipient_id: conversation.recipient_id, actor_id: conversation.sender_id).last
-	  	  # elsif UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).present?
-	  	  #  notification = UserNotification.where(recipient_id: conversation.sender_id, actor_id: conversation.recipient_id).last
-	  	  # end
 	  	  unless _notification == nil
 	  	   @notifications <<	_notification
 	  	 end

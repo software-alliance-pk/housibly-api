@@ -10,6 +10,10 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				data = []
 				@conversation_list.each do |conversation|
 					data << compile_message(conversation)
+					if conversation.messages.last == @message
+						data["avatar"] = conversation&.messages&.last&.user == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
+						data["full_name"] = conversation&.messages&.last&.user == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_names
+					end
 				end
 				puts data
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id

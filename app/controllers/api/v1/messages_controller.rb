@@ -9,7 +9,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				@conversation_list, user = notify_second_user(@conversation)
 				data = []
 				@conversation_list.each do |conversation|
-					data << compile_message(conversation)
+					custom_data = compile_message(conversation)
 						if conversation&.messages.present?
 							begin
 								puts "<<<<<<<<<<<<<<<<<<<<<<"
@@ -18,16 +18,15 @@ class Api::V1::MessagesController < Api::V1::ApiController
 								puts @current_user.id
 								puts conversation.sender.id
 								puts conversation.recipient.id
-								puts data["avatar"]
-								puts data["full_name"]
 								puts "<<<<<<<<<<<<<<<<<<<<<<<<"
 								puts  conversation&.sender.id == @message.user.id ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
-								data["avatar"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
-								data["full_name"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.full_name :  conversation.recipient&.full_name
+								custom_data["avatar"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
+								custom_data["full_name"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.full_name :  conversation.recipient&.full_name
 							rescue
 								puts "N"
 							end
 						end
+					data << custom_data
 				end
 				puts data
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id

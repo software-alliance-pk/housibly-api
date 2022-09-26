@@ -12,6 +12,10 @@ class Api::V1::MessagesController < Api::V1::ApiController
 					data << compile_message(conversation)
 						if conversation&.messages.present?
 							begin
+								puts "<<<<<<<<<<<<<<<<<<<<<<"
+								puts conversation&.messages&.last&.user
+								puts @message.user
+								puts "<<<<<<<<<<<<<<<<<<<<<<<<"
 							if conversation&.messages&.last&.user == @message.user
 								data["avatar"] = (@message.user == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url)
 								data["full_name"] = (@message.user == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name)

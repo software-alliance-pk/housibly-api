@@ -23,11 +23,21 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
         addresses << address
       end
     end
-  if addresses.present?
-    render json: {message: addresses}, status: :ok
-  else
-    render json: {message: "Dream Address Not Foud"}, status: :ok
+    if addresses.present?
+      render json: {message: addresses}, status: :ok
+    else
+      render json: {message: "Dream Address Not Foud"}, status: :ok
+    end
   end
+
+  def fetch_by_zip_code
+    property = Property.find_by(zip_code: params[:zip_code])
+    if property.present?
+      address = Geocoder.search("params[:zip_code]")
+      render json: {message: address},status: :ok
+    else
+      render json: {message: "No Address available"}
+    end
   end
 
 

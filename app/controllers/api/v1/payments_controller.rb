@@ -73,7 +73,15 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     if subscriptions.present?
       render json: {subscription: subscriptions},status: :ok
     else
-     render json: {package: "No Package Available"},status: :ok
+     render json: {package: "No Subscription Available"},status: :ok
+    end
+  end
+  def get_sub_history
+    subscriptions = @current_user.subscription_histories.last
+    if subscriptions.present?
+      render json: {subscription: subscriptions},status: :ok
+    else
+     render json: {package: "No Subscription Available"},status: :ok
     end
   end
   def cancel_subscription

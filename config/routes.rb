@@ -96,6 +96,7 @@ Rails.application.routes.draw do
       post '/create_subscription', to: 'payments#create_subscription'
       post '/cancel_subscription', to: 'payments#cancel_subscription'
       get '/get_subscription', to: 'payments#get_subscription'
+      get '/get_sub_history', to: 'payments#get_sub_history'
       post '/delete_card', to: 'payments#destroy_card'
       post '/register_user', to: 'registrations#update_personal_info'
       put '/update_profile', to: 'users#update_profile'

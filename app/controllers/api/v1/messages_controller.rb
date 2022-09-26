@@ -10,9 +10,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				data = []
 				@conversation_list.each do |conversation|
 					data << compile_message(conversation)
-					if conversation.messages.last == @message
+					if conversation.messages.last.user == @message.user
 						data["avatar"] = conversation&.messages&.last&.user == @current_user ? conversation.recipient&.avatar&.url : conversation&.sender&.avatar&.url
-						data["full_name"] = conversation&.messages&.last&.user == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_names
+						data["full_name"] = conversation&.messages&.last&.user == @current_user ? conversation.recipient&.full_name : conversation&.sender&.full_name
 					end
 				end
 				puts data

@@ -37,8 +37,6 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
       @property.weight_age = "100"
       @property
    elsif params[:user_preference] == "true"
-    debugger
-
       if @current_user.user_preference.present?
       property_list_having_bed_rooms = Property.ransack(price_lteq_any: @current_user.user_preference.min_bedrooms).result
       property_list_having_bed_rooms = Property.ransack(price_gteq_any: @current_user.user_preference.max_bathrooms).result

@@ -18,6 +18,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def index
     @properties = @current_user.properties.order("created_at desc")
   end
+  def get_property
+    @property = Property.find_by(id: params[:property_id])
+  end
+  def user_detail
+    @user = User.find_by(id: params[:user_id])
+  end
 
   def update
     @property.type = @property_types.titleize.gsub(" ", "").constantize
@@ -103,6 +109,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         data.store("property_type", property_params[:property_type])
         data.store("condo_corporation_or_hqa", property_params[:condo_corporation_or_hqa])
         data.store("currency_type", property_params[:currency_type])
+        data.store("zip_code", property_params[:zip_code] )
         data.store("images", property_params[:images])
         return data.with_indifferent_access
       rescue => e

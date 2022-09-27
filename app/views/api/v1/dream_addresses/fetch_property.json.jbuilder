@@ -1,3 +1,6 @@
+#debugger
+json.properties @property do |property|
+	#debugger
 json.id property.id
 json.property_type property.type
 json.title property.title
@@ -54,5 +57,8 @@ json.total_number_of_rooms property.total_number_of_rooms
 json.total_parking_spaces property.total_parking_spaces
 json.is_bookmark property.is_bookmark
 json.zip_code property.zip_code
-json.longitude property.longitude
+json.weight_age property.weight_age
 json.latitude property.latitude
+json.longitude property.longitude
+json.image property&.images&.attached? ? property&.images&.first.url : ""
+end

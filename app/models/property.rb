@@ -93,6 +93,7 @@ class Property < ApplicationRecord
   
   cattr_accessor :property_type
   cattr_accessor :bookmark_type
+  cattr_accessor :weight_age
   geocoded_by :address
   after_validation :geocode, :if => :address_changed?
   has_many_attached :images

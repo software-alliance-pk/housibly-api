@@ -75,11 +75,13 @@ end
         collection do
           get 'matching_property'
           get 'matching_dream_address'
+          post 'get_property'
+          post 'user_detail'
         end
       end
       resources :dream_addresses do
         collection do
-          get :fetch_address
+          post :fetch_property
           get 'fetch_by_zip_code'
         end
       end

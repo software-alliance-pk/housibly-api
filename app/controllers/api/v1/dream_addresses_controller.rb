@@ -12,11 +12,11 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
     end
   end
 
-  def fetch_address
-    weight_age = 0
-    addresses = []
+  def fetch_property
+    _weight_age = 0
+    @property = []
     @property_list = ''
-    if params[:using_polygon] == true
+     if params[:using_polygon] == "true"
       array = eval(params[:polygon])
       array.each do |address|
         lat = address[:latitude]
@@ -25,47 +25,61 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
         house_number = address.first.house_number
         city = address.first.city
         country = address.first.country
-        address = Property.where("address ILIKE ? AND address ILIKE ? AND address ILIKE ?", "%#{house_number}%", "%#{city}%", "%#{country}%")
-        unless address == nil
-          addresses << address
-        end
+        property = Property.find_by("address ILIKE ? AND address ILIKE ? AND address ILIKE ?", "%#{house_number}%", "%#{city}%", "%#{country}%")
+        unless property == nil
+        property.weight_age = "100"
+        @property << property
       end
-      if addresses.present?
-        render json: { message: addresses }, status: :ok
-      else
-        render json: { message: addresses }, status: :ok
-      end
-    elsif params[:using_zip_code] == true
-
-    elsif params[:user_preference] == true
-      property_list_having_rooms = Property.search_property_by_total_number_of_rooms(params[:number_of_rooms])
-      weight_age = calculate_weightage(weight_age,property_list_having_rooms,14)
-      property_list_having_parking_space = Property.search_property_by_total_parking_spaces(params[:number_of_parking_spaces])
-      weight_age = calculate_weightage(weight_age,property_list_having_parking_space,14)
-      property_list_having_bed_rooms = Property.search_property_by_bed_rooms(params[:bed_rooms])
-      property_list_having_title = Property.search_property_by_title(params[:title])
-      property_list_having_style = Property.search_property_by_house_style(params[:house_style]) ||
-        Property.search_property_by_condo_style(params[:condo_style])
-      property_list_having_type = Property.search_property_by_house_type(params[:house_type]) ||
-        Property.search_property_by_condo_type(params[:condo_type])
-      property_list_having_air_conditioner = Property.search_property_by_air_conditioner(params[:air_conditioner])
-      property_list_having_price = Property.search_property_by_price(params[:price])
-      property_list_having_frontage_unit = Property.search_property_by_lot_frontage_unit(params[:frontage_unit])
-      property_list_having_depth_unit = Property.search_property_by_lot_depth_unit(params[:depth_unit])
-      property_list_having_garage_spaces = Property.search_property_by_garage_spaces(params[:garage_spaces])
-      @property_list = (property_list_having_rooms + property_list_having_air_conditioner+
-        property_list_having_bed_rooms+property_list_having_depth_unit+ property_list_having_garage_spaces+
-        property_list_having_style+property_list_having_parking_space+ property_list_having_price+
-        property_list_having_frontage_unit+
-        property_list_having_type+
-        property_list_having_title)&.uniq
-
     end
+    @property
+   elsif params[:using_zip_code] == "true"
+      @property = Property.where(zip_code: params[:zip_code])
+      @property.weight_age = "100"
+      @property
+   elsif params[:user_preference] == "true"
+    debugger
+
+      if @current_user.user_preference.present?
+      property_list_having_bed_rooms = Property.ransack(price_lteq_any: @current_user.user_preference.min_bedrooms).result
+      property_list_having_bed_rooms = Property.ransack(price_gteq_any: @current_user.user_preference.max_bathrooms).result
+      _value = calculate_weightage(_weight_age,property_list_having_bed_rooms,14)
+      _weight_age = _value if _value.present?
+      property_list_having_style = Property.search_property_by_house_style(@current_user.user_preference.property_style) ||
+        Property.search_property_by_condo_style(@current_user.user_preference.property_style)
+      _value = calculate_weightage(_weight_age,property_list_having_style,14)
+      _weight_age = _value if _value.present?
+      property_list_having_type = Property.search_property_by_house_type(@current_user.user_preference.property_type) ||
+        Property.search_property_by_condo_type(@current_user.user_preference.property_type)
+      _value = calculate_weightage(_weight_age,property_list_having_type,14)
+      _weight_age = _value if _value.present?
+      _weight_age = _value if _value.present?
+      property_list_having_price = Property.ransack(price_lteq_any: @current_user.user_preference.min_price).result
+      property_list_having_price = Property.ransack(price_gteg: @current_user.user_preference.max_price).result
+      _value = calculate_weightage(_weight_age,property_list_having_price,14)
+      _weight_age = _value if _value.present?
+      property_list_having_frontage_unit = Property.search_property_by_lot_frontage_unit(@current_user.user_preference.min_lot_frontage)
+      _value = calculate_weightage(_weight_age,property_list_having_frontage_unit,14)
+      _weight_age = _value if _value.present?
+      @property_list = (property_list_having_bed_rooms+
+        property_list_having_style+ property_list_having_price+
+        property_list_having_frontage_unit+
+        property_list_having_type)&.uniq
+      @property_list.each do |record|
+        record.weight_age = _weight_age
+        @property << record
+      end
+      else
+       @property
+      end
+
+   else
+      render json: {message: "Please give user preference, zip code or polygon"},status: :ok
+   end
   end
 
 
-  def calculate_weightage(weight_age,matching_item,number)
-    weight_age= weight_age + number if matching_item.present?
+  def calculate_weightage(_weight_age,matching_item,number)
+    _weight_age = _weight_age + number if matching_item.present?
   end
 
   def fetch_by_zip_code

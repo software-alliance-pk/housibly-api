@@ -163,9 +163,18 @@ class Api::V1::UsersController < Api::V1::ApiController
   def get_school_pins
     @school_pins = SchoolPin.all
     if @school_pin.present?
-      @school_pins
+      render json: {message: @school_pins},status: :ok
     else
-      render json: {message: "School Pins are not available"}
+      render json: {message: @school_pins},status: :ok
+    end
+  end
+
+  def get_school
+    @school_pin = SchoolPin.find_by(id: params[:school_id])
+    if @school_pin.present?
+      render json: {message: @school_pin},status: :ok
+    else
+      render json: {message: @school_pin},status: :ok
     end
   end
 

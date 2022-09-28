@@ -33,8 +33,12 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
       end
       @property
     elsif params[:using_zip_code] == "true"
-      @property = Property.where(zip_code: params[:zip_code])
-      @property.weight_age = "100"
+      @property = []
+      @property_list = Property.where(zip_code: params[:zip_code])
+      @property_list.each do |record|
+        record.weight_age = _weight_age
+        @property << record
+      end
       @property
     elsif params[:user_preference] == "true"
       if @current_user.user_preference.present?

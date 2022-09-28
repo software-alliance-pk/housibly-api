@@ -36,6 +36,7 @@ json.pool property.pool
 json.property_tax property.property_tax
 json.tax_year property.tax_year
 json.other_items property.condo_corporation_or_hqa
+json.appliances_and_other_items property.appliances_and_other_items
 json.locker property.locker
 json.condo_fees property.condo_fees
 json.balcony property.balcony

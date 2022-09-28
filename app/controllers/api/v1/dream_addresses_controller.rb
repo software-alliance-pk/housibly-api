@@ -36,7 +36,7 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
       @property = []
       @property_list = Property.where(zip_code: params[:zip_code])
       @property_list.each do |record|
-        record.weight_age = _weight_age
+        record.weight_age = "100"
         @property << record
       end
       @property

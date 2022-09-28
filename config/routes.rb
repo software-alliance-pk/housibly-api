@@ -82,7 +82,10 @@ end
       resources :dream_addresses do
         collection do
           post :fetch_property
+          post 'user_pereference_match'
           get 'fetch_by_zip_code'
+          post 'newest_first'
+          
         end
       end
       post '/signup', to: 'registrations#create'

@@ -96,11 +96,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         record.weight_age = _weight_age
         @properties << record
       end
-      @properties
+      @properties&.sort_by{|e| e[:created_at]}
     else
       @properties
     end
   end
+
   def matching_dream_address
     @properties = []
     @property_list = Property.where("address ILIKE (?)",@current_user.dream_addresses.pluck(:location))

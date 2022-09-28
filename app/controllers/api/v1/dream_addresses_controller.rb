@@ -38,8 +38,7 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
       @property
     elsif params[:user_preference] == "true"
       if @current_user.user_preference.present?
-        property_list_having_bed_rooms = Property.ransack(min_bed_rooms_lteq_any: @current_user.user_preference.min_bedrooms).result
-        property_list_having_bed_rooms = Property.ransack(max_bed_rooms_gteq_any: @current_user.user_preference.max_bathrooms).result
+        property_list_having_bed_rooms = (Property.ransack(min_bed_rooms_lteq_any: @current_user.user_preference.min_bedrooms).result || Property.ransack(max_bed_rooms_gteq_any: @current_user.user_preference.max_bathrooms).result)&.uniq
         _value = calculate_weightage(_weight_age,property_list_having_bed_rooms,14)
         _weight_age = _value if _value.present?
         property_list_having_style = Property.search_property_by_house_style(@current_user.user_preference.property_style) ||
@@ -51,14 +50,12 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
         _value = calculate_weightage(_weight_age,property_list_having_type,14)
         _weight_age = _value if _value.present?
         _weight_age = _value if _value.present?
-        property_list_having_price = Property.ransack(price_lteq_any: @current_user.user_preference.min_price).result
-        property_list_having_price = Property.ransack(price_gteq_any: @current_user.user_preference.max_price).result
+        property_list_having_price = (Property.ransack(price_lteq_any: @current_user.user_preference.min_price).result  || Property.ransack(price_gteq_any: @current_user.user_preference.max_price).result).uniq
         _value = calculate_weightage(_weight_age,property_list_having_price,14)
         _weight_age = _value if _value.present?
         property_list_having_frontage_unit = Property.search_property_by_lot_frontage_unit(@current_user.user_preference.min_lot_frontage)
         _value = calculate_weightage(_weight_age,property_list_having_frontage_unit,14)
         _weight_age = _value if _value.present?
-        debugger
         @property_list = (property_list_having_bed_rooms+
           property_list_having_style+ property_list_having_price+
           property_list_having_frontage_unit+

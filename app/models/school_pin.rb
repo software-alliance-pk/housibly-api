@@ -3,6 +3,7 @@ class SchoolPin < ApplicationRecord
 	validates :longtitude, :latitude, :pin_name, presence: true
 	reverse_geocoded_by :latitude, :longtitude
 	after_validation :reverse_geocode
+	has_one_attached :image
 	def update_school_pin
 		long = self.longtitude
 		lat = self.latitude

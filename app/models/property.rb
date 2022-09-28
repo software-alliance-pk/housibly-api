@@ -42,20 +42,6 @@ class Property < ApplicationRecord
                     dmetaphone: {any_word: true, sort_only: true}
                   }
 
-  pg_search_scope :search_property_by_air_conditioner,
-                  against: :air_conditioner,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_price,
-                  against: :price,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
 
   pg_search_scope :search_property_by_condo_type,
                   against: :condo_type,
@@ -93,7 +79,6 @@ class Property < ApplicationRecord
   
   cattr_accessor :property_type
   cattr_accessor :bookmark_type
-  cattr_accessor :weight_age
   geocoded_by :address
   after_validation :geocode, :if => :address_changed?
   has_many_attached :images

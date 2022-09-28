@@ -56,3 +56,4 @@ json.is_bookmark property.is_bookmark
 json.zip_code property.zip_code
 json.longitude property.longitude
 json.latitude property.latitude
+json.weight_age property.weight_age

@@ -8,6 +8,8 @@ json.current_user do
   json.rate @current_user.currency_amount
   json.country_name @current_user.country_name
   json.country_code @current_user.country_code
+  json.login_type @current_user.login_type
+  json.profile_complete @current_user.profile_complete
   json.profile_images @current_user.avatar.attached? ? @current_user.avatar.url : ""
   json.professions  @current_user.professions do |profession|
   	json.title profession.title

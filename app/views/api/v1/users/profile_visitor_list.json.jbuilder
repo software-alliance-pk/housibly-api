@@ -11,5 +11,7 @@ json.visitor @visitor do |visit|
 	json.hourly_rate visit.visitor.currency_amount
 	json.profile_type visit.visitor.profile_type
 	json.address visit.visitor.address
+	json.login_type visit.visitor.login_type
+  json.profile_complete visit.visitor.profile_complete
 	json.visitor_image visit.visitor.avatar.attached? ? rails_blob_url(visit.visitor.avatar) : ""
 end

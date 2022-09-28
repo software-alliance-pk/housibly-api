@@ -12,6 +12,8 @@ json.unblocked_users @unblocked_users do |unblocked_user|
   json.user_type unblocked_user.user_type
   json.profile_type unblocked_user.profile_type
   json.description unblocked_user.description
+  json.login_type unblocked_user.login_type
+  json.profile_complete unblocked_user.profile_complete
   json.image unblocked_user.avatar.attached? ? @current_user.avatar.url : ""
 end
 

@@ -19,8 +19,18 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     @properties = @current_user.properties.order("created_at desc")
   end
   def get_property
-    @property = Property.find_by(id: params[:property_id])
+    if params[:property_id].present?
+      @property = Property.find_by(id: params[:property_id])
+      if @property.present?
+        @property
+      else
+        render json: { message: "Property Does not present" }, status: 404
+      end
+    else
+      render json: { message: "Property id parameter is missing" }, status: 404
+    end
   end
+
   def user_detail
     @user = User.find_by(id: params[:user_id])
   end

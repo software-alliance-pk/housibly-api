@@ -7,7 +7,7 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def update_profile
     if @current_user.present?
-      @current_user.assign_attributes(user_params)
+      @current_user.assign_attributes(user_params.merge(profile_complete: true))
       if @current_user.save(validate: false)
         @current_user
       else
@@ -45,7 +45,7 @@ class Api::V1::UsersController < Api::V1::ApiController
       user_profession[:titles].each do |user|
         @current_user.professions.build(title: user)
       end
-      @current_user.assign_attributes(sup_closer_params)
+      @current_user.assign_attributes(sup_closer_params.merge(profile_complete: true))
       if @current_user.save(validate: false)
         @current_user
       else

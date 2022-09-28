@@ -21,7 +21,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
         end
         @current_user.schedule.update(schedule_params) if @current_user.schedule
       end
-      @current_user.update(user_params.merge(is_confirmed: true))
+      @current_user.update(user_params.merge(is_confirmed: true,login_type: "manual", profile_complete: true))
       @current_user.build_user_setting.save
       @token = JsonWebTokenService.encode({ email: @current_user.email })
     else

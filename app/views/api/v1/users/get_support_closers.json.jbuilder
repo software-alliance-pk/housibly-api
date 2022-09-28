@@ -12,6 +12,8 @@ json.support_closer @support_closers do |support_closer|
   json.user_type support_closer.user_type
   json.profile_type support_closer.profile_type
   json.description support_closer.description
+  json.login_type support_closer.login_type
+  json.profile_complete support_closer.profile_complete
   if support_closer.support_closer_reviews.pluck(:rating).sum == 0
     json.average_rating 0
   else

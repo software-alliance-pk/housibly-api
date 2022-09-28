@@ -13,6 +13,8 @@ json.support_closer do
   json.profile_type @support_closer.profile_type
   json.description @support_closer.description
   json.hourly_rate @support_closer.currency_amount
+  json.login_type @support_closer.login_type
+  json.profile_complete @support_closer.profile_complete
   if @support_closer.support_closer_reviews.pluck(:rating).sum == 0
     json.rating 0
   else

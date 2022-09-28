@@ -14,4 +14,6 @@ json.user do
   json.profile_type @current_user.profile_type
   json.image @current_user.avatar.attached? ? rails_blob_url(@current_user.avatar) : ""
   json.description @current_user.description
+  json.login_type @current_user.login_type
+  json.profile_complete @current_user.profile_complete
 end

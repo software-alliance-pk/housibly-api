@@ -1,5 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApiController
   include ChatListBoardCast
+
   def get_profile
     @current_user
   end
@@ -23,8 +24,8 @@ class Api::V1::UsersController < Api::V1::ApiController
     if @support_closers.present?
       @support_closers
     else
-      render json: {message: "Support Closer not found"},
-       status: :unprocessable_entity
+      render json: { message: "Support Closer not found" },
+             status: :unprocessable_entity
     end
   end
 
@@ -33,28 +34,27 @@ class Api::V1::UsersController < Api::V1::ApiController
     if @support_closer.present?
       @support_closer
     else
-      render json: {message: "Support Closer not found"},
-      status: :unprocessable_entity
+      render json: { message: "Support Closer not found" },
+             status: :unprocessable_entity
     end
   end
 
   def update_support_closer_profile
     if @current_user.present?
-      @current_user.professions.destroy_all if @current_user.professions.present? 
-      user_profession[:titles].each do |user|  
-        @current_user.professions.build(title:user)
+      @current_user.professions.destroy_all if @current_user.professions.present?
+      user_profession[:titles].each do |user|
+        @current_user.professions.build(title: user)
       end
       @current_user.assign_attributes(sup_closer_params)
-        if @current_user.save(validate: false)
-          @current_user
+      if @current_user.save(validate: false)
+        @current_user
       else
         render_error_messages(@current_user)
       end
     else
-      render json: {message: "Support Closer not found"}, status: :unprocessable_entity
+      render json: { message: "Support Closer not found" }, status: :unprocessable_entity
     end
   end
-
 
   def get_support_closers
     @support_closers = User.want_support_closer.near("karachi", 70, units: :km)
@@ -67,33 +67,31 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def block_unblock_user
     user = User.find_by(id: params[:user_id])
-    conversation = Conversation.find_by(recipient_id: user.id,sender_id: @current_user.id) ||
-    conversation = Conversation.find_by(recipient_id: @current_user.id ,sender_id: user.id)
+    conversation = Conversation.find_by(recipient_id: user.id, sender_id: @current_user.id) ||
+      conversation = Conversation.find_by(recipient_id: @current_user.id, sender_id: user.id)
     if conversation.present?
       if params[:is_blocked].present? && params[:is_blocked] == "true"
-        if conversation.update!(is_blocked: true,block_by: @current_user.id )
-          render json: {message: "User added in blacklist"},status: :ok
+        if conversation.update!(is_blocked: true, block_by: @current_user.id)
+          render json: { message: "User added in blacklist" }, status: :ok
         end
       elsif params[:is_blocked].present? && params[:is_blocked] == "false"
         if conversation.update!(is_blocked: false, block_by: 0)
-          render json: {message: "User removed from blacklist"},status: :ok
+          render json: { message: "User removed from blacklist" }, status: :ok
         end
       end
       send_message = compile_message(conversation)
-      ActionCable.server.broadcast "conversations_#{conversation.id}", { messages: send_message}
+      ActionCable.server.broadcast "conversations_#{conversation.id}", { messages: send_message }
     else
-      render json: {message:[]}, status: :ok
+      render json: { message: [] }, status: :ok
     end
   end
 
-
-
   def blocked_users
-    @conversation_blocked = Conversation.where("(recipient_id = (?) OR  sender_id = (?)) AND is_blocked = (?)", @current_user.id, @current_user.id,true)
+    @conversation_blocked = Conversation.where("(recipient_id = (?) OR  sender_id = (?)) AND is_blocked = (?)", @current_user.id, @current_user.id, true)
     if @conversation_blocked.present?
       @conversation_blocked
     else
-      render json: {message: "No Found"}
+      render json: { message: "No Found" }
     end
   end
 
@@ -102,7 +100,7 @@ class Api::V1::UsersController < Api::V1::ApiController
     if @unblocked_users.present?
       @unblocked_users
     else
-      render json: {message: "No Found"}
+      render json: { message: "No Found" }
     end
   end
 
@@ -111,18 +109,18 @@ class Api::V1::UsersController < Api::V1::ApiController
     if @reported_users.present?
       @reported_users
     else
-      render json: {reported_users: "No Found"}
+      render json: { reported_users: "No Found" }
     end
   end
 
   def view_user_profile
     @user = User.find_by(id: params[:user_id])
-  visitor = Visitor.find_by(user_id: @user.id, visit_id: @current_user.id)
-  if visitor.present?
-    visitor.update(created_at: Time.now)
-  else
-    @user.visitor.build(visit_id: @current_user.id).save
-  end
+    visitor = Visitor.find_by(user_id: @user.id, visit_id: @current_user.id)
+    if visitor.present?
+      visitor.update(created_at: Time.now)
+    else
+      @user.visitor.build(visit_id: @current_user.id).save
+    end
   end
 
   def profile_visitor_list
@@ -130,68 +128,75 @@ class Api::V1::UsersController < Api::V1::ApiController
     if @visitor.present?
       @visitor
     else
-      render json: {visitor: []},status: :ok
+      render json: { visitor: [] }, status: :ok
     end
   end
+
   def update_notification
     if params[:push_notification].present?
       if params[:push_notification] == "false"
-        @current_user.user_setting.update(push_notification: params[:push_notification] )
-        render json: {message: "Push Notification OFF"},status: :ok
-      else 
-        @current_user.user_setting.update(push_notification: params[:push_notification] )
-       render json: {message: "Push Notification ON"},status: :ok
+        @current_user.user_setting.update(push_notification: params[:push_notification])
+        render json: { message: "Push Notification OFF" }, status: :ok
+      else
+        @current_user.user_setting.update(push_notification: params[:push_notification])
+        render json: { message: "Push Notification ON" }, status: :ok
       end
     elsif params[:inapp_notification].present?
       if params[:inapp_notification] == "false"
-         @current_user.user_setting.update(inapp_notification: params[:inapp_notification] )
-        render json: {message: "In App Notification OFF"},status: :ok
-      else 
-        @current_user.user_setting.update(inapp_notification: params[:inapp_notification] )
-       render json: {message: "In App Notification ON"},status: :ok
+        @current_user.user_setting.update(inapp_notification: params[:inapp_notification])
+        render json: { message: "In App Notification OFF" }, status: :ok
+      else
+        @current_user.user_setting.update(inapp_notification: params[:inapp_notification])
+        render json: { message: "In App Notification ON" }, status: :ok
       end
     else
       if params[:email_notification] == "false"
-         @current_user.user_setting.update(email_notification: params[:email_notification] )
-        render json: {message: "In App Notification OFF"},status: :ok
-      else 
-        @current_user.user_setting.update(email_notification: params[:email_notification] )
-       render json: {message: "In App Notification ON"},status: :ok
+        @current_user.user_setting.update(email_notification: params[:email_notification])
+        render json: { message: "In App Notification OFF" }, status: :ok
+      else
+        @current_user.user_setting.update(email_notification: params[:email_notification])
+        render json: { message: "In App Notification ON" }, status: :ok
       end
     end
   end
+
   def get_school_pins
     @school_pins = SchoolPin.all
     if @school_pin.present?
-      render json: {message: @school_pins},status: :ok
+      @school_pins
     else
-      render json: {message: @school_pins},status: :ok
+      @school_pins
     end
   end
 
   def get_school
-    @school_pin = SchoolPin.find_by(id: params[:school_id])
-    if @school_pin.present?
-      render json: {message: @school_pin},status: :ok
+    if params[:school_id].present?
+      @school_pin = SchoolPin.find_by(id: params[:school_id])
+      if @school_pin.present?
+        @school_pin
+      else
+        render json: [], status: :ok
+      end
     else
-      render json: {message: @school_pin},status: :ok
+      render json: { message: "School id parameter is missing" }, status: :ok
     end
   end
-
 
   private
 
   def sup_closer_params
-     params.require(:user).
+    params.require(:user).
       permit(:full_name, :email, :phone_number, :description,
-     :currency_amount, :country_code, :country_name, :avatar,images: [])
+             :currency_amount, :country_code, :country_name, :avatar, images: [])
   end
+
   def user_profession
-     params.require(:user).permit(titles: [])
+    params.require(:user).permit(titles: [])
   end
+
   def user_params
     params.require(:user).
-    permit(:email, :phone_number, :description, :country_code, :country_name,
-    :avatar)
-  end 
+      permit(:email, :phone_number, :description, :country_code, :country_name,
+             :avatar)
+  end
 end

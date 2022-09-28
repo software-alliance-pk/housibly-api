@@ -109,6 +109,7 @@ end
       get '/get_sub_history', to: 'payments#get_sub_history'
       post '/delete_card', to: 'payments#destroy_card'
       post '/register_user', to: 'registrations#update_personal_info'
+      post '/update_social_login', to: 'registrations#update_social_login'
       put '/update_profile', to: 'users#update_profile'
       post '/get_school_pins', to: 'users#get_school_pins'
       post '/get_school', to: 'users#get_school'

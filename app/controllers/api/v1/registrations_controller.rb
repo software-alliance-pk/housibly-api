@@ -30,6 +30,21 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     end
   end
 
+  def update_social_login
+    @current_user.build_schedule(schedule_params) unless @current_user.schedule
+    @current_user.professions.destroy_all if @current_user.professions.present? 
+    if user_profession[:titles].present?
+      user_profession[:titles].each do |user|  
+        @current_user.professions.build(title:user)
+      end
+    end
+    @current_user.schedule.update(schedule_params) if @current_user.schedule
+    @current_user.update(user_params.merge(is_confirmed: true,profile_complete: true))
+    @current_user.user_setting.destroy if @current_user.user_setting.present?
+    @current_user.build_user_setting.save
+    @token = JsonWebTokenService.encode({ email: @current_user.email })
+  end
+
   def verify_otp
     @user = User.find_by(email: user_params[:email],
                          reset_signup_token: params[:otp]) if user_params[:email].present?
@@ -68,6 +83,12 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   end
 
   private
+  def social_login_params
+    params.require(:user).
+      permit(:full_name, :email, :phone_number, :description,
+       :licensed_realtor,:contacted_by_real_estate, :user_type, :profile_type,
+        :otp, :country_code, :currency_type, :currency_amount, :country_name, :address, :avatar, images: [], certificates: [])
+  end
 
   def user_params
     params.require(:user).

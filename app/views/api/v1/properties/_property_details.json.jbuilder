@@ -57,7 +57,7 @@ json.zip_code property.zip_code
 json.longitude property.longitude
 json.latitude property.latitude
 json.weight_age property.weight_age
-json.last_seen "#{time_ago_in_words(property.user.last_seen)} ago"
+json.last_seen time_ago_in_words(property&.user&.last_seen)
 if  property.created_at > 6.weeks.ago
   json.is_new true
 else

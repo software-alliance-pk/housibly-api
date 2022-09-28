@@ -161,11 +161,21 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def get_school_pins
-    @school_pins = SchoolPin.all
-    if @school_pin.present?
-      @school_pins
+    if params[:location_cordinates].present?
+      long = eval(params[:location_cordinates])[0][:longitude]
+      lat =eval(params[:location_cordinates])[0][:latitude]
+      geocoder_address = Geocoder.search([lat,long]).first
+      address = geocoder_address.address
+      city = geocoder_address.city
+      country = geocoder_address.country
+      @school_pins = SchoolPin.where("(city ILIKE ? AND country ILIKE ?) OR (address ILIKE ?)", "%#{city}%", "%#{country}%", "%#{address}%")
+      if @school_pins.present?
+        @school_pins
+      else
+        @school_pins
+      end
     else
-      @school_pins
+      render json: {message: "Please give suitable parameters"}, status: :ok
     end
   end
 

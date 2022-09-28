@@ -76,6 +76,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
   def notification_token
     if params[:token].present?
       token = @current_user.mobile_devices.find_or_create_by(mobile_device_token: params[:token])
+      @current_user.update(last_seen: Time.now)
       if token.save
         render json: { message: 'Success', status: 'ok', token: token }
       end

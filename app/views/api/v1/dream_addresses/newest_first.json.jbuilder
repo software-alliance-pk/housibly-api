@@ -5,4 +5,10 @@ json.user_detail @property do |property|
 	json.weight_age property.weight_age
 	json.min_price property.min_price
 	json.max_price property.max_price
+	json.last_seen "#{time_ago_in_words(property.user.last_seen)} ago"
+	if  property.created_at > 6.weeks.ago
+		json.is_new true
+	else
+		json.is_new false
+	end
 end

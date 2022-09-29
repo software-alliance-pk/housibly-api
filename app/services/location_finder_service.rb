@@ -18,4 +18,23 @@ class LocationFinderService
       return false
     end
   end
+
+
+
+  def self.get_location_attributes_by_reverse(coordinates)
+    location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode(coordinates)
+    if location.present?
+      location_data = {
+        long: location.lng,
+        lat: location.lat,
+        country: location.country,
+        city: location.city,
+        full_address: location.full_address,
+        district: location.district
+      }
+      return location_data
+    else
+      return false
+    end
+  end
 end

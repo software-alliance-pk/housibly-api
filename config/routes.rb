@@ -82,7 +82,7 @@ end
       resources :dream_addresses do
         collection do
           post :fetch_property
-          post 'user_pereference_match'
+          post 'fetch_user'
           get 'fetch_by_zip_code'
           post 'newest_first'
           

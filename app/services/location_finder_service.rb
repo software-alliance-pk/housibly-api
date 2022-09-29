@@ -11,7 +11,8 @@ class LocationFinderService
         country: location.country,
         city: location.city,
         full_address: location.full_address,
-        district: location.district
+        district: location.district,
+        zip_code: location.zip
       }
       return location_data
     else
@@ -30,7 +31,8 @@ class LocationFinderService
         country: location.country,
         city: location.city,
         full_address: location.full_address,
-        district: location.district
+        district: location.district,
+        zip_code: location.zip
       }
       return location_data
     else

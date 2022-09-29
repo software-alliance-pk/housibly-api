@@ -106,6 +106,7 @@ class Property < ApplicationRecord
     location  = LocationFinderService.get_location_attributes(self.address)
     self.longitude = location[:long]
     self.latitude = location[:lat]
+    self.zip_code = location[:zip_code]
     # location[:country]
     # location[:city]
     # location[:district]

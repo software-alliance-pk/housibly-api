@@ -169,7 +169,7 @@ class Api::V1::UsersController < Api::V1::ApiController
       geocoder_address = Geocoder.search([lat,long]).first
       puts geocoder_address
       address = geocoder_address.address
-      puts adderss
+      puts address
       city = geocoder_address.city
       puts city
       country = geocoder_address.country

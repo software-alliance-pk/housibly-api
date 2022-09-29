@@ -163,9 +163,8 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def get_notification_setting
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts @current_user.full_name
-    @settings = @current_user&.user_setting
-    puts @settings
+    @settings = UserSetting.where(user_id: @current_user.id)
+    puts @settings.last
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
   end
 

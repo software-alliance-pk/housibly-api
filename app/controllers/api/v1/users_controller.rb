@@ -185,7 +185,7 @@ class Api::V1::UsersController < Api::V1::ApiController
       if @school_pin.present?
         @school_pin
       else
-        render json: [], status: :ok
+        render json: {message: "School pin is not present against this ID"}, status: :ok
       end
     else
       render json: { message: "School id parameter is missing" }, status: :unprocessable_entity

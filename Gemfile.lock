@@ -323,6 +323,7 @@ DEPENDENCIES
   rails (~> 6.1.6)
   ransack
   redis (~> 4.0)
+  rexml
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
   stripe

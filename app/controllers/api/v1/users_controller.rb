@@ -169,11 +169,13 @@ class Api::V1::UsersController < Api::V1::ApiController
       geocoder_address = Geocoder.search([lat,long]).first
       puts geocoder_address
       address = geocoder_address.address
+      puts adderss
       city = geocoder_address.city
+      puts city
       country = geocoder_address.country
       puts country
       puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<OUT SIDE <<<<<<<<<<<<<<<<<<<<<<"
-      @school_pins = SchoolPin.where("(city ILIKE ? AND country ILIKE ?) OR (address ILIKE ?)", "%#{city}%", "%#{country}%", "%#{address}%")
+      @school_pins = SchoolPin.where("city ILIKE ? AND country ILIKE ?", "%#{city}%", "%#{country}%")
       if @school_pins.present?
         puts "<<<<<<<<<<<<<<<<<<<INSIDE THE METHOD<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

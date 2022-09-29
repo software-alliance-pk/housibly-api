@@ -1,3 +1,4 @@
+puts @settings
 json.id @settings&.id
 json.push_notification @settings&.push_notification
 json.inapp_notification @sttings&.inapp_notification

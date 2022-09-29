@@ -191,14 +191,37 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
           end
           @user_prefernce = @user_prefernce.flatten
           if @user_prefernce.present?
-            @user_prefernce.join(',')
+            @user_prefernce
           else
             render json: {message: "No user available against user preference"}, status: :unprocessable_entity
           end
         else
           render json: {message: "Please give suitable parameter"},status: :unprocessable_entity
         end
-      elsif params[:dream_addresses] == "true"
+      elsif params[:dream_address] == "true"
+        DreamAddress.all.each do |dream_address|
+          lat = dream_address.latitude
+          long = dream_address.longitude
+          geocoder_address = Geocoder.search([lat,long])
+          address = geocoder_address.first.address
+          city = geocoder_address.first.city
+          country = geocoder_address.first.country
+          property = Property.find_by("(city ILIKE ? AND country ILIKE ?) OR (address ILIKE ?)", "%#{city}%", "%#{country}%", "%#{address}%")
+          unless property == nil
+              @properties << property
+            end            
+          end
+          user_prefernce = UserPreference.where(user_id: @properties.pluck(:user_id).uniq)
+          user_prefernce.each do |user_preference|
+            user_prefernce.weight_age = "100"
+            @user_prefernce << user_prefernce
+          end
+          @user_prefernce = @user_prefernce.flatten
+          if @user_prefernce.present?
+            @user_prefernce
+          else
+            render json: {message: "No user available against user preference"}, status: :unprocessable_entity
+          end
       elsif params[:top_match] == "true"
         user_preference_list_having_bed_rooms = UserPreference.ransack(min_bed_rooms_lteq_any: property.bed_rooms).result
         user_preference_list_having_bed_rooms = UserPreference.ransack(max_bed_rooms_gteq_any: property.bed_rooms).result

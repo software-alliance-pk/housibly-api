@@ -175,7 +175,7 @@ class Api::V1::UsersController < Api::V1::ApiController
         @school_pins
       end
     else
-      render json: {message: "Please give suitable parameters"}, status: :ok
+      render json: {message: "Please give suitable parameters"}, status: :unprocessable_entity
     end
   end
 
@@ -188,7 +188,7 @@ class Api::V1::UsersController < Api::V1::ApiController
         render json: [], status: :ok
       end
     else
-      render json: { message: "School id parameter is missing" }, status: :ok
+      render json: { message: "School id parameter is missing" }, status: :unprocessable_entity
     end
   end
 

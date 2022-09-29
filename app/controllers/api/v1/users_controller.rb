@@ -169,19 +169,18 @@ class Api::V1::UsersController < Api::V1::ApiController
       geocoder_address = Geocoder.search([lat,long]).first
       puts geocoder_address
       address = geocoder_address.address
-      puts address
       city = geocoder_address.city
-      puts city
       country = geocoder_address.country
       puts country
+      puts city
       puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<OUT SIDE <<<<<<<<<<<<<<<<<<<<<<"
-      @school_pins = SchoolPin.where("city ILIKE ? AND country ILIKE ?", "%#{city}%", "%#{country}%")
+      @school_pins = SchoolPin.where("(city ILIKE ? AND country ILIKE ?) OR (address ILIKE ?)", "%#{city}%", "%#{country}%", "%#{address}%")
       if @school_pins.present?
         puts "<<<<<<<<<<<<<<<<<<<INSIDE THE METHOD<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         @school_pins
       else
-        @school_pins
+        render json: {message: "No school match with this address"}, status: :ok
       end
     else
       render json: {message: "Please give suitable parameters"}, status: :unprocessable_entity

@@ -124,6 +124,7 @@ end
       get 'profile_visitor_list', to: 'users#profile_visitor_list'
       post 'view_user_profile', to: 'users#view_user_profile'
       post '/update_notification', to: 'users#update_notification'
+      get '/get_notification_setting', to: 'users#get_notification_setting'
       put '/update_card', to: 'payments#update_card'
       put '/default_card', to: 'payments#set_default_card'
       get '/get_card', to: 'payments#get_card'

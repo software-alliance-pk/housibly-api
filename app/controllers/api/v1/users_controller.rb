@@ -160,6 +160,10 @@ class Api::V1::UsersController < Api::V1::ApiController
     end
   end
 
+  def get_notification_setting
+    @settings = @current_user&.user_setting
+  end
+
   def get_school_pins
     if params[:location_cordinates].present?
       long = eval(params[:location_cordinates])[0][:longitude]

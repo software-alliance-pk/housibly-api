@@ -1,4 +1,5 @@
 class Property < ApplicationRecord
+  before_commit :add_the_lnt_and_lng_property
   include PgSearch::Model
   pg_search_scope :search_property_by_total_number_of_rooms,
                   against: :total_number_of_rooms,
@@ -79,8 +80,6 @@ class Property < ApplicationRecord
   
   cattr_accessor :property_type
   cattr_accessor :bookmark_type
-  geocoded_by :address
-  after_validation :geocode, :if => :address_changed?
   has_many_attached :images
   has_many :bookmarks
   # has_many :rooms, dependent: :destroy
@@ -101,4 +100,14 @@ class Property < ApplicationRecord
   scope :count_house, -> { where("type = (?)","House").count }
   scope :count_vacant_land, -> { where("type = (?)","VacantLand").count }
   scope :count_condo, -> { where("type = (?)","Condo").count }
+
+
+  def add_the_lnt_and_lng_property
+    location  = LocationFinderService.get_location_attributes(self.address)
+    self.longitude = location[:long]
+    self.latitude = location[:lat]
+    # location[:country]
+    # location[:city]
+    # location[:district]
+  end
 end

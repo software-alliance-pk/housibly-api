@@ -106,7 +106,10 @@ GEM
       faraday (>= 1.0.0, < 3.0)
       googleauth (~> 1)
     ffi (1.15.5)
-    geocoder (1.8.0)
+    geokit (1.13.1)
+    geokit-rails (2.3.2)
+      geokit (~> 1.5)
+      rails (>= 3.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     googleauth (1.2.0)
@@ -307,7 +310,7 @@ DEPENDENCIES
   devise
   down (~> 5.0)
   fcm
-  geocoder
+  geokit-rails
   jbuilder (~> 2.7)
   jwt
   letter_opener

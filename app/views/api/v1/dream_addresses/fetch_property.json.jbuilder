@@ -60,6 +60,7 @@ json.properties @property do |property|
   json.weight_age property.weight_age
   json.latitude property.latitude
   json.longitude property.longitude
+  json.image property&.images&.attached? ? rails_blob_url(property&.images&.first) : ""
   json.appliances_and_other_items property.appliances_and_other_items
   json.last_seen property&.user&.last_seen.present? ? time_ago_in_words(property&.user&.last_seen) : ""
   if property.created_at > 6.weeks.ago

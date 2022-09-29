@@ -163,6 +163,7 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def get_notification_setting
     @settings = @current_user&.user_setting
+    puts @settings
   end
 
   def get_school_pins

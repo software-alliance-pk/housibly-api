@@ -162,8 +162,10 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def get_notification_setting
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     @settings = @current_user&.user_setting
     puts @settings
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
   end
 
   def get_school_pins

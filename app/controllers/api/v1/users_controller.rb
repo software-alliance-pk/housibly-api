@@ -133,28 +133,29 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def update_notification
+    @settings = @current_user.user_setting
     if params[:push_notification].present?
       if params[:push_notification] == "false"
-        @current_user.user_setting.update(push_notification: false)
+        @settings.update(push_notification: false)
         render json: { message: "Push Notification OFF" }, status: :ok
       else
-        @current_user.user_setting.update(push_notification: true)
+        @settings.update(push_notification: true)
         render json: { message: "Push Notification ON" }, status: :ok
       end
     elsif params[:inapp_notification].present?
       if params[:inapp_notification] == "false"
-        @current_user.user_setting.update(inapp_notification: false)
+        @settings.update(inapp_notification: false)
         render json: { message: "In App Notification OFF" }, status: :ok
       else
-        @current_user.user_setting.update(inapp_notification: true)
+        @settings.update(inapp_notification: true)
         render json: { message: "In App Notification ON" }, status: :ok
       end
     else
       if params[:email_notification] == "false"
-        @current_user.user_setting.update(email_notification: false)
+        @settings.update(email_notification: false)
         render json: { message: "In App Notification OFF" }, status: :ok
       else
-        @current_user.user_setting.update(email_notification: true)
+        @settings.update(email_notification: true)
         render json: { message: "In App Notification ON" }, status: :ok
       end
     end

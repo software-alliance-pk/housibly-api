@@ -133,7 +133,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def update_notification
-    @settings = @current_user.user_setting
+    @settings = UserSetting.find_by(user_id: @current_user.id)
     if params[:push_notification].present?
       if params[:push_notification] == "false"
         @settings.update(push_notification: false)
@@ -163,8 +163,7 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def get_notification_setting
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    @settings = UserSetting.where(user_id: @current_user.id)
-    puts @settings.last
+    @settings = UserSetting.find_by(user_id: @current_user.id)
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
   end
 

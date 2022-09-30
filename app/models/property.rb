@@ -1,5 +1,6 @@
 class Property < ApplicationRecord
-  after_commit :add_the_lnt_and_lng_property, on: [:create,:update]
+  after_save :add_the_lnt_and_lng_property
+  after_update :add_the_lnt_and_lng_property
   include PgSearch::Model
   pg_search_scope :search_property_by_total_number_of_rooms,
                   against: :total_number_of_rooms,

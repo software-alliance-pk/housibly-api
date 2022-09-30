@@ -4,7 +4,8 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
 
   def create
     get_location = UserCurrentLocationService.new.call(request.safe_location)
-    @user = User.new(user_params.merge(address:get_location[:full_address],latitude:get_location[:lat],longitude:get_location[:long]))
+    puts get_location
+    @user = User.new(user_params)
     if @user.save
       signup_otp(@user)
     else

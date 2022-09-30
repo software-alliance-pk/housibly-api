@@ -9,6 +9,7 @@ class User < ApplicationRecord
                   using: {
                     tsearch: { prefix: true }
                   }
+  acts_as_mappable
   has_secure_password
   has_one :subscription,dependent: :destroy
   has_one :user_setting, dependent: :destroy

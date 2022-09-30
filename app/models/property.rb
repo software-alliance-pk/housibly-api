@@ -1,5 +1,5 @@
 class Property < ApplicationRecord
-  after_save :add_the_lnt_and_lng_property, on: [:create]
+  after_save :add_the_lnt_and_lng_property, on: :create
   include PgSearch::Model
   pg_search_scope :search_property_by_total_number_of_rooms,
                   against: :total_number_of_rooms,

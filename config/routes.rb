@@ -161,6 +161,11 @@ end
         post :notification_token
       end
     end
+    resources :user_match_addresses do
+      collection do
+        post 'users_detail'
+      end
+    end
      resources :conversations, only: [:create, :index, :destroy] do
       collection do
         post :notification_token

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_29_154303) do
+ActiveRecord::Schema.define(version: 2022_09_30_135343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,6 +385,12 @@ ActiveRecord::Schema.define(version: 2022_09_29_154303) do
     t.index ["user_id"], name: "index_supports_on_user_id"
   end
 
+  create_table "user_match_addresses", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_preferences", force: :cascade do |t|
     t.string "property_type"
     t.decimal "min_price"
@@ -413,6 +419,15 @@ ActiveRecord::Schema.define(version: 2022_09_29_154303) do
     t.string "lot_size_unit"
     t.string "property_types"
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
+  end
+
+  create_table "user_search_addresses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "user_match_address_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_search_addresses_on_user_id"
+    t.index ["user_match_address_id"], name: "index_user_search_addresses_on_user_match_address_id"
   end
 
   create_table "user_settings", force: :cascade do |t|
@@ -497,6 +512,8 @@ ActiveRecord::Schema.define(version: 2022_09_29_154303) do
   add_foreign_key "support_messages", "support_conversations"
   add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"
+  add_foreign_key "user_search_addresses", "user_match_addresses"
+  add_foreign_key "user_search_addresses", "users"
   add_foreign_key "user_settings", "users"
   add_foreign_key "visitors", "users"
 end

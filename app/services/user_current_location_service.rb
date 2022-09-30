@@ -3,7 +3,7 @@ class UserCurrentLocationService
     res = location
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts " SIGN UP USER"
-    puts res res[:ip]
+    puts res[:ip]
     puts res[:ip]
     puts res[:loc]
     puts res[:postal]

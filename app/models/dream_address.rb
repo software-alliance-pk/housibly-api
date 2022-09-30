@@ -1,5 +1,5 @@
 class DreamAddress < ApplicationRecord
-  before_commit :add_the_lnt_and_lng_property
+  after_commit :add_the_lnt_and_lng_property, on: :create
   include CsvCounter
   belongs_to :user
   def self.to_csv

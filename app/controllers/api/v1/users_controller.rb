@@ -57,7 +57,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def get_support_closers
-    @support_closers = User.want_support_closer.within(10, :units => :kms, :origin => [@current_user.latitude,@current_user.longitude])
+    @support_closers = User.want_support_closer.within(10,  :origin => [@current_user.latitude,@current_user.longitude])
     if @support_closers.present?
       @support_closers
     else

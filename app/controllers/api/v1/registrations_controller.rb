@@ -7,7 +7,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     puts get_location
     @user = User.new(user_params)
     @user.address = get_location[:full_address]
-    @user.longtitude = get_location[:long]
+    @user.longitude = get_location[:long]
     if @user.save
       signup_otp(@user)
     else

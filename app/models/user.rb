@@ -11,6 +11,7 @@ class User < ApplicationRecord
                   }
   acts_as_mappable
   has_secure_password
+  has_many :user_search_addresses
   has_one :subscription,dependent: :destroy
   has_one :user_setting, dependent: :destroy
   has_many :subscription_histories,dependent: :destroy

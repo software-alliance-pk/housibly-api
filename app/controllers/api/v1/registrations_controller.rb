@@ -6,6 +6,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     get_location = UserCurrentLocationService.new.call(request.safe_location)
     puts get_location
     @user = User.new(user_params)
+    @user.address = get_location[:full_address]
     if @user.save
       signup_otp(@user)
     else

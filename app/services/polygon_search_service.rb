@@ -1,4 +1,4 @@
-class PolyonSearchService
+class PolygonSearchService
   def initialize
     @property = []
   end

@@ -3,12 +3,8 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   include CreateOtp
 
   def create
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts UserCurrentLocationService.new.call(request.safe_location)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    @user = User.new(user_params)
+    get_location = UserCurrentLocationService.new.call(request.safe_location)
+    @user = User.new(user_params.merge(address:get_location[:full_address],latitude:get_location[:lat],longitude:get_location[:long]))
     if @user.save
       signup_otp(@user)
     else

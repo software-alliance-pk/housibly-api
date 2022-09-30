@@ -14,7 +14,7 @@ class DreamAddress < ApplicationRecord
 
   def add_the_lnt_and_lng_property
     location  = LocationFinderService.get_location_attributes(self.location)
-    self.update(longitude: location[:long], latitude: location[:late])
+    self.update(longitude: location[:long], latitude: location[:lat])
     # location[:country]
     # location[:city]
     # location[:district]

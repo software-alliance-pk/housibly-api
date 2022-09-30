@@ -22,7 +22,7 @@ class Api::V1::ReviewsController < Api::V1::ApiController
     if @reviews.present?
       @reviews
     else
-      render json: {message: "Support Closer does n't exists"}
+      render json: {message: "Support Closer has not review yet"}
     end
   end
 

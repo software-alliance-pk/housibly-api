@@ -2,13 +2,14 @@ class UserCurrentLocationService
   def call(location)
     res = location
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts res
+    puts " SIGN UP USER"
+    puts res res[:ip]
+    puts res[:ip]
+    puts res[:loc]
+    puts res[:postal]
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    res.address
-    puts res&.ip_address
-    puts res&.city
-    puts res&.country
-    puts res&.full_address
-    puts res&.district
+    cordinates = res[:loc]&.split(",")
+    puts LocationFinderService.get_location_attributes_by_reverse(cordinates)
+
   end
 end

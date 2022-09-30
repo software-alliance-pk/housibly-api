@@ -72,7 +72,7 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
           render json: { message: "Any property does not match" }, status: :unprocessable_entity
         end
       else
-        render json: { message: "Any property does not match" }, status: :unprocessable_entity
+        render json: { message: "Please set your preference first" }, status: :unprocessable_entity
       end
 
     else

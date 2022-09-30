@@ -65,10 +65,10 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def property_filters
     if params[:type].present?
-      if params[:type].in?(%w[house condo vacant_land VacantLand Vacant Land vacant land])
+      if params[:type].in?(%w[house condo vacant_land VacantLand Vacant Land vacant land House])
         @properties = @current_user.properties.where("type = ?", params[:type].titleize.gsub(" ", ""))
       else
-        render json: { message: "Property type not valid" }, status: 422
+        render json: { message: "Property having type #{params[:type]&.titleize} not present"}, status: 422
       end
     else
       render json: { message: "Type not present" }, status: 404

@@ -19,13 +19,12 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def search_support_closer
-    @support_closers = User.want_support_closer.custom_search(params[:search])
-    @support_closers = @support_closers.near("lahore", 70, units: :km)
+    _support_closers = User.want_support_closer.custom_search(params[:search])
+    @support_closers = _support_closers.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
     if @support_closers.present?
       @support_closers
     else
-      render json: { message: "Support Closer not found" },
-             status: :unprocessable_entity
+      render json: { message: "Support Closer not found" }, status: :unprocessable_entity
     end
   end
 
@@ -57,11 +56,9 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def get_support_closers
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<OUTSIDe<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     @support_closers = User.want_support_closer.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
     puts  @support_closers
     if @support_closers.present?
-      puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<INSIDE METHOD<<<<<<<<<<<<<<<<<<<<"
       @support_closers
     else
       @support_closers = User.want_support_closer

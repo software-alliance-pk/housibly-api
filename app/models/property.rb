@@ -6,97 +6,20 @@ class Property < ApplicationRecord
   scope :price_matcher, ->(min_price,max_price){ where("price between (?) and (?)",min_price,max_price)}
   scope :bath_rooms_matcher, ->(min_bath_room,max_bath_room){ where("bath_rooms between (?) and (?)",min_bath_room,max_bath_room)}
   scope :bed_rooms_matcher, ->(min_bed_room,max_bed_room){ where("bed_rooms between (?) and (?)",min_bed_room,max_bed_room)}
-  scope :property_type_matcher,-> (type){ where("type ilike (?)",type.titleize)}
+  scope :property_type_matcher,-> (type){ where("type ilike (?)",type&.titleize)}
   scope :property_parking_spot, -> (min_spot,max_spot){where("total_parking_spaces between (?) and (?)",min_spot,max_spot)}
-  scope :property_balcony, -> (balcony){ where("balcony = (?)",balcony)}
-  scope :property_laundry, -> (laundry){ where("laundry = (?)",laundry)}
-  scope :property_garage, -> (garage){where("garage = (?)",garage)}
+  scope :property_balcony, -> (balcony){ where("balcony = (?)",balcony&.titleize)}
+  scope :property_laundry, -> (laundry){ where("laundry = (?)",laundry&.titleize)}
+  scope :property_garage, -> (garage){where("garage = (?)",garage&.titleize)}
   scope :property_security, -> ( security){where("security = (?)",security)}
-  scope :property_min_lot_frontage, -> (min_lot_frontage){where("min_lot_frontage = (?)",min_lot_frontage)}
+  scope :property_min_lot_frontage, -> (min_lot_frontage){where("lot_frontage = (?)",min_lot_frontage)}
   scope :property_min_lot_size, -> (min_lot_size,max_lot_size){where("lot_size = (?) or lot_size = (?)",min_lot_size,max_lot_size)}
   scope :property_total_number_of_rooms, -> (min_rooms,max_rooms){ where("total_number_of_rooms between (?) and (?)",min_rooms,max_rooms)}
   scope :property_style_matcher, -> (style){ where("condo_style = (?) or house_style = (?)",style,style)}
-  scope :property_type, -> (type){ where("condo_type = (?) or house_type = (?)",type,type)}
+  scope :property_type_matcher_2, -> (type){ where("condo_type = (?) or house_type = (?)",type,type)}
   scope :property_living_space, -> (min_living,max_living){where("living_space between (?) and (?)",min_living,max_living)}
-  scope :property_age, ->  (age){where("year_built <= (?) and >=(?)",age,Date.today.strftime("%y").to_i)}
+  scope :property_age, ->  (age){where("year_built between (?) and (?)",age,Date.today.strftime("%y").to_i)}
 
-  pg_search_scope :search_property_by_total_number_of_rooms,
-                  against: :total_number_of_rooms,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_total_parking_spaces,
-                  against: :total_parking_spaces,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_bed_rooms,
-                  against: :bed_rooms,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_title,
-                  against: :title,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_house_style,
-                  against: :house_style,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_house_type,
-                  against: :house_type,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-
-  pg_search_scope :search_property_by_condo_type,
-                  against: :condo_type,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_condo_style,
-                  against: :condo_style,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_garage_spaces,
-                  against: :garage_spaces,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-  pg_search_scope :search_property_by_lot_depth_unit,
-                  against: :lot_depth_unit,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-
-  pg_search_scope :search_property_by_lot_frontage_unit,
-                  against: :lot_frontage_unit,
-                  using: {
-                    tsearch: {any_word: true},
-                    dmetaphone: {any_word: true, sort_only: true}
-                  }
-  
   cattr_accessor :property_type
   cattr_accessor :bookmark_type
   has_many_attached :images

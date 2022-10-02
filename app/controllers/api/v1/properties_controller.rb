@@ -77,38 +77,16 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
 
   def matching_property
-    @properties = []
     _weight_age = 0
     if @current_user.user_preference.present?
-      property_list_having_bed_rooms = (Property.ransack(min_bed_rooms_lteq_any: @current_user.user_preference.min_bedrooms).result || Property.ransack(max_bed_rooms_gteq_any: @current_user.user_preference.max_bathrooms).result)&.uniq
-      _value = calculate_weightage(_weight_age,property_list_having_bed_rooms,14)
-      _weight_age = _value if _value.present?
-      property_list_having_style = Property.search_property_by_house_style(@current_user.user_preference.property_style) ||
-        Property.search_property_by_condo_style(@current_user.user_preference.property_style)
-      _value = calculate_weightage(_weight_age,property_list_having_style,14)
-      _weight_age = _value if _value.present?
-      property_list_having_type = Property.search_property_by_house_type(@current_user.user_preference.property_type) ||
-        Property.search_property_by_condo_type(@current_user.user_preference.property_type)
-      _value = calculate_weightage(_weight_age,property_list_having_type,14)
-      _weight_age = _value if _value.present?
-      _weight_age = _value if _value.present?
-      property_list_having_price = (Property.ransack(price_lteq_any: @current_user.user_preference.min_price).result  || Property.ransack(price_gteq_any: @current_user.user_preference.max_price).result).uniq
-      _value = calculate_weightage(_weight_age,property_list_having_price,14)
-      _weight_age = _value if _value.present?
-      property_list_having_frontage_unit = Property.search_property_by_lot_frontage_unit(@current_user.user_preference.min_lot_frontage)
-      _value = calculate_weightage(_weight_age,property_list_having_frontage_unit,14)
-      _weight_age = _value if _value.present?
-      @property_list = (property_list_having_bed_rooms+
-        property_list_having_style+ property_list_having_price+
-        property_list_having_frontage_unit+
-        property_list_having_type)&.uniq
-      @property_list.each do |record|
-        record.weight_age = _weight_age
-        @properties << record
+      @properties = UserPreferencesService.search_property(@current_user)
+      if @properties.present?
+        @properties&.sort_by{|e| e[:created_at]}
+      else
+        render json: { message: "Any property does not match" }, status: :unprocessable_entity
       end
-      @properties&.sort_by{|e| e[:created_at]}
     else
-      @properties
+      render json: [],status: :not_found
     end
   end
 

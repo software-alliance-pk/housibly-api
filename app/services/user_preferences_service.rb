@@ -9,7 +9,7 @@ class UserPreferencesService
     _weight_age = 0
     user_preference =  user.user_preference
 
-    property_type_records = Property.property_type_matcher(user_preference.property_type)
+    property_type_records = Property.property_type_matcher(user_preference.property_types)
     _value = calculate_weightage(_weight_age, property_type_records, 9)
     _weight_age = _value if _value.present?
 
@@ -67,7 +67,7 @@ class UserPreferencesService
       _value = calculate_weightage(_weight_age,age_records,7)
       _weight_age = _value if _value.present?
 
-      type_records = Property.property_type(user_preference.type)
+      type_records = Property.property_type_matcher_2(user_preference.type)
       _value = calculate_weightage(_weight_age,type_records,7)
       _weight_age = _value if _value.present?
 
@@ -78,8 +78,8 @@ class UserPreferencesService
         record.weight_age = _weight_age
         @property << record
       end
-      return @property
     end
+    return @property
   end
 
   def calculate_weightage(_weight_age, matching_item, number)

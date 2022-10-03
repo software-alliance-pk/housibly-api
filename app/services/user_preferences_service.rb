@@ -49,9 +49,9 @@ class UserPreferencesService
     _weight_age = _value if _value.present?
 
 
-    living_space_records = Property.property_living_space(user_preference.min_living_space,user_preference.max_living_space)
-    _value = calculate_weightage(_weight_age,living_space_records,7)
-    _weight_age = _value if _value.present?
+    # living_space_records = Property.property_living_space(user_preference.min_living_space,user_preference.max_living_space)
+    # _value = calculate_weightage(_weight_age,living_space_records,7)
+    # _weight_age = _value if _value.present?
 
 
     style_records = Property.property_style_matcher(user_preference.property_style)
@@ -70,9 +70,10 @@ class UserPreferencesService
     _value = calculate_weightage(_weight_age,type_records,7)
     _weight_age = _value if _value.present?
 
+    #living_space_records
     @property_list = (property_type_records  + price_records + bed_rooms_records + type_records +
       parking_spot_records + garbage_spot_records + security_records + min_lot_frontage_records +
-      min_lot_size_records + living_space_records + style_records + number_records + age_records )&.uniq
+      min_lot_size_records + style_records + number_records + age_records )&.uniq
     @property_list.each do |record|
       record.weight_age = _weight_age
       @property << record

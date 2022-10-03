@@ -66,7 +66,7 @@ class UserPreferencesService
     _value = calculate_weightage(_weight_age,age_records,7)
     _weight_age = _value if _value.present?
 
-    type_records = Property.property_type_matcher_2(user_preference.type)
+    type_records = Property.property_type_matcher_2(user_preference.property_type)
     _value = calculate_weightage(_weight_age,type_records,7)
     _weight_age = _value if _value.present?
 

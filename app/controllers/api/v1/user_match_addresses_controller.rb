@@ -6,7 +6,7 @@ class Api::V1::UserMatchAddressesController < Api::V1::ApiController
 			if address.save
 				user = @current_user.user_search_addresses.build(user_match_address_id: address.id)
 				if user.save
-					render json: {users_detail: }, status: :ok
+					render json: {users_detail: [] }, status: :ok
 				else
 					render_error_messages(user)
 				end

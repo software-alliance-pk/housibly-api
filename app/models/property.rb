@@ -17,7 +17,7 @@ class Property < ApplicationRecord
   scope :property_total_number_of_rooms, -> (min_rooms,max_rooms){ where("total_number_of_rooms between (?) and (?)",min_rooms,max_rooms)}
   scope :property_style_matcher, -> (style){ where("condo_style = (?) or house_style = (?)",style,style)}
   scope :property_type_matcher_2, -> (type){ where("condo_type = (?) or house_type = (?)",type,type)}
-  scope :property_living_space, -> (min_living,max_living){where("living_space = (?) or living_space (?)",min_living,max_living)}
+  #scope :property_living_space, -> (min_living,max_living){where("living_space = (?) or living_space (?)",min_living.to_s,max_living.to_s)}
   scope :property_age, ->  (age){where("year_built between (?) and (?)",age,Date.today.strftime("%y").to_i)}
 
   cattr_accessor :property_type

@@ -67,7 +67,7 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
         #   record.weight_age = _weight_age
         #   @property << record
         # end
-        @property = UserPreferencesService.search_property(@current_user)
+        @property = UserPreferencesService.new.search_property(@current_user)
         if @property.present?
           @property
         else

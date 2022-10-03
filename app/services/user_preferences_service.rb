@@ -58,7 +58,7 @@ class UserPreferencesService
     _value = calculate_weightage(_weight_age,style_records,7)
     _weight_age = _value if _value.present?
 
-    number_records = Property.property_total_number_of_rooms(user_preference.max_living_space)
+    number_records = Property.property_total_number_of_rooms(user_preference.min_living_space,user_preference.max_living_space)
     _value = calculate_weightage(_weight_age,number_records ,7)
     _weight_age = _value if _value.present?
 

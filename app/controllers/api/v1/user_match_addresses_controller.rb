@@ -15,8 +15,8 @@ class Api::V1::UserMatchAddressesController < Api::V1::ApiController
 			end
 		else
 			user = @current_user.user_search_addresses.build(user_match_address_id: address.id).save
-			@users = UserSearchAddress.where(user_match_address_id:address.id).where.not(user_id:@current_user.id)
-			@users
+			@users = UserSearchAddress.where(user_match_address_id:address.id).where.not(user_id:@current_user.id).pluck(:user_id).uniq
+            @users = User.all.where(id: @users)
 		end
 	end
 
@@ -24,7 +24,7 @@ class Api::V1::UserMatchAddressesController < Api::V1::ApiController
 		address = UserMatchAddress.find_by("address ILIKE ?", "%#{params[:address]}%")
 		if address.present?
 		  @users = UserSearchAddress.where(user_match_address_id:address.id)
-		  @users
+		  @users = User.all.where(id: @users)
 	  else
 		  render json: {message: "No Found"},status: :ok
 	  end

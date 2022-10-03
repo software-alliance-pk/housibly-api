@@ -1,11 +1,11 @@
 class UserPreferencesService
 
   def initialize
-    _weight_age = 0
     @property = []
   end
 
   def search_property(user)
+    _weight_age = 0
     user_preference =  user.user_preference
 
     property_type_records = Property.property_type_matcher(user_preference.property_types)

@@ -216,7 +216,7 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
         end
       end
     else
-      render json: { message: "No Property available" }
+      render json: { message: [] }
     end
   end
 

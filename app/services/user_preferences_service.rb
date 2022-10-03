@@ -6,7 +6,6 @@ class UserPreferencesService
   end
 
   def search_property(user)
-    _weight_age = 0
     user_preference =  user.user_preference
 
     property_type_records = Property.property_type_matcher(user_preference.property_types)
@@ -82,6 +81,13 @@ class UserPreferencesService
   end
 
   def calculate_weightage(_weight_age, matching_item, number)
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    puts "              INSIDE WEIGHT METHOD    "
+    puts matching_item
+    puts number
+    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     _weight_age =   matching_item.present? ? _weight_age + number : 0
+
+    puts _weight_age
   end
 end

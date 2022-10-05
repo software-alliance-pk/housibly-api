@@ -3,3 +3,15 @@
 #sign_in .flex_blk form .icon_blk + div input {
     padding-left: 4rem;
 }
+
+#subAdmins .sub_admin_form .form_blk {
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+}
+
+#subAdmins .sub_admin_form .form_blk input,
+#subAdmins .sub_admin_form .form_blk .input {
+    width: 100%;
+    margin-top: 1rem;
+}

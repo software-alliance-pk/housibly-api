@@ -173,7 +173,7 @@
                           <%= show_sub_admin_message(flash.alert,"Date of birth") %>
                           </span>
                         <% end %>
-                         <%= form.text_field :date_of_birth, class: "input" %>
+                         <%= form.text_field :date_of_birth, class: "input datepicker",autocomplete: 'none'%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Location</label>

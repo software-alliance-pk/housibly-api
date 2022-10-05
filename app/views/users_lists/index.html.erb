@@ -159,7 +159,7 @@
                           <%= show_sub_admin_message(flash.alert,"Profile Type") %>
                           </span>
                         <% end %>
-                        <%= form.select :profile_type, ["want_sell","want_buy"], class: 'input'%>
+                        <%= form.select :profile_type, ["want_sell","want_buy"],{:include_blank => "Select from the option"}, {class: "input"}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Contected By Real State</label>
@@ -168,7 +168,7 @@
                           <%= show_sub_admin_message(flash.alert,"Contected By Real Estate") %>
                           </span>
                         <% end %>
-                        <%= form.select :contacted_by_real_estate, ["Yes","No"], class: 'input'%>
+                        <%= form.select :contacted_by_real_estate, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input"}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Licensed Realtor</label>
@@ -177,7 +177,7 @@
                           <%= show_sub_admin_message(flash.alert,"Licensed Realtor") %>
                           </span>
                         <% end %>
-                        <%= form.select :licensed_realtor, ["Yes","No"], class: 'input'%>
+                        <%= form.select :licensed_realtor, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input"}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">User Type</label>
@@ -186,7 +186,7 @@
                           <%= show_sub_admin_message(flash.alert,"User Type") %>
                           </span>
                         <% end %>
-                        <%= form.select :user_type, User.user_types.keys, class: "input" %>
+                        <%= form.select :user_type, User.user_types.keys,{:include_blank => "Select from the option"}, {class: "input"} %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Address</label>

@@ -48,7 +48,7 @@
       </div>
       <div class="tab-pane fade" id="BuyingPreference">
         <h3>User’s Buying Preference</h3>
-        <div class="dropdown">
+        <div class="dropdown profile_dropdown">
           <button class="site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
           <ul class="dropdown-menu">
             <li><button type="button">House</button></li>
@@ -56,6 +56,15 @@
             <li><button type="button">Vacant Land</button></li>
           </ul>
         </div>
+        <script>
+          $(function(){
+              $(document).on("click", ".profile_dropdown > ul > li > button", function(){
+                  let text = $(this).text();
+                  console.log(text)
+                  $(this).parents(".profile_dropdown").find(".site_btn").html(text);
+              })
+          })
+        </script>
         <table class="list_table w-100">
           <tbody>
           <tr>

@@ -8,8 +8,9 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import "./jquery.min"
 import "./bootstrap.bundle.min"
-import "./datepicker.min"
+import "./k_datepicker.min"
 import "./main"
 
 
@@ -18,6 +19,24 @@ Turbolinks.start()
 ActiveStorage.start()
 
 $(document).on('turbolinks:load', function() {
+
+    $(".datepicker").datepicker({
+        // multidate: true,
+        format: "mm-dd-yyyy",
+        // todayHighlight: true,
+        // multidateSeparator: ",  ",
+    });
+
+    $("#reset_password_button").click(function(){
+        if ($("#error_explanation > ul > li").length >0)
+        {
+
+        }
+        else
+        {
+            $(".customblk_id").removeClass("d-none");
+        }
+    });
     $("#selectedallcheckboxes").click(function (){
         this.checked ? selects() : deSelect()
     });

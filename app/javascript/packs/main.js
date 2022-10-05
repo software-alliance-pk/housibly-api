@@ -97,10 +97,4 @@ $(window).on("load", function () {
 	*/
 
 	/*_____ Datepicker _____*/
-	$(".datepicker").datepicker({
-		// multidate: true,
-		format: "mm-dd-yyyy",
-		// todayHighlight: true,
-		// multidateSeparator: ",  ",
-	});
 });

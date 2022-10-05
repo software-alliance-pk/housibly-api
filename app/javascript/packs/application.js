@@ -27,6 +27,16 @@ $(document).on('turbolinks:load', function() {
         // multidateSeparator: ",  ",
     });
 
+    $("#reset_password_button").click(function(){
+        if ($("#error_explanation > ul > li").length >0)
+        {
+
+        }
+        else
+        {
+            $(".customblk_id").removeClass("d-none");
+        }
+    });
     $("#selectedallcheckboxes").click(function (){
         this.checked ? selects() : deSelect()
     });

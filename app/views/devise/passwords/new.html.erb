@@ -1,6 +1,6 @@
 <main>
   <section id="forgot_pass" style="background-image: url('/assets/loginbg.jpg');">
-    <div class="contain">
+    <div class="contain reset">
       <div class="flex_blk align-items-center">
         <div>
           <div class="logo_blk">
@@ -9,17 +9,28 @@
           <h2>Forgot Password?</h2>
           <p>Enter your detail below</p>
           <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
             <label for="">Email Address</label>
             <div class="form_blk">
               <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Type here', class: 'input' %>
             </div>
 
             <div class="btn_blk">
-              <button type="submit" class="site_btn">Reset Password</button>
+              <button type="submit" class="site_btn" id="reset_password_button">Reset Password</button>
             </div>
           <% end %>
         </div>
       </div>
     </div>
+    <% unless resource.errors.any?%>
+      <div class="notify_blk d-none customblk_id">
+        <div class="text">
+          <div class="img_blk">
+            <%= image_tag "emailIcon.svg" %>
+          </div>
+          <p>Your reset password link has been sent to your email.</p>
+        </div>
+      </div>
+    <%end%>
   </section>
 </main>

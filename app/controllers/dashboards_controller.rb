@@ -9,5 +9,8 @@ class DashboardsController < ApplicationController
       format.csv { send_data@new_users? @new_users.to_csv : "No Data" }
     end
   end
-  
+
+  def notification_page
+
+  end
 end

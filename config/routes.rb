@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 end
   resources :dashboards do
     post :index
+    collection do
+      get :notification_page
+    end
   end
   resources :support_closers do
     member do

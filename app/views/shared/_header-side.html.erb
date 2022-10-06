@@ -1,14 +1,12 @@
 <div class="header_side">
-    <div class="form_blk">
-         <%= image_tag 'icon-search.svg' %>
-        <input type="text" name="" id="" class="input" placeholder="Search">
-    </div>
-    <button type="button" class="noti_btn input">
-      <%= image_tag 'icon-bell.svg' %>
-        <span>7</span>
-
-
-    </button>
-    <%= button_to "Logout", destroy_admin_session_path, method: :delete,  class:"noti_btn input fw-bold px-5" 
-         %></button>
+  <div class="form_blk">
+    <%= image_tag 'icon-search.svg' %>
+    <input type="text" name="" id="" class="input" placeholder="Search">
+  </div>
+  <%= link_to notification_page_dashboards_path, class: 'noti_btn input' do %>
+    <%= image_tag 'icon-bell.svg' %>
+    <span>7</span>
+  <% end %>
+  <%= button_to "Logout", destroy_admin_session_path, method: :delete, class: "noti_btn input fw-bold px-5" %>
+  </button>
 </div>

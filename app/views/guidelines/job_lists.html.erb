@@ -42,7 +42,7 @@
                   <h4 class="heading">Add Job List</h4>
                   <h5>Up to 30 characters</h5>
                   <hr class="hr">
-                  <%= form.text_area :title, class: "input",placeholder: 'Input Here' %>
+                  <%= form.text_area :title, class: "input",placeholder: 'Input Here',id:'myTextfield' %>
                   <div class="btn_blk modal_btn">
                     <button type="button" class="cancel">cancel</button>
                     <button  type="submit" class="save site_btn">Save</button>
@@ -57,3 +57,15 @@
     </section>
   </div>
 </section>
+ <script>
+
+$(document).ready(function() {
+    var elem = $("#myTextfield");
+    if (elem) {
+        elem.keydown(function() {
+            if (elem.val().length > 10)
+                elem.val(elem.val().substr(0, 30));
+        });
+    }            
+});
+</script>

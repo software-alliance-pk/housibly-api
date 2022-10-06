@@ -39,7 +39,7 @@ class GuidelinesController < ApplicationController
     @job_list = JobList.find_by(id: params[:id])
     if @job_list.present?
       if @job_list.destroy
-        render json: {message: "successfully deleted"},status: :ok
+        redirect_to job_lists_guidelines_path
       end
     end
   end

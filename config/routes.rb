@@ -58,6 +58,7 @@ end
       post :sell_condo
       get :user_info
       get :dream_address
+      get :property_profile
     end
   end
   resources :users_lists do

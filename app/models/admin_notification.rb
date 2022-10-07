@@ -5,4 +5,5 @@ class AdminNotification < Notification
 	def push_notification
     NotificationService.fcm_push_notification_for_complete_profile(recipient,actor,self.type,self,self.action) 
   end
+scope :user_create, -> { where('action = (?) and read_at  IS NULL','New User Created') }
 end

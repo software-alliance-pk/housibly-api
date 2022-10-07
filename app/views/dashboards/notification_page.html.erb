@@ -6,7 +6,24 @@
         <h1>Notifications</h1>
       </div>
       <ul class="list">
+        <%AdminNotification.user_create.each do |nft| %>
         <li>
+          <div class="notif_blk">
+            <div class="detail_blk">
+              <div class="img">
+                <img src="assets/images/icon-notifi.svg" alt="">
+              </div>
+              <div class="text">
+                <h6 class="mb-0">New NFT Listed</h6>
+                <p><%= nft.action%></p> 
+                  <h6><%= link_to 'See Notification', dashboards_path(id: nft.id) %></h6>
+              </div>
+            </div>
+            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
+          </div>
+        </li>
+        <%end%>
+       <!--  <li>
           <div class="notif_blk">
             <div class="detail_blk">
               <div class="img">
@@ -243,21 +260,7 @@
             </div>
             <p class="time">2 days ago</p>
           </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
+        </li> -->
       </ul>
     </div>
   </section>

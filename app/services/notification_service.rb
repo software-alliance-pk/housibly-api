@@ -1,6 +1,7 @@
 class NotificationService
     require 'fcm'
     def self.fcm_push_notification_for_chat_messages(recipient,actor,type,user_notification,action,title)
+        puts "<<<<<<<<<<<<<PUSH NOTIFICATIONS<<<<<<<<<<<<<<<<"
         data = {action: user_notification.action,title: user_notification.title,type: user_notification.type, event_const: type ,recipient: recipient, sender:actor, avatar: actor&.avatar&.url, conversation_id: user_notification.conversation_id}
         fcm_client = FCM.new('AAAAyBDcdag:APA91bFtIo0jPppavG5gExCfcRJMsMvnzJTENiBscXdM6P86rOsrVgF1kH-rI9gSYkpcShtvpukhZlR8G9aK9pC7cTw8C0L_dFEMT4thE_KK0g7rPlz7JUCDO1AU3mF2778JnShuUMzs') # set your FCM_SERVER_KEY
 

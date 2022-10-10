@@ -18,6 +18,7 @@ class UsersDataController < ApplicationController
   end
 
   def property_profile
+    @property = Property.find_by(id: params[:id])
 
   end
 

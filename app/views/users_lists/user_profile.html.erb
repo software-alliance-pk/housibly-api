@@ -133,44 +133,86 @@
       <div class="tab-pane fade" id="SellingLists">
         <h3>User’s Selling Lists</h3>
         <div class="dropdown mb-4">
-          <button class="site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
+          <button class="profile_dropdown site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
           <ul class="dropdown-menu">
-            <li><button type="button">House</button></li>
-            <li><button type="button">Condo</button></li>
-            <li><button type="button">Vacant Land</button></li>
+            <li><a href="#SellingLists">House</a>
+            <li value="2"><a href="#SellingLists1">Condo</a></li>
+            <li><a href="#SellingLists2" >Vacant Land</a></li>
           </ul>
         </div>
-        <ul class="home_map_blk fs_5">
+
+        <ul class="home_map_blk fs_5", id= 'hosue'>
+          <% Property.vacant_land.each do |property| %>
           <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
+            <div class="ico fill"> <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
             <div class="txt">
-              <h5>White Modern House</h5>
-              <p class="fs_6">New York, US</p>
+              <%= link_to property_profile_users_data_path(id: property) do %>
+              <h5><%= property.title%></h5>
+              <%end%>
+              <p class="fs_6"><%= property&.city%> <%= property&.country%> </p>
             </div>
+
           </li>
-          <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
-            <div class="txt">
-              <h5>White Big House</h5>
-              <p class="fs_6">New York, US</p>
-            </div>
-          </li>
-          <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
-            <div class="txt">
-              <h5>White Suburban House</h5>
-              <p class="fs_6">New York, US</p>
-            </div>
-          </li>
-          <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
-            <div class="txt">
-              <h5>White Modern House 2.0</h5>
-              <p class="fs_6">New York, US</p>
-            </div>
-          </li>
+          <%end%>
         </ul>
       </div>
+
+
+      <div class="tab-pane fade" id="SellingLists1">
+        <h3>User’s Selling Lists</h3>
+        <div class="dropdown mb-4">
+          <button class="profile_dropdown site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
+          <ul class="dropdown-menu">
+            <li><a href="#SellingLists">House</a>
+            <li value="2"><a href="#SellingLists1">Condo</a></li>
+            <li><a href="#SellingLists2" >Vacant Land</a></li>
+          </ul>
+        </div>
+
+        <ul class="home_map_blk fs_5", id= 'hosue'>
+          <% Property.condo.each do |property| %>
+          <li>
+            <div class="ico fill"> <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
+            <div class="txt">
+              <%= link_to property_profile_users_data_path(id: property) do %>
+              <h5><%= property.title%></h5>
+              <%end%>
+              <p class="fs_6"><%= property&.city%> <%= property&.country%> </p>
+            </div>
+
+          </li>
+          <%end%>
+        </ul>
+      </div>
+
+      <div class="tab-pane fade" id="SellingLists2">
+        <h3>User’s Selling Lists</h3>
+        <div class="dropdown mb-4">
+          <button class="profile_dropdown site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
+         <ul class="dropdown-menu">
+            <li><a href="#SellingLists">House</a>
+            <li value="2"><a href="#SellingLists1">Condo</a></li>
+            <li><a href="#SellingLists2" >Vacant Land</a></li>
+          </ul>
+        </div>
+
+        <ul class="home_map_blk fs_5", id= 'hosue'>
+          <% Property.vacant_land.each do |property| %>
+          <li>
+            <div class="ico fill"> <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
+            <div class="txt">
+              <%= link_to property_profile_users_data_path(id: property) do %>
+              <h5><%= property.title%></h5>
+              <%end%>
+              <p class="fs_6"><%= property&.city%> <%= property&.country%> </p>
+            </div>
+
+          </li>
+          <%end%>
+        </ul>
+      </div>
+
+
     </div>
   </div>
 </section>

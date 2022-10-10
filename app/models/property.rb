@@ -42,6 +42,10 @@ class Property < ApplicationRecord
   scope :count_house, -> { where("type = (?)","House").count }
   scope :count_vacant_land, -> { where("type = (?)","VacantLand").count }
   scope :count_condo, -> { where("type = (?)","Condo").count }
+  scope :house, -> { where("type = (?)","House") }
+  scope :vacant_land, -> { where("type = (?)","VacantLand") }
+  scope :condo, -> { where("type = (?)","condo") }
+
 
 
   def add_the_lnt_and_lng_property

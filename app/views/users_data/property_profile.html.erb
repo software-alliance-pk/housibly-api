@@ -12,7 +12,13 @@
         <div class="left_arrow">
           <img src="./assets/images/TopLeftArrow.svg" alt="">
         </div>
-        <h1 class="page_title">House Details</h1>
+        <% if @property.title == "house"%>
+          <h1 class="page_title">House Details</h1>
+        <%elsif @property.title == "condo" %>
+          <h1 class="page_title">Condo Details</h1>
+        <%else%>
+          <h1 class="page_title">Vacant Land Details</h1>
+        <%end%>
       </header>
       <div class="row house_imgs">
         <div class="col-4">
@@ -119,8 +125,8 @@
       <div class="house_detail_container">
         <div class="row">
           <div class="col-5">
-            <h3 class="house_name">White Modern House</h3>
-            <h5 class="sub_title">New York, US</h5>
+            <h3 class="house_name"><%= @property.title%></h3>
+            <h5 class="sub_title"><%= @property.city%>, <%= @property.country%></h5>
           </div>
           <div class="col-3">
             <div class="tag">
@@ -131,7 +137,7 @@
               </div>
               <div class="tag_detail">
                 <h5 class="tag_sub_title">Price</h5>
-                <h4 class="tag_title">$25,000</h4>
+                <h4 class="tag_title"><%= @property.price%></h4>
               </div>
             </div>
           </div>
@@ -161,35 +167,35 @@
       <ul class="house_detail_list">
         <li class="detail_item">
           <div class="left_item">Street Address</div>
-          <div class="right_item">4517 New York Ave. Manchester, Kentucky</div>
+          <div class="right_item"><%= @property.address%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">Unit</div>
-          <div class="right_item">23</div>
+          <div class="right_item"><%= @property.unit%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">Lot Frontage (sqm)</div>
-          <div class="right_item">30</div>
+          <div class="right_item"><%= @property.lot_frontage_unit%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">Lot Depth (sqm)</div>
-          <div class="right_item">100</div>
+          <div class="right_item"><%= @property.lot_depth_unit %></div>
         </li>
         <li class="detail_item">
           <div class="left_item">Lot Size (feet)</div>
-          <div class="right_item">23</div>
+          <div class="right_item"><%= @property.lot_size %></div>
         </li>
         <li class="detail_item">
           <div class="left_item">Is This Lot Irregular?</div>
           <div class="right_item">No</div>
         </li>
         <li class="detail_item">
-          <div class="left_item">Property Toxes</div>
-          <div class="right_item">2122</div>
+          <div class="left_item">Property Taxes</div>
+          <div class="right_item"><%= @property.property_tax%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">Tax Year</div>
-          <div class="right_item">2019</div>
+          <div class="right_item"><%= @property.tax_year%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -198,7 +204,7 @@
             </div>
             <div>Bath Rooms</div>
           </div>
-          <div class="right_item">4</div>
+          <div class="right_item"><%= @property.bath_rooms%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -207,7 +213,7 @@
             </div>
             <div>Bed Rooms</div>
           </div>
-          <div class="right_item">5</div>
+          <div class="right_item"><%= @property.bed_rooms %></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -216,7 +222,7 @@
             </div>
             <div>Living Space</div>
           </div>
-          <div class="right_item">6</div>
+          <div class="right_item"><%= @property.living_space%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -225,7 +231,7 @@
             </div>
             <div>Parking Spaces</div>
           </div>
-          <div class="right_item">16</div>
+          <div class="right_item"><%= @property.total_parking_spaces%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -234,7 +240,7 @@
             </div>
             <div>Garage Spaces</div>
           </div>
-          <div class="right_item">2</div>
+          <div class="right_item"><%= @property.garage_spaces%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -243,7 +249,7 @@
             </div>
             <div>Garage</div>
           </div>
-          <div class="right_item">Built-in</div>
+          <div class="right_item"><%= @property.garage %></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -252,7 +258,7 @@
             </div>
             <div>Driveway</div>
           </div>
-          <div class="right_item">Private</div>
+          <div class="right_item"><%= @property.driveway %></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -261,7 +267,7 @@
             </div>
             <div>House Type</div>
           </div>
-          <div class="right_item">Multi-Family</div>
+          <div class="right_item"><%= @property.type%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -270,7 +276,14 @@
             </div>
             <div>House Style</div>
           </div>
-          <div class="right_item">2 Storey</div>
+         
+          <div class="right_item"> <% if @property.title == "house"%>
+          <%= @property.house_style %>
+        <%elsif @property.title == "condo" %>
+          <%= @property.condo_style %>
+        <%else%>
+          <h1 class="page_title">Vacant Land </h1>
+        <%end%></div>
         </li>
 
         <li class="detail_item">
@@ -280,7 +293,7 @@
             </div>
             <div>Exterior</div>
           </div>
-          <div class="right_item">Concrete</div>
+          <div class="right_item"><%= @property.exterior%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -289,7 +302,7 @@
             </div>
             <div>Water</div>
           </div>
-          <div class="right_item">Municipal</div>
+          <div class="right_item"><%= @property.water%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -298,7 +311,7 @@
             </div>
             <div>Sewer</div>
           </div>
-          <div class="right_item">Septic</div>
+          <div class="right_item"><%= @property.sewer%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -307,7 +320,7 @@
             </div>
             <div>Heat Source</div>
           </div>
-          <div class="right_item">Ground Source</div>
+          <div class="right_item"><%= @property.heat_source%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -316,7 +329,7 @@
             </div>
             <div>Heat Type</div>
           </div>
-          <div class="right_item">Baseboard</div>
+          <div class="right_item"><%= @property.heat_type%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -325,7 +338,7 @@
             </div>
             <div>Air Conditioner</div>
           </div>
-          <div class="right_item">Wall Unit</div>
+          <div class="right_item"><%= @property.air_conditioner%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -334,7 +347,7 @@
             </div>
             <div>Laundry</div>
           </div>
-          <div class="right_item">Has Laundry</div>
+          <div class="right_item"><%= @property.laundry %></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -343,7 +356,7 @@
             </div>
             <div>Fireplace</div>
           </div>
-          <div class="right_item">Wood</div>
+          <div class="right_item"><%= @property.fireplace%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -352,7 +365,7 @@
             </div>
             <div>Central Vacuim</div>
           </div>
-          <div class="right_item">Yes</div>
+          <div class="right_item"><%= @property.central_vacuum%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -361,7 +374,7 @@
             </div>
             <div>Basement</div>
           </div>
-          <div class="right_item">None</div>
+          <div class="right_item"><%= @property.basement%></div>
         </li>
         <li class="detail_item">
           <div class="left_item">
@@ -370,20 +383,17 @@
             </div>
             <div>Pool</div>
           </div>
-          <div class="right_item">Outdoor</div>
+          <div class="right_item"><%= @property.pool%></div>
         </li>
       </ul>
       <div class="house_detail_container">
         <h6 class="title">Property Description</h6>
-        <p class="house_discptn">Luxurious and upgraded, this 4 bedroom, 4.5 bathroom home of 5,281 sq. ft.
-          (including poolhouse, per
-          independent third-party measurement) rests on a lot of 1.23 acres (per county) on a peaceful
-          cul-de-sac in the Lakeside neighborhood. Richly-appointed spaces include large gathering areas.
+        <p class="house_discptn"><%= @property.property_description%>
         </p>
       </div>
       <div class="house_detail_container">
         <h6 class="title">Appliances and other Items</h6>
-        <p class="house_discptn">N/A</p>
+        <p class="house_discptn"><%= @property.appliances_and_other_items%></p>
       </div>
     </div>
   </section>

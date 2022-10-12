@@ -35,12 +35,14 @@
         <ul class="view_map_blk fs_5">
           <% @user&.dream_addresses.each do |record| %>
             <li>
-            <div class="ico fill"><img src="assets/images/loginbg.jpg" alt=""></div>
+            <div class="ico fill">
+              <%= image_tag 'loginbg.jpg', alt: "No image " %>
+            </div>
             <div class="txt">
               <p class="fw_600"><%= record.location %></p>
             </div>
             <div class="btn_blk">
-              <a href="?" class="site_btn text text-decoration-underline">View in map</a>
+              <a href="https://www.google.com/maps/dir//<%=record.latitude %>,<%= record.longitude%>/@<%=record.latitude %>,<%= record.longitude%>z" class="site_btn text text-decoration-underline" target="_blank">View in map</a>
             </div>
           </li>
           <%end%>
@@ -67,9 +69,6 @@
         </script>
         <table class="list_table w-100">
           <tbody>
-          <tr>
-            <td><%= @user.user_preference&.price%></td>
-          </tr>
           <tr>
             <td>Budget</td>
             <td class="fw_600"><span><%= @user.user_preference&.min_price %></span> to <span><%= @user.user_preference&.max_price %></span></td>

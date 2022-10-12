@@ -51,6 +51,7 @@ class SubAdminsController < ApplicationController
 
   def create
     @sub_admin = Admin.new(sub_admin_params)
+    @sub_admin.date_of_birth = Date.today
     if @sub_admin.save
       AdminNotification.create(actor_id: Admin.admin.first.id,
                               recipient_id: User.last.id, action: "New Admin Created") if Admin&.admin.present? && User&.last.present?

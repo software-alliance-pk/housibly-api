@@ -44,7 +44,7 @@
           <% end %>
         </div>
         <div class="col-9">
-          <div class="map_blk" id="map">
+          <div class="map_blk" id="earth_div">
 
           </div>
         </div>
@@ -52,7 +52,34 @@
     </div>
   </section>
 </main>
+<script src="https://www.webglearth.com/v2/api.js"></script>
 <script>
+    $(document).ready(function(){
+      console.log('Hello');
+      debugger
+      var earth = new WE.map('earth_div');
+      WE.tileLayer('https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=hVNasrAxfh6v5Fcj3eXN').addTo(earth);
+      let pinsData = '<%= @school_pins&.map { |item| [item.longtitude, item.latitude, item.pin_name] } %>';
+      pinsData = JSON.parse(pinsData.replaceAll("&quot;", '"'))
+      let markersArr=[];
+      const parent = document.getElementById('earth_div');
+      pinsData.forEach ((item) => {
+        let marker=  WE.marker([Number(item[1]), Number(item[0])]).addTo(earth);
+        markersArr.push(marker)
+        marker.bindPopup(`${item[2]}`, {maxWidth: 60}).openPopup();
+      });
+    })
+
+    // var marker = WE.marker([51.5, -0.09]).addTo(earth);
+
+    // var marker2 = WE.marker([30.058056, 31.228889]).addTo(earth);
+    // marker2.bindPopup("<b>Cairo</b><br>Yay, you found me!", {maxWidth: 120, closeButton: false});
+
+    // var markerCustom = WE.marker([50, -9], '/img/logo-webglearth-white-100.png', 100, 24).addTo(earth);
+
+    // earth.setView([51.505, 0], 6);
+</script>
+<!-- <script>
   $(document).ready(function () {
       let pinsData = '<%= @school_pins&.map { |item| [item.id,item.longtitude,item.pin_name, item.latitude] } %>';
       pinsData = JSON.parse(pinsData.replaceAll("&quot;", '"'))
@@ -110,3 +137,4 @@
 
   });
 </script>
+ -->

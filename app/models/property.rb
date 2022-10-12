@@ -44,7 +44,7 @@ class Property < ApplicationRecord
   scope :count_condo, -> { where("type = (?)","Condo").count }
   scope :house, -> { where("type = (?)","House") }
   scope :vacant_land, -> { where("type = (?)","VacantLand") }
-  scope :condo, -> { where("type = (?)","condo") }
+  scope :condo, -> { where("type = (?)","Condo") }
 
 
 

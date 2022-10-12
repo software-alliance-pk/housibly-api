@@ -1,8 +1,8 @@
 <div class="header_side">
-  <div class="form_blk">
-    <%= image_tag 'icon-search.svg' %>
+  <!-- <div class="form_blk">
+    <%#= image_tag 'icon-search.svg' %>
     <input type="text" name="" id="" class="input" placeholder="Search">
-  </div>
+  </div> -->
   <%= link_to notification_page_dashboards_path, class: 'noti_btn input' do %>
     <%= image_tag 'icon-bell.svg' %>
     <span><%= AdminNotification.where(read_at:nil).count%></span>

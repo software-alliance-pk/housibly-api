@@ -173,7 +173,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def validate_property_type(property_types)
-    property_types.in?(%w[house condo vacant_land House Condo Vacant Land vacant land Vacant_Land])
+    property_types.in?( ["house","condo","vacant_land","House","Condo","Vacant Land","vacant land","Vacant_Land"])
   end
 
   def validate_property_type_or_set_the_property_type

@@ -12,8 +12,8 @@
         </div>
         <div class="txt">
           <h5><%= @user.full_name %></h5>
-          <p><a href="mailto:davisvaccaro@gmail.com"><%= @user.email %></a></p>
-          <p><a href="tel:+123 456 789"><%= @user.phone_number %></a></p>
+          <p><a href="mailto:<%= @user.email %>"><%= @user.email %></a></p>
+          <p><a href="tel:<%=@user.phone_number %>"><%= @user.phone_number %></a></p>
           <p><%= @user.address %></p>
         </div>
       </div>
@@ -50,23 +50,6 @@
       </div>
       <div class="tab-pane fade" id="BuyingPreference">
         <h3>User’s Buying Preference</h3>
-        <!-- <div class="dropdown profile_dropdown">
-          <button class="site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
-          <ul class="dropdown-menu">
-            <li><button type="button">House</button></li>
-            <li><button type="button">Condo</button></li>
-            <li><button type="button">Vacant Land</button></li>
-          </ul>
-        </div>
-        <script>
-          $(function(){
-              $(document).on("click", ".profile_dropdown > ul > li > button", function(){
-                  let text = $(this).text();
-                  console.log(text)
-                  $(this).parents(".profile_dropdown").find(".site_btn").html(text);
-              })
-          })
-        </script> -->
         <table class="list_table w-100">
           <tbody>
           <tr>
@@ -91,7 +74,7 @@
           </tr>
           <tr>
             <td>Living Space</td>
-            <td><span><%= @user.user_preference&.min_living_space%></span>to<span><%= @user.user_preference&.min_living_space%></span></td>
+            <td><span><%= @user.user_preference&.min_living_space%></span> to <span><%= @user.user_preference&.min_living_space%></span></td>
           </tr>
           <tr>
             <td>Balcony</td>
@@ -131,14 +114,6 @@
       </div>
       <div class="tab-pane fade" id="SellingLists">
         <h3>User’s Selling Lists</h3>
-<!--         <div class="dropdown mb-4">
-          <button class="profile_dropdown site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
-          <ul class="dropdown-menu">
-            <li><a href="#SellingLists">House</a>
-            <li value="2"><a href="#SellingLists1">Condo</a></li>
-            <li><a href="#SellingLists2" >Vacant Land</a></li>
-          </ul>
-        </div> -->
         <div class="dropdown profile_dropdown">
           <button class="site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
           <ul class="dropdown-menu">
@@ -151,16 +126,32 @@
           $(function(){
               $(document).on("click", ".profile_dropdown > ul > li > button", function(){
                   let text = $(this).text();
-                  console.log(text)
                   $(this).parents(".profile_dropdown").find(".site_btn").html(text);
-                  // var house = document.getElementById('house');
-                  // debugger
+                  if (text == "House")
+                  {
+                      $("#hosue").attr('hidden',false);
+                      $("#SellingLists1").attr('hidden',true);
+                      $("#SellingLists2").attr('hidden',true);
+                  }
+                  else if(text == "Condo")
+                  {
+                      $("#hosue").attr('hidden',true);
+                      $("#SellingLists1").attr('hidden',false);
+                      $("#SellingLists2").attr('hidden',true);
+
+                  }
+                  else if(text == "Vacant Land") {
+                      $("#hosue").attr('hidden', true);
+                      $("#SellingLists1").attr('hidden', true);
+                      $("#SellingLists2").attr('hidden', false);
+                  }
+
               })
           })
         </script>
 
         <ul class="home_map_blk fs_5", id= 'hosue'>
-          <% Property.house.each do |property| %>
+          <% get_house_property_list(@user.id).each do |property| %>
           <li>
             <div class="ico fill"> <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
             <div class="txt">
@@ -173,10 +164,11 @@
           </li>
           <%end%>
         </ul>
-        <ul class="home_map_blk fs_5", id= 'SellingLists1'>
-          <% Property.condo.each do |property| %>
+        <ul class="home_map_blk fs_5", id= 'SellingLists1' hidden>
+          <% get_condo_property_list(@user.id).each do |property| %>
           <li>
-            <div class="ico fill"> <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
+            <div class="ico fill">
+              <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
             <div class="txt">
               <%= link_to property_profile_users_data_path(id: property) do %>
               <h5><%= property.title%></h5>
@@ -187,50 +179,21 @@
           </li>
           <%end%>
         </ul>
-        <ul class="home_map_blk fs_5", id= 'SellingLists2'>
-          <% Property.vacant_land.each do |property| %>
+        <ul class="home_map_blk fs_5", id= 'SellingLists2' hidden>
+          <% get_vacant_land_property_list(@user.id).each do |property| %>
           <li>
-            <div class="ico fill"> <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
+            <div class="ico fill">
+              <%= image_tag property.images.attached? ? property&.images&.first.url : "" %></div>
             <div class="txt">
               <%= link_to property_profile_users_data_path(id: property) do %>
               <h5><%= property.title%></h5>
               <%end%>
               <p class="fs_6"><%= property&.city%> <%= property&.country%> </p>
             </div>
-
           </li>
           <%end%>
         </ul>
       </div>
-
-
-      <!-- <div class="tab-pane fade" id="SellingLists1">
-        <h3>User’s Selling Lists</h3>
-        <div class="dropdown mb-4">
-          <button class="profile_dropdown site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
-          <ul class="dropdown-menu">
-            <li><a href="#SellingLists">House</a>
-            <li value="2"><a href="#SellingLists1">Condo</a></li>
-            <li><a href="#SellingLists2" >Vacant Land</a></li>
-          </ul>
-        </div> -->
-
-
-
-     <!--  <div class="tab-pane fade" id="SellingLists2">
-        <h3>User’s Selling Lists</h3>
-        <div class="dropdown mb-4">
-          <button class="profile_dropdown site_btn text dropdown-toggle chevron fs_5 fw_600" data-bs-toggle="dropdown">House</button>
-         <ul class="dropdown-menu">
-            <li><a href="#SellingLists">House</a>
-            <li value="2"><a href="#SellingLists1">Condo</a></li>
-            <li><a href="#SellingLists2" >Vacant Land</a></li>
-          </ul>
-        </div> -->
-
-
-
-
     </div>
   </div>
 </section>

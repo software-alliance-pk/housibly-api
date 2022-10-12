@@ -171,7 +171,8 @@
           <tbody>
             <% @houses.each do |house|%>
             <tr>
-              <td class="fw_500 user_name "><% house.user.full_name%></td>
+              <td class="fw_500 user_name ">
+              <%= house.user.full_name%></td>
               <td><%= house.type%></td>
               <td><%= house.title%></td>
               <td style="color: #00A66C;"><%= house.price%></td>

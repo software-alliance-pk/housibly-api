@@ -2,11 +2,14 @@ class Api::V1::ReportingController < Api::V1::ApiController
 	def create
 		@report = @current_user.reportings.build
 		@report.reported_user_id = params[:reported_user]
+		reported_user = User.find_by(id: params[:reported_user])
 		if @report.save
 			@ticket = Support.create(ticket_number: generate_ticket_number,
 		  user_id: @current_user.id,status: "pending",
 		  description:"please take action against this user")
 		  if @ticket.save
+		  	AdminNotification.create(actor_id: Admin.admin.first.id,
+                              recipient_id: @current_user.id, action: "#{@current_user.full_name} is reported to #{reported_user.full_name}") if Admin&.admin.present?
 		  	@ticket
 		  else
 		  	render_error_messages(@ticket)

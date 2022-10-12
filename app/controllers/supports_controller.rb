@@ -3,6 +3,8 @@ class SupportsController < ApplicationController
   before_action :get_support_ticket, only: [:ticket_in_progress,:ticket_closed,:ticket_pending]
   
   def index
+    notification = AdminNotification.find_by(id:params[:id])
+    notification.update(read_at:Time.now) if notification.present?
     @message = @end_users.first
   end
 

@@ -1,5 +1,7 @@
 class SupportClosersController < ApplicationController
   def index
+    notification = AdminNotification.find_by(id:params[:id])
+    notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
       @support_closer = User.get_support_closer_user.paginate(page: params[:page], per_page: 10)
       @support_closer = @support_closer.custom_search(params[:search])

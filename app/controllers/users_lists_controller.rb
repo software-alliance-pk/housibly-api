@@ -1,6 +1,8 @@
 class UsersListsController < ApplicationController
   skip_before_action :authenticate_admin!
   def index
+    notification = AdminNotification.find_by(id:params[:id])
+    notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
       @all_users = User.all_users.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
     else
@@ -24,6 +26,11 @@ class UsersListsController < ApplicationController
   def active_account
     @user = User.find_by(id: params[:id])
       if @user.update(active: true)
+        notification = AdminNotification.where("action ILIKE ?", "#{@user.full_name} is active")
+        unless notification.present?
+          AdminNotification.create(actor_id: Admin.admin.first.id,
+                                recipient_id: @user.id, action: "#{@user.full_name} is active") if Admin&.admin.present?
+        end
       redirect_to users_lists_path
     else
       redirect_to users_lists_path
@@ -34,6 +41,11 @@ class UsersListsController < ApplicationController
   def deactive_account
      @user = User.find_by(id: params[:id])
       if @user.update(active: false)
+        notification = AdminNotification.where("action ILIKE ?", "#{@user.full_name} is deactive")
+        unless notification.present?
+          AdminNotification.create(actor_id: Admin.admin.first.id,
+                                recipient_id: @user.id, action: "#{@user.full_name} is deactive") if Admin&.admin.present?
+        end
       redirect_to users_lists_path
     else
       redirect_to users_lists_path
@@ -43,6 +55,8 @@ class UsersListsController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      AdminNotification.create(actor_id: Admin.admin.first.id,
+                              recipient_id: @user.id, action: "New User Created") if Admin&.admin.present?
       redirect_to users_lists_path()
     else
       flash.alert = @user.errors.full_messages

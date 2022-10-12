@@ -1,5 +1,7 @@
 class SubAdminsController < ApplicationController
   def index
+    notification = AdminNotification.find_by(id:params[:id])
+    notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
       @sub_admins = Admin.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
       response_to_method
@@ -21,6 +23,11 @@ class SubAdminsController < ApplicationController
      @sub_admin = Admin.find_by(id: params[:id])
     if @sub_admin
       @sub_admin.update(status: true)
+      notification = AdminNotification.where("action ILIKE ?", "#{@sub_admin.user_name} Sub Admin is active")
+      unless notification.present?
+        AdminNotification.create(actor_id: Admin.admin.first.id,
+                              recipient_id: User.last.id, action: "#{@sub_admin.user_name} Sub Admin is active") if Admin&.admin.present? && User.last.present?
+      end
       redirect_to sub_admins_path
     else
       redirect_to sub_admins_path
@@ -31,6 +38,11 @@ class SubAdminsController < ApplicationController
     @sub_admin = Admin.find_by(id: params[:id])
     if @sub_admin
       @sub_admin.update(status: false)
+      notification = AdminNotification.where("action ILIKE ?", "#{@sub_admin.user_name} Sub Admin is deactive")
+      unless notification.present?
+        AdminNotification.create(actor_id: Admin.admin.first.id,
+                              recipient_id: User.last.id, action: "#{@sub_admin.user_name} Sub Admin is deactive") if Admin&.admin.present? && User.last.present?
+      end
       redirect_to sub_admins_path
     else
       redirect_to sub_admins_path
@@ -40,6 +52,8 @@ class SubAdminsController < ApplicationController
   def create
     @sub_admin = Admin.new(sub_admin_params)
     if @sub_admin.save
+      AdminNotification.create(actor_id: Admin.admin.first.id,
+                              recipient_id: User.last.id, action: "New Admin Created") if Admin&.admin.present? && User&.last.present?
       redirect_to sub_admins_path()
     else
       flash.alert = @sub_admin.errors.full_messages

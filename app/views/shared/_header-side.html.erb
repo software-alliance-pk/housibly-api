@@ -5,7 +5,7 @@
   </div>
   <%= link_to notification_page_dashboards_path, class: 'noti_btn input' do %>
     <%= image_tag 'icon-bell.svg' %>
-    <span>7</span>
+    <span><%= AdminNotification.where(read_at:nil).count%></span>
   <% end %>
   <%= button_to "Logout", destroy_admin_session_path, method: :delete, class: "noti_btn input fw-bold px-5" %>
   </button>

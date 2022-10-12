@@ -2,6 +2,8 @@ class Api::V1::SupportsController < Api::V1::ApiController
   def create_ticket
     @ticket = current_user.supports.new(support_params.merge(ticket_number: generate_ticket_number.upcase))
     if @ticket.save
+      AdminNotification.create(actor_id: Admin.admin.first.id,
+                              recipient_id: current_user.id, action: "#{current_user.full_name} generated new ticket") if Admin&.admin.present?
       @ticket
     else
       render_error_messages(@ticket)

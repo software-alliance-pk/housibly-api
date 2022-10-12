@@ -3,12 +3,12 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   include CreateOtp
 
   def create
-    get_location = UserCurrentLocationService.new.call(request.safe_location)
-    puts get_location
+     get_location = UserCurrentLocationService.new.call(request.safe_location)
+     puts get_location
     @user = User.new(user_params)
-    @user.address = get_location[:full_address]
-    @user.longitude = get_location[:long]
-    @user.latitude = get_location[:lat]
+     @user.address = get_location[:full_address]
+     @user.longitude = get_location[:long]
+     @user.latitude = get_location[:lat]
     if @user.save
       signup_otp(@user)
     else
@@ -30,6 +30,13 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       @current_user.user_setting.destroy if @current_user.user_setting.present?
       @current_user.build_user_setting.save
       @token = JsonWebTokenService.encode({ email: @current_user.email })
+      if @current_user.want_support_closer?
+        AdminNotification.create(actor_id: Admin.admin.first.id,
+                               recipient_id: @current_user.id, action: "New Support Closer Created") if Admin&.admin.present?
+      else
+        AdminNotification.create(actor_id: Admin.admin.first.id,
+                               recipient_id: @current_user.id, action: "New User Created") if Admin&.admin.present?
+      end
     else
       render json: { message: "OTP not verified" }, status: 401
     end
@@ -59,7 +66,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       @user.update(is_otp_verified: true)
       @token = JsonWebTokenService.encode({ email: @user.email })
       AdminNotification.create(actor_id: Admin.admin.first.id,
-                               recipient_id: @user.id, action: "Please complete your profile") if Admin&.admin.present?
+                               recipient_id: @user.id, action: "Please complete Your profile") if Admin&.admin.present?
     else
       render json: { message: "Incorrect Email or OTP" }, status: 401
     end

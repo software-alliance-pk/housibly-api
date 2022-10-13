@@ -72,7 +72,7 @@
             </div>
             <%= link_to "Download CSV", dashboards_path(format: 'csv', search: params[:search], checkbox_value: ""), id: "downloadbtncustom" %>
           </button>
-          <%= form_tag dashboards_path, id: :searchformc, method: :get do %>
+          <%= form_tag dashboards_path, id: :searchformc, html: { autocomplete: "off" }, method: :get do %>
             <div style="display: flex;">
               <div class="form_blk mb-0 me-3">
                 <div class="calender_blk">
@@ -84,7 +84,7 @@
                 <div class="calender_blk">
                   <img src="/assets/calendar.svg" alt="">
                 </div>
-                <%= text_field_tag 'end_date', params[:end_date], placeholder: "to", class: 'datepicker', id: 'end_date' %>
+                <%= text_field_tag 'end_date', params[:end_date], placeholder: "to", class: 'datepicker', id: 'end_date'%>
               </div>
             </div>
             </div>
@@ -152,15 +152,25 @@
   </section>
 </main>
 <script>
-    $(".datepicker").focusout(function (){
-        let id = $(this).attr('id');
-        let _value = $("#"+id).val();
-        if (_value.length > 0)
-        {
+    $(document).ready(function (){
+        let _value = ''
+        let _value_second = ''
+        $(".datepicker").focusout(function (){
+            let id = $(this).attr('id');
             if(id == "end_date")
+            {
+                _value = $("#"+id).val();
+                console.log(_value);
+            }
+            else if(id == "start_date")
+            {
+                _value_second = $("#"+id).val();
+                console.log(_value_second);
+            }
+            if (_value.length > 0 &&  _value_second.length > 0)
             {
                 $("#searchformc").submit();
             }
-        }
-    })
+        })
+    });
 </script>

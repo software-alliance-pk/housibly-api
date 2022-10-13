@@ -130,7 +130,7 @@ $(document).on('turbolinks:load', function() {
 
     $(".customjobclass").click(function (){
         let id = $(this).attr('id');
-        $(".removethis_"+id).click();
+        $(".removeathis_"+id).trigger('click');
         $("#title_of_job_"+id).hide();
     })
 });

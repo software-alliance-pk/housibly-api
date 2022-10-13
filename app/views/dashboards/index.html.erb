@@ -72,97 +72,89 @@
             <div class="img_blk">
               <img src="/assets/csv-file-icon.svg" alt="">
             </div>
-            <%= link_to "Download CSV", dashboards_path(format: 'csv', search: params[:search],checkbox_value:""), id: "downloadbtncustom" %>
+            <%= link_to "Download CSV", dashboards_path(format: 'csv', search: params[:search], checkbox_value: ""), id: "downloadbtncustom" %>
           </button>
-          <%= form_tag dashboards_path, id: :searchformc,method: :get do %>
+          <%= form_tag dashboards_path, id: :searchformc, method: :get do %>
             <div style="display: flex;">
               <div class="form_blk mb-0 me-3">
                 <div class="calender_blk">
                   <img src="/assets/calendar.svg" alt="">
                 </div>
-                <%= text_field_tag 'start_date', params[:start_date], placeholder: "From",class: 'datepicker' %>
-              </div >
+                <%= text_field_tag 'start_date', params[:start_date], placeholder: "From", class: 'datepicker' %>
+              </div>
               <div class="form_blk">
                 <div class="calender_blk">
                   <img src="/assets/calendar.svg" alt="">
                 </div>
-                <%= text_field_tag 'end_date', params[:end_date], placeholder: "to" ,class: 'datepicker',id: 'csearchbtn' %> 
+                <%= text_field_tag 'end_date', params[:end_date], placeholder: "to", class: 'datepicker', id: 'csearchbtn' %>
               </div>
             </div>
             </div>
-          <%end %>
-        </div>
-<div class="table_blk mt-5 pt-3">
-  <table>
-    <thead>
-      <tr>
-        <th style="width:12.2rem">
-          <div class="d-flex align-items-center">
-            <input type="checkbox" class="me-2" id="selectedallcheckboxes">
-            Select all
+          <% end %>
           </div>
-        </th>
-        <th style="width: 19rem;">
-          Name/Email
-        </th>
-        <th style="width:12.2rem">
-          Phone No.
-        </th>
-        <th style="width:17.2rem">
-          Real State Agent
-        </th>
-        <th style="width:28.3rem">
-          Address
-        </th>
-        <th style="width: 14rem">
-          Join Date
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @new_users.exists? %>
-      <% @new_users.each do |new_user| %>
-      <tr>
-        <td>
-          <div class="d-flex align-items-center">
-            <input type="checkbox" name="selected_checkbox" class="me-3" id="<%= new_user.id%>">
-            <div class="img_blk">
-              <%= image_tag new_user.avatar if new_user.avatar.attached? %>
-            </div>
-          </div>
-        </td>
-        <td class=" user_name">
-          <p class="fw_500 mb-0">
-            <%= new_user.full_name %>
-          </p>
-          <p class="fw_400" style="color: #626262" style="color: #626262">
-           <%= new_user.email %>
-         </p>
-       </td>
-       <td><%= new_user.phone_number %></td>
-       <td><%= new_user.contacted_by_real_estate %></td>
-       <td><%= new_user.address %></td>
-       <td><%= new_user.created_at %></td>
-     </tr>
-     <% end %>
-     <% end %>  
-   </tbody>
- </table>
-</div>
-<%= render 'shared/pagination', data: @new_users%>
-</div>
-</section>
-<!-- dash -->
-
-
+      <div class="table_blk mt-5 pt-3">
+        <table>
+          <thead>
+          <tr>
+            <th style="width:12.2rem">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" class="me-2" id="selectedallcheckboxes">
+                Select all
+              </div>
+            </th>
+            <th style="width: 19rem;">
+              Name/Email
+            </th>
+            <th style="width:12.2rem">
+              Phone No.
+            </th>
+            <th style="width:17.2rem">
+              Real State Agent
+            </th>
+            <th style="width:28.3rem">
+              Address
+            </th>
+            <th style="width: 14rem">
+              Join Date
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if @new_users.exists? %>
+            <% @new_users.each do |new_user| %>
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <input type="checkbox" name="selected_checkbox" class="me-3" id="<%= new_user.id %>">
+                    <div class="img_blk">
+                      <%= image_tag new_user.avatar if new_user.avatar.attached? %>
+                    </div>
+                  </div>
+                </td>
+                <td class=" user_name">
+                  <p class="fw_500 mb-0">
+                    <%= new_user.full_name %>
+                  </p>
+                  <p class="fw_400" style="color: #626262" style="color: #626262">
+                    <%= new_user.email %>
+                  </p>
+                </td>
+                <td><%= new_user.phone_number %></td>
+                <td><%= new_user.contacted_by_real_estate %></td>
+                <td><%= new_user.address %></td>
+                <td><%= new_user.created_at %></td>
+              </tr>
+            <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <%= render 'shared/pagination', data: @new_users %>
+    </div>
+  </section>
 </main>
-
-<script >
-
- $('#csearchbtn').keydown(function(event) {
-  if (event.keyCode == 13) {
-    $('#searchformc').submit();
-  }
-});
-
+<script>
+    $('#csearchbtn').focusout(function (event) {
+        $('#searchformc').submit();
+    });
 </script>

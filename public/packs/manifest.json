@@ -1,6 +1,6 @@
 {
-  "application.js": "/packs/js/application-49c578efa6768ed9d518.js",
-  "application.js.map": "/packs/js/application-49c578efa6768ed9d518.js.map",
+  "application.js": "/packs/js/application-aaa96e8f4a52ff22f153.js",
+  "application.js.map": "/packs/js/application-aaa96e8f4a52ff22f153.js.map",
   "bootstrap.js": "/packs/js/bootstrap-456aae29519d9100d711.js",
   "bootstrap.js.map": "/packs/js/bootstrap-456aae29519d9100d711.js.map",
   "datepicker_ui.js": "/packs/js/datepicker_ui-4e2e70302933a8aed7bd.js",
@@ -8,10 +8,10 @@
   "entrypoints": {
     "application": {
       "js": [
-        "/packs/js/application-49c578efa6768ed9d518.js"
+        "/packs/js/application-aaa96e8f4a52ff22f153.js"
       ],
       "js.map": [
-        "/packs/js/application-49c578efa6768ed9d518.js.map"
+        "/packs/js/application-aaa96e8f4a52ff22f153.js.map"
       ]
     },
     "bootstrap": {

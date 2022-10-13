@@ -22,7 +22,7 @@ $(document).on('turbolinks:load', function() {
 
     $(".datepicker").datepicker({
         // multidate: true,
-        format: "mm-dd-yyyy",
+        format: "dd-mm-yyyy",
         // todayHighlight: true,
         // multidateSeparator: ",  ",
     });

@@ -6,359 +6,121 @@
         <h1>Notifications</h1>
       </div>
       <ul class="list">
-        <%AdminNotification.user_create.each do |nft| %>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
+        <% AdminNotification.user_create.each do |nft| %>
+          <li>
+            <div class="notif_blk">
+              <div class="detail_blk">
+                <div class="img">
+                  <img src="assets/images/icon-notifi.svg" alt="">
+                </div>
+                <div class="text">
+                  <h6 class="mb-0"><%= nft.action %></h6>
+                  <p></p>
+                  <% if nft.recipient.want_support_closer? %>
+                    <h6><%= link_to 'See Notification', support_closers_path(id: nft.id) %></h6>
+                  <% else %>
+                    <h6><%= link_to 'See Notification', dashboards_path(id: nft.id) %></h6>
+                  <% end %>
+                </div>
               </div>
-              <div class="text">
-                <h6 class="mb-0"><%= nft.action%></h6>
-                <p></p>
-                <% if nft.recipient.want_support_closer?%>
-                  <h6><%= link_to 'See Notification', support_closers_path(id: nft.id) %></h6>
-                  <%else%>
-                  <h6><%= link_to 'See Notification', dashboards_path(id: nft.id) %></h6>
-                  <%end%>
-              </div>
+              <p class="time"><%= time_ago_in_words(nft.created_at) %></p>
             </div>
-            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
-          </div>
-        </li>
-        <%end%>
+          </li>
+        <% end %>
 
-        
-        <%AdminNotification.active_deactive.each do |nft| %>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
+
+        <% AdminNotification.active_deactive.each do |nft| %>
+          <li>
+            <div class="notif_blk">
+              <div class="detail_blk">
+                <div class="img">
+                  <img src="assets/images/icon-notifi.svg" alt="">
+                </div>
+                <div class="text">
+                  <h6 class="mb-0"><%= nft.action %></h6>
+                  <p></p>
+                  <% if nft.recipient.want_support_closer? %>
+                    <h6><%= link_to 'See Notification', support_closers_path(id: nft.id) %></h6>
+                  <% else %>
+                    <h6><%= link_to 'See Notification', users_lists_path(id: nft.id) %></h6>
+                  <% end %>
+                </div>
               </div>
-              <div class="text">
-                <h6 class="mb-0"><%= nft.action%></h6>
-                <p></p>
-                <% if nft.recipient.want_support_closer?%>
-                  <h6><%= link_to 'See Notification', support_closers_path(id: nft.id) %></h6>
-                  <%else%>
-                  <h6><%= link_to 'See Notification', users_lists_path(id: nft.id) %></h6>
-                  <%end%>
-              </div>
+              <p class="time"><%= time_ago_in_words(nft.created_at) %></p>
             </div>
-            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
-          </div>
-        </li>
-        <%end%>
-        <%AdminNotification.admin_create.each do |nft| %>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0"><%= nft.action%></h6>
-                <p></p>
+          </li>
+        <% end %>
+        <% AdminNotification.admin_create.each do |nft| %>
+          <li>
+            <div class="notif_blk">
+              <div class="detail_blk">
+                <div class="img">
+                  <img src="assets/images/icon-notifi.svg" alt="">
+                </div>
+                <div class="text">
+                  <h6 class="mb-0"><%= nft.action %></h6>
+                  <p></p>
                   <h6><%= link_to 'See Notification', sub_admins_path(id: nft.id) %></h6>
+                </div>
               </div>
+              <p class="time"><%= time_ago_in_words(nft.created_at) %></p>
             </div>
-            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
-          </div>
-        </li>
-        <%end%>
+          </li>
+        <% end %>
 
-        <%AdminNotification.sub_admin_active_deactive.each do |nft| %>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0"><%= nft.action%></h6>
-                <p></p>
+        <% AdminNotification.sub_admin_active_deactive.each do |nft| %>
+          <li>
+            <div class="notif_blk">
+              <div class="detail_blk">
+                <div class="img">
+                  <img src="assets/images/icon-notifi.svg" alt="">
+                </div>
+                <div class="text">
+                  <h6 class="mb-0"><%= nft.action %></h6>
+                  <p></p>
                   <h6><%= link_to 'See Notification', sub_admins_path(id: nft.id) %></h6>
+                </div>
               </div>
+              <p class="time"><%= time_ago_in_words(nft.created_at) %></p>
             </div>
-            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
-          </div>
-        </li>
-        <%end%>
+          </li>
+        <% end %>
 
-        <%AdminNotification.ticket.each do |nft| %>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0"><%= nft.action%></h6>
-                <p></p>
+        <% AdminNotification.ticket.each do |nft| %>
+          <li>
+            <div class="notif_blk">
+              <div class="detail_blk">
+                <div class="img">
+                  <img src="assets/images/icon-notifi.svg" alt="">
+                </div>
+                <div class="text">
+                  <h6 class="mb-0"><%= nft.action %></h6>
+                  <p></p>
                   <h6><%= link_to 'See Notification', supports_path(id: nft.id) %></h6>
+                </div>
               </div>
+              <p class="time"><%= time_ago_in_words(nft.created_at) %></p>
             </div>
-            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
-          </div>
-        </li>
-        <%end%>
+          </li>
+        <% end %>
 
-        <%AdminNotification.reporting.each do |nft| %>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0"><%= nft.action%></h6>
-                <p></p>
+        <% AdminNotification.reporting.each do |nft| %>
+          <li>
+            <div class="notif_blk">
+              <div class="detail_blk">
+                <div class="img">
+                  <img src="assets/images/icon-notifi.svg" alt="">
+                </div>
+                <div class="text">
+                  <h6 class="mb-0"><%= nft.action %></h6>
+                  <p></p>
                   <h6><%= link_to 'See Notification', supports_path(id: nft.id) %></h6>
+                </div>
               </div>
+              <p class="time"><%= time_ago_in_words(nft.created_at) %></p>
             </div>
-            <p class="time"><%= time_ago_in_words(nft.created_at)%></p>
-          </div>
-        </li>
-        <%end%>
-       <!--  <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li>
-        <li>
-          <div class="notif_blk">
-            <div class="detail_blk">
-              <div class="img">
-                <img src="assets/images/icon-notifi.svg" alt="">
-              </div>
-              <div class="text">
-                <h6 class="mb-0">New NFT Listed</h6>
-                <p>Check new NFT In your list</p>
-              </div>
-            </div>
-            <p class="time">2 days ago</p>
-          </div>
-        </li> -->
+          </li>
+        <% end %>
       </ul>
     </div>
   </section>

@@ -1,6 +1,4 @@
 <main>
-
-
   <section id="account_section">
     <%= render 'shared/sidebar' %>
     <div id="dash" class="main_side">
@@ -80,13 +78,13 @@
                 <div class="calender_blk">
                   <img src="/assets/calendar.svg" alt="">
                 </div>
-                <%= text_field_tag 'start_date', params[:start_date], placeholder: "From", class: 'datepicker' %>
+                <%= text_field_tag 'start_date', params[:start_date], placeholder: "From", class: 'datepicker',id: "start_date" %>
               </div>
               <div class="form_blk">
                 <div class="calender_blk">
                   <img src="/assets/calendar.svg" alt="">
                 </div>
-                <%= text_field_tag 'end_date', params[:end_date], placeholder: "to", class: 'datepicker', id: 'csearchbtn' %>
+                <%= text_field_tag 'end_date', params[:end_date], placeholder: "to", class: 'datepicker', id: 'end_date' %>
               </div>
             </div>
             </div>
@@ -120,7 +118,7 @@
           </tr>
           </thead>
           <tbody>
-          <% if @new_users.exists? %>
+          <% if @new_users.present? %>
             <% @new_users.each do |new_user| %>
               <tr>
                 <td>
@@ -154,7 +152,15 @@
   </section>
 </main>
 <script>
-    $('#csearchbtn').focusout(function (event) {
-        $('#searchformc').submit();
-    });
+    $(".datepicker").focusout(function (){
+        let id = $(this).attr('id');
+        let _value = $("#"+id).val();
+        if (_value.length > 0)
+        {
+            if(id == "end_date")
+            {
+                $("#searchformc").submit();
+            }
+        }
+    })
 </script>

@@ -1,5 +1,4 @@
-<script src="https://cdn.maptiler.com/maplibre-gl-js/v2.2.0-pre.2/maplibre-gl.js"></script>
-<link href="https://cdn.maptiler.com/maplibre-gl-js/v2.2.0-pre.2/maplibre-gl.css" rel="stylesheet" />
+<!--<script src="https://cdn.maptiler.com/maplibre-gl-js/v2.2.0-pre.2/maplibre-gl.js"></script>-->
 <main>
   <section id="account_section">
     <%= render 'shared/sidebar' %>
@@ -44,27 +43,27 @@
           <% end %>
         </div>
         <div class="col-9">
-          <div class="map_blk" id="earth_div">
+          <div class="map_blk" id="earth_div"  style="width:820px; height:450px;">
           </div>
         </div>
       </div>
     </div>
   </section>
 </main>
-<script src="https://www.webglearth.com/v2/api.js"></script>
+
 <script>
-    $(document).ready(function(){
-      var earth = new WE.map('earth_div');
-      WE.tileLayer('https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=hVNasrAxfh6v5Fcj3eXN').addTo(earth);
-      let pinsData = '<%= @school_pins&.map { |item| [item.longtitude, item.latitude, item.pin_name] } %>';
-      pinsData = JSON.parse(pinsData.replaceAll("&quot;", '"'))
-      let markersArr=[];
-      const parent = document.getElementById('earth_div');
-      pinsData.forEach ((item) => {
-        let marker=  WE.marker([Number(item[1]), Number(item[0])]).addTo(earth);
-        markersArr.push(marker)
-        marker.bindPopup(`${item[2]}`, {maxWidth: 60}).openPopup();
-      });
-    })
+    document.addEventListener("turbolinks:load", function() {
+           let pinsData = '<%= @school_pins&.map { |item| [item.longtitude, item.latitude, item.pin_name] } %>';
+           var earth = new WE.map('earth_div');
+           WE.tileLayer('https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=hVNasrAxfh6v5Fcj3eXN').addTo(earth);
+           pinsData = JSON.parse(pinsData.replaceAll("&quot;", '"'))
+           let markersArr=[];
+           const parent = document.getElementById('earth_div');
+           pinsData.forEach ((item) => {
+               let marker=  WE.marker([Number(item[1]), Number(item[0])]).addTo(earth);
+               markersArr.push(marker)
+               marker.bindPopup(`${item[2]}`, {maxWidth: 60}).openPopup();
+           });
+       })
 </script>
 

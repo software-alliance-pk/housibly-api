@@ -137,6 +137,9 @@ class Api::V1::UsersController < Api::V1::ApiController
     if params[:push_notification].present?
       if params[:push_notification] == "false"
         @settings.update(push_notification: false)
+        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+        puts @settings
+        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         render json: { message: "Push Notification OFF" }, status: :ok
       else
         @settings.update(push_notification: true)
@@ -145,6 +148,9 @@ class Api::V1::UsersController < Api::V1::ApiController
     elsif params[:inapp_notification].present?
       if params[:inapp_notification] == "false"
         @settings.update(inapp_notification: false)
+        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+        puts @settings
+        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         render json: { message: "In App Notification OFF" }, status: :ok
       else
         @settings.update(inapp_notification: true)

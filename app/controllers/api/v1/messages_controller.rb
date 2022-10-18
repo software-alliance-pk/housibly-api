@@ -59,7 +59,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
   end 
   def get_notification
   	@notifications = []
-  	unless @current_user.user_setting.inapp_notification == false
+  	unless @current_user.user_setting.inapp_notification == "false"
 	  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
 	  	conversations.each do |conversation|
 				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)

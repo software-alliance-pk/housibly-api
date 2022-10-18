@@ -79,7 +79,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def matching_property
     _weight_age = 0
     if @current_user.user_preference.present?
-      @properties = UserPreferencesService.search_property(@current_user)
+      @properties = UserPreferencesService.new.search_property(@current_user)
       if @properties.present?
         @properties&.sort_by{|e| e[:created_at]}
       else

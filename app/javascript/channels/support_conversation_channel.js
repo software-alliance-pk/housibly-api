@@ -20,23 +20,6 @@ $(document).ready(function(){
         var aDay = 24 * 60 * 60 * 1000;
         console.log(data);
         if (data.recipient_id == data.user_id) {
-          $(".chat_msg").append(
-              '<div class="support_msg">' +
-              '<div class="d-flex flex-column">' +
-              '<div class="msg">' +
-              '<p>' + data.body + '</p>' +
-              (data.image !== null ? "<img src="+data.image+">" : '') +
-              '<p class="msg_time mt-2">' + timeSince(new Date(Date.now())) + '</p>' +
-              '</div>' +
-              '</div>' +
-              '<div class="profile_pic">' +
-              '<div class="img_blk">' +
-              '<img src="/assets/logosmall-9e07e335886787ba1a8cbd58506cb2edac7f8e62a7c82b33affda5ba8c3bbb49.svg">'+
-              '</div>' +
-              '</div>'
-          );
-          
-           $("#typemessage").val("");
         } else {
           $(".chat_msg").append(
               '<div class="user_msg">' +

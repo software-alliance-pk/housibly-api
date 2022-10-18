@@ -1,16 +1,18 @@
-//$("#typemessage").val("");
-//$(".chat_msg").append(
-//    '<div class="support_msg">'+
-//    '<div class="d-flex flex-column">'+
-//    '<div class="msg">'+
-//    '<p><%= @conversation.body %></p>'+
-//    '</div>'+
-//    '<p class="msg_time mt-2"><%= time_ago_in_words(@conversation.created_at) %></p>'+
-//    '</div>'+
-//    '<div class="profile_pic">'+
-//    '<div class="img_blk">'+
-//    '</div>'+
-//    '</div>'+
-//    '</div>'
-//);
-//$(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+$("#typemessage").val("");
+$(".chat_msg").append(
+    '<div class="support_msg">'+
+    '<div class="d-flex flex-column">'+
+    '<div class="msg">'+
+    '<p><%= @conversation.body %></p>'+
+    '<img src="<%= @conversation.image.attached? ?  @conversation.image.url : "" %>"/>'+
+    '</div>'+
+    '<p class="msg_time mt-2"><%= time_ago_in_words(@conversation.created_at) %></p>'+
+    '</div>'+
+    '<div class="profile_pic">'+
+    '<div class="img_blk">'+
+    '<img src="/assets/logosmall-9e07e335886787ba1a8cbd58506cb2edac7f8e62a7c82b33affda5ba8c3bbb49.svg">'+
+    '</div>'+
+    '</div>'+
+    '</div>'
+);
+$(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);

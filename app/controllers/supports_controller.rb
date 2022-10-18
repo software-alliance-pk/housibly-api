@@ -29,7 +29,7 @@ class SupportsController < ApplicationController
        end
     end
     format.js {
-    render  :template => "support/create.js.erb",
+    render  :template => "supports/create.js.erb",
             :layout => false
     }
     end

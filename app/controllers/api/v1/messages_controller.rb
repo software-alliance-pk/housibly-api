@@ -97,16 +97,20 @@ end
 	end
 
 	def send_notification_to_user(conversation,message)
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		puts conversation.sender.user_setting.push_notification
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 		if conversation.sender == @current_user
-			puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-			puts conversation.sender.user_setting.push_notification
-			puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-			if conversation.sender.user_setting.push_notification == "true"
+			if conversation.sender.user_setting.push_notification == true
 				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+			else
+				puts "OFFFFFFFF"
 			end
 		else
-			if conversation.recipient.user_setting.push_notification == "true"
+			if conversation.recipient.user_setting.push_notification == true
 				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+			else
+				puts "<<<<<<<<<<OFF<<<<<<<<<<<"
 			end
 		end
 	end

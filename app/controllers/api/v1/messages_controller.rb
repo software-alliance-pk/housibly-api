@@ -59,7 +59,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
   end 
   def get_notification
   	@notifications = []
-  	if @current_user.user_setting.inapp_notification == true
+  	unless @current_user.user_setting.inapp_notification == false
 	  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
 	  	conversations.each do |conversation|
 				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)
@@ -96,10 +96,12 @@ end
 	end
 
 	def send_notification_to_user(conversation,message)
-		unless @current_user.user_setting.push_notification == "false"
-			if conversation.sender == @current_user
+		if conversation.sender == @current_user
+			if conversation.sender.user_setting.push_notification == true
 				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
-			else
+			end
+		else
+			if conversation.recipient.user_setting.push_notification == true
 				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
 			end
 		end

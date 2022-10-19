@@ -107,4 +107,46 @@ class UserPreferencesService
   end
 
 
+  def top_search_user(property)
+     _weight_age = 0
+    price_records  = UserPreference.price_matcher(property.price)
+    _weight_age = _weight_age + 7.5  if  price_records.present?
+    
+    bath_rooms_records = UserPreference.bath_rooms_matcher(property.bath_rooms)
+    _weight_age = _weight_age + 7.5  if bath_rooms_records.present?
+    
+    bed_rooms_records = UserPreference.bed_rooms_matcher(property.bed_rooms)
+    _weight_age = _weight_age + 7.5  if bed_rooms_records.present?
+    
+    property_type_records = UserPreference.property_type_matcher(property.type)
+    _weight_age = _weight_age + 10  if property_type_records.present?
+    
+    # parking_spot_records = UserPreference.property_parking_spot(property.total_parking_spaces)
+    # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
+    
+    garbage_spot_records = UserPreference.property_garage(property.garage)
+    _weight_age = _weight_age + 7.5 if garbage_spot_records.present?
+    
+    security_records = UserPreference.property_security(property.security)
+    _weight_age = _weight_age + 7.5 if security_records.present?
+
+    # min_lot_frontage_records = UserPreference.property_min_lot_frontage(property.lot_frontage)
+    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
+
+    # min_lot_size_records = UserPreference.property_min_lot_size(property.lot_size)
+    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
+
+    @user_preference_list = (property_type_records  + price_records + bed_rooms_records +
+     bath_rooms_records + garbage_spot_records + security_records )&.uniq
+    @user_preference_list.each do |record|
+      record.weight_age = _weight_age
+      if record.weight_age == "100"
+        @user_prefernce << record
+      end
+    end
+    return @user_prefernce
+
+  end
+
+
 end

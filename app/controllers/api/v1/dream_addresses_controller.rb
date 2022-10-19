@@ -126,35 +126,36 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
           render json: { message: "No user available against user preference" }, status: :unprocessable_entity
         end
       elsif params[:newest_first] == "true"
-        user_preference = UserPreference.joins(:user).where("users.created_at >= ?", 1.week.ago)
-        user_preference_list_having_bed_rooms = user_preference.ransack(min_bed_rooms_lteq_any: property.bed_rooms).result ||
-          user_preference.ransack(max_bed_rooms_gteq_any: property.bed_rooms).result
-        _value = calculate_weightage(_weight_age, user_preference_list_having_bed_rooms, 14)
-        _weight_age = _value if _value.present?
-        user_preference_list_having_style = user_preference.ransack(property_style_matches: "%#{property.house_style}").result ||
-          user_preference.ransack(property_style_matches: "%#{property.condo_style}").result
-        _value = calculate_weightage(_weight_age, user_preference_list_having_style, 14)
-        _weight_age = _value if _value.present?
-        user_preference_list_having_type = user_preference.ransack(property_type_matches: "%#{property.house_type}").result ||
-          user_preference.ransack(property_style_matches: "%#{property.condo_type}").result
-        _value = calculate_weightage(_weight_age, user_preference_list_having_type, 14)
-        _weight_age = _value if _value.present?
+        @user_prefernce = UserPreferencesService.new.newest_search_user(property)
+        # user_preference = UserPreference.joins(:user).where("users.created_at >= ?", 1.week.ago)
+        # user_preference_list_having_bed_rooms = user_preference.ransack(min_bed_rooms_lteq_any: property.bed_rooms).result ||
+        #   user_preference.ransack(max_bed_rooms_gteq_any: property.bed_rooms).result
+        # _value = calculate_weightage(_weight_age, user_preference_list_having_bed_rooms, 14)
         # _weight_age = _value if _value.present?
-        user_preference_list_having_price = user_preference.ransack(min_price_lteq_any: property.price).result ||
-          user_preference.ransack(max_price_gteq_any: property.price).result
-        _value = calculate_weightage(_weight_age, user_preference_list_having_price, 14)
-        _weight_age = _value if _value.present?
-        user_preference_list_having_frontage_unit = user_preference.ransack(min_lot_frontage_match: property.lot_frontage).result
-        _value = calculate_weightage(_weight_age, user_preference_list_having_frontage_unit, 14)
-        _weight_age = _value if _value.present?
-        @user_prefernce_list = ((user_preference_list_having_bed_rooms +
-          user_preference_list_having_style + user_preference_list_having_price +
-          user_preference_list_having_frontage_unit +
-          user_preference_list_having_type)&.uniq).compact
-        @user_prefernce_list.each do |record|
-          record.weight_age = _weight_age
-          @user_prefernce << record
-        end
+        # user_preference_list_having_style = user_preference.ransack(property_style_matches: "%#{property.house_style}").result ||
+        #   user_preference.ransack(property_style_matches: "%#{property.condo_style}").result
+        # _value = calculate_weightage(_weight_age, user_preference_list_having_style, 14)
+        # _weight_age = _value if _value.present?
+        # user_preference_list_having_type = user_preference.ransack(property_type_matches: "%#{property.house_type}").result ||
+        #   user_preference.ransack(property_style_matches: "%#{property.condo_type}").result
+        # _value = calculate_weightage(_weight_age, user_preference_list_having_type, 14)
+        # _weight_age = _value if _value.present?
+        # # _weight_age = _value if _value.present?
+        # user_preference_list_having_price = user_preference.ransack(min_price_lteq_any: property.price).result ||
+        #   user_preference.ransack(max_price_gteq_any: property.price).result
+        # _value = calculate_weightage(_weight_age, user_preference_list_having_price, 14)
+        # _weight_age = _value if _value.present?
+        # user_preference_list_having_frontage_unit = user_preference.ransack(min_lot_frontage_match: property.lot_frontage).result
+        # _value = calculate_weightage(_weight_age, user_preference_list_having_frontage_unit, 14)
+        # _weight_age = _value if _value.present?
+        # @user_prefernce_list = ((user_preference_list_having_bed_rooms +
+        #   user_preference_list_having_style + user_preference_list_having_price +
+        #   user_preference_list_having_frontage_unit +
+        #   user_preference_list_having_type)&.uniq).compact
+        # @user_prefernce_list.each do |record|
+        #   record.weight_age = _weight_age
+        #   @user_prefernce << record
+        # end
         if @user_prefernce.present?
           @user_prefernce
         else

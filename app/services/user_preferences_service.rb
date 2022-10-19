@@ -32,11 +32,11 @@ class UserPreferencesService
     security_records = Property.property_security(user_preference.security)
     _weight_age = _weight_age + 7.5 if security_records.present?
 
-    min_lot_frontage_records = Property.property_min_lot_frontage(user_preference.min_lot_frontage)
-    _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
+    # min_lot_frontage_records = Property.property_min_lot_frontage(user_preference.min_lot_frontage)
+    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
 
-    min_lot_size_records = Property.property_min_lot_size(user_preference.min_lot_size,user_preference.max_lot_size)
-    _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
+    # min_lot_size_records = Property.property_min_lot_size(user_preference.min_lot_size,user_preference.max_lot_size)
+    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
 
 
     # living_space_records = Property.property_living_space(user_preference.min_living_space,user_preference.max_living_space)
@@ -58,8 +58,7 @@ class UserPreferencesService
 
     #living_space_records
     @property_list = (property_type_records  + price_records + bed_rooms_records + type_records +
-      parking_spot_records + garbage_spot_records + security_records + min_lot_frontage_records +
-      min_lot_size_records + style_records + number_records + age_records )&.uniq
+      parking_spot_records + garbage_spot_records + security_records + style_records + number_records + age_records )&.uniq
     @property_list.each do |record|
       record.weight_age = _weight_age
       @property << record

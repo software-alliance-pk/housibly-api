@@ -80,7 +80,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     if subscriptions.present?
       render json: {subscription: subscriptions},status: :ok
     else
-     render json: {subscription: []},status: :ok
+     render json: {subscription: "false"},status: :ok
     end
   end
   def cancel_subscription

@@ -10,7 +10,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
      @user.longitude = get_location[:long]
      @user.latitude = get_location[:lat]
      @user.country_name = get_location[:country]
-     @user.country_code = "1"
+     @user.country_code = user_params[:country_code]
     if @user.save
       signup_otp(@user)
     else

@@ -1,7 +1,7 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
   Stripe.api_key = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h'
-  before_action :find_card, :find_package only: [:get_card, :destroy_card, :update_card, :set_default_card]
-
+  before_action :find_card,  only: [:get_card, :destroy_card, :update_card, :set_default_card]
+  before_action :find_package, only: [:create_subscription]
   def create
     customer = check_customer_at_stripe
     stripe_token = payment_params[:token]
@@ -38,8 +38,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def create_subscription
-    debugger
-    if @current_user.card_infos.present? && @package.present?
+    if @current_user.card_infos.present?
       subscription = StripeService.create_subscription(@current_user.stripe_customer_id,params[:price_id])
       if  subscription.present?
         package = @current_user.

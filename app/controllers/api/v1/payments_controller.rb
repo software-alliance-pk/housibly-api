@@ -38,7 +38,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def create_subscription
-    if @current_user.card_infos.present?
+    if @current_user.card_infos.present? && @package.present?
       subscription = StripeService.create_subscription(@current_user.stripe_customer_id,params[:price_id])
       if  subscription.present?
         package = @current_user.
@@ -53,7 +53,8 @@ class Api::V1::PaymentsController < Api::V1::ApiController
             interval: subscription&.plan&.interval,
             payment_nature: subscription.items.list.data.last.price.type,
             plan_title: "#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
-            subscription_title:"#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase
+            subscription_title:"#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
+            package_type: @package.name
           )
         if package.save
           render json: {package: package},status: :ok
@@ -165,6 +166,15 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       end
     else
       render json: { message: "Payment id parameter is missing" }, status: :ok
+    end
+  end
+
+  def find_package
+    @package = Package.find_by(id: params[:package_id])
+    if @package
+      @package
+    else
+      render json: { message: "subscription not done" }, status: :ok
     end
   end
 

@@ -26,7 +26,7 @@ class UserPreferencesService
     # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
 
     garbage_spot_records = Property.property_garage(user_preference.garbage_spot)
-    _weight_age = _weight_age + 7.5 if garbage_spot_records.present?
+    _weight_age = _weight_age + 10 if garbage_spot_records.present?
 
 
     security_records = Property.property_security(user_preference.security)

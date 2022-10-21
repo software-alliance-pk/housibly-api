@@ -22,8 +22,8 @@ class UserPreferencesService
     bed_rooms_records = Property.bed_rooms_matcher(user_preference.min_bedrooms,user_preference.max_bedrooms)
     _weight_age = _weight_age + 7.5 if bed_rooms_records.present?
 
-    parking_spot_records = Property.property_parking_spot(user_preference.parking_spot,user_preference.parking_spot)
-    _weight_age = _weight_age + 7.5 if parking_spot_records.present?
+    # parking_spot_records = Property.property_parking_spot(user_preference.parking_spot,user_preference.parking_spot)
+    # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
 
     garbage_spot_records = Property.property_garage(user_preference.garbage_spot)
     _weight_age = _weight_age + 7.5 if garbage_spot_records.present?
@@ -58,7 +58,7 @@ class UserPreferencesService
 
     #living_space_records
     @property_list = (property_type_records  + price_records + bed_rooms_records + type_records +
-      parking_spot_records + garbage_spot_records + security_records + style_records + number_records + age_records )&.uniq
+     garbage_spot_records + security_records + style_records + number_records + age_records )&.uniq
     @property_list.each do |record|
       record.weight_age = _weight_age
       @property << record

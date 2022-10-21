@@ -19,12 +19,21 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def search_support_closer
+    @support_closers_list = []
     _support_closers = User.want_support_closer.custom_search(params[:search])
-    @support_closers = _support_closers.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
+    @all_support_closers = _support_closers.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
+     @support_closers = User.all
+    puts  @support_closers
     if @support_closers.present?
-      @support_closers
+    @support_closers.each do |record|
+      if record.subscription.present?
+        @support_closers_list << record
+      end
+    end
+    @support_closers_list = @all_support_closers + @support_closers_list
+    @support_closers_list.uniq
     else
-      render json: { message: "Support Closer not found" }, status: :unprocessable_entity
+      render json: {support_closer: []},status: :ok
     end
   end
 
@@ -56,12 +65,18 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def get_support_closers
+    @support_closers_list = []
     @support_closers = User.want_support_closer.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
     puts  @support_closers
     if @support_closers.present?
-      @support_closers
+      @support_closers.each do |record|
+        if record.subscription.present?
+          @support_closers_list << record
+        end
+      end
+      @support_closers_list
     else
-      @support_closers = User.want_support_closer
+      render json: {support_closer: []},status: :ok
     end
   end
 

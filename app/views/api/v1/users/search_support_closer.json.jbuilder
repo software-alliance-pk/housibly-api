@@ -1,4 +1,4 @@
-json.support_closer @support_closers do |support_closer|
+json.support_closer @support_closers_list do |support_closer|
   json.id support_closer.id
   json.full_name support_closer.full_name
   json.email support_closer.email

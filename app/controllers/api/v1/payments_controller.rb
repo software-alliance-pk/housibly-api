@@ -1,7 +1,7 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
   Stripe.api_key = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h'
-  before_action :find_card,  only: [:get_card, :destroy_card, :update_card, :set_default_card]
-  before_action :find_package, only: [:create_subscription]
+  before_action :find_card, only: [:get_card, :destroy_card, :update_card, :set_default_card]
+
   def create
     customer = check_customer_at_stripe
     stripe_token = payment_params[:token]
@@ -38,34 +38,39 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def create_subscription
-    if @current_user.card_infos.present?
-      subscription = StripeService.create_subscription(@current_user.stripe_customer_id,params[:price_id])
-      if  subscription.present?
-        package = @current_user.
-          build_subscription(
-            payment_currency: subscription&.currency,
-            current_period_end: Time.at(subscription&.current_period_end),
-            subscription_id:subscription&.id,
-            status: subscription&.status,
-            interval_count: subscription&.plan.interval_count,
-            current_period_start:Time.at(subscription&.current_period_start),
-            price: subscription&.items&.data.first.plan.amount,
-            interval: subscription&.plan&.interval,
-            payment_nature: subscription.items.list.data.last.price.type,
-            plan_title: "#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
-            subscription_title:"#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
-            package_type: @package.name
-          )
-        if package.save
-          render json: {package: package},status: :ok
+    @package = Package.find_by(id: params[:package_id])
+    if @package.present?
+      if @current_user.card_infos.present?
+        subscription = StripeService.create_subscription(@current_user.stripe_customer_id,params[:price_id])
+        if  subscription.present?
+          package = @current_user.
+            build_subscription(
+              payment_currency: subscription&.currency,
+              current_period_end: Time.at(subscription&.current_period_end),
+              subscription_id:subscription&.id,
+              status: subscription&.status,
+              interval_count: subscription&.plan.interval_count,
+              current_period_start:Time.at(subscription&.current_period_start),
+              price: subscription&.items&.data.first.plan.amount,
+              interval: subscription&.plan&.interval,
+              payment_nature: subscription.items.list.data.last.price.type,
+              plan_title: "#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
+              subscription_title:"#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
+              sub_type: @package.name
+            )
+          if package.save
+            render json: {package: package},status: :ok
+          else
+            render json: {message: "Something went wrong contact with developer"}, status: :unprocessable_entity
+          end
         else
-          render json: {message: "Something went wrong contact with developer"}, status: :unprocessable_entity
+          render json: {message: "Unable to subscribe the package"}, status: :unprocessable_entity
         end
       else
-        render json: {message: "Unable to subscribe the package"}, status: :unprocessable_entity
+        render json: {message: "Please Add the Card first"}, status: :unprocessable_entity
       end
     else
-      render json: {message: "Please Add the Card first"}, status: :unprocessable_entity
+      render json: {message: "Subscription not done"}, status: :unprocessable_entity
     end
   end
   def get_subscription
@@ -166,15 +171,6 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       end
     else
       render json: { message: "Payment id parameter is missing" }, status: :ok
-    end
-  end
-
-  def find_package
-    @package = Package.find_by(id: params[:package_id])
-    if @package
-      @package
-    else
-      render json: { message: "subscription not done" }, status: :ok
     end
   end
 

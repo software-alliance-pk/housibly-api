@@ -20,7 +20,7 @@ class Api::V1::BookmarksController < Api::V1::ApiController
   end
 
   def get_current_user_bookmark
-    @bookmarks = @current_user.bookmarks
+    @property = UserPreferencesService.new.bookmark_match_property(@current_user)
   end
 
   def filter_bookmarks

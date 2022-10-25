@@ -194,9 +194,8 @@ class UserPreferencesService
     _weight_age = 0
     user_preference =  user.user_preference
     property = Property.joins(:bookmarks).where("bookmarks.user_id=?", user.id)
-    property_type_records = property.where("properties.type ILIKE ? ", "%#{user_preference&.property_type}%")
-    if property_type_records.present?
-      property_type_records = property.where("properties.type ILIKE ? ", "%#{user_preference&.property_type}%")
+    if user_preference.present?
+      property_type_records = property.where("properties.type ILIKE ? ", "%#{user_preference.property_type}%")
       _weight_age = _weight_age + 10  if property_type_records.present?
 
       price_records  = property.price_matcher(user_preference.min_price,user_preference.max_price)

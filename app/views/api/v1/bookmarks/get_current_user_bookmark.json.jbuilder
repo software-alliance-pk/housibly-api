@@ -60,7 +60,11 @@ json.properties @property do |property|
   json.total_parking_spaces property.total_parking_spaces
   json.is_bookmark property.is_bookmark
   json.zip_code property.zip_code
-  json.weight_age property.weight_age
+  if property.weight_age == nil
+    json.weight_age "0"
+  else
+   json.weight_age property.weight_age
+  end
   json.latitude property.latitude
   json.longitude property.longitude
   json.image property&.images&.attached? ? rails_blob_url(property&.images&.first) : ""

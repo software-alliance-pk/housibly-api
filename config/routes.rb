@@ -142,7 +142,7 @@ end
       resources :bookmarks, only:  [:create, :destroy] do
         collection do
           get :get_current_user_bookmark
-          post :get_bookmarks
+          post :filter_bookmarks
         end
       end
       resources :reviews, only: [:create] do

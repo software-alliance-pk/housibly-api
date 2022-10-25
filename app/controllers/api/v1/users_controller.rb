@@ -66,7 +66,8 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def get_support_closers
     @support_closers_list = []
-    @support_closers = User.want_support_closer.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
+    # @support_closers = User.want_support_closer.within(15,  :origin => [@current_user.latitude,@current_user.longitude])
+   @support_closers = User.all.where(profile_type: "want_support_closer")
     puts  @support_closers
     if @support_closers.present?
       @support_closers.each do |record|

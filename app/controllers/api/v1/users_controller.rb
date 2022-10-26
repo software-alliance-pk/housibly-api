@@ -71,7 +71,7 @@ class Api::V1::UsersController < Api::V1::ApiController
     puts  @support_closers
     if @support_closers.present?
       @support_closers.each do |record|
-        if record.subscription.present? && record.subscription.status != "cancel"
+        if record.subscription.present? && record.subscription.status != "canceled"
           @support_closers_list << record
         end
       end

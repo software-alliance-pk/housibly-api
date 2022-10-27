@@ -29,7 +29,7 @@ class Api::V1::BookmarksController < Api::V1::ApiController
       @bookmarks = @current_user.bookmarks.where("type = (?)", "PropertyBookmark") if params[:keyword].downcase == "property"
       @bookmarks = @current_user.bookmarks.where("type = (?)", "UserBookmark") if params[:keyword] == "support_closers"
       if @bookmarks
-        @bookmarks
+        @property = UserPreferencesService.new.filter_bookmark_match_property(@current_user,@bookmarks)
       else
         render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
       end

@@ -22,8 +22,6 @@ class UserPreferencesService
     bed_rooms_records = Property.bed_rooms_matcher(user_preference.min_bedrooms,user_preference.max_bedrooms)
     _weight_age = _weight_age + 10 if bed_rooms_records.present?
 
-    # parking_spot_records = Property.property_parking_spot(user_preference.parking_spot,user_preference.parking_spot)
-    # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
 
     garbage_spot_records = Property.property_garage(user_preference.garbage_spot)
     _weight_age = _weight_age + 10 if garbage_spot_records.present?
@@ -31,17 +29,6 @@ class UserPreferencesService
 
     security_records = Property.property_security(user_preference.security)
     _weight_age = _weight_age + 10 if security_records.present?
-
-    # min_lot_frontage_records = Property.property_min_lot_frontage(user_preference.min_lot_frontage)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-    # min_lot_size_records = Property.property_min_lot_size(user_preference.min_lot_size,user_preference.max_lot_size)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-
-    # living_space_records = Property.property_living_space(user_preference.min_living_space,user_preference.max_living_space)
-    # _value = calculate_weightage(_weight_age,living_space_records,7)
-    # _weight_age = _value if _value.present?
 
 
     style_records = Property.property_style_matcher(user_preference.property_style)
@@ -80,21 +67,12 @@ class UserPreferencesService
     
     property_type_records = UserPreference.property_type_matcher(property.type)
     _weight_age = _weight_age + 10  if property_type_records.present?
-    
-    # parking_spot_records = UserPreference.property_parking_spot(property.total_parking_spaces)
-    # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
-    
+       
     garbage_spot_records = UserPreference.property_garage(property.garage)
     _weight_age = _weight_age + 7.5 if garbage_spot_records.present?
     
     security_records = UserPreference.property_security(property.security)
     _weight_age = _weight_age + 7.5 if security_records.present?
-
-    # min_lot_frontage_records = UserPreference.property_min_lot_frontage(property.lot_frontage)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-    # min_lot_size_records = UserPreference.property_min_lot_size(property.lot_size)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
 
     @user_preference_list = (property_type_records  + price_records + bed_rooms_records +
      bath_rooms_records + garbage_spot_records + security_records )&.uniq
@@ -120,21 +98,12 @@ class UserPreferencesService
     
     property_type_records = UserPreference.property_type_matcher(property.type)
     _weight_age = _weight_age + 10  if property_type_records.present?
-    
-    # parking_spot_records = UserPreference.property_parking_spot(property.total_parking_spaces)
-    # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
-    
+       
     garbage_spot_records = UserPreference.property_garage(property.garage)
     _weight_age = _weight_age + 7.5 if garbage_spot_records.present?
     
     security_records = UserPreference.property_security(property.security)
     _weight_age = _weight_age + 7.5 if security_records.present?
-
-    # min_lot_frontage_records = UserPreference.property_min_lot_frontage(property.lot_frontage)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-    # min_lot_size_records = UserPreference.property_min_lot_size(property.lot_size)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
 
     @user_preference_list = (property_type_records  + price_records + bed_rooms_records +
      bath_rooms_records + garbage_spot_records + security_records )&.uniq
@@ -163,21 +132,12 @@ class UserPreferencesService
     
     property_type_records = user_preference.property_type_matcher(property.type)
     _weight_age = _weight_age + 10  if property_type_records.present?
-    
-    # parking_spot_records = UserPreference.property_parking_spot(property.total_parking_spaces)
-    # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
-    
+       
     garbage_spot_records = user_preference.property_garage(property.garage)
     _weight_age = _weight_age + 7.5 if garbage_spot_records.present?
     
     security_records = user_preference.property_security(property.security)
     _weight_age = _weight_age + 7.5 if security_records.present?
-
-    # min_lot_frontage_records = UserPreference.property_min_lot_frontage(property.lot_frontage)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-    # min_lot_size_records = UserPreference.property_min_lot_size(property.lot_size)
-    # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
 
     @user_preference_list = (property_type_records  + price_records + bed_rooms_records +
      bath_rooms_records + garbage_spot_records + security_records )&.uniq
@@ -208,27 +168,12 @@ class UserPreferencesService
       bed_rooms_records = property.bed_rooms_matcher(user_preference.min_bedrooms,user_preference.max_bedrooms)
       _weight_age = _weight_age + 10 if bed_rooms_records.present?
 
-      # parking_spot_records = Property.property_parking_spot(user_preference.parking_spot,user_preference.parking_spot)
-      # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
-
       garbage_spot_records = property.property_garage(user_preference.garbage_spot)
       _weight_age = _weight_age + 10 if garbage_spot_records.present?
 
 
       security_records = property.property_security(user_preference.security)
       _weight_age = _weight_age + 10 if security_records.present?
-
-      # min_lot_frontage_records = Property.property_min_lot_frontage(user_preference.min_lot_frontage)
-      # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-      # min_lot_size_records = Property.property_min_lot_size(user_preference.min_lot_size,user_preference.max_lot_size)
-      # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-
-      # living_space_records = Property.property_living_space(user_preference.min_living_space,user_preference.max_living_space)
-      # _value = calculate_weightage(_weight_age,living_space_records,7)
-      # _weight_age = _value if _value.present?
-
 
       style_records = property.property_style_matcher(user_preference.property_style)
       _weight_age = _weight_age + 10 if style_records.present?
@@ -276,8 +221,6 @@ class UserPreferencesService
       bed_rooms_records = property.bed_rooms_matcher(user_preference.min_bedrooms,user_preference.max_bedrooms)
       _weight_age = _weight_age + 10 if bed_rooms_records.present?
 
-      # parking_spot_records = Property.property_parking_spot(user_preference.parking_spot,user_preference.parking_spot)
-      # _weight_age = _weight_age + 7.5 if parking_spot_records.present?
 
       garbage_spot_records = property.property_garage(user_preference.garbage_spot)
       _weight_age = _weight_age + 10 if garbage_spot_records.present?
@@ -285,17 +228,6 @@ class UserPreferencesService
 
       security_records = property.property_security(user_preference.security)
       _weight_age = _weight_age + 10 if security_records.present?
-
-      # min_lot_frontage_records = Property.property_min_lot_frontage(user_preference.min_lot_frontage)
-      # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-      # min_lot_size_records = Property.property_min_lot_size(user_preference.min_lot_size,user_preference.max_lot_size)
-      # _weight_age = _weight_age + 7.5 if min_lot_frontage_records.present?
-
-
-      # living_space_records = Property.property_living_space(user_preference.min_living_space,user_preference.max_living_space)
-      # _value = calculate_weightage(_weight_age,living_space_records,7)
-      # _weight_age = _value if _value.present?
 
 
       style_records = property.property_style_matcher(user_preference.property_style)
@@ -320,7 +252,7 @@ class UserPreferencesService
       end
       return @property
     else
-        @property = property = Property.where(id: property_ids)
+        @property = Property.where(id: property_ids)
       return @property
     end
   end

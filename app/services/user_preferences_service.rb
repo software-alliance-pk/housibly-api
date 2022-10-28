@@ -205,7 +205,9 @@ class UserPreferencesService
   def filter_bookmark_match_property(user,bookmarks)
     _weight_age = 0
     property_ids = bookmarks.pluck(:property_id)
+    puts "<<<<<<#{property_ids}<<<<<<<"
     property = Property.where(id: property_ids)
+    puts "<<<<<<<<<#{property}<<<<<<<<<<<"
     user_preference = user.user_preference
     if user_preference.present?
        property_type_records = property.where("properties.type ILIKE ? ", "%#{user_preference.property_type}%")

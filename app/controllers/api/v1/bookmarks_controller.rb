@@ -20,7 +20,8 @@ class Api::V1::BookmarksController < Api::V1::ApiController
   end
 
   def get_current_user_bookmark
-    @property = UserPreferencesService.new.bookmark_match_property(@current_user)
+    @bookmarks = @current_user.bookmarks
+    # @property = UserPreferencesService.new.bookmark_match_property(@current_user)
   end
 
   def filter_bookmarks
@@ -28,10 +29,9 @@ class Api::V1::BookmarksController < Api::V1::ApiController
       @bookmarks = @current_user.bookmarks if params[:keyword].downcase == "all"
       @bookmarks = @current_user.bookmarks.where("type = (?)", "PropertyBookmark") if params[:keyword].downcase == "property"
       @bookmarks = @current_user.bookmarks.where("type = (?)", "UserBookmark") if params[:keyword] == "support_closers"
-      if @bookmarks
-        @property = UserPreferencesService.new.filter_bookmark_match_property(@current_user,@bookmarks)
-        # property_ids = @property.pluck(:id)
-        # @bookmarks = Bookmark.where(property_id: property_ids)
+      if @bookmarks.present?
+        @user_type = params[:keyword] == "support_closers" ? "user" : "property"
+        @bookmarks = Bookmark.where(property_id: property_ids)
       else
         render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
       end

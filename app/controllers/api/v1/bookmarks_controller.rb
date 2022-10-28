@@ -30,8 +30,9 @@ class Api::V1::BookmarksController < Api::V1::ApiController
       @bookmarks = @current_user.bookmarks.where("type = (?)", "PropertyBookmark") if params[:keyword].downcase == "property"
       @bookmarks = @current_user.bookmarks.where("type = (?)", "UserBookmark") if params[:keyword] == "support_closers"
       if @bookmarks.present?
-        @user_type = params[:keyword] == "support_closers" ? "user" : "property"
-        @bookmarks = Bookmark.where(property_id: property_ids)
+        @bookmarks
+        # @user_type = params[:keyword] == "support_closers" ? "user" : "property"
+        # @bookmarks = Bookmark.where(property_id: property_ids)
       else
         render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
       end

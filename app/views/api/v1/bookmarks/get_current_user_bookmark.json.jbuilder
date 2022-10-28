@@ -148,3 +148,5 @@ json.properties @bookmarks do |bookmark|
       json.id image.id
       json.url image&.url rescue  ""
     end
+  end
+end

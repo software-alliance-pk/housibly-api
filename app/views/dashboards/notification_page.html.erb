@@ -16,7 +16,7 @@
                 <div class="text">
                   <h6 class="mb-0"><%= nft.action %></h6>
                   <p></p>
-                  <% if nft.recipient.want_support_closer? %>
+                  <% if nft&.recipient&.want_support_closer? %>
                     <h6><%= link_to 'See Notification', support_closers_path(id: nft.id) %></h6>
                   <% else %>
                     <h6><%= link_to 'See Notification', dashboards_path(id: nft.id) %></h6>
@@ -39,7 +39,7 @@
                 <div class="text">
                   <h6 class="mb-0"><%= nft.action %></h6>
                   <p></p>
-                  <% if nft.recipient.want_support_closer? %>
+                  <% if nft&.recipient&.want_support_closer? %>
                     <h6><%= link_to 'See Notification', support_closers_path(id: nft.id) %></h6>
                   <% else %>
                     <h6><%= link_to 'See Notification', users_lists_path(id: nft.id) %></h6>

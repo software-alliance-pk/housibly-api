@@ -39,7 +39,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # config.active_storage.service = :local
-  config.active_storage.service = :cloudinary
+  config.active_storage.service = :amazon
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
@@ -131,7 +131,6 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.action_cable.disable_request_forgery_protection = true
-  #config.action_cable.url = 'wss://housibly.herokuapp.com/cable'
-  config.action_cable.url = 'wss://demohousibly.herokuapp.com/cable'
+  config.action_cable.url = 'wss://hou-sibly.herokuapp.com/cable'
   config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
 end

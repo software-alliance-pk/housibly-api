@@ -7,6 +7,7 @@ gem 'jwt'
 gem 'bcrypt'
 gem 'activestorage'
 gem 'cloudinary'
+gem "aws-sdk-s3", require: false
 gem 'twilio-ruby'
 gem 'stripe'
 gem 'pg_search'

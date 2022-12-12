@@ -131,6 +131,6 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.action_cable.disable_request_forgery_protection = true
-  config.action_cable.url = 'wss://hou-sibly.herokuapp.com/cable'
+  config.action_cable.url = 'ws://hou-sibly.herokuapp.com/cable'
   config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
 end

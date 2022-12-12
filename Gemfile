@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.0'
+gem 'rack-cors'
 # For Login/Signup
 gem 'jwt'
 gem 'bcrypt'

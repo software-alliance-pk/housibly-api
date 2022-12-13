@@ -1,9 +1,6 @@
 class StripeService
   require 'stripe'
-  # Stripe.api_key = Rails.application.credentials.stripe[:api_key] if Rails.env.development?
-  Stripe.api_key ="sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h"
-  Stripe.api_key = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h' if Rails.env.production?
-
+  Stripe.api_key  = ENV["STRIPE_API_KEY"]
   def self.create_customer(name, email)
     response = Stripe::Customer.create(
       {

@@ -1,5 +1,5 @@
 class Api::V1::PaymentsController < Api::V1::ApiController
-  Stripe.api_key = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h'
+  Stripe.api_key = ENV["STRIPE_API_KEY"]
   before_action :find_card, only: [:get_card, :destroy_card, :update_card, :set_default_card]
 
   def create

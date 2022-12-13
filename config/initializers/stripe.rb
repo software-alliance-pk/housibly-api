@@ -16,6 +16,8 @@ StripeEvent.configure do |events|
       PackageCreateJob.perform_now(event)
     when 'price.created'
       PackagePriceAddedJob.perform_now(event)
+    when 'price.updated'
+      PackagePriceUpdatedJob.perform_now(event)
     else
       puts "Unhandled event type: #{event.type}"
     end

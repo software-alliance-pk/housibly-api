@@ -1,6 +1,6 @@
 
 class LocationFinderService
-  Geokit::Geocoders::GoogleGeocoder.api_key = "AIzaSyBq3-UEY9QO9X45s8w54-mrwjBQekzDlsA"
+  Geokit::Geocoders::GoogleGeocoder.api_key = ENV["MAP_API_KEY"]
 
   def self.get_location_attributes(address)
     location = Geokit::Geocoders::GoogleGeocoder.geocode(address)

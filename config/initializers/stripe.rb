@@ -1,7 +1,6 @@
 require 'stripe'
-Stripe.api_key             = 'sk_test_51Lf25xJxAUizx0q5nlLODfQpgzjCZox9nBzMEGUc3hzSW4ywx7GOU69fuA0FyJ30GSyhIkGFX1RadDP4NuAyqc8B00xyKRAs2h'     # e.g. sk_live_...
-StripeEvent.signing_secret = 'whsec_Kb3doZ49Nq5EPcbipWGqmWVkPaApJ1dh' if Rails.env.development?
-StripeEvent.signing_secret = 'whsec_qzzu8ubKmmY1Mx3qaQbFdJJ5CeATMO8A' if Rails.env.production?
+Stripe.api_key = ENV["STRIPE_API_KEY"]
+StripeEvent.signing_secret = ENV['SIGNING_SECRET']
 StripeEvent.configure do |events|
   events.all do |event|
     case event.type

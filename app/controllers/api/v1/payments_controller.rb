@@ -38,6 +38,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def create_subscription
+    begin
     @package = Package.find_by(id: params[:package_id])
     if @package.present?
       if @current_user.card_infos.present?
@@ -71,6 +72,9 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       end
     else
       render json: {message: "Subscription not done"}, status: :unprocessable_entity
+    end
+    rescue Exception => e
+      render json: {message: e.message}, status: :unprocessable_entity
     end
   end
   def get_subscription

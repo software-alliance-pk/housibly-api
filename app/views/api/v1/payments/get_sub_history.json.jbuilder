@@ -10,4 +10,4 @@ json.price @subscriptions.price
 json.payment_nature @subscriptions.payment_nature
 json.payment_currency @subscriptions.payment_currency
 json.sub_type @subscriptions.sub_type
-json.subscription_id @user.subscription_id
+json.subscription_id @subscriptions.subscription_id

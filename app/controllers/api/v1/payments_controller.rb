@@ -71,7 +71,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
         render json: {message: "Please Add the Card first"}, status: :unprocessable_entity
       end
     else
-      render json: {message: "Subscription not done"}, status: :unprocessable_entity
+      render json: {message: "This Package is not avaiable now."}, status: :unprocessable_entity
     end
     rescue Exception => e
       render json: {message: e.message}, status: :unprocessable_entity

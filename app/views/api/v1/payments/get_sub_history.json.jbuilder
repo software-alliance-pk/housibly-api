@@ -1,6 +1,6 @@
 json.cancel_by_user @subscriptions.cancel_by_user
-json.current_period_end @subscriptions.current_period_end
-json.current_period_start @subscriptions.current_period_start
+json.current_period_end @subscriptions.current_period_end.to_datetime.strftime("%B %d,%Y")
+json.current_period_start @subscriptions.current_period_start.to_datetime.strftime("%B %d,%Y")
 json.plan_title @subscriptions.plan_title
 json.interval_count @subscriptions.interval_count
 json.interval @subscriptions.interval

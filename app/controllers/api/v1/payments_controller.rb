@@ -82,14 +82,15 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     end
   end
   def get_sub_history
-    subscriptions = @current_user.subscription
-    if subscriptions.present?
-      render json: {subscription: subscriptions},status: :ok
+    @subscriptions = @current_user.subscription
+    if @subscriptions.present?
+      @subscriptions
     else
      render json: {subscription: "false"},status: :ok
     end
   end
   def cancel_subscription
+    return render json: { error: "Please provide subscription id"},status: :unprocessable_entity unless params[:subscription_id].present?
     subscription = Stripe::Subscription.delete(
     params[:subscription_id],
     )

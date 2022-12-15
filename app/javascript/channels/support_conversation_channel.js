@@ -13,6 +13,8 @@ $(document).ready(function(){
     },
 
     received(data) {
+      $("#submitaddphoto").val('');
+      $("#submitaddfile").val('');
       console.log(data)
       if(data.body.support_conversation_id== chat_id)
       {

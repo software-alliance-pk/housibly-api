@@ -13,8 +13,11 @@ $(document).ready(function(){
     },
 
     received(data) {
-      $("#submitaddphoto").val(null);
-      $("#submitaddfile").val(null);
+      const img = document.getElementById('submitaddphoto');
+      img.setAttribute('src', '');
+      //
+      // $("#submitaddphoto");
+      // $("#submitaddfile").val(null);
       console.log(data)
       if(data.body.support_conversation_id== chat_id)
       {

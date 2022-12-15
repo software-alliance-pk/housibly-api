@@ -13,7 +13,7 @@ $(document).ready(function(){
     },
 
     received(data) {
-      $("#filter_form").trigger("reset");
+      $("#filter_form")[0].reset();
       console.log(data)
       if(data.body.support_conversation_id== chat_id)
       {

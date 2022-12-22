@@ -34,7 +34,7 @@
                     <div class="chat_blk <%= record == @message ? 'active-bg' : "" %>">
                       <div class="chat_blk_left">
                         <div class="profile_blk">
-                          <%= image_tag record&.sender&.avatar&.url, alt: "" %>
+                          <%= image_tag record&.sender&.avatar&.attached? ? record&.sender&.avatar&.url : "", alt: "" %>
                         </div>
                         <div class="profile_name">
                           <p class="<%= record == @message ? 'active_heading_color' : '' %>"><%= record.sender.full_name %></p>
@@ -60,7 +60,7 @@
                     <div class="chat_blk <%= record == @message ? 'active-bg' : '' %>">
                       <div class="chat_blk_left">
                         <div class="profile_blk">
-                          <%= image_tag record&.sender&.avatar&.url, alt: "" %>
+                          <%= image_tag record&.sender&.attached? ? record&.sender&.avatar&.url : '', alt: "" %>
                         </div>
                         <div class="profile_name">
                           <p class="<%= record == @message ? 'active_heading_color' : '' %>"><%= record.sender.full_name %></p>

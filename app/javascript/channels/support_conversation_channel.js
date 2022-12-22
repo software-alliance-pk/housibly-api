@@ -15,15 +15,10 @@ $(document).ready(function(){
     received(data) {
       const img = document.getElementById('submitaddphoto');
       img.setAttribute('src', '');
-      //
-      // $("#submitaddphoto");
-      // $("#submitaddfile").val(null);
-      console.log(data)
       if(data.body.support_conversation_id== chat_id)
       {
         data = data.body;
         var aDay = 24 * 60 * 60 * 1000;
-        console.log(data);
         if (data.recipient_id == data.user_id) {
         } else {
           $(".chat_msg").append(
@@ -46,6 +41,8 @@ $(document).ready(function(){
 
         }
       }
+      $("#submitaddphoto").reset();
+      $("#submitaddfile").reset();
       $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
     }
   });

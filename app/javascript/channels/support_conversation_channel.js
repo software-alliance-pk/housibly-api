@@ -41,9 +41,9 @@ $(document).ready(function(){
 
         }
       }
-      $("#submitaddphoto").reset();
-      $("#submitaddfile").reset();
       $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+      $("#submitaddphoto").val("");
+      $("#submitaddfile").val("");
     }
   });
 

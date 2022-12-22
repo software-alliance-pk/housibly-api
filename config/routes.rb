@@ -77,10 +77,10 @@ end
     namespace :v1 do
       resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property] do
         collection do
-          get 'matching_property'
-          get 'matching_dream_address'
-          post 'get_property'
-          post 'user_detail'
+          get :matching_property
+          get :matching_dream_address
+          post :get_property
+          post :user_detail
         end
       end
       resources :dream_addresses do

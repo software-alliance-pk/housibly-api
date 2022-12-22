@@ -8,11 +8,7 @@
     <div class="profile_banner">
       <div class="inner text-center">
         <div class="ico fill round">
-          <%begin%>
-            <%= image_tag @user&.avatar&.url, alt: "No image provided" %>
-          <%rescue%>
-            <%=image_tag "#" %>
-          <%end%>
+            <%= image_tag @user&.avatar&.attached? ? @user&.avatar&.url : "#", alt: "No image provided" %>
         </div>
         <div class="txt">
           <h5><%= @user&.full_name %></h5>

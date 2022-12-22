@@ -86,7 +86,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         render json: { message: "Any property does not match" }, status: :unprocessable_entity
       end
     else
-      render json: [],status: :not_found
+      render json: [],status: :unprocessable_entity
     end
   end
 

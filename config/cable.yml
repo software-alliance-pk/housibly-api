@@ -6,7 +6,7 @@ test:
 
 production:
   adapter: redis
-  url: rediss://:pe780a0f2b5f534a50d9cd2315631a0812d0479e666fd08f98be4a3c7461eb7d4@ec2-54-91-5-227.compute-1.amazonaws.com:16219
+  url: rediss://:pe780a0f2b5f534a50d9cd2315631a0812d0479e666fd08f98be4a3c7461eb7d4@ec2-3-208-84-188.compute-1.amazonaws.com:26099
   channel_prefix: housibly_backend_production
   ssl_params:
     verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>

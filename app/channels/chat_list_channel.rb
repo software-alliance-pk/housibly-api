@@ -1,6 +1,6 @@
 class ChatListChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "user_chat_list_#{current_user.id}"
+    stream_from "user_chat_list_#{current_user.id}" if current_user.present?
   end
   def receive(data)
     #did for testing
@@ -12,6 +12,6 @@ class ChatListChannel < ApplicationCable::Channel
     end
   end
   def unsubscribed
-    stop_stream_from "user_chat_list_#{current_user.id}"
+    stop_stream_from "user_chat_list_#{current_user.id}" if current_user.present?
   end
 end

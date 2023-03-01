@@ -12,6 +12,6 @@ class ChatListChannel < ApplicationCable::Channel
     end
   end
   def unsubscribed
-    stop_stream_from "user_chat_list__#{current_user.id}"
+    stop_stream_from "user_chat_list_#{current_user.id}"
   end
 end

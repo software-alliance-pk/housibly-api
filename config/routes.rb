@@ -93,6 +93,7 @@ end
         end
       end
       post '/signup', to: 'registrations#create'
+      post '/destroy_user', to: 'registrations#destroy_user'
       post '/login', to: 'sessions#login'
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
       post '/forgot_password/phone', to: 'forgot_password#forgot_password_through_phone'

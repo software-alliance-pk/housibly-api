@@ -97,6 +97,14 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     end
   end
 
+  def destroy_user
+    return render json: { message: "Params are invalid" }, status: :unprocessable_entity unless params[:user].present?
+
+    return render json: { message: "User not found" }, status: :bad_request unless (@user = User.find_by(id: params[:user][:user_id]))
+
+    render json: { message: "User Successfully deleted" }, status: :ok if @user.destroy
+  end
+
   private
   def social_login_params
     params.require(:user).

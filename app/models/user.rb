@@ -13,7 +13,7 @@ class User < ApplicationRecord
                    :lat_column_name => :latitude,
                    :lng_column_name => :longitude
   has_secure_password
-  has_many :user_search_addresses
+  has_many :user_search_addresses,dependent: :destroy
   has_one :subscription,dependent: :destroy
   has_one :user_setting, dependent: :destroy
   has_many :subscription_histories,dependent: :destroy
@@ -24,8 +24,8 @@ class User < ApplicationRecord
   has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
   has_many :messages, dependent: :destroy
   has_many :user_support_messages, dependent: :destroy,foreign_key: :sender_id
-  has_many :notifications, foreign_key: :recipient_id, class_name: "Notification"
-  has_many :notifications, foreign_key: :actor_id, class_name: 'Notification'
+  has_many :notifications, foreign_key: :recipient_id, class_name: "Notification",dependent: :destroy
+  has_many :notifications, foreign_key: :actor_id, class_name: 'Notification',dependent: :destroy
   has_many :support_closer_reviews, class_name: "Review",dependent: :destroy,foreign_key: :support_closer_id
   has_many :reportings, dependent: :destroy, foreign_key: :user_id
   has_many :user_reports, class_name: "Reporting", dependent: :destroy, foreign_key: :reported_user_id

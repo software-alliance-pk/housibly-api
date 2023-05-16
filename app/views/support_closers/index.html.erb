@@ -77,7 +77,9 @@
                   <div class="d-flex align-items-center">
                     <input type="checkbox" name="selected_checkbox" class="me-3" id="<%= record.id%>">
                     <div class="img_blk">
+                     <% if record.avatar %>
                       <%= image_tag record&.avatar&.url %>
+                      <% end %>
                     </div>
                   </div>
                 </td>

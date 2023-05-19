@@ -49,6 +49,7 @@ def create_message
 	        data["created_at"] = @message.created_at
 	        data["updated_at"] = @message.updated_at
 	        data["image"] = @message&.image&.url
+          data["file"] = @message&.file&.url
 	        data["user_profile"] = @message&.user&.avatar&.url
 	        ActionCable.server.broadcast "support_conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
 		else
@@ -66,7 +67,7 @@ def create_message
   end
   private
 	def message_params
-		params.require(:message).permit(:body, :image)
+		params.require(:message).permit(:body, :image, :file)
 	end
 end
 

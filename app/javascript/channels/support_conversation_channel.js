@@ -13,6 +13,7 @@ $(document).ready(function(){
     },
 
     received(data) {
+      debugger
       const img = document.getElementById('submitaddphoto');
       img.setAttribute('src', '');
       if(data.body.support_conversation_id== chat_id)
@@ -32,6 +33,11 @@ $(document).ready(function(){
               '<div class="msg">' +
               '<p>' + data.body + '</p>' +
               (data.image !== null ? "<img src="+data.image+">" : '') +
+
+              (data.file !== '' ? '<div class="attch_blk">' +
+              '<div class="img w-100">' + "<iframe src=" + data.file + "></iframe>" + '</div>' +
+              '</div>' : "") +
+              
               '</div>' +
               '<p class="msg_time mt-2">' + timeSince(new Date(Date.now())) + '</p>' +
               '</div>' +

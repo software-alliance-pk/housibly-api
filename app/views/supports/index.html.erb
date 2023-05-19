@@ -159,7 +159,7 @@
         </div>
         <hr>
         <div class="msg_blk">
-          <%= form_with(url: supports_path, :id => 'filter_form', local: false, method: :post) do |f| %>
+          <%= form_with(url: supports_path, :id => 'filter_form', local: false, method: :post, class: "w-100") do |f| %>
             <%= hidden_field_tag :id, @message&.id %>
             <div class="d-flex">
               <div class="msg_type">
@@ -178,7 +178,7 @@
                   <%= f.text_field :text, class: 'input', id: "typemessage", placeholder: "Write your message here" %>
                 </div>
               </div>
-              <button type="submit">
+              <button type="submit" id="send_btn">
                 <%= image_tag "sendMessage.svg", alt: "send message" %>
               </button>
             </div>
@@ -195,4 +195,13 @@
   $(document).on('load',function (){
       $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
   });
+  
+  $("#send_btn").on("click", function(e){
+    let text = $('#typemessage').val();
+    text = text.trim();
+		if (($('#typemessage').val() == '' || text == '') && $('#submitaddphoto').val() == '' && $('#submitaddfile').val() == ''){
+      e.preventDefault();
+      return false;
+		}
+	})
 </script>

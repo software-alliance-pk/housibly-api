@@ -37,6 +37,7 @@ class SupportsController < ApplicationController
 
   def get_specific_chat
     @message = SupportConversation.find_by(id: params["id"])
+    @message.support_messages.update(read_status: true) if @message.support_messages.present?
     render 'index'
   end
 

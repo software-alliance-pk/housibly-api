@@ -126,6 +126,9 @@
                       <% if record&.image.attached? %>
                         <%= image_tag record&.image&.url, alt: "" %>
                       <% end %>
+                      <% if record&.file.attached? %>
+                        <%= image_tag record&.file&.url, alt: "" %>
+                      <% end %>
                     </div>
                     <p class="msg_time mt-2"><%= time_ago_in_words(record.created_at) %></p>
                   </div>
@@ -165,7 +168,9 @@
               <div class="msg_type">
                 <div class="icon_blk">
                   <%= image_tag "attactFile.svg", alt: "attachFile", id: "clickaddfile" %>
-                  <%= f.file_field :file, accept: 'application/pdf,application/vnd.ms-excel', id: "submitaddfile", style: "opacity:0" %>
+                  <%#= f.file_field :file, accept: 'application/pdf,application/vnd.ms-excel', id: "submitaddfile", style: "opacity:0" %>
+                  <%= f.file_field :file, accept: "image/png, image/gif, image/jpeg", id: "submitaddfile", style: "opacity:0" %>
+
                 </div>
                 <div class="icon_blk">
                   <%= image_tag "emoji.svg", alt: "icons" %>

@@ -13,15 +13,15 @@ $(document).ready(function(){
     },
 
     received(data) {
-      debugger
-      const img = document.getElementById('submitaddphoto');
-      img.setAttribute('src', '');
+      // const img = document.getElementById('submitaddphoto');
+      // img.setAttribute('src', '');
       if(data.body.support_conversation_id== chat_id)
       {
         data = data.body;
         var aDay = 24 * 60 * 60 * 1000;
         if (data.recipient_id == data.user_id) {
         } else {
+
           $(".chat_msg").append(
               '<div class="user_msg">' +
               '<div class="profile_pic">' +
@@ -33,23 +33,18 @@ $(document).ready(function(){
               '<div class="msg">' +
               '<p>' + data.body + '</p>' +
               (data.image !== null ? "<img src="+data.image+">" : '') +
-
-              (data.file !== '' ? '<div class="attch_blk">' +
-              '<div class="img w-100">' + "<iframe src=" + data.file + "></iframe>" + '</div>' +
-              '</div>' : "") +
-              
               '</div>' +
               '<p class="msg_time mt-2">' + timeSince(new Date(Date.now())) + '</p>' +
               '</div>' +
               '</div>'
           );
 
-
         }
       }
       $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
-      $("#submitaddphoto").val("");
+      $("#typemessage").val('');
       $("#submitaddfile").val("");
+      $("#submitaddphoto").val("");
     }
   });
 

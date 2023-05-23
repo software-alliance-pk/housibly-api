@@ -32,6 +32,8 @@ class Api::V1::SupportConversationsController < Api::V1::ApiController
 
 
 def create_message
+    render json: { error: "Params are missing." }, status: :unprocessable_entity and return if !params[:message].present?
+    render json: { error: "Message body and Image both are not present." }, status: :unprocessable_entity and return if !params[:message][:body].present? && !params[:message][:image].present?
     going_to_recover = false
 		@conversation = SupportConversation.find_by(id: params[:support_conversation_id]) rescue nil
     going_to_recover = true unless @conversation.present?
@@ -42,15 +44,14 @@ def create_message
 		    data = {}
 	        data["id"] = @message.id
 	        data["support_conversation_id"] = @message.support_conversation_id
-	        data["body"] = @message.body
+	        data["body"] = @message.body.present? ? @message.body : ""
 	        data["user_id"] = @message.sender_id
 	        data["sender_id"] = @message.support_conversation.sender.id
 	        data["recipient_id"] = Admin.admin.first
 	        data["created_at"] = @message.created_at
 	        data["updated_at"] = @message.updated_at
 	        data["image"] = @message&.image&.url
-          data["file"] = @message&.file&.url
-	        data["user_profile"] = @message&.user&.avatar&.url
+	        data["user_profile"] = @message&.user&.avatar&.url.present? ? @message&.user&.avatar&.url : ''
 	        ActionCable.server.broadcast "support_conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
 		else
 			render_error_messages(@message)
@@ -67,7 +68,7 @@ def create_message
   end
   private
 	def message_params
-		params.require(:message).permit(:body, :image, :file)
+		params.require(:message).permit(:body, :image)
 	end
 end
 

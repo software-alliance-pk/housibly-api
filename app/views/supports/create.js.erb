@@ -1,10 +1,10 @@
-$("#typemessage").val("");
 $(".chat_msg").append(
     '<div class="support_msg">'+
     '<div class="d-flex flex-column">'+
     '<div class="msg">'+
     '<p><%= @conversation.body %></p>'+
     '<img src="<%= @conversation.image.attached? ?  @conversation.image.url : "" %>"/>'+
+    '<img src="<%= @conversation.file.attached? ?  @conversation.file.url : "" %>"/>'+
     '</div>'+
     '<p class="msg_time mt-2"><%= time_ago_in_words(@conversation.created_at) %></p>'+
     '</div>'+
@@ -16,3 +16,6 @@ $(".chat_msg").append(
     '</div>'
 );
 $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+$("#typemessage").val('');
+$("#submitaddfile").val('')
+$("#submitaddphoto").val('');

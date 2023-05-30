@@ -26,12 +26,23 @@ class PolygonSearchService
     # new logic
     cordinates_array = eval(polygon)
     if cordinates_array.present?
-      coordinates = cordinates_array.map { |location| [location[:latitude], location[:longitude]] }
-      _property_list = []
-      coordinates.each do |point|
-        objects = Property.near(point, 1, units: :km)
-        _property_list.concat(objects)
-      end
+      latitudes = cordinates_array.map { |location| location[:latitude] }
+      longitudes = cordinates_array.map { |location| location[:longitude] }
+      max_lat = latitudes.max
+      min_lat = latitudes.min
+      max_long = longitudes.max
+      min_long = longitudes.min
+
+      sw_corner = [min_lat, min_long]
+      ne_corner = [max_lat, max_long]
+      _property_list = Property.in_bounds([sw_corner, ne_corner])
+
+      # debugger
+      # _property_list = []
+      # coordinates.each do |point|
+      #   objects = Property.near(point, 1, units: :km)
+      #   _property_list.concat(objects)
+      # end
 
       if _property_list.present?
         _property_list.each do |property|

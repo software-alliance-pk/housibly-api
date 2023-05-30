@@ -53,13 +53,15 @@ class PolygonSearchService
 
       latitude = address[:latitude]
       longitude = address[:longitude]
-      @properties = Property.where(latitude: latitude, longitude: longitude)
+      # @properties = Property.where(latitude: latitude, longitude: longitude)
+      @properties = Property.near([latitude, longitude], 1, units: :km)
+
       # unless property == nil
       #   @properties << property
       # end
     end
     # @properties = Property.where(id: @properties.map(&:id))
-    user_prefernce = UserPreference.where(user_id: @properties.pluck(:user_id).uniq)
+    user_prefernce = UserPreference.where(user_id: @properties.reorder('').pluck(:user_id).uniq)
     user_prefernce.each do |user_preference|
       user_prefernce.weight_age = "100"
       @user_prefernce << user_prefernce
@@ -72,12 +74,14 @@ class PolygonSearchService
       # res = LocationFinderService.get_location_attributes_by_reverse([dream_address.latitude, dream_address.longitude])
       # property = Property.find_by("(city ILIKE ? AND country ILIKE ?) OR (address ILIKE ?)", "%#{res[:city]}%", "%#{res[:country]}%", "%#{res[:address]}%")
 
-      @properties = Property.where(latitude: dream_address.latitude, longitude: dream_address.longitude)
+      # @properties = Property.where(latitude: dream_address.latitude, longitude: dream_address.longitude)
+      @properties = Property.near([dream_address.latitude, dream_address.longitude], 1, units: :km)
+
       # unless property == nil
       #   @properties << property
       # end
     end
-    user_prefernce = UserPreference.where(user_id: @properties.pluck(:user_id).uniq)
+    user_prefernce = UserPreference.where(user_id: @properties.reorder('').pluck(:user_id).uniq)
     user_prefernce.each do |user_preference|
       user_prefernce.weight_age = "100"
       @user_prefernce << user_prefernce

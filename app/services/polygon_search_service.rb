@@ -25,10 +25,14 @@ class PolygonSearchService
 
     # new logic
     cordinates_array = eval(polygon)
-    latitudes = cordinates_array.map { |location| location[:latitude] }
-    longitudes = cordinates_array.map { |location| location[:longitude] }
-    _property_list = Property.where(latitude: latitudes, longitude: longitudes)
-      
+    if cordinates_array.present?
+      coordinates = cordinates_array.map { |location| [location[:latitude], location[:longitude]] }
+      _property_list = []
+      coordinates.each do |point|
+        objects = Property.near(point, 1, units: :km)
+        _property_list.concat(objects)
+      end
+
       if _property_list.present?
         _property_list.each do |property|
           property.weight_age = "100"
@@ -37,7 +41,8 @@ class PolygonSearchService
       else
         @property = []
       end
-    return @property
+      return @property
+    end
   end
 
   def search_user(polygon)

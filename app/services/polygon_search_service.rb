@@ -64,8 +64,8 @@ class PolygonSearchService
 
       latitude = address[:latitude]
       longitude = address[:longitude]
-      # @properties = Property.where(latitude: latitude, longitude: longitude)
-      @properties = Property.near([latitude, longitude], 1, units: :km)
+      @properties = Property.where(latitude: latitude, longitude: longitude)
+      # @properties = Property.near([latitude, longitude], 1, units: :km)
 
       # unless property == nil
       #   @properties << property
@@ -85,8 +85,8 @@ class PolygonSearchService
       # res = LocationFinderService.get_location_attributes_by_reverse([dream_address.latitude, dream_address.longitude])
       # property = Property.find_by("(city ILIKE ? AND country ILIKE ?) OR (address ILIKE ?)", "%#{res[:city]}%", "%#{res[:country]}%", "%#{res[:address]}%")
 
-      # @properties = Property.where(latitude: dream_address.latitude, longitude: dream_address.longitude)
-      @properties = Property.near([dream_address.latitude, dream_address.longitude], 1, units: :km)
+      @properties = Property.where(latitude: dream_address.latitude, longitude: dream_address.longitude)
+      # @properties = Property.near([dream_address.latitude, dream_address.longitude], 1, units: :km)
 
       # unless property == nil
       #   @properties << property

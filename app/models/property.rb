@@ -2,7 +2,10 @@ class Property < ApplicationRecord
   after_commit :add_the_lnt_and_lng_property, on: :create
   before_validation :create_balcony,:create_laundry,:create_security
   include PgSearch::Model
-  reverse_geocoded_by :latitude, :longitude
+  # reverse_geocoded_by :latitude, :longitude
+  acts_as_mappable :default_units => :kms,
+                   :lat_column_name => :latitude,
+                   :lng_column_name => :longitude
 
   scope :price_matcher, ->(min_price,max_price){ where("price between (?) and (?)",min_price,max_price)}
   scope :bath_rooms_matcher, ->(min_bath_room,max_bath_room){ where("bath_rooms between (?) and (?)",min_bath_room,max_bath_room)}

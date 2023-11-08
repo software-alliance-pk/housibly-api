@@ -1,0 +1,15 @@
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+/root/.rbenv/versions/3.0.6/bin/ruby -I /root/.rbenv/versions/3.0.6/lib/ruby/3.0.0 -r ./siteconf20231010-61607-uvv39n.rb extconf.rb
+creating Makefile
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\= clean
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\=
+compiling websocket_mask.c
+linking shared-object websocket_mask.so
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20231010-61607-svaemy

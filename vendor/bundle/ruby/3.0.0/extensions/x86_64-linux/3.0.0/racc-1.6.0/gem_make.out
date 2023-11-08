@@ -1,0 +1,17 @@
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/racc-1.6.0/ext/racc/cparse
+/root/.rbenv/versions/3.0.6/bin/ruby -I /root/.rbenv/versions/3.0.6/lib/ruby/3.0.0 -r ./siteconf20231010-61607-1uzgr.rb extconf.rb
+checking for rb_block_call()... yes
+checking for rb_ary_subseq()... yes
+creating Makefile
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/racc-1.6.0/ext/racc/cparse
+make DESTDIR\= clean
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/racc-1.6.0/ext/racc/cparse
+make DESTDIR\=
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/racc-1.6.0/ext/racc/cparse
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20231010-61607-erajor/racc

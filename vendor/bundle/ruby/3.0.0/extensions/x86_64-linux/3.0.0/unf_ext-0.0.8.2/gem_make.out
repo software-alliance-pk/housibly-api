@@ -1,0 +1,16 @@
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+/root/.rbenv/versions/3.0.6/bin/ruby -I /root/.rbenv/versions/3.0.6/lib/ruby/3.0.0 -r ./siteconf20231010-61607-pn1edc.rb extconf.rb
+checking for -lstdc++... yes
+creating Makefile
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+make DESTDIR\= clean
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+make DESTDIR\=
+compiling unf.cc
+linking shared-object unf_ext.so
+
+current directory: /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/unf_ext-0.0.8.2/ext/unf_ext
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 unf_ext.so ./.gem.20231010-61607-4kb2uy

@@ -1,9 +1,11 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.0'
+ruby '3.0.6'
 gem 'rack-cors'
 # For Login/Signup
+gem 'dotenv-rails', '2.8.1', require: 'dotenv/rails-now'
+
 gem 'jwt'
 gem 'bcrypt'
 gem 'activestorage'

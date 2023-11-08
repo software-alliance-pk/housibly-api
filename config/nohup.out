@@ -1,0 +1,48 @@
+=> Booting Puma
+=> Rails 6.1.7 application starting in production 
+=> Run `bin/rails server --help` for more startup options
+W, [2023-11-07T10:55:12.955214 #263003]  WARN -- : Creating scope :with_attached_file. Overwriting existing method AdminSupportMessage.with_attached_file.
+W, [2023-11-07T10:55:12.956156 #263003]  WARN -- : Creating scope :with_attached_image. Overwriting existing method AdminSupportMessage.with_attached_image.
+W, [2023-11-07T10:55:13.010565 #263003]  WARN -- : Creating scope :with_attached_image. Overwriting existing method UserSupportMessage.with_attached_image.
+Puma starting in single mode...
+* Puma version: 5.6.5 (ruby 3.0.6-p216) ("Birdie's Version")
+*  Min threads: 5
+*  Max threads: 5
+*  Environment: production
+*          PID: 263003
+* Listening on http://0.0.0.0:3000
+Use Ctrl-C to stop
+I, [2023-11-07T10:55:17.492492 #263003]  INFO -- : [793e2f67-f0be-4f22-ac8d-c9ec5df2eb3d] Started GET "/" for 122.129.76.60 at 2023-11-07 10:55:17 +0000
+I, [2023-11-07T10:55:17.498792 #263003]  INFO -- : [793e2f67-f0be-4f22-ac8d-c9ec5df2eb3d] Processing by DashboardsController#index as HTML
+I, [2023-11-07T10:55:22.032123 #263003]  INFO -- : [793e2f67-f0be-4f22-ac8d-c9ec5df2eb3d]   Rendered dashboards/index.html.erb within layouts/application (Duration: 1479.9ms | Allocations: 13393)
+I, [2023-11-07T10:55:22.036430 #263003]  INFO -- : [793e2f67-f0be-4f22-ac8d-c9ec5df2eb3d]   Rendered layout layouts/application.html.erb (Duration: 1484.2ms | Allocations: 14294)
+I, [2023-11-07T10:55:22.036840 #263003]  INFO -- : [793e2f67-f0be-4f22-ac8d-c9ec5df2eb3d] Completed 200 OK in 4538ms (Views: 148.4ms | ActiveRecord: 3119.8ms | Allocations: 32710)
+I, [2023-11-07T10:55:23.904791 #263003]  INFO -- : [e19ef5d4-b789-48a2-8806-85a5c2b8faf3] Started GET "/assets/vector-arrow-down.svg" for 122.129.76.60 at 2023-11-07 10:55:23 +0000
+I, [2023-11-07T10:55:23.907968 #263003]  INFO -- : [14c96967-b331-4dee-b7be-787944a3a221] Started GET "/assets/vector-user.svg" for 122.129.76.60 at 2023-11-07 10:55:23 +0000
+I, [2023-11-07T10:55:24.829029 #263003]  INFO -- : [c9f6fd54-974b-4428-ae98-f4d33e0d9c94] Started GET "/assets/vector-home.svg" for 122.129.76.60 at 2023-11-07 10:55:24 +0000
+I, [2023-11-07T10:55:25.064132 #263003]  INFO -- : [d546bd3c-8559-4736-82f2-42b3f5b227e1] Started GET "/assets/vector-plants.svg" for 122.129.76.60 at 2023-11-07 10:55:25 +0000
+I, [2023-11-07T10:55:25.963932 #263003]  INFO -- : [49d07201-56fd-4350-9ff3-6b4fac4c5fdb] Started GET "/cable" for 122.129.76.60 at 2023-11-07 10:55:25 +0000
+I, [2023-11-07T10:55:25.969285 #263003]  INFO -- : [49d07201-56fd-4350-9ff3-6b4fac4c5fdb] Started GET "/cable/" [WebSocket] for 122.129.76.60 at 2023-11-07 10:55:25 +0000
+I, [2023-11-07T10:55:25.970310 #263003]  INFO -- : [49d07201-56fd-4350-9ff3-6b4fac4c5fdb] Successfully upgraded to WebSocket (REQUEST_METHOD: GET, HTTP_CONNECTION: Upgrade, HTTP_UPGRADE: websocket)
+I, [2023-11-07T10:55:25.983763 #263003]  INFO -- : [e903dbdc-6cee-48f5-aae2-3e0776c7e432] Started GET "/assets/csv-file-icon.svg" for 122.129.76.60 at 2023-11-07 10:55:25 +0000
+I, [2023-11-07T10:55:26.200313 #263003]  INFO -- : Registered connection (Z2lkOi8vaG91c2libHktYmFja2VuZC9BZG1pbi8x)
+#<Thread:0x000055eb562818a0 /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:150 run> terminated with exception (report_on_exception is true):
+/var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis/client.rb:474:in `_parse_options': invalid uri scheme 'redisnew.daszz1.clustercfg.eun1.cache.amazonaws.com' (ArgumentError)
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis/client.rb:92:in `initialize'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis.rb:87:in `new'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis.rb:87:in `initialize'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:18:in `new'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:18:in `block in <class:Redis>'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:59:in `redis_connection'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:44:in `redis_connection_for_subscriptions'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:153:in `block in ensure_listener_running'
+Exiting
+/var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis/client.rb:474:in `_parse_options': invalid uri scheme 'redisnew.daszz1.clustercfg.eun1.cache.amazonaws.com' (ArgumentError)
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis/client.rb:92:in `initialize'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis.rb:87:in `new'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/redis-4.8.0/lib/redis.rb:87:in `initialize'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:18:in `new'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:18:in `block in <class:Redis>'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:59:in `redis_connection'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:44:in `redis_connection_for_subscriptions'
+	from /var/www/housibly-api/vendor/bundle/ruby/3.0.0/gems/actioncable-6.1.7/lib/action_cable/subscription_adapter/redis.rb:153:in `block in ensure_listener_running'

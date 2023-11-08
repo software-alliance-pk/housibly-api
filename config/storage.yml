@@ -1,9 +1,9 @@
 amazon:
   service: S3
-  access_key_id: <%= ENV["BUCKETEER_AWS_ACCESS_KEY_ID"] %>
-  secret_access_key: <%= ENV["BUCKETEER_AWS_SECRET_ACCESS_KEY"] %>
-  region: <%= ENV["BUCKETEER_AWS_REGION"] %>
-  bucket: <%= ENV["BUCKETEER_BUCKET_NAME"] %>
+  access_key_id: AKIAVZH4SBSYU64RH2WH
+  secret_access_key: 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
+  region: us-east-1
+  bucket: bucketeer-4ecda98e-5c8b-4203-a4f8-6384ee9bad4e
 
 test:
   service: Disk

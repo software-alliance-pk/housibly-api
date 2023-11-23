@@ -73,13 +73,17 @@ end
   get "/sp_deactive_account/:id", to: 'support_closers#deactive_user',as: 'sp_deactive_account'
   get "/privacy_policy/:permalink", to: 'guidelines#guidelines', as: 'privacy_policy'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
   namespace :api do
     namespace :v1 do
-      resources :properties, only: [:create, :get_all_cards, :update, :destroy, :index, :recent_property] do
+      resources :properties, only: [:index, :show, :create, :update, :destroy] do
         collection do
+          get :house_detail_options
+          get :condo_detail_options
+          get :recent_property
           get :matching_property
           get :matching_dream_address
-          post :get_property
+          post :property_filters
           post :user_detail
         end
       end
@@ -89,7 +93,6 @@ end
           post 'fetch_user'
           get 'fetch_by_zip_code'
           post 'newest_first'
-          
         end
       end
       post '/signup', to: 'registrations#create'
@@ -136,10 +139,8 @@ end
       get '/cards', to: 'payments#get_all_cards'
       get '/get_profile', to: 'users#get_profile'
       get '/get_default_card', to: 'payments#get_default_card'
-      post '/property/filter', to: 'properties#property_filters'
       get '/tickets', to: 'supports#get_tickets'
       get '/static_page/:permalink', to: 'static_pages#static_page'
-      get '/recent_property', to: 'properties#recent_property'
       resources :bookmarks, only:  [:create, :destroy] do
         collection do
           get :get_current_user_bookmark
@@ -185,9 +186,10 @@ end
         delete :delete_notification
       end
      end
-    resources :user_preferences, only: [:create, :index]
-    post "/active", to: 'users_lists#index'
-    get '/*a', to: 'api#not_found'
+      resources :user_preferences, only: [:create, :index]
+      post "/active", to: 'users_lists#index'
+      get '/*a', to: 'api#not_found'
     end
   end
+
 end

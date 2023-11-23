@@ -2,7 +2,8 @@ class User < ApplicationRecord
   require 'csv'
   include CsvCounter
   include PgSearch::Model
-     pg_search_scope :custom_search,
+
+  pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
                   associated_against: {
                   professions: :title},
@@ -74,6 +75,7 @@ class User < ApplicationRecord
   scope :count_support_closer_user, -> { want_support_closer.count }
   scope :all_users, -> { where.not(profile_type: "want_support_closer")}
   scope :new_users, -> { where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago) }
+
   def generate_password_token!
     self.reset_password_token = generate_otp
     self.reset_password_sent_at = Time.now.utc
@@ -99,22 +101,25 @@ class User < ApplicationRecord
     self.password = password
     self.save!
   end
+
   private
 
-  def generate_otp
-    otp_length(6)
-  end
+    def generate_otp
+      otp_length(6)
+    end
 
-  def otp_length(length)
-    rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
-  end
-  def self.to_csv
+    def otp_length(length)
+      rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
+    end
+
+    def self.to_csv
       CsvCounter.update_csv_counter
-       CSV.generate(headers: true) do |csv|
+      CSV.generate(headers: true) do |csv|
         csv << CsvCounter.titlize_csv_headers(self.attribute_names)
         all.each do |record|
           csv << record.attributes.values_at(*attribute_names)
+        end
       end
     end
-  end
+
 end

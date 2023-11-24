@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_23_194043) do
+ActiveRecord::Schema.define(version: 2023_11_24_121533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,10 +202,10 @@ ActiveRecord::Schema.define(version: 2023_11_23_194043) do
     t.float "lot_size"
     t.boolean "is_lot_irregular"
     t.text "lot_description"
-    t.string "bath_rooms"
-    t.string "bed_rooms"
+    t.integer "bath_rooms"
+    t.integer "bed_rooms"
     t.string "living_space"
-    t.string "garage_spaces"
+    t.integer "garage_spaces"
     t.string "garage"
     t.string "parking_type"
     t.string "parking_ownership"
@@ -221,10 +221,10 @@ ActiveRecord::Schema.define(version: 2023_11_23_194043) do
     t.string "air_conditioner"
     t.string "laundry"
     t.string "fireplace"
-    t.string "central_vacuum"
+    t.boolean "central_vacuum"
     t.string "basement"
     t.string "pool"
-    t.integer "property_tax"
+    t.float "property_tax"
     t.integer "tax_year"
     t.string "appliances_and_other_items"
     t.string "locker"

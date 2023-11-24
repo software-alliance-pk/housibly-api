@@ -59,8 +59,12 @@ json.longitude property.longitude
 json.latitude property.latitude
 json.weight_age property.weight_age
 json.last_seen  property&.user&.last_seen.present? ? "#{time_ago_in_words(property&.user&.last_seen)} ago" : ""
-if  property.created_at > 6.weeks.ago
-  json.is_new true
-else
-	json.is_new false
+json.is_new property.created_at > 6.weeks.ago
+json.rooms property.rooms do |room|
+  json.partial! 'room', room: room
+end
+json.images property.images do |image|
+  json.id image.id
+  json.url image.url rescue "" # use for direct link, see https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
+  # json.url rails_blob_url(image) rescue "" # use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
 end

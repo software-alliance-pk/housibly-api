@@ -13,5 +13,4 @@ json.user do
   json.profile_type @user.profile_type
   json.description @user.description
   json.image @user.avatar.attached? ? @current_user.avatar.url : ""
-
 end

@@ -78,8 +78,7 @@ end
     namespace :v1 do
       resources :properties, only: [:index, :show, :create, :update, :destroy] do
         collection do
-          get :house_detail_options
-          get :condo_detail_options
+          get :detail_options
           get :recent_property
           get :matching_property
           get :matching_dream_address

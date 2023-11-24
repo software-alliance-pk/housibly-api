@@ -2,30 +2,35 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.6'
-gem 'rack-cors'
-# For Login/Signup
-gem 'dotenv-rails', '2.8.1', require: 'dotenv/rails-now'
 
-gem 'jwt'
-gem 'bcrypt'
+gem 'actiontext', '~> 6.1.6'
 gem 'activestorage'
-gem 'cloudinary'
-gem "aws-sdk-s3", require: false
-gem 'twilio-ruby'
-gem 'stripe'
-gem 'pg_search'
-gem 'geokit-rails'
-gem 'geocoder'
-gem 'fcm'
 gem 'acts_as_paranoid'
+gem 'aws-sdk-s3', require: false
+gem 'bcrypt'
+gem 'cloudinary'
+gem 'devise'
+gem 'dotenv-rails', '2.8.1', require: 'dotenv/rails-now'
+gem 'down', '~> 5.0'
+gem 'fcm'
+gem 'geocoder'
+gem 'geokit-rails'
+gem 'jwt'
+gem 'paper_trail'
+gem 'pg_search'
+gem 'rack-cors'
 gem 'rexml'
+gem 'stripe'
+gem 'stripe_event'
+gem 'twilio-ruby'
+gem 'will_paginate', '~> 3.3'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
-gem 'paper_trail'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -34,16 +39,10 @@ gem 'webpacker', '~> 5.0'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
-gem "down", "~> 5.0"
-gem 'devise'
-gem 'will_paginate', '~> 3.3'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'actiontext', '~> 6.1.6'
-gem 'stripe_event'
-
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

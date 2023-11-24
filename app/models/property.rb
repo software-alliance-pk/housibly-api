@@ -1,7 +1,9 @@
 class Property < ApplicationRecord
-  after_commit :add_the_lnt_and_lng_property, on: :create
-  before_validation :create_balcony,:create_laundry,:create_security
   include PgSearch::Model
+
+  after_commit :add_the_lnt_and_lng_property, on: :create
+  before_validation :titleize_attributes
+
   # reverse_geocoded_by :latitude, :longitude
   acts_as_mappable :default_units => :kms,
                    :lat_column_name => :latitude,
@@ -24,25 +26,6 @@ class Property < ApplicationRecord
   #scope :property_living_space, -> (min_living,max_living){where("living_space = (?) or living_space (?)",min_living.to_s,max_living.to_s)}
   scope :property_age, ->  (age){where("year_built between (?) and (?)",age,Date.today.strftime("%y").to_i)}
 
-  cattr_accessor :property_type
-  cattr_accessor :bookmark_type
-  has_many_attached :images
-  has_many :bookmarks
-  # has_many :rooms, dependent: :destroy
-  belongs_to :user
-  validates :price,presence: true
-  validates :lot_frontage_unit, :currency_type, :lot_depth_unit, presence: true
-  validates :bath_rooms, presence: true, unless: ->(property){property.property_type == "vacant_land"}
-  validates :bed_rooms, presence: true, unless: ->(property){property.property_type == "vacant_land"}
-  validates :house_type, presence: true, unless: ->(property){property.property_type == "vacant_land" || "condo"}
-  validates :house_style, presence:  true, unless: ->(property){property.property_type == "vacant_land" || "condo"}
-  validates :air_conditioner, presence:  true, unless: ->(property){property.property_type == "vacant_land"}
-  # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
-  validates :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
-  validates :condo_type, presence: true, unless: ->(property){property.property_type == "vacant_land" || "house"}
-  validates :condo_style, presence: true, unless: ->(property){property.property_type == "vacant_land" || "house"}
-
-
   scope :count_house, -> { where("type = (?)","House").count }
   scope :count_vacant_land, -> { where("type = (?)","VacantLand").count }
   scope :count_condo, -> { where("type = (?)","Condo").count }
@@ -50,25 +33,30 @@ class Property < ApplicationRecord
   scope :vacant_land, -> { where("type = (?)","VacantLand") }
   scope :condo, -> { where("type = (?)","Condo") }
 
+  cattr_accessor :property_type
+  cattr_accessor :bookmark_type
+  has_many_attached :images
+  has_many :bookmarks
+  # has_many :rooms, dependent: :destroy
+  belongs_to :user
 
+  validates :price, :currency_type, presence: true
+  validates :house_type, :house_style, presence:  true, if: ->(property){property.property_type == "house"}
+  validates :condo_type, :condo_style, presence: true, if: ->(property){property.property_type == "condo"}
+
+  validates :lot_frontage_unit, :lot_depth_unit, presence: true, unless: ->(property){property.property_type == "condo"}
+  validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
   def add_the_lnt_and_lng_property
-    location  = LocationFinderService.get_location_attributes(self.address)
-    self.update(longitude:location[:long],latitude: location[:lat],zip_code: location[:zip_code], country: location[:country],city: location[:city])
-    # location[:country]
-    # location[:city]
-    # location[:district]
+    location = LocationFinderService.get_location_attributes(self.address)
+    return unless location
+    self.update(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
   end
 
-  def create_balcony
+  def titleize_attributes
     self.balcony = self.balcony&.titleize
-  end
-
-  def create_laundry
     self.laundry = self.laundry&.titleize
-  end
-
-  def create_security
     self.security = self.security&.titleize
   end
 

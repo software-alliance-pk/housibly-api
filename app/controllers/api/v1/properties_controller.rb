@@ -1,12 +1,19 @@
 class Api::V1::PropertiesController < Api::V1::ApiController
   require 'uri'
-  before_action :parse_parameters, only: [:create, :update]
-  before_action :set_property, only: [:update, :destroy]
+
+  before_action :validate_property_type, only: [:update, :create, :property_filters]
+  before_action :set_property_params, only: [:update, :create]
   before_action :check_number_of_images, only: [:update, :create]
-  before_action :validate_property_type_or_set_the_property_type, only: [:update, :create]
+  before_action :set_property, only: [:show, :update, :destroy]
+
+  def index
+    @properties = @current_user.properties.order("created_at desc")
+  end
+
+  def show; end # this is here for a reason, do not delete!
 
   def create
-    @property = @property_types.titleize.gsub(" ", "").constantize.new(parse_parameters)
+    @property = @property_params[:property_type].titleize.gsub(" ", "").constantize.new(@property_params)
     @property.user = @current_user
     if @property.save
       @property
@@ -15,43 +22,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
-  def index
-    @properties = @current_user.properties.order("created_at desc")
-  end
-  def get_property
-    if params[:property_id].present?
-      @property = Property.find_by(id: params[:property_id])
-      if @property.present?
-        @property
-      else
-        render json: { message: "Property Does not present" }, status: 404
-      end
-    else
-      render json: { message: "Property id parameter is missing" }, status: 404
-    end
-  end
-
-  def user_detail
-    @user = User.find_by(id: params[:user_id])
-  end
-
   def update
-    @property.type = @property_types.titleize.gsub(" ", "").constantize
-    if @property.update(@image_arr.length > 0 ? parse_parameters : parse_parameters.except(:images))
+    @property.type = @property_params[:property_type].titleize.gsub(" ", "").constantize
+    if @property.update(@image_arr.length > 0 ? @property_params : @property_params.except(:images))
       @property
     else
       render_error_messages(@property)
-    end
-  end
-
-  def recent_property
-    @properties = @current_user.properties.where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago)
-    if @properties
-      @properties
-    else
-      render json: {
-        message: "Property not found"
-      }, status: :unprocessable_entity
     end
   end
 
@@ -63,18 +39,26 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
-  def property_filters
-    if params[:type].present?
-      if params[:type].in?(%w[house condo vacant_land VacantLand Vacant Land vacant land House])
-        @properties = @current_user.properties.where("type = ?", params[:type].titleize.gsub(" ", ""))
-      else
-        render json: { message: "Property having type #{params[:type]&.titleize} not present"}, status: 422
-      end
-    else
-      render json: { message: "Type not present" }, status: 404
-    end
+  def house_detail_options
+    render json: House.detail_options
   end
 
+  def condo_detail_options
+    render json: Condo.detail_options
+  end
+
+  def property_filters
+    @properties = @current_user.properties.where("type = ?", params[:property_type].titleize.gsub(" ", ""))
+  end
+
+  def recent_property
+    @properties = @current_user.properties.where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago)
+    if @properties
+      @properties
+    else
+      render json: { message: "Property not found" }, status: :unprocessable_entity
+    end
+  end
 
   def matching_property
     _weight_age = 0
@@ -83,10 +67,10 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       if @properties.present?
         @properties&.sort_by{|e| e[:created_at]}
       else
-        render json: { message: "Any property does not match" }, status: :unprocessable_entity
+        render json: { message: "Matching property not found" }, status: :unprocessable_entity
       end
     else
-      render json: [],status: :ok
+      render json: {}, status: :ok
     end
   end
 
@@ -98,90 +82,76 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       @properties << record
     end
     if  @properties.present?
-      render json: {message:  @properties},status: :ok
+      render json: { message:  @properties }, status: :ok
     else
-      render json:@properties ,status: :ok
+      render json: @properties, status: :ok
     end
+  end
+
+  def user_detail
+    @user = User.find_by(id: params[:user_id])
   end
 
   private
-  def parse_parameters
-    if property_params
-      begin
-        data = JSON.parse(property_params[:other_options])
-        format_data = data&.map { |item| { item["title"].downcase.gsub(" ", "_") => item["value"] } }
-        data = Hash[*format_data.map(&:to_a).flatten]
-        data.store("price", property_params[:price])
-        data.store("title", property_params[:title])
-        data.store("year_built", property_params[:year_built])
-        data.store("address", property_params[:address])
-        data.store("lot_frontage", property_params[:lot_frontage])
-        data.store("lot_frontage_unit", property_params[:lot_frontage_unit])
-        data.store("lot_depth_unit", property_params[:lot_depth_unit])
-        data.store("lot_depth", property_params[:lot_depth])
-        data.store("lot_depth_unit", property_params[:lot_depth_unit])
-        data.store("lot_size", property_params[:lot_size])
-        data.store("lot_size_unit", property_params[:lot_size_unit])
-        data.store("is_lot_irregular", property_params[:is_lot_irregular])
-        data.store("lot_description", property_params[:lot_description])
-        data.store("property_tax", property_params[:property_tax])
-        data.store("tax_year", property_params[:tax_year])
-        data.store("locker", property_params[:locker])
-        data.store("property_type", property_params[:property_type])
-        data.store("condo_corporation_or_hqa", property_params[:condo_corporation_or_hqa])
-        data.store("currency_type", property_params[:currency_type])
-        data.store("zip_code", property_params[:zip_code] )
-        data.store("images", property_params[:images])
-        return data.with_indifferent_access
-      rescue => e
-        render json: { error: e.message }, status: 422
+
+    def house_params
+      params.require(:property).permit(
+        :title, :price, :currency_type, :address, :unit, :property_tax, :tax_year, :property_description, :year_built, :appliances_and_other_items,
+        :lot_frontage, :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size, :lot_size_unit, :is_lot_irregular, :lot_description,
+        :house_type, :house_style, :bed_rooms, :bath_rooms, :total_number_of_rooms, :total_parking_spaces, :garage, :garage_spaces, :exterior, :driveway,
+        :water, :sewer, :heat_source, :heat_type, :air_conditioner, :laundry, :fireplace, :central_vacuum, :basement, :pool, images: []
+      )
+    end
+
+    def condo_params
+      params.require(:property).permit(
+        :title, :price, :currency_type, :address, :unit, :property_tax, :tax_year, :property_description, :year_built, :appliances_and_other_items,
+        :locker, :condo_corporation_or_hqa, :condo_fees, :condo_type, :condo_style, :bed_rooms, :bath_rooms, :total_number_of_rooms,
+        :total_parking_spaces, :garage_spaces, :exterior, :balcony, :exposure, :security, :pets_allowed, :included_utilities,
+        :water, :sewer, :heat_source, :heat_type, :air_conditioner, :laundry, :fireplace, :central_vacuum, :basement, :pool, images: []
+      )
+    end
+
+    def vacant_land_params
+      params.require(:property).permit(
+        :title, :price, :currency_type, :address, :unit, :property_tax, :tax_year, :property_description,
+        :lot_frontage, :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size, :lot_size_unit,
+        :is_lot_irregular, :lot_description, images: []
+      )
+    end
+
+    def set_property
+      @property = Property.find_by(id: params[:id])
+      render json: { error: "Property with id: #{params[:id]} does not exist" }, status: 422 unless @property
+    end
+
+    def validate_property_type
+      return if params[:property_type].in? ["house", "condo", "vacant_land"]
+      render json: { error: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
+    end
+
+    def set_property_params
+      @property_params = send("#{params[:property_type]}_params").merge({property_type: params[:property_type]})
+    end
+
+    def check_number_of_images
+      @image_arr = @property_params[:images].blank? ? [] : @property_params[:images]
+      unless @image_arr.length <= 30
+        render json: { message: "Images should not be more than 30" }, status: :unprocessable_entity
       end
-    else
-      render json: { error: "Parameters has some issue" }, status: 422
     end
-  end
 
-  def property_params
-    params.require(:property).permit(
-      :zip_code,:property_type, :title, :price, :year_built, :address, :unit, :lot_frontage,
-      :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size_unit, :is_lot_irregular,
-      :lot_description, :property_tax, :tax_year, :locker, :condo_corporation_or_hqa,
-      :lot_size, :currency_type, :other_options, images: []
-    )
-  end
-
-  def set_property
-    @property = Property.find_by(id: params[:id])
-    render json: { error: "No Property find" }, status: 422 unless @property
-  end
-
-  def check_number_of_images
-    @image_arr = property_params[:images].blank? ? [] : property_params[:images]
-    unless @image_arr.length <= 30
-      render json: { message: "Images should be less than 30" }, status: :unprocessable_entity
+    def upload_image_to_cloudinary(image)
+      begin
+        require "down"
+        tempfile = Down.download(image["uri"])
+        @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
+      rescue => e
+        render json: { error: e.message }, status: 404
+      end
     end
-  end
 
-  def upload_image_to_cloundinary(image)
-    begin
-      require "down"
-      tempfile = Down.download(image["uri"])
-      @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
-    rescue => e
-      render json: { error: e.message }, status: 404
+    def calculate_weightage(_weight_age,matching_item,number)
+      _weight_age = _weight_age + number if matching_item.present?
     end
-  end
-
-  def validate_property_type(property_types)
-    property_types.in?( ["house","condo","vacant_land","House","Condo","Vacant Land","vacant land","Vacant_Land"])
-  end
-
-  def validate_property_type_or_set_the_property_type
-    @property_types = parse_parameters[:property_type]
-    validate_property_type(@property_types) ? true : (render json: { error: "Property type should one of the following house, condo , vacant_land" }, status: 404)
-  end
-
-  def calculate_weightage(_weight_age,matching_item,number)
-    _weight_age = _weight_age + number if matching_item.present?
-  end
 end

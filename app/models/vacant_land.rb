@@ -1,5 +1,6 @@
 class VacantLand < Property
   include CsvCounter
+
   def self.to_csv
     CsvCounter.update_csv_counter
     CSV.generate(headers: true) do |csv|
@@ -9,4 +10,5 @@ class VacantLand < Property
       end
     end
   end
+
 end

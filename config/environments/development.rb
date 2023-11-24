@@ -2,9 +2,13 @@ require "active_support/core_ext/integer/time"
 require "action_cable/engine"
 
 Rails.application.configure do
+  # Settings specified here will take precedence over those in config/application.rb.
+
+  # add ngrok urls to allowed hosts
+  config.hosts = (config.hosts rescue []) << /[\w-]+(\.[a-z]+)?\.ngrok-free\.app/
+
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
-  # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development

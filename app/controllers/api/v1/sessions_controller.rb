@@ -7,7 +7,7 @@ class Api::V1::SessionsController < Api::V1::ApiController
       if @user.present?
         @token = JsonWebTokenService.encode({ email: @user.email })
       else
-        render json: { message: "please verify email address" }, status: :unauthorized
+        render json: { message: "Please verify email address" }, status: :unauthorized
       end
     else
       render json: { message: "Incorrect email or password" }, status: :unauthorized

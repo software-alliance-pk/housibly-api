@@ -35,13 +35,15 @@ class Property < ApplicationRecord
 
   cattr_accessor :property_type
   cattr_accessor :bookmark_type
+
+  belongs_to :user
   has_many_attached :images
   has_many :bookmarks
-  # has_many :rooms, dependent: :destroy
-  belongs_to :user
+  has_many :rooms, dependent: :destroy
+  accepts_nested_attributes_for :rooms, allow_destroy: true
 
   validates :price, :currency_type, presence: true
-  validates :house_type, :house_style, presence:  true, if: ->(property){property.property_type == "house"}
+  validates :house_type, :house_style, presence: true, if: ->(property){property.property_type == "house"}
   validates :condo_type, :condo_style, presence: true, if: ->(property){property.property_type == "condo"}
 
   validates :lot_frontage_unit, :lot_depth_unit, presence: true, unless: ->(property){property.property_type == "condo"}
@@ -58,6 +60,152 @@ class Property < ApplicationRecord
     self.balcony = self.balcony&.titleize
     self.laundry = self.laundry&.titleize
     self.security = self.security&.titleize
+  end
+
+  def self.detail_options
+    # will be moved to database after format is finalized
+    {
+      house_type: {
+        attached_row_th: 'Attached/Row/Townhouse',
+        semi_detached: 'Semi-Detached',
+        detached: 'Detached',
+        mobile: 'Mobile/Trailer',
+        duplex: 'Duplex (2 Units)',
+        multiplex: 'Multiplex (4+ Units)',
+        cottage: 'Cottage'
+      },
+      house_style: {
+        one_storey: 'Bungalow (1 Storey)',
+        one_half_storey: '1 1/2 Storey',
+        two_storey: '2 Storey',
+        two_half_storey: '2 1/2 Storey',
+        three_storey: '3 Storey',
+        backsplit: 'Backsplit',
+        sidesplit: 'Sidesplit'
+      },
+      condo_type: {
+        condo_apartment: 'Condo Apartment',
+        condo_townhouse: 'Condo Townhouse',
+        co_ownership: 'Co-Op/Co-Ownership',
+        detached: 'Detached Condo',
+        semi_attached: 'Semi-Detached Condo'
+      },
+      condo_style: {
+        apartment: 'Apartment',
+        townhouse: 'Townhouse',
+        two_storey: '2 Storey',
+        three_storey: '3 Storey',
+        studio: 'Studio/Bachelor',
+        loft: 'Loft',
+        multi_level: 'Multi-level'
+      },
+      exterior: {
+        brick: 'Brick',
+        concrete: 'Concrete',
+        glass: 'Glass',
+        metal_siding: 'Metal Siding',
+        stone: 'Stone',
+        stucco: 'Stucco',
+        vinyl: 'Vinyl',
+        wood: 'Wood',
+        other: 'Other'
+      },
+      balcony: {
+        yes: 'Yes',
+        no: 'No',
+        terrace: 'Terrace'
+      },
+      exposure: {
+        north: 'North',
+        northeast: 'Northeast',
+        northwest: 'Northwest',
+        south: 'South',
+        southeast: 'Southeast',
+        southwest: 'Southwest',
+        east: 'East',
+        west: 'West'
+      },
+      security: {
+        guard: 'Guard/Concierge',
+        system: 'System',
+        none: 'None'
+      },
+      pets_allowed: {
+        yes: 'Yes',
+        no: 'No',
+        with_restrictions: 'Yes With Restrictions'
+      },
+      included_utilities: {
+        electricity: 'Electricity',
+        water: 'Water',
+        gas: 'Gas',
+        propane: 'Propane',
+        cable_tv: 'Cable TV',
+        internet: 'Internet',
+        none: 'None'
+      },
+      water: {
+        municipal: 'Municipal',
+        well: 'Well',
+        other: 'Other'
+      },
+      sewer: {
+        municipal: 'Municipal',
+        septic: 'Septic',
+        other: 'Other'
+      },
+      heat_source: {
+        electricity: 'Electricity',
+        oil: 'Oil',
+        gas: 'Gas',
+        propane: 'Propane',
+        solar: 'Solar',
+        other: 'Other'
+      },
+      heat_type: {
+        forced_air: 'Forced Air',
+        board_heater: 'Baseboard Heater',
+        radiant: 'Water/Radiant',
+        other: 'Other'
+      },
+      air_conditioner: {
+        central_air: 'Central Air',
+        wall_unit: 'Wall Unit',
+        window_unit: 'Window Unit',
+        none: 'None',
+        other: 'Other'
+      },
+      laundry: {
+        ensuite: 'Ensuite',
+        laundry_room: 'Laundry Room'
+      },
+      fireplace: {
+        gas: 'Gas',
+        wood: 'Wood',
+        none: 'None'
+      },
+      basement: {
+        apartment: 'Apartment',
+        finished: 'Finished',
+        separate_entrance: 'Separate Entrance',
+        unfinished: 'Unfinished',
+        walk_out: 'Walk-Out',
+        none: 'None'
+      },
+      driveway: {
+        private: 'Private',
+        mutual: 'Mutual',
+        lane_way: 'Lane-Way',
+        front_yard: 'Front Yard',
+        none: 'None',
+        other: 'Other'
+      },
+      pool: {
+        none: 'No',
+        in_ground: 'In-Ground',
+        above_ground: 'Above Ground'
+      }
+    }
   end
 
 end

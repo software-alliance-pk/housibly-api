@@ -2,7 +2,6 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   require 'uri'
 
   before_action :validate_property_type, only: [:update, :create, :property_filters]
-  before_action :set_property_params, only: [:update, :create]
   before_action :check_number_of_images, only: [:update, :create]
   before_action :set_property, only: [:show, :update, :destroy]
 
@@ -13,7 +12,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def show; end # this is here for a reason, do not delete!
 
   def create
-    @property = @property_params[:property_type].titleize.gsub(" ", "").constantize.new(@property_params)
+    @property = property_params[:property_type].titleize.gsub(" ", "").constantize.new(property_params)
     @property.user = @current_user
     if @property.save
       @property
@@ -23,8 +22,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def update
-    @property.type = @property_params[:property_type].titleize.gsub(" ", "").constantize
-    if @property.update(@image_arr.length > 0 ? @property_params : @property_params.except(:images))
+    @property.type = property_params[:property_type].titleize.gsub(" ", "").constantize
+    if @property.update(@image_arr.length > 0 ? property_params : property_params.except(:images))
       @property
     else
       render_error_messages(@property)
@@ -39,16 +38,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
-  def house_detail_options
-    render json: House.detail_options
-  end
-
-  def condo_detail_options
-    render json: Condo.detail_options
+  def detail_options
+    render json: Property.detail_options
   end
 
   def property_filters
-    @properties = @current_user.properties.where("type = ?", params[:property_type].titleize.gsub(" ", ""))
+    @properties = @current_user.properties.where("type = ?", property_params[:property_type].titleize.gsub(" ", ""))
   end
 
   def recent_property
@@ -94,29 +89,15 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   private
 
-    def house_params
-      params.require(:property).permit(
-        :title, :price, :currency_type, :address, :unit, :property_tax, :tax_year, :property_description, :year_built, :appliances_and_other_items,
-        :lot_frontage, :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size, :lot_size_unit, :is_lot_irregular, :lot_description,
-        :house_type, :house_style, :bed_rooms, :bath_rooms, :total_number_of_rooms, :total_parking_spaces, :garage, :garage_spaces, :exterior, :driveway,
-        :water, :sewer, :heat_source, :heat_type, :air_conditioner, :laundry, :fireplace, :central_vacuum, :basement, :pool, images: []
-      )
-    end
-
-    def condo_params
-      params.require(:property).permit(
-        :title, :price, :currency_type, :address, :unit, :property_tax, :tax_year, :property_description, :year_built, :appliances_and_other_items,
-        :locker, :condo_corporation_or_hqa, :condo_fees, :condo_type, :condo_style, :bed_rooms, :bath_rooms, :total_number_of_rooms,
-        :total_parking_spaces, :garage_spaces, :exterior, :balcony, :exposure, :security, :pets_allowed, :included_utilities,
-        :water, :sewer, :heat_source, :heat_type, :air_conditioner, :laundry, :fireplace, :central_vacuum, :basement, :pool, images: []
-      )
-    end
-
-    def vacant_land_params
-      params.require(:property).permit(
-        :title, :price, :currency_type, :address, :unit, :property_tax, :tax_year, :property_description,
-        :lot_frontage, :lot_frontage_unit, :lot_depth, :lot_depth_unit, :lot_size, :lot_size_unit,
-        :is_lot_irregular, :lot_description, images: []
+    def property_params
+      params.require(:property).permit(:address, :air_conditioner, :appliances_and_other_items, :balcony, :basement,
+        :bath_rooms, :bed_rooms, :central_vacuum, :condo_corporation_or_hqa, :condo_fees, :condo_style, :condo_type,
+        :currency_type, :driveway, :exposure, :exterior, :fireplace, :garage, :garage_spaces, :heat_source, :heat_type,
+        :house_style, :house_type, :included_utilities, :is_lot_irregular, :laundry, :locker, :lot_depth, :lot_depth_unit,
+        :lot_description, :lot_frontage, :lot_frontage_unit, :lot_size, :lot_size_unit, :pets_allowed, :pool, :price,
+        :property_description, :property_tax, :property_type, :security, :sewer, :tax_year, :title, :total_number_of_rooms,
+        :total_parking_spaces, :unit, :water, :year_built, images: [],
+        rooms_attributes: [:id, :_destroy, :name, :length_in_feet, :length_in_inch, :width_in_feet, :width_in_inch, :level]
       )
     end
 
@@ -126,16 +107,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
 
     def validate_property_type
-      return if params[:property_type].in? ["house", "condo", "vacant_land"]
+      return if property_params[:property_type].in? ["house", "condo", "vacant_land"]
       render json: { error: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
     end
 
-    def set_property_params
-      @property_params = send("#{params[:property_type]}_params").merge({property_type: params[:property_type]})
-    end
-
     def check_number_of_images
-      @image_arr = @property_params[:images].blank? ? [] : @property_params[:images]
+      @image_arr = property_params[:images].blank? ? [] : property_params[:images]
       unless @image_arr.length <= 30
         render json: { message: "Images should not be more than 30" }, status: :unprocessable_entity
       end

@@ -32,7 +32,7 @@ json.properties @property do |property|
   json.heat_source property.heat_source
   json.air_conditioner property.air_conditioner
   json.laundry property.laundry
-  json.fire_place property.fireplace
+  json.fireplace property.fireplace
   json.central_vacuum property.central_vacuum
   json.basement property.basement
   json.pool property.pool

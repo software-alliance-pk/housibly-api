@@ -2,7 +2,6 @@ class Property < ApplicationRecord
   include PgSearch::Model
 
   after_commit :add_the_lnt_and_lng_property, on: :create
-  before_validation :titleize_attributes
 
   # reverse_geocoded_by :latitude, :longitude
   acts_as_mappable :default_units => :kms,
@@ -14,9 +13,9 @@ class Property < ApplicationRecord
   scope :bed_rooms_matcher, ->(min_bed_room,max_bed_room){ where("bed_rooms between (?) and (?)",min_bed_room,max_bed_room)}
   scope :property_type_matcher,-> (type){ where("type ilike (?)",type&.titleize)}
   # scope :property_parking_spot, -> (min_spot,max_spot){where("total_parking_spaces between (?) and (?)",min_spot,max_spot)}
-  scope :property_balcony, -> (balcony){ where("balcony = (?)",balcony&.titleize)}
-  scope :property_laundry, -> (laundry){ where("laundry = (?)",laundry&.titleize)}
-  scope :property_garage, -> (garage){where("garage = (?)",garage&.titleize)}
+  scope :property_balcony, -> (balcony){ where("balcony = (?)",balcony)}
+  scope :property_laundry, -> (laundry){ where("laundry = (?)",laundry)}
+  scope :property_garage, -> (garage){where("garage = (?)",garage)}
   scope :property_security, -> ( security){where("security = (?)",security)}
   # scope :property_min_lot_frontage, -> (min_lot_frontage){where("lot_frontage = (?)",min_lot_frontage)}
   # scope :property_min_lot_size, -> (min_lot_size,max_lot_size){where("lot_size = (?) or lot_size = (?)",min_lot_size,max_lot_size)}
@@ -50,23 +49,13 @@ class Property < ApplicationRecord
   validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
   # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
-  def add_the_lnt_and_lng_property
-    location = LocationFinderService.get_location_attributes(self.address)
-    return unless location
-    self.update(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
-  end
-
-  def titleize_attributes
-    self.balcony = self.balcony&.titleize
-    self.laundry = self.laundry&.titleize
-    self.security = self.security&.titleize
-  end
+  validate :validate_detail_options
 
   def self.detail_options
-    # will be moved to database after format is finalized
+    # will be moved to database after fields and format are finalized
     {
       house_type: {
-        attached_row_th: 'Attached/Row/Townhouse',
+        attached: 'Attached/Row/Townhouse',
         semi_detached: 'Semi-Detached',
         detached: 'Detached',
         mobile: 'Mobile/Trailer',
@@ -88,7 +77,7 @@ class Property < ApplicationRecord
         condo_townhouse: 'Condo Townhouse',
         co_ownership: 'Co-Op/Co-Ownership',
         detached: 'Detached Condo',
-        semi_attached: 'Semi-Detached Condo'
+        semi_detached: 'Semi-Detached Condo'
       },
       condo_style: {
         apartment: 'Apartment',
@@ -164,7 +153,7 @@ class Property < ApplicationRecord
       },
       heat_type: {
         forced_air: 'Forced Air',
-        board_heater: 'Baseboard Heater',
+        baseboard_heater: 'Baseboard Heater',
         radiant: 'Water/Radiant',
         other: 'Other'
       },
@@ -201,11 +190,34 @@ class Property < ApplicationRecord
         other: 'Other'
       },
       pool: {
-        none: 'No',
         in_ground: 'In-Ground',
-        above_ground: 'Above Ground'
+        above_ground: 'Above Ground',
+        none: 'None'
       }
     }
+  end
+
+  private
+
+  def add_the_lnt_and_lng_property
+    location = LocationFinderService.get_location_attributes(self.address)
+    return unless location
+    self.update(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
+  end
+
+  def validate_detail_options
+    self.attributes.each do |key, value|
+      next unless value.present?
+
+      allowed_values = Property.detail_options[key.to_sym]
+      next unless allowed_values
+
+      if value.is_a? Array
+        value.each { |entry| errors.add(key, "has invalid value: #{entry}") unless allowed_values[entry.to_sym] }
+      else
+        errors.add(key, "has invalid value: #{value}") unless allowed_values[value.to_sym]
+      end
+    end
   end
 
 end

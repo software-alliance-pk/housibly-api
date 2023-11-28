@@ -29,7 +29,7 @@ json.sewer property.sewer
 json.heat_source property.heat_source
 json.air_conditioner property.air_conditioner
 json.laundry property.laundry
-json.fire_place property.fireplace
+json.fireplace property.fireplace
 json.central_vacuum property.central_vacuum
 json.basement property.basement
 json.pool property.pool
@@ -64,7 +64,7 @@ json.rooms property.rooms do |room|
   json.partial! 'room', room: room
 end
 json.images property.images do |image|
-  json.id image.id
+  json.id image.signed_id
   json.url image.url rescue "" # use for direct link, see https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
   # json.url rails_blob_url(image) rescue "" # use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
 end

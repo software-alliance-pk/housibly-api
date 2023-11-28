@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_24_121533) do
+ActiveRecord::Schema.define(version: 2023_11_27_085502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,15 +214,15 @@ ActiveRecord::Schema.define(version: 2023_11_24_121533) do
     t.string "driveway"
     t.string "house_type"
     t.string "house_style"
-    t.string "exterior"
+    t.string "exterior", default: [], array: true
     t.string "water"
     t.string "sewer"
-    t.string "heat_source"
-    t.string "air_conditioner"
+    t.string "heat_source", default: [], array: true
+    t.string "air_conditioner", default: [], array: true
     t.string "laundry"
-    t.string "fireplace"
+    t.string "fireplace", default: [], array: true
     t.boolean "central_vacuum"
-    t.string "basement"
+    t.string "basement", default: [], array: true
     t.string "pool"
     t.float "property_tax"
     t.integer "tax_year"
@@ -233,11 +233,11 @@ ActiveRecord::Schema.define(version: 2023_11_24_121533) do
     t.string "exposure"
     t.string "security"
     t.string "pets_allowed"
-    t.string "included_utilities"
+    t.string "included_utilities", default: [], array: true
     t.text "property_description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "heat_type"
+    t.string "heat_type", default: [], array: true
     t.bigint "user_id", null: false
     t.boolean "is_property_sold"
     t.float "lot_frontage_unit"

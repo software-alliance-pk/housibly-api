@@ -1,4 +1,4 @@
-# # 
+# #
 
 
 # #debugger
@@ -35,7 +35,7 @@
 #   json.heat_source property.heat_source
 #   json.air_conditioner property.air_conditioner
 #   json.laundry property.laundry
-#   json.fire_place property.fireplace
+#   json.fireplace property.fireplace
 #   json.central_vacuum property.central_vacuum
 #   json.basement property.basement
 #   json.pool property.pool
@@ -120,11 +120,11 @@ json.properties @bookmarks do |bookmark|
     json.heat_source property.heat_source
     json.air_conditioner property.air_conditioner
     json.laundry property.laundry
-    json.fire_place property.fireplace
+    json.fireplace property.fireplace
     json.central_vacuum property.central_vacuum
     json.basement property.basement
     json.pool property.pool
-    json.property_tax property.property_tax 
+    json.property_tax property.property_tax
     json.tax_year property.tax_year
     json.other_items property.condo_corporation_or_hqa
     json.locker property.locker

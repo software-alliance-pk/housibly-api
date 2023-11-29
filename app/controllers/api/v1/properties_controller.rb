@@ -92,7 +92,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     def property_params
       params.require(:property).permit(:address, :appliances_and_other_items, :balcony, :bath_rooms, :bed_rooms,
         :central_vacuum, :condo_corporation_or_hqa, :condo_fees, :condo_style, :condo_type, :currency_type,
-        :driveway, :exposure, :garage, :garage_spaces, :house_style, :house_type, :is_lot_irregular, :laundry, :locker,
+        :driveway, :exposure, :garage_spaces, :house_style, :house_type, :is_lot_irregular, :laundry, :locker,
         :lot_depth, :lot_depth_unit, :lot_description, :lot_frontage, :lot_frontage_unit, :lot_size, :lot_size_unit,
         :pets_allowed, :pool, :price, :property_description, :property_tax, :property_type, :security, :sewer, :tax_year,
         :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, air_conditioner: [], basement: [],

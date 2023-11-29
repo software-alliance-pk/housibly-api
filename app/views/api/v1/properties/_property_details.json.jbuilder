@@ -6,14 +6,17 @@ json.currency_type property.currency_type
 json.address property.address
 json.unit property.unit
 json.year_built property.year_built
-json.lot_frontage_feet property.lot_frontage
-json.lot_depth_feet property.lot_depth
-json.lot_size_feet property.lot_size
+json.lot_frontage property.lot_frontage
+json.lot_depth property.lot_depth
+json.lot_size property.lot_size
+json.lot_frontage_unit property.lot_frontage_unit
+json.lot_depth_unit property.lot_depth_unit
+json.lot_size_unit property.lot_size_unit
 json.is_lot_irregular property.is_lot_irregular
 json.lot_description property.lot_description
 json.bath_rooms property.bath_rooms
 json.bed_rooms property.bed_rooms
-json.living_spaces property.living_space
+json.living_space property.living_space
 json.garage_spaces property.garage_spaces
 json.garage property.garage
 json.parking_type property.parking_type
@@ -35,7 +38,7 @@ json.basement property.basement
 json.pool property.pool
 json.property_tax property.property_tax
 json.tax_year property.tax_year
-json.other_items property.condo_corporation_or_hqa
+json.condo_corporation_or_hqa property.condo_corporation_or_hqa
 json.appliances_and_other_items property.appliances_and_other_items
 json.locker property.locker
 json.condo_fees property.condo_fees
@@ -48,9 +51,6 @@ json.property_description property.property_description
 json.heat_type property.heat_type
 json.user_id property.user_id
 json.is_property_sold property.is_property_sold
-json.lot_frontage_unit property.lot_frontage_unit
-json.lot_depth_unit property.lot_depth_unit
-json.lot_size_unit property.lot_size_unit
 json.total_number_of_rooms property.total_number_of_rooms
 json.total_parking_spaces property.total_parking_spaces
 json.is_bookmark property.is_bookmark
@@ -58,7 +58,7 @@ json.zip_code property.zip_code
 json.longitude property.longitude
 json.latitude property.latitude
 json.weight_age property.weight_age
-json.last_seen  property&.user&.last_seen.present? ? "#{time_ago_in_words(property&.user&.last_seen)} ago" : ""
+json.last_seen property&.user&.last_seen.present? ? "#{time_ago_in_words(property&.user&.last_seen)} ago" : ""
 json.is_new property.created_at > 6.weeks.ago
 json.rooms property.rooms do |room|
   json.partial! 'room', room: room

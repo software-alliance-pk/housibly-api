@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_27_085502) do
+ActiveRecord::Schema.define(version: 2023_11_29_124817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,9 +240,9 @@ ActiveRecord::Schema.define(version: 2023_11_27_085502) do
     t.string "heat_type", default: [], array: true
     t.bigint "user_id", null: false
     t.boolean "is_property_sold"
-    t.float "lot_frontage_unit"
-    t.float "lot_depth_unit"
-    t.float "lot_size_unit"
+    t.string "lot_frontage_unit"
+    t.string "lot_depth_unit"
+    t.string "lot_size_unit"
     t.text "condo_corporation_or_hqa"
     t.string "currency_type"
     t.integer "total_number_of_rooms"

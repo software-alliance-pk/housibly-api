@@ -1,19 +1,19 @@
 <ul class="dropdown-menu">
-  <li><button type="button"><%= link_to "All Data", users_data_path %></button></li>
-  <li><button type="button"><%= link_to "User's Info", user_info_users_data_path %></button></li>
-  <li><button type="button"><%= link_to "Vacant Land",buy_vacant_land_users_data_path%></button></li>
-  <li><button type="button"><%= link_to "Dream Address",dream_address_users_data_path %></button></li>
+  <li><%= link_to "All Data", users_data_path %></button></li>
+  <li><%= link_to "User's Info", user_info_users_data_path %></button></li>
+  <li><%= link_to "Vacant Land",buy_vacant_land_users_data_path%></button></li>
+  <li><%= link_to "Dream Address",dream_address_users_data_path %></button></li>
   <li class="dropdown dropend">
     <button type="button">I Want to Buy</button>
     <ul class="dropdown-menu dropdown-submenu">
       <li>
-        <button type="button"><%= link_to "House", buy_house_users_data_path%></button>
+        <%= link_to "House", buy_house_users_data_path%></button>
       </li>
       <li>
-        <button type="button"><%= link_to "Condo", buy_condo_users_data_path %></button>
+        <%= link_to "Condo", buy_condo_users_data_path %></button>
       </li>
       <li>
-        <button type="button"><%= link_to "Vacant Land",buy_vacant_land_users_data_path%></button>
+        <%= link_to "Vacant Land",buy_vacant_land_users_data_path%></button>
       </li>
     </ul>
   </li>
@@ -21,13 +21,13 @@
     <button type="button">I Want to Sell</button>
     <ul class="dropdown-menu dropdown-submenu">
       <li>
-        <button type="button"><%= link_to "Condo", sell_condo_users_data_path %></button>
+        <%= link_to "Condo", sell_condo_users_data_path %></button>
       </li>
       <li>
-        <button type="button"><%= link_to "House", sell_house_users_data_path%></button>
+        <%= link_to "House", sell_house_users_data_path%></button>
       </li>
       <li>
-        <button type="button"><%= link_to "Vacant Land",sell_vacant_land_users_data_path%></button>
+        <%= link_to "Vacant Land",sell_vacant_land_users_data_path%></button>
       </li>
     </ul>
   </li>

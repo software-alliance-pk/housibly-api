@@ -23,6 +23,8 @@ class LocationFinderService
 
 
   def self.get_location_attributes_by_reverse(coordinates)
+    return nil unless coordinates
+    
     location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode(coordinates)
     if location.present?
       location_data = {

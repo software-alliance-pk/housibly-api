@@ -1,6 +1,14 @@
 class UsersDataController < ApplicationController
   def index
-    @all_users = User.paginate(page: params[:page], per_page: 10)
+    notification = AdminNotification.find_by(id:params[:id])
+    notification.update(read_at:Time.now) if notification.present?
+    unless params[:search].blank?
+      @all_users = User.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
+      response_to_method
+    else
+      @all_users = User.paginate(page: params[:page], per_page: 10)
+    end
+    response_to_method
   end
 
   def buy_vacant_land
@@ -52,10 +60,11 @@ class UsersDataController < ApplicationController
 
   private
 
-  def response_to_method(data)
+  def response_to_method
     respond_to do |format|
       format.html
-      format.csv { send_data data ? data.to_csv : "Data not found" }
+      @all_users =  User.where(id: params[:checkbox_value].split(","))  if params[:checkbox_value].present?
+      format.csv { send_data @all_users.to_csv }
     end
   end
 end

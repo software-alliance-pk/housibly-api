@@ -7,6 +7,11 @@
             <%= image_tag 'logo.svg', alt: 'icon' %>
           </div>
           <h2>Sign in to manage</h2>
+          <%if params[:admin].present?%>
+            <%if !params[:admin][:password].blank? %>
+              <p style="position:absolute; left:1%; font-weight:600; margin-top:50px; color:red; font-size:16px;"><%= alert %></p>
+            <%end%>
+          <%end%>
           <p>Enter your detail below</p>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
            <%= render "devise/shared/error_messages", resource: resource %>
@@ -14,6 +19,11 @@
             <div class="form_blk">
               <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Type Here', class: 'input' %>
             </div>
+            <%if params[:admin].present?%>
+              <%if params[:admin][:email].blank? %>
+                <p style="color:red; font-size:16px;">Email can't be blank.</p>
+              <%end%>
+            <%end%>
             <div class="d-flex align-items-center justify-content-between">
               <label for="">Password</label>
               <%= link_to "Forgot Password?", new_password_path(resource_name) %>
@@ -24,6 +34,11 @@
               </div>
               <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Type Here',class: 'input' %>
             </div>
+            <%if params[:admin].present?%>
+              <%if params[:admin][:password].blank? %>
+                <p style="color:red; font-size:16px;">Password can't be blank.</p>
+              <%end%>
+            <%end%>
             <div class="btn_blk">
               <button type="submit" class="site_btn">Sign In</button>
             </div>

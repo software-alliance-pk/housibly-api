@@ -195,39 +195,38 @@
 </section>
 <script>
   $(document).ready(function () {
-    $('.file-input').change(function () {
-      var files = $(this)[0].files;
-      var containerId = $(this).attr('id') === 'submitaddfile' ? '#file_name_container' : '#photo_name_container';
-      var fileNames = [];
+  $('.file-input').change(function () {
+    var files = $(this)[0].files;
+    var containerId = $(this).attr('id') === 'submitaddfile' ? '#file_name_container' : '#photo_name_container';
+    var fileNames = [];
 
-      for (var i = 0; i < files.length; i++) {
-        fileNames.push(files[i].name);
-      }
+    for (var i = 0; i < files.length; i++) {
+      fileNames.push(files[i].name);
+    }
 
-      $(containerId).text(fileNames.join(', '));
-    });
+    $(containerId).text(fileNames.join(', '));
   });
-  $(document).ready(function () {
-    // Initialize emoji picker for elements with the 'emoji-picker' class
-    $(".emoji-picker").emojioneArea();
-  });
-  $(document).ready(function (){
-      $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
-  })
-  $(document).on('load',function (){
-      $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
-  });
-  
-  $("#send_btn").on("click", function(e){
-    $('#file_name_container').text(''); // Clear file_name_container
-    $('#photo_name_container').text(''); // Clear photo_name_container
-    
-    let text = $('#typemessage').val();
-    text = text.trim();
-		if (($('#typemessage').val() == '' || text == '') && $('#submitaddphoto').val() == '' && $('#submitaddfile').val() == ''){
-      e.preventDefault();
-      return false;
-		}
-    $('.emojionearea-editor').text('');
-	})
+
+  // Initialize emoji picker for elements with the 'emoji-picker' class
+  $(".emoji-picker").emojioneArea();
+
+  $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+});
+
+$(document).on('load', function () {
+  $(".chat_msg").scrollTop($(".chat_msg")[0].scrollHeight);
+});
+
+$("#send_btn").on("click", function (e) {
+  $('#file_name_container').text(''); // Clear file_name_container
+  $('#photo_name_container').text(''); // Clear photo_name_container
+
+  let text = $('#typemessage').val();
+  text = text.trim();
+  if (($('#typemessage').val() == '' || text == '') && $('#submitaddphoto').val() == '' && $('#submitaddfile').val() == '') {
+    e.preventDefault();
+    return false;
+  }
+  $('.emojionearea-editor').text('');
+});
 </script>

@@ -4,11 +4,11 @@ class UsersDataController < ApplicationController
     notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
       @all_users = User.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
-      response_to_method
+      response_to_method(@all_users)
     else
       @all_users = User.paginate(page: params[:page], per_page: 10)
     end
-    response_to_method
+    response_to_method(@all_users)
   end
 
   def buy_vacant_land
@@ -60,7 +60,7 @@ class UsersDataController < ApplicationController
 
   private
 
-  def response_to_method
+  def response_to_method(data)
     respond_to do |format|
       format.html
       @all_users =  User.where(id: params[:checkbox_value].split(","))  if params[:checkbox_value].present?

@@ -60,11 +60,14 @@ class UsersDataController < ApplicationController
 
   private
 
-  def response_to_method(data)
+  def response_to_method(data = nil)
     respond_to do |format|
       format.html
-      @all_users =  User.where(id: params[:checkbox_value].split(","))  if params[:checkbox_value].present?
-      format.csv { send_data @all_users.to_csv }
+      if data.present?
+        format.csv { send_data data.to_csv }
+      else
+        format.csv { send_data @all_users.to_csv } if @all_users.present?
+      end
     end
   end
 end

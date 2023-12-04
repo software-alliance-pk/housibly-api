@@ -7,7 +7,7 @@
             <%= image_tag 'logo.svg', alt: 'icon' %>
           </div>
           <h2>Sign in to manage</h2>
-          <% if params[:admin].present? && !params[:admin][:password].blank? %>
+          <% if params.dig(:admin, :password).present? %>
             <p style="position:absolute; left:1%; font-weight:600; margin-top:50px; color:red; font-size:16px;"><%= alert %></p>
           <% end %>
           <p>Enter your detail below</p>

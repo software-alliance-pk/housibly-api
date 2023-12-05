@@ -32,7 +32,6 @@ class Property < ApplicationRecord
   scope :vacant_land, -> { where("type = (?)","VacantLand") }
   scope :condo, -> { where("type = (?)","Condo") }
 
-  cattr_accessor :property_type
   cattr_accessor :bookmark_type
 
   belongs_to :user
@@ -50,6 +49,13 @@ class Property < ApplicationRecord
   # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
   validate :validate_detail_options
+
+  attr_writer :property_type
+
+  # attribute reader
+  def property_type
+    type.underscore
+  end
 
   def self.detail_options
     # will be moved to database after fields and format are finalized

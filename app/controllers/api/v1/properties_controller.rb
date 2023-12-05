@@ -12,7 +12,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def show; end # this is here for a reason, do not delete!
 
   def create
-    @property = property_params[:property_type].constantize.new(property_params)
+    @property = property_params[:property_type].titleize.gsub(" ", "").constantize.new(property_params)
     @property.user = @current_user
     if @property.save
       @property
@@ -22,7 +22,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def update
-    @property.type = property_params[:property_type].constantize
+    @property.type = property_params[:property_type].titleize.gsub(" ", "").constantize
     if @property.update(@image_arr.length > 0 ? property_params : property_params.except(:images))
       @property
     else
@@ -43,7 +43,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def property_filters
-    @properties = @current_user.properties.where("type = ?", property_params[:property_type])
+    @properties = @current_user.properties.where("type = ?", property_params[:property_type].titleize.gsub(" ", ""))
   end
 
   def recent_property
@@ -107,8 +107,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
 
     def validate_property_type
-      return if property_params[:property_type].in? ["House", "Condo", "VacantLand"]
-      render json: { error: "Property type should be one of the following: House, Condo, VacantLand" }, status: 422
+      return if property_params[:property_type].in? ["house", "condo", "vacant_land"]
+      render json: { error: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
     end
 
     def check_number_of_images

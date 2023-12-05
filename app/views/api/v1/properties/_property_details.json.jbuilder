@@ -1,5 +1,5 @@
 json.id property.id
-json.property_type property.type
+json.property_type property.property_type
 json.title property.title
 json.price property.price
 json.currency_type property.currency_type

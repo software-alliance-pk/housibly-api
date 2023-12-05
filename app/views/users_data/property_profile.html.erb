@@ -12,9 +12,9 @@
         <div class="left_arrow">
           <img src="./assets/images/TopLeftArrow.svg" alt="">
         </div>
-        <% if @property.type == "House"%>
+        <% if @property.title == "house"%>
           <h1 class="page_title">House Details</h1>
-        <%elsif @property.type == "Condo" %>
+        <%elsif @property.title == "condo" %>
           <h1 class="page_title">Condo Details</h1>
         <%else%>
           <h1 class="page_title">Vacant Land Details</h1>
@@ -276,10 +276,10 @@
             </div>
             <div>House Style</div>
           </div>
-
-          <div class="right_item"> <% if @property.type == "House"%>
+         
+          <div class="right_item"> <% if @property.title == "house"%>
           <%= @property.house_style %>
-        <%elsif @property.type == "Condo" %>
+        <%elsif @property.title == "condo" %>
           <%= @property.condo_style %>
         <%else%>
           <h1 class="page_title">Vacant Land </h1>

@@ -42,12 +42,12 @@ class Property < ApplicationRecord
   accepts_nested_attributes_for :rooms, allow_destroy: true
 
   validates :price, :currency_type, presence: true
-  validates :house_type, :house_style, presence: true, if: ->(property){property.type == "House"}
-  validates :condo_type, :condo_style, presence: true, if: ->(property){property.type == "Condo"}
+  validates :house_type, :house_style, presence: true, if: ->(property){property.property_type == "house"}
+  validates :condo_type, :condo_style, presence: true, if: ->(property){property.property_type == "condo"}
 
-  validates :lot_frontage_unit, :lot_depth_unit, presence: true, unless: ->(property){property.type == "Condo"}
-  validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.type == "VacantLand"}
-  # validates :total_parking_spaces, presence: true, unless: ->(property){property.type == "VacantLand"}
+  validates :lot_frontage_unit, :lot_depth_unit, presence: true, unless: ->(property){property.property_type == "condo"}
+  validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
   validate :validate_detail_options
 

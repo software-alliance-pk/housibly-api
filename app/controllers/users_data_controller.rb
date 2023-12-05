@@ -4,7 +4,6 @@ class UsersDataController < ApplicationController
     notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
       @all_users = User.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
-      response_to_method(@all_users)
     else
       @all_users = User.paginate(page: params[:page], per_page: 10)
     end
@@ -23,6 +22,7 @@ class UsersDataController < ApplicationController
 
   def user_info
     @users = User.paginate(page: params[:page], per_page: 10)
+    response_to_method(@users)
   end
 
   def property_profile
@@ -60,14 +60,10 @@ class UsersDataController < ApplicationController
 
   private
 
-  def response_to_method(data = nil)
+  def response_to_method(data)
     respond_to do |format|
       format.html
-      if data.present?
-        format.csv { send_data data.to_csv }
-      else
-        format.csv { send_data @all_users.to_csv } if @all_users.present?
-      end
+      format.csv { send_data data ? data.to_csv : "Data not found" }
     end
   end
 end

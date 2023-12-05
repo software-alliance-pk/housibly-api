@@ -32,7 +32,7 @@
                 <div class="img_blk">
                   <%= image_tag 'csv-file-icon.svg', alt: '' %>
                 </div>
-                <%= link_to "Download CSV",sell_house_users_data_path(format: 'csv', search: params[:search])%>
+                <%= link_to "Download CSV",sell_house_users_data_path(format: 'csv', search: params[:search], page: params[:page], checkbox_value:""), id: "downloadbtncustom" %>
               </button>
             </li>
           </ul>

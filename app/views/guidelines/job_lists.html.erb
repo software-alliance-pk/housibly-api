@@ -14,18 +14,17 @@
               <li id="title_of_job_<%= job_list.id%>">
                 <div class="jobs"><%=job_list.title%></div>
                 <div class="dropdown">
-                <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  <%= image_tag 'more.svg' %>
+                  <div class="icon_blk dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <%= image_tag 'more.svg' %>
+                  </div>
+                  <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1 pressactivelink">
+                    <li class="customjobclass" id="<%= job_list.id %>">
+                      <%= link_to 'Remove', delete_job_list_path(id: job_list), class: "pressactivelink remove-job-list", remote: true, data: { job_id: job_list.id } %>
+                    </li>
+                  </ul>
                 </div>
-                <ul class="remove dropdown-menu" aria-labelledby="dropdownMenuButton1 pressactivelink">
-                  <li class="customjobclass"  id="<%= job_list.id%>">Remove</li>
-                </ul>
-                </div>
-                <span style="opacity:0;">
-                <%= link_to 'Remove',delete_job_list_path(id: job_list),class: "pressactivelink removeathis_#{job_list.id}", remote: :true%>
-              </span>
               </li>
-          <%end%>
+            <%end%>
           </ul>
         </div>
         <div class="col-lg-4">

@@ -1,6 +1,13 @@
 class UsersDataController < ApplicationController
   def index
-    @all_users = User.paginate(page: params[:page], per_page: 10)
+    notification = AdminNotification.find_by(id:params[:id])
+    notification.update(read_at:Time.now) if notification.present?
+    unless params[:search].blank?
+      @all_users = User.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
+    else
+      @all_users = User.paginate(page: params[:page], per_page: 10)
+    end
+    response_to_method(@all_users)
   end
 
   def buy_vacant_land
@@ -15,6 +22,7 @@ class UsersDataController < ApplicationController
 
   def user_info
     @users = User.paginate(page: params[:page], per_page: 10)
+    response_to_method(@users)
   end
 
   def property_profile

@@ -110,34 +110,34 @@
             </div>
           </div>
           <div class="chat_msg">
-            <% last_index = '' %>
-            <% @message&.support_messages&.each do |record| %>
-              <% if last_index != record.created_at.strftime("%D") %>
+            <% last_date = nil %>
+            <% @message&.support_messages&.order(created_at: :asc).each do |record| %>
+              <% if last_date != record.created_at.strftime("%D") %>
                 <div class="mt-5 d-flex chat_date">
                   <span><%= record.created_at.strftime("%d %B %Y") %></span>
                 </div>
-                <% last_index = record.created_at.strftime("%D") %>
+                <% last_date = record.created_at.strftime("%D") %>
               <% end %>
               <% if record.type == "AdminSupportMessage" %>
                 <div class="support_msg">
                   <div class="d-flex flex-column">
-                    <div class="msg">
-                      <p><%= record.body %></p>
-                      <% if record&.image.attached? %>
-                        <%= image_tag record&.image&.url, alt: "" %>
-                      <% end %>
-                      <% if record&.file.attached? %>
-                        <%= image_tag record&.file&.url, alt: "" %>
-                      <% end %>
+                      <div class="msg">
+                        <p><%= record.body %></p>
+                        <% if record&.image.attached? %>
+                          <%= image_tag record&.image&.url, alt: "" %>
+                        <% end %>
+                        <% if record&.file.attached? %>
+                          <%= image_tag record&.file&.url, alt: "" %>
+                        <% end %>
+                      </div>
+                      <p class="msg_time mt-2"><%= time_ago_in_words(record.created_at) %></p>
                     </div>
-                    <p class="msg_time mt-2"><%= time_ago_in_words(record.created_at) %></p>
-                  </div>
 
-                  <div class="profile_pic">
-                    <div class="img_blk">
-                      <%= image_tag "logosmall.svg" %>
+                    <div class="profile_pic">
+                      <div class="img_blk">
+                        <%= image_tag "logosmall.svg" %>
+                      </div>
                     </div>
-                  </div>
                 </div>
               <% else %>
                 <div class="user_msg">

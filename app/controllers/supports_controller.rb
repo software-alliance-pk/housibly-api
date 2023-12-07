@@ -61,4 +61,31 @@ class SupportsController < ApplicationController
   def get_support_ticket
     @support = Support.find_by(id: params["id"])
   end
+
+  def download
+    @record = SupportMessage.find_by(id: params[:id])  
+    if params[:type] == "file" && @record.file.attached? && @record.file.present?
+      attachment = @record.file
+    elsif params[:type] == "image" && @record.image.attached? && @record.image.present?
+      attachment = @record.image
+    end
+    if attachment.present?
+      download = attachment.download
+      content_type = attachment.content_type
+      # Define a mapping between content types and file extensions
+      content_type_to_extension = {
+        'application/pdf' => 'pdf',
+        'image/jpeg' => 'jpeg',
+        'image/jpg' => 'jpg',
+        'image/png' => 'png',
+        # Add more mappings as needed
+      }
+      # Set the filename based on content type
+      filename = "#{Time.now.to_i}_spot_swap.#{content_type_to_extension[content_type]}"
+      send_data download, disposition: 'attachment', filename: filename, type: content_type
+    else
+      flash[:error] = 'File or image not found'
+      redirect_to root_path
+    end
+  end
 end

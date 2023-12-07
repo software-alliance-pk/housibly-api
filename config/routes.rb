@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get :ticket_in_progress
       get :ticket_closed
       get :ticket_pending
+      get :download
     end
   end
   resources :sub_admins do

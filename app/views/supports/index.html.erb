@@ -110,24 +110,37 @@
             </div>
           </div>
           <div class="chat_msg">
-            <% last_index = '' %>
-            <% @message&.support_messages&.each do |record| %>
-              <% if last_index != record.created_at.strftime("%D") %>
+            <% last_date = nil %>
+            <% @message&.support_messages&.order(created_at: :asc).each do |record| %>
+              <% if last_date != record.created_at.strftime("%D") %>
                 <div class="mt-5 d-flex chat_date">
                   <span><%= record.created_at.strftime("%d %B %Y") %></span>
                 </div>
-                <% last_index = record.created_at.strftime("%D") %>
+                <% last_date = record.created_at.strftime("%D") %>
               <% end %>
               <% if record.type == "AdminSupportMessage" %>
                 <div class="support_msg">
                   <div class="d-flex flex-column">
                     <div class="msg">
                       <p><%= record.body %></p>
-                      <% if record&.image.attached? %>
+                      <% if record&.image&.attached? %>
                         <%= image_tag record&.image&.url, alt: "" %>
+                        <button type="button" class="btn down_btn">
+                          <%= link_to image_tag("icon-arrow-bottom.svg"), download_support_path(id: record.id, type: "image") %>
+                        </button>
                       <% end %>
-                      <% if record&.file.attached? %>
-                        <%= image_tag record&.file&.url, alt: "" %>
+                      <% if record&.file&.attached? %>
+                        <div class="iframe-container">
+                          <iframe src="<%= record&.file&.url %>">
+                            <!-- Alternate content in case the iframe cannot display the file -->
+                            <div class="alternate-content">
+                              <p>Your browser does not support displaying this file type. 
+                            </div>
+                          </iframe>
+                          <button type="button" class="btn down_btn">
+                            <%= link_to image_tag("icon-arrow-bottom.svg"), download_support_path(id: record.id, type: "file") %>
+                          </button>
+                        </div>
                       <% end %>
                     </div>
                     <p class="msg_time mt-2"><%= time_ago_in_words(record.created_at) %></p>
@@ -148,8 +161,24 @@
                   <div class="d-flex flex-column">
                     <div class="msg">
                       <p><%= record.body %></p>
-                      <% if record&.image.attached? %>
+                      <% if record&.image&.attached? %>
                         <%= image_tag record&.image&.url, alt: "" %>
+                        <button type="button" class="btn down_btn">
+                          <%= link_to image_tag("icon-arrow-bottom.svg"), download_support_path(id: record.id, type: "image") %>
+                        </button>
+                      <% end %>
+                      <% if record&.file&.attached? %>
+                        <div class="iframe-container">
+                          <iframe src="<%= record&.file&.url %>">
+                            <!-- Alternate content in case the iframe cannot display the file -->
+                            <div class="alternate-content">
+                              <p>Your browser does not support displaying this file type. 
+                            </div>
+                          </iframe>
+                          <button type="button" class="btn down_btn">
+                            <%= link_to image_tag("icon-arrow-bottom.svg"), download_support_path(id: record.id, type: "file") %>
+                          </button>
+                        </div>
                       <% end %>
                     </div>
                     <p class="msg_time mt-2"> <%= time_ago_in_words(record.created_at) %></p>

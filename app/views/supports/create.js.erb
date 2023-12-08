@@ -3,8 +3,13 @@ $(".chat_msg").append(
     '<div class="d-flex flex-column">'+
     '<div class="msg">'+
     '<p><%= @conversation.body %></p>'+
-    '<img src="<%= @conversation.image.attached? ?  @conversation.image.url : "" %>"/>'+
-    '<img src="<%= @conversation.file.attached? ?  @conversation.file.url : "" %>"/>'+
+    `<% if @conversation&.image&.attached? %>
+    <%= image_tag @conversation&.image&.url, alt: "" %>
+    <%= link_to "#{File.basename(@conversation.image.filename.to_s)}", @conversation.image.url, download: true, target: "_blank" %>
+    <% elsif @conversation&.file&.attached? %>
+    <embed src="<%= @conversation&.file&.url %>" type="application/pdf" width="100%" height="200px" />
+    <%= link_to "#{File.basename(@conversation.file.filename.to_s)}", @conversation.file.url, download: true, target: "_blank" %>
+    <% end %>`+
     '</div>'+
     '<p class="msg_time mt-2"><%= time_ago_in_words(@conversation.created_at) %></p>'+
     '</div>'+

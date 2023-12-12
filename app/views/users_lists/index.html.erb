@@ -150,7 +150,7 @@
                            <%= show_sub_admin_message(flash.alert,"Full name") %>
                           </span>
                         <% end %>
-                        <%= form.text_field :full_name, class: "input" %>
+                        <%= form.text_field :full_name, class: "input", required: true %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Profile Type</label>
@@ -159,7 +159,7 @@
                           <%= show_sub_admin_message(flash.alert,"Profile Type") %>
                           </span>
                         <% end %>
-                        <%= form.select :profile_type, ["want_sell","want_buy"],{:include_blank => "Select from the option"}, {class: "input"}%>
+                        <%= form.select :profile_type, ["want_sell","want_buy"],{:include_blank => "Select from the option"}, {class: "input", required: true}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Contected By Real State</label>
@@ -168,7 +168,7 @@
                           <%= show_sub_admin_message(flash.alert,"Contected By Real Estate") %>
                           </span>
                         <% end %>
-                        <%= form.select :contacted_by_real_estate, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input"}%>
+                        <%= form.select :contacted_by_real_estate, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input", required: true}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Licensed Realtor</label>
@@ -177,7 +177,7 @@
                           <%= show_sub_admin_message(flash.alert,"Licensed Realtor") %>
                           </span>
                         <% end %>
-                        <%= form.select :licensed_realtor, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input"}%>
+                        <%= form.select :licensed_realtor, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input", required: true}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">User Type</label>
@@ -186,7 +186,7 @@
                           <%= show_sub_admin_message(flash.alert,"User Type") %>
                           </span>
                         <% end %>
-                        <%= form.select :user_type, User.user_types.keys,{:include_blank => "Select from the option"}, {class: "input"} %>
+                        <%= form.select :user_type, User.user_types.keys,{:include_blank => "Select from the option"}, {class: "input", required: true} %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Address</label>
@@ -195,7 +195,7 @@
                           <%= show_sub_admin_message(flash.alert,"Address") %>
                           </span>
                         <% end %>
-                        <%= form.text_field :address, class: "input" %>
+                        <%= form.text_field :address, class: "input", required: true %>
                       </div>
                       <h5>Personal Data</h5>
                       <hr class="hr">
@@ -206,7 +206,7 @@
                           <%= show_sub_admin_message(flash.alert,"Email") %>
                           </span>
                         <% end %>
-                        <%= form.text_field :email, class: "input" %>
+                        <%= form.text_field :email, class: "input", required: true %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Phone Number</label>
@@ -215,7 +215,7 @@
                           <%= show_sub_admin_message(flash.alert,"Phone number") %>
                           </span>
                         <% end %>
-                        <%= form.text_field :phone_number, class: "input" %>
+                        <%= form.text_field :phone_number, class: "input", required: true %>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Temporary Password</label>
@@ -224,11 +224,11 @@
                           <%= show_sub_admin_message(flash.alert,"Password") %>
                           </span>
                         <% end %>
-                        <%= form.text_field :password, class: "input" %>
+                        <%= form.text_field :password, class: "input", required: true %>
                       </div>
                       <div class="btn_blk modal_btn">
-                        <button type="button" class="cancel">cancel</button>
-                        <button  type="submit" class="save site_btn">Save</button>
+                        <%= link_to "Cancel", users_lists_path, class:"cancel", style: "margin-top: 15px;"%>
+                        <button type="submit" class="save site_btn">Save</button>
                       </div>
                     <% end %>
                   </div>

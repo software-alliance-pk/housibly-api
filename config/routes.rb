@@ -68,7 +68,10 @@ end
       get :user_profile
     end
   end
-  devise_for :admins
+  devise_for :admins,
+  controllers: {
+    passwords: 'admins/passwords'
+  }
   get "/sp_active_account/:id", to: 'support_closers#active_user', as: 'sp_active_account'
   get "/sp_deactive_account/:id", to: 'support_closers#deactive_user',as: 'sp_deactive_account'
   get "/privacy_policy/:permalink", to: 'guidelines#guidelines', as: 'privacy_policy'

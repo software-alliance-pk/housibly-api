@@ -1,14 +1,29 @@
 $(".chat_msg").append(
+    '<% last_date = nil %>'+
+    `<% if last_date != @conversation.created_at.strftime("%D") %>
+    <div class="mt-5 d-flex chat_date">
+    <span><%= @conversation.created_at.strftime("%d %B %Y") %></span>
+    </div>
+    <% last_date = @conversation.created_at.strftime("%D") %>
+    <% end %>`+
     '<div class="support_msg">'+
     '<div class="d-flex flex-column">'+
     '<div class="msg">'+
     '<p><%= @conversation.body %></p>'+
     `<% if @conversation&.image&.attached? %>
-    <%= image_tag @conversation&.image&.url, alt: "" %>
-    <%= link_to "#{File.basename(@conversation.image.filename.to_s)}", @conversation.image.url, download: true, target: "_blank" %>
+    <div class="preview-container" style="position: relative; display: flex; align-items: center;">
+    <%= image_tag @conversation&.image&.url, alt: "", style: "flex: 1; max-width: 80%;" %>
+    <%= link_to @conversation.image.url, download: true, target: "_blank", class: "download-link", style: "position: absolute; right: 10px;" do %>
+    <%= image_tag 'icon-arrow-bottom.svg', alt: "Download", size: "32x32", class: "download-icon" %>
+    <% end %>
+    </div>
     <% elsif @conversation&.file&.attached? %>
-    <embed src="<%= @conversation&.file&.url %>" type="application/pdf" width="100%" height="200px" />
-    <%= link_to "#{File.basename(@conversation.file.filename.to_s)}", @conversation.file.url, download: true, target: "_blank" %>
+    <div class="preview-container" style="position: relative; display: flex; align-items: center;">
+    <embed src="<%= @conversation&.file&.url %>" type="application/pdf" width="100%" height="200px" style="flex: 1; max-width: 80%;" />
+    <%= link_to @conversation.file.url, download: true, target: "_blank", class: "download-link", style: "position: absolute; right: 10px;" do %>
+    <%= image_tag 'icon-arrow-bottom.svg', alt: "Download", size: "32x32", class: "download-icon" %>
+    <% end %>
+    </div>
     <% end %>`+
     '</div>'+
     '<p class="msg_time mt-2"><%= time_ago_in_words(@conversation.created_at) %></p>'+

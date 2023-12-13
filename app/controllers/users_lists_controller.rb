@@ -1,4 +1,6 @@
 class UsersListsController < ApplicationController
+  require 'will_paginate/array'
+  
   skip_before_action :authenticate_admin!
   def index
     notification = AdminNotification.find_by(id:params[:id])

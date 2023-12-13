@@ -70,10 +70,10 @@
               Phone No.
             </th>
             <th style="width:18.5rem">
-              Username
+              Real State Agent
             </th>
             <th style="width:14rem">
-              Location
+              Address
             </th>
             <th style="width: 14rem">
               Status
@@ -103,7 +103,7 @@
                   <% end %>
                 </td>
                 <td><%= user.phone_number %></td>
-                <td><%= user.full_name %></td>
+                <td><%= user.contacted_by_real_estate ? 'Yes' : 'No' %></td>
                 <td>
                   <%= user.address %>
                 </td>
@@ -162,10 +162,10 @@
                         <%= form.select :profile_type, ["want_sell","want_buy"],{:include_blank => "Select from the option"}, {class: "input", required: true}%>
                       </div>
                       <div class="form_blk d-flex align-items-center justify-content-between">
-                        <label for="">Contected By Real State</label>
+                        <label for="">Contacted By Real State</label>
                         <%if flash.alert.present? %>
                           <span>
-                          <%= show_sub_admin_message(flash.alert,"Contected By Real Estate") %>
+                          <%= show_sub_admin_message(flash.alert,"Contacted By Real Estate") %>
                           </span>
                         <% end %>
                         <%= form.select :contacted_by_real_estate, ["Yes","No"],{:include_blank => "Select from the option"}, {class: "input", required: true}%>
@@ -197,7 +197,7 @@
                         <% end %>
                         <%= form.text_field :address, class: "input", required: true %>
                       </div>
-                      <h5>Personal Data</h5>
+                      <h5>Account Information</h5>
                       <hr class="hr">
                       <div class="form_blk d-flex align-items-center justify-content-between">
                         <label for="">Email Address</label>

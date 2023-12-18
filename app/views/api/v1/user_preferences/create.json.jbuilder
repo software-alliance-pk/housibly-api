@@ -1,1 +1,1 @@
-json.preference @preference
+json.partial! 'user_preference', preference: @preference

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_29_124817) do
+ActiveRecord::Schema.define(version: 2023_12_17_212848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -398,31 +398,43 @@ ActiveRecord::Schema.define(version: 2023_11_29_124817) do
 
   create_table "user_preferences", force: :cascade do |t|
     t.string "property_type"
-    t.decimal "min_price"
-    t.decimal "max_price"
-    t.string "min_bedrooms"
-    t.string "max_bedrooms"
-    t.string "min_bathrooms"
-    t.string "max_bathrooms"
-    t.string "property_style"
-    t.string "min_lot_frontage"
-    t.integer "min_lot_size"
-    t.integer "max_lot_size"
-    t.integer "min_living_space"
-    t.integer "max_living_space"
-    t.string "parking_spot"
-    t.string "garbage_spot"
-    t.string "max_age"
     t.string "balcony"
     t.string "security"
     t.string "laundry"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
-    t.string "price_unit"
-    t.string "living_space_unit"
     t.string "lot_size_unit"
-    t.string "property_types"
+    t.integer "max_age"
+    t.boolean "is_lot_irregular"
+    t.boolean "central_vacuum"
+    t.string "currency_type"
+    t.string "driveway"
+    t.string "water"
+    t.string "sewer"
+    t.string "pool"
+    t.string "exposure"
+    t.string "pets_allowed"
+    t.string "house_style", default: [], array: true
+    t.string "house_type", default: [], array: true
+    t.string "condo_style", default: [], array: true
+    t.string "condo_type", default: [], array: true
+    t.string "exterior", default: [], array: true
+    t.string "included_utilities", default: [], array: true
+    t.string "basement", default: [], array: true
+    t.string "heat_source", default: [], array: true
+    t.string "heat_type", default: [], array: true
+    t.string "air_conditioner", default: [], array: true
+    t.string "fireplace", default: [], array: true
+    t.json "price"
+    t.json "lot_size"
+    t.json "lot_depth"
+    t.json "lot_frontage"
+    t.json "bed_rooms"
+    t.json "bath_rooms"
+    t.json "garage_spaces"
+    t.json "total_number_of_rooms"
+    t.json "total_parking_spaces"
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end
 

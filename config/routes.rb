@@ -82,10 +82,11 @@ end
       resources :properties, only: [:index, :show, :create, :update, :destroy] do
         collection do
           get :detail_options
-          get :recent_property
+          get :recent_properties
+          get :matching_properties
+          get :fetch_by_zip_code
           get :matching_property
           get :matching_dream_address
-          post :property_filters
           post :user_detail
         end
       end
@@ -93,7 +94,6 @@ end
         collection do
           post :fetch_property
           post 'fetch_user'
-          get 'fetch_by_zip_code'
           post 'newest_first'
         end
       end

@@ -1,7 +1,7 @@
 class Api::V1::PropertiesController < Api::V1::ApiController
   require 'uri'
 
-  before_action :validate_property_type, only: [:update, :create, :property_filters]
+  before_action :validate_property_type, only: [:update, :create]
   before_action :check_number_of_images, only: [:update, :create]
   before_action :set_property, only: [:show, :update, :destroy]
 
@@ -9,23 +9,19 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     @properties = @current_user.properties.order("created_at desc")
   end
 
-  def show; end # this is here for a reason, do not delete!
+  def show; end # for getting a specific property
 
   def create
     @property = property_params[:property_type].titleize.gsub(" ", "").constantize.new(property_params)
     @property.user = @current_user
-    if @property.save
-      @property
-    else
+    unless @property.save
       render_error_messages(@property)
     end
   end
 
   def update
     @property.type = property_params[:property_type].titleize.gsub(" ", "").constantize
-    if @property.update(@image_arr.length > 0 ? property_params : property_params.except(:images))
-      @property
-    else
+    unless @property.update(@image_arr.length > 0 ? property_params : property_params.except(:images))
       render_error_messages(@property)
     end
   end
@@ -42,17 +38,20 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     render json: Property.detail_options
   end
 
-  def property_filters
-    @properties = @current_user.properties.where("type = ?", property_params[:property_type].titleize.gsub(" ", ""))
+  def matching_properties
+    if @current_user.user_preference.present?
+      @properties = PropertiesSearchService.match(@current_user.user_preference.attributes)
+    else
+      render json: { message: "User has no preference" }
+    end
   end
 
-  def recent_property
+  def recent_properties
     @properties = @current_user.properties.where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago)
-    if @properties
-      @properties
-    else
-      render json: { message: "Property not found" }, status: :unprocessable_entity
-    end
+  end
+
+  def fetch_by_zip_code
+    @properties = Property.where(zip_code: property_params[:zip_code])
   end
 
   def matching_property
@@ -76,7 +75,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       record.weight_age = _weight_age
       @properties << record
     end
-    if  @properties.present?
+    if @properties.present?
       render json: { message:  @properties }, status: :ok
     else
       render json: @properties, status: :ok
@@ -95,15 +94,15 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         :driveway, :exposure, :garage_spaces, :house_style, :house_type, :is_lot_irregular, :laundry, :locker,
         :lot_depth, :lot_depth_unit, :lot_description, :lot_frontage, :lot_frontage_unit, :lot_size, :lot_size_unit,
         :pets_allowed, :pool, :price, :property_description, :property_tax, :property_type, :security, :sewer, :tax_year,
-        :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, air_conditioner: [], basement: [],
-        exterior: [], fireplace: [], heat_source: [], heat_type: [], included_utilities: [], images: [],
+        :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, :zip_code, air_conditioner: [],
+        basement: [], exterior: [], fireplace: [], heat_source: [], heat_type: [], included_utilities: [], images: [],
         rooms_attributes: [:id, :_destroy, :name, :length_in_feet, :length_in_inch, :width_in_feet, :width_in_inch, :level]
       )
     end
 
     def set_property
       @property = Property.find_by(id: params[:id])
-      render json: { error: "Property with id: #{params[:id]} does not exist" }, status: 422 unless @property
+      render json: { error: "Property does not exist" }, status: :not_found unless @property
     end
 
     def validate_property_type

@@ -1,11 +1,11 @@
 class UserPreference < ApplicationRecord
   belongs_to :user
   cattr_accessor :weight_age
-scope :price_matcher, ->(price){where("min_price >= ? OR max_price <= ?",price,price)}
-scope :bed_rooms_matcher, ->(bed_rooms){where("min_bedrooms >= ? OR max_bedrooms <= ?",bed_rooms,bed_rooms)}
-scope :bath_rooms_matcher, ->(bath_rooms){ where("min_bathrooms >= ? OR max_bathrooms <= ?",bath_rooms,bath_rooms)}
 
-scope :property_type_matcher,-> (type){ where("property_type ilike (?)",type&.titleize)}
+  scope :price_matcher, ->(price){where("min_price >= ? OR max_price <= ?",price,price)}
+  scope :bed_rooms_matcher, ->(bed_rooms){where("min_bedrooms >= ? OR max_bedrooms <= ?",bed_rooms,bed_rooms)}
+  scope :bath_rooms_matcher, ->(bath_rooms){ where("min_bathrooms >= ? OR max_bathrooms <= ?",bath_rooms,bath_rooms)}
+  scope :property_type_matcher,-> (type){ where("property_type ilike (?)",type&.titleize)}
   scope :property_parking_spot, -> (total_parking_spaces){where("parking_spot between (?) and (?)",total_parking_spaces,total_parking_spaces)}
   # scope :property_balcony, -> (balcony){ where("balcony = (?)",balcony&.titleize)}
   # scope :property_laundry, -> (laundry){ where("laundry = (?)",laundry.titleize)}
@@ -20,6 +20,5 @@ scope :property_type_matcher,-> (type){ where("property_type ilike (?)",type&.ti
   # scope :property_type_matcher_2, -> (type){ where("condo_type = (?) or house_type = (?)",type,type)}
   # #scope :property_living_space, -> (min_living,max_living){where("living_space = (?) or living_space (?)",min_living.to_s,max_living.to_s)}
   # scope :property_age, ->  (age){where("year_built between (?) and (?)",age,Date.today.strftime("%y").to_i)}
-
 
 end

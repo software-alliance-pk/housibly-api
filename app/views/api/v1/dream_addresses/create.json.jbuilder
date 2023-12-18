@@ -1,1 +1,1 @@
-json.dream_address @address
+json.partial! 'dream_address', address: @address

@@ -1,14 +1,34 @@
 class Api::V1::DreamAddressesController < Api::V1::ApiController
+
+  def index
+    @dream_addresses = @current_user.dream_addresses
+  end
+
   def create
-    if params[:location].present?
-      @address = @current_user.dream_addresses.build(location: params[:location])
-      if @address.save
-        @address
-      else
+    if address_params[:location].present?
+      @address = @current_user.dream_addresses.build(location: address_params[:location])
+      unless @address.save
         render_error_messages(@address)
       end
     else
-      render json: { message: "Location parameter is missing" }, status: :ok
+      render json: { message: "Location parameter is missing" }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if params[:id].present?
+      dream_address = DreamAddress.find_by(id: params[:id])
+      if dream_address.present?
+        if dream_address.destroy
+          render json: { message: "Successfully deleted" }
+        else
+          render_error_messages(dream_address)
+        end
+      else
+        render json: { message: "Dream address not found" }, status: :not_found
+      end
+    else
+      render json: { message: "id parameter is missing" }, status: :unprocessable_entity
     end
   end
 
@@ -226,36 +246,10 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
     _weight_age = _weight_age + number if matching_item.present?
   end
 
-  def fetch_by_zip_code
-    @property = Property.where(zip_code: params[:zip_code])
-    if @property.present?
-      @property
-    else
-      render json: { message: "No property with this zip code" }, status: :not_found
-    end
-  end
+  private
 
-  def index
-    @dream_addresses = @current_user.dream_addresses
-    if @dream_addresses.present?
-      @dream_addresses
-    else
-      render json: { message: @dream_address }, status: :ok
+    def address_params
+      params.require(:dream_address).permit(:location)
     end
-  end
-
-  def destroy
-    if params[:id].present?
-      @dream_address = DreamAddress.find_by(id: params[:id])
-      if @dream_address.present?
-        @dream_address.destroy
-        render json: { message: "successfully deleted" }, status: :ok
-      else
-        render json: { message: @dream_address }, status: :ok
-      end
-    else
-      render json: { message: "Dream address id is missing" }, status: :not_found
-    end
-  end
 
 end

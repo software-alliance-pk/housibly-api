@@ -125,11 +125,15 @@
                   <div class="d-flex align-items-center">
                     <input type="checkbox" name="selected_checkbox" class="me-3" id="<%= new_user.id %>">
                     <div class="img_blk">
-                      <%= image_tag new_user.avatar if new_user.avatar.attached? %>
+                      <% if new_user.avatar.attached?%>
+                        <%= image_tag(new_user.avatar.url, class: "round-image", style: "border-radius: 50%; width: 50px; height: 50px;") %>
+                      <% else %>
+                        <img src="/assets/default-profile.jpg" alt="" style="border-radius: 50%; width: 50px; height: 50px;">
+                      <%end%>
                     </div>
                   </div>
                 </td>
-                <td class=" user_name">
+                <td class=" user_name" style="padding-right: 30px;">
                   <p class="fw_500 mb-0">
                     <%= new_user.full_name %>
                   </p>
@@ -137,10 +141,10 @@
                     <%= new_user.email %>
                   </p>
                 </td>
-                <td><%= new_user.phone_number %></td>
-                <td><%= new_user.contacted_by_real_estate %></td>
-                <td><%= new_user.address %></td>
-                <td><%= new_user.created_at %></td>
+                <td style="padding-right: 30px;"><%= new_user.phone_number %></td>
+                <td style="padding-right: 25px;"><%= new_user.contacted_by_real_estate %></td>
+                <td style="padding-right: 40px;"><%= new_user.address %></td>
+                <td style="padding-right: 20px;"><%= new_user.created_at %></td>
               </tr>
             <% end %>
           <% end %>

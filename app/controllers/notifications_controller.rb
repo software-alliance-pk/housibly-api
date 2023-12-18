@@ -6,6 +6,6 @@ class NotificationsController < ApplicationController
   end
 
   def set_notifications
-    @notification = Notification.where(recipient: @current_admin).unread
+    @notifications = Notification.where(recipient: @current_admin).unread.order(created_at: :desc)
   end
 end

@@ -1,7 +1,10 @@
 <div class="paginate_sec">
-  <p><%= page_entries_info data %>
-  </p>
-  <div class="pagination">
-    <%= will_paginate data, container: false, page_links: true, inner_window: 1, outer_window: -1, previous_label: "< Previous", next_label: "Next >" %>
-  </div>
+  <% if data.total_entries > 0 %>
+    <p>Showing <%= data.offset_value + 1 %> to <%= [data.offset_value + data.length, data.total_entries].min %> of <%= data.total_entries %> entries</p>
+    <div class="pagination">
+      <%= will_paginate data, container: false, page_links: true, inner_window: 1, outer_window: -1, previous_label: "< Previous", next_label: "Next >" %>
+    </div>
+  <% else %>
+    <p>No entries found</p>
+  <% end %>
 </div>

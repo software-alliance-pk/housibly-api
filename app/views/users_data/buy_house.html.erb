@@ -1,109 +1,109 @@
-  <section id="account_section">
-  	<%= render 'shared/sidebar' %>
-  	<div id="buy_house" class="main_side">
-  		<div id="top_header">
-  			<h1>Buy House</h1>
-  			<%= render 'shared/header-side' %>
-  		</div>
-  		<div class="row">
-  			<div class="col-6">
-  				<ul class="top_blk">
-  					<li>
-  						<div class="dropdown">
-  							<button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
-  								<div class="img_blk">
-  									<%= image_tag 'filter.svg', alt: '' %>
-  								</div>
-  								filters
-  							</button>
-								<%= render 'shared/drop_down' %>
-  						</div>
-  					</li>
-  					<li>
-  						<div class="form_blk">
-  							<div class="icon_blk">
-  								<%= image_tag 'search.svg', alt: '' %>
-  							</div>
-  							<input type="search" placeholder="Search" class="input">
-  						</div>
-  					</li>
-  					<li>
-  						<button type="button" class="filter">
-  							<div class="img_blk">
-  								<%= image_tag 'csv-file-icon.svg', alt: '' %>
-  							</div>
-								<%= link_to "Download CSV",buy_house_users_data_path(format: 'csv', search: params[:search], page: params[:page], checkbox_value:""), id: "downloadbtncustom" %>
-							</button>
-  					</li>
-  				</ul>
-  			</div>
-  		</div>
-  		<div class="table_blk">
-  			<table class="mt-5  ">
-  				<thead>
-  					<tr>
-  						<th style="width: 18.7rem">
-  							Full Name
-  						</th>
-  						<th style="width: 17.2rem">
-  							Property Type
-  						</th>
-  						<th style="width: 20.6rem">
-  							Price Range
-  						</th>
-  						<th style="width: 17.1rem">
-  							Min Bedrooms
-  						</th>
-  						<th style="width: 24.5rem">
-  							Min Bathrooms
-  						</th>
-  						<th style="width: 22.3rem">
-  							Property Types
-  						</th>
-  						<th style="width: 18rem">
-  							Property Styles
-  						</th>
-  						<th style="width: 19.1rem">
-  							Min Lot Forntage
-  						</th>
-  						<th style="width: 12.9rem">
-  							Lot Size
-  						</th>
-  						<th style="width: 16rem">
-  							Living Space
-  						</th>
-  						<th style="width: 20.1rem">
-  							Parking Spots Req.
-  						</th>
-  						<th style="width: 19.9rem">
-  							Garage Spots Req.
-  						</th>
-  						<!-- <th style="width: 19rem">
-  							Max Age
-  						</th> -->
-  					</tr>
-  				</thead>
-  				<tbody>
-  					<% @houses.each do |house|%>
-  					<tr>
-  						<td><%= house.user.full_name%></td>
-							<td><%= house.type%></td>
-							<td style="color: #00A66C;"><%= house.price%></td>
-  						<td><%= house.bed_rooms%></td>
-  						<td> <%= house.bath_rooms%></td>
-  						<td><%= house.house_type %></td>
-  						<td><%= house.house_style %></td>
-  						<td><%= house.lot_frontage%></td>
-  						<td><%= house.lot_size%></td>
-  						<td><%= house.living_space %></td>
-  						<td><%= house.total_parking_spaces %></td>
-  						<td><%= house.garage_spaces%></td>
-  						<td><%#= house.max_age %></td>
-  					</tr>
-  					<%end%>
-  				</tbody>
-  			</table>
-  		</div>
-			<%= render 'shared/pagination' ,data: @houses%>
-  	</div>
-  </section>
+<section id="account_section">
+  <%= render 'shared/sidebar' %>
+  <div id="buy_house" class="main_side">
+    <div id="top_header">
+      <h1>Buy House</h1>
+      <%= render 'shared/header-side' %>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <ul class="top_blk">
+          <li>
+            <div class="dropdown">
+              <button class="filter text dropdown-toggle fs_5 fw_600" data-bs-toggle="dropdown">
+                <div class="img_blk">
+                  <%= image_tag 'filter.svg', alt: '' %>
+                </div>
+                filters
+              </button>
+              <%= render 'shared/drop_down' %>
+            </div>
+          </li>
+          <li>
+            <div class="form_blk">
+              <div class="icon_blk">
+                <%= image_tag 'search.svg', alt: '' %>
+              </div>
+              <input type="search" placeholder="Search" class="input">
+            </div>
+          </li>
+          <li>
+            <button type="button" class="filter">
+              <div class="img_blk">
+                <%= image_tag 'csv-file-icon.svg', alt: '' %>
+              </div>
+              <%= link_to "Download CSV",buy_house_users_data_path(format: 'csv', search: params[:search], page: params[:page], checkbox_value:""), id: "downloadbtncustom" %>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_blk">
+      <table class="mt-5  ">
+        <thead>
+          <tr>
+            <th style="width: 18.7rem">
+              Full Name
+            </th>
+            <th style="width: 17.2rem">
+              Property Type
+            </th>
+            <th style="width: 20.6rem">
+              Price Range
+            </th>
+            <th style="width: 17.1rem">
+              Min Bedrooms
+            </th>
+            <th style="width: 24.5rem">
+              Min Bathrooms
+            </th>
+            <th style="width: 22.3rem">
+              Property Types
+            </th>
+            <th style="width: 18rem">
+              Property Styles
+            </th>
+            <th style="width: 19.1rem">
+              Min Lot Forntage
+            </th>
+            <th style="width: 12.9rem">
+              Lot Size
+            </th>
+            <th style="width: 16rem">
+              Living Space
+            </th>
+            <th style="width: 20.1rem">
+              Parking Spots Req.
+            </th>
+            <th style="width: 19.9rem">
+              Garage Spots Req.
+            </th>
+            <th style="width: 19rem">
+              Max Age
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @houses.each do |house|%>
+          <tr>
+            <td><%= house.user.full_name%></td>
+            <td><%= house.type%></td>
+            <td style="color: #00A66C;"><%= house.price%></td>
+            <td><%= house.bed_rooms%></td>
+            <td> <%= house.bath_rooms%></td>
+            <td><%= house.house_type %></td>
+            <td><%= house.house_style %></td>
+            <td><%= house.lot_frontage%></td>
+            <td><%= house.lot_size%></td>
+            <td><%= house.living_space %></td>
+            <td><%= house.total_parking_spaces %></td>
+            <td><%= house.garage_spaces%></td>
+            <td><%= house.%></td>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+    <%= render 'shared/pagination' ,data: @houses%>
+  </div>
+</section>

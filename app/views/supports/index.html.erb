@@ -110,7 +110,7 @@
             </div>
           </div>
           <div class="chat_msg">
-            <% last_date = nil %>
+            <% last_date = '' %>
             <% @message&.support_messages&.order(created_at: :asc).each do |record| %>
               <% if last_date != record.created_at.strftime("%D") %>
                 <div class="mt-5 d-flex chat_date">
@@ -178,6 +178,7 @@
                 </div>
               <% end %>
             <% end %>
+            <div data-last_date=<%= last_date %>></div>
           </div>
 
         </div>

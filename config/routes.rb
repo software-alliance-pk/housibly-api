@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   resources :supports do
     member do
       get :get_specific_chat
-      get :ticket_in_progress
-      get :ticket_closed
-      get :ticket_pending
+    end
+    collection do
+      get :update_ticket_status
     end
   end
   resources :sub_admins do

@@ -41,16 +41,24 @@ class SupportsController < ApplicationController
     render 'index'
   end
 
-  def ticket_in_progress
-    @support.in_progress!
-  end
+  def update_ticket_status
+    @support = Support.find_by(id: params[:support_id])
+    unless @support.present?
+      redirect_back(fallback_location: root_path) and return
+    end
+    if params[:status] == "pending"
+      @support.update(status: "pending")
+      flash[:success_alert] = "Support Ticket status has been updated to Pending"
 
-  def ticket_closed
-    @support.closed!
-  end
-
-  def ticket_pending
-    @support.pending!
+    elsif params[:status] == "in_progress"
+      @support.update(status: "in_progress")
+      flash[:success_alert] = "Support Ticket status has been updated to In-Progress"
+    
+    else params[:status] == "closed"
+      @support.update(status: "closed")
+      flash[:success_alert] = "Support Ticket Status has been updated to Closed"
+    end
+    redirect_to get_specific_chat_support_path(id: params[:support_id])
   end
 
   def set_user_list

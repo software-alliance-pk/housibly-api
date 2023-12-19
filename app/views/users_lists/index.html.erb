@@ -69,13 +69,13 @@
             <th style="width:15.1rem">
               Phone No.
             </th>
-            <th style="width:18.5rem">
+            <th style="width:12rem">
               Real State Agent
             </th>
             <th style="width:14rem">
               Address
             </th>
-            <th style="width: 14rem">
+            <th style="width: 10rem">
               Status
             </th>
           </tr>
@@ -88,11 +88,15 @@
                   <div class="d-flex align-items-center">
                     <input type="checkbox" name="selected_checkbox" class="me-3" id="<%= user.id%>">
                     <div class="img_blk">
-
+                      <% if user.avatar.attached?%>
+                        <%= image_tag(user.avatar.url, class: "round-image", style: "border-radius: 50%; width: 50px; height: 50px;") %>
+                      <% else %>
+                        <img src="/assets/default-profile.jpg" alt="" style="border-radius: 50%; width: 50px; height: 50px;">
+                      <%end%>
                     </div>
                   </div>
                 </td>
-                <td class=" user_name">
+                <td class=" user_name" style="padding-right: 30px;">
                   <%= link_to user_profile_users_list_path(id: user) do %>
                     <p class="fw_500 mb-0">
                       <%= user.full_name %>
@@ -102,12 +106,10 @@
                     </p>
                   <% end %>
                 </td>
-                <td><%= user.phone_number %></td>
-                <td><%= user.contacted_by_real_estate ? 'Yes' : 'No' %></td>
-                <td>
-                  <%= user.address %>
-                </td>
-                <td>
+                <td style="padding-right: 30px;"><%= user.phone_number %></td>
+                <td style="padding-right: 25px;"><%= user.contacted_by_real_estate ? 'Yes' : 'No' %></td>
+                <td style="padding-right: 40px;"><%= user.address %></td>
+                <td style="padding-right: 10px;">
                   <div class="d-flex align-items-center justify-content-between">
                     <p class="mb-0" id="active_user_<%= user.id %>" style="color:#93DF70;" <%= 'hidden' unless user.active %> >Active</p>
                     <p class="mb-0" id="deactive_user_<%= user.id %>" style="color:#df7074;" <%= 'hidden' if user.active %> >Disable

@@ -25,7 +25,7 @@
                 <div class="icon_blk">
                   <%= image_tag 'search.svg' %>
                 </div>
-                <%= text_field_tag :search,nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
+                <%= text_field_tag :search, nil, placeholder: 'Search',id: "csearchbtn", class: 'input',value: params[:search]%>
                 <input type="submit" id="searchformc" hidden>
               <% end %>
             </li>
@@ -67,16 +67,16 @@
           <tbody>
             <% @all_users.each do |user| %>
           <tr>
-            <td class="fw_500 user_name ">
-                  <%= link_to user_profile_users_list_path(id: user) do %>
-                    <%= user.full_name %>
-                  <%end%>
+            <td class="fw_500 user_name " style="padding-right: 30px;">
+              <%= link_to user_profile_users_list_path(id: user) do %>
+                <%= user.full_name %>
+              <%end%>
             </td>
-            <td><%= user.email %></td>
-            <td><%=user.phone_number%></td>
-            <td><%=user.contacted_by_real_estate%></td>
-            <td><%=user.address%></td>
-            <td><%= user.description %></td>
+            <td style="padding-right: 40px;"><%= user.email %></td>
+            <td style="padding-right: 30px;"><%=user.phone_number%></td>
+            <td style="padding-right: 25px;"><%=user.contacted_by_real_estate%></td>
+            <td style="padding-right: 55px;"><%=user.address%></td>
+            <td style="padding-right: 30px;"><%= user.description %></td>
             
           </tr>
           <%end%>

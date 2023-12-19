@@ -11,6 +11,8 @@
       <h1>Support</h1>
       <%= render "shared/header-side" %>
     </div>
+    <%= render :partial => "shared/error_success_messages" %>
+    <div class="show_notification_div"></div>
     <div class="row">
       <div class="col-4" style="width: 32rem;">
         <ul class="tabs nav scrollbar">
@@ -92,25 +94,19 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
-                  <% if @message %>
-                    <%= link_to "Pending", ticket_pending_support_path(id: @message.support.id), class: "dropdown-item", remote: true %>
-                  <% end %>
+                    <a href="<%= update_ticket_status_supports_path(id: @message&.support.id, status: 'pending') %>">Pending</a>
                 </li>
                 <li>
-                  <% if @message %>
-                    <%= link_to "In progress", ticket_in_progress_support_path(id: @message.support.id), class: "dropdown-item", remote: true %>
-                  <% end %>
+                    <a href="<%= update_ticket_status_supports_path(id: @message&.support.id, status: 'in_progress') %>">In Progress</a>
                 </li>
                 <li>
-                  <% if @message %>
-                    <%= link_to "Closed", ticket_closed_support_path(id: @message&.support.id), class: "dropdown-item", remote: true %>
-                  <% end %>
+                    <a href="<%= update_ticket_status_supports_path(id: @message&.support.id, status: 'closed') %>">Closed</a>
                 </li>
               </ul>
             </div>
           </div>
           <div class="chat_msg">
-            <% last_date = nil %>
+            <% last_date = '' %>
             <% @message&.support_messages&.order(created_at: :asc).each do |record| %>
               <% if last_date != record.created_at.strftime("%D") %>
                 <div class="mt-5 d-flex chat_date">
@@ -178,6 +174,7 @@
                 </div>
               <% end %>
             <% end %>
+            <div data-last_date=<%= last_date %>></div>
           </div>
 
         </div>

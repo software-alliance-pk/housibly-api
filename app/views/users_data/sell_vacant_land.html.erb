@@ -58,23 +58,14 @@
               Street Address
             </th>
             <th style="width: 14.2rem">
-            Lot Depth
-          </th>
-          <th style="width: 14.2rem">
-            Lot Depth Unit
-          </th>
-          <th style="width: 16.1rem">
-            Lot Frontage
-          </th>
-          <th style="width: 16.1rem">
-            Lot Frontage Unit
-          </th>
-          <th style="width: 14.8rem">
-            Lot Size
-          </th>
-          <th style="width: 14.8rem">
-            Lot Size Unit
-          </th>
+              Lot Frontage (ft)
+            </th>
+            <th style="width: 14.2rem">
+              Lot Depth (ft)
+            </th>
+            <th style="width: 16.1rem">
+              Lot Size (ft)
+            </th>
             <th style="width: 19.4rem">
               Is Your Lot Irregular
             </th>
@@ -91,31 +82,28 @@
               Property Description
             </th>
           </tr>
-          </thead>
-          <tbody>
-            <% @vacant_lands.each do |vacant_land|%>
-          <tr>
+        </thead>
+        <tbody>
+          <% @vacant_lands.each do |vacant_land|%>
+        <tr>
           <td class="fw_500 user_name "><% vacant_land.user.full_name%></td>
           <td><%= vacant_land.type%></td>
           <td><%= vacant_land.title%></td>
           <td style="color: #00A66C;"><%= vacant_land.price%></td>
-          <td><%= vacant_land.address%>5</td>
-          <td><%= vacant_land.lot_depth%></td>
-          <td><%= vacant_land.lot_depth_unit%></td>
+          <td><%= vacant_land.address%></td>
           <td><%= vacant_land.lot_frontage%></td>
-          <td><%= vacant_land.lot_frontage_unit%></td>
+          <td><%= vacant_land.lot_depth%></td>
           <td><%= vacant_land.lot_size%></td>
-          <td><%= vacant_land.lot_size_unit%></td>
           <td><%= vacant_land.is_lot_irregular%></td>
           <td><%= vacant_land.lot_description%></td>
           <td><%= vacant_land.property_tax%></td>
           <td><%= vacant_land.tax_year%></td>
           <td><%= vacant_land.property_description%></td>
-          </tr>
-          <%end%>
-          </tbody>
-        </table>
-      </div>
-      <%= render 'shared/pagination' ,data: @vacant_lands%>
+        </tr>
+        <%end%>
+        </tbody>
+      </table>
     </div>
-  </section>
+    <%= render 'shared/pagination' ,data: @vacant_lands%>
+  </div>
+</section>

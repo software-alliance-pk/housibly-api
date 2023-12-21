@@ -210,32 +210,38 @@
               <td><%= house.tax_year%></td>             
               <td><%= house.property_description%></td>
               <td><%= house.appliances_and_other_items%></td>
-              <td><%= house.rooms.name if house.rooms.present? %></td>
               <td>
-                <% if house.rooms.present? %>
+                <%if house.rooms.present? %>
                   <% house.rooms.each do |room| %>
-                    <%= room.length_in_feet.to_i %> (ft)<br>
+                    <%= room.name %><br>
                   <% end %>
                 <% end %>
               </td>
               <td>
                 <% if house.rooms.present? %>
                   <% house.rooms.each do |room| %>
-                  (in)<br>
+                    <%= room.length_in_feet.to_i %>ft<br>
                   <% end %>
                 <% end %>
               </td>
               <td>
                 <% if house.rooms.present? %>
                   <% house.rooms.each do |room| %>
-                    <%= room.width_in_feet.to_i %> (ft)<br>
+                  <%= room.length_in_inch.to_i %>in<br>
                   <% end %>
                 <% end %>
               </td>
               <td>
                 <% if house.rooms.present? %>
                   <% house.rooms.each do |room| %>
-                    (in)<br>
+                    <%= room.width_in_feet.to_i %>ft<br>
+                  <% end %>
+                <% end %>
+              </td>
+              <td>
+                <% if house.rooms.present? %>
+                  <% house.rooms.each do |room| %>
+                    <%= room.width_in_inch.to_i %>in<br>
                   <% end %>
                 <% end %>
               </td>

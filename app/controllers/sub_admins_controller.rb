@@ -3,10 +3,10 @@ class SubAdminsController < ApplicationController
     notification = AdminNotification.find_by(id:params[:id])
     notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
-      @sub_admins = Admin.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
+      @sub_admins = Admin.custom_search(params[:search]).order(created_at: :desc).paginate(page: params[:page], per_page: 10)
       response_to_method
     else
-      @sub_admins = Admin.sub_admin.paginate(page: params[:page], per_page: 10)
+      @sub_admins = Admin.sub_admin.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
       response_to_method
     end
   end

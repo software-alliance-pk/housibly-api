@@ -223,12 +223,48 @@
           <td><%= condo.tax_year%></td>
           <td><%= condo.property_description%></td>
           <td><%= condo.appliances_and_other_items%></td>
-          <td>Kitchen</td>
-          <td>26ft</td>
-          <td>23in</td>
-          <td>32ft</td>
-          <td>23in</td>
-          <td>In Between</td>
+          <td>
+            <%if condo.rooms.present? %>
+              <% condo.rooms.each do |room| %>
+                <%= room.name %><br>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if condo.rooms.present? %>
+              <% condo.rooms.each do |room| %>
+                <%= room.length_in_feet.to_i %>ft<br>
+              <% end %>
+            <% end %>
+          </td> 
+          <td>
+            <% if condo.rooms.present? %>
+              <% condo.rooms.each do |room| %>
+               <%= room.length_in_inch.to_i %>in<br>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if condo.rooms.present? %>
+              <% condo.rooms.each do |room| %>
+                <%= room.width_in_feet.to_i %>ft<br>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if condo.rooms.present? %>
+              <% condo.rooms.each do |room| %>
+                <%= room.width_in_inch.to_i %>in<br>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if condo.rooms.present? %>
+              <% condo.rooms.each do |room| %>
+                <%= room.level %><br>
+              <% end %>
+            <% end %>
+          </td>
         </tr>
         <% end %>
         </tbody>

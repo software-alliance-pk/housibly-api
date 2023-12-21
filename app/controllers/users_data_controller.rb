@@ -3,9 +3,9 @@ class UsersDataController < ApplicationController
     notification = AdminNotification.find_by(id:params[:id])
     notification.update(read_at:Time.now) if notification.present?
     unless params[:search].blank?
-      @all_users = User.custom_search(params[:search]).paginate(page: params[:page], per_page: 10)
+      @all_users = User.custom_search(params[:search]).order(created_at: :desc).paginate(page: params[:page], per_page: 10)
     else
-      @all_users = User.paginate(page: params[:page], per_page: 10)
+      @all_users = User.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
     end
     response_to_method(@all_users)
   end

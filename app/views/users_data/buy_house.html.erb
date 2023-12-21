@@ -98,7 +98,7 @@
             <td><%= house.living_space %></td>
             <td><%= house.total_parking_spaces %></td>
             <td><%= house.garage_spaces%></td>
-            <td>32</td>
+            <td><%= house.year_built ? (Time.now.year - house.year_built) : 'N/A' %></td>
           </tr>
           <%end%>
         </tbody>

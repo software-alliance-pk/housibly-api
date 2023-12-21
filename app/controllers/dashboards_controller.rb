@@ -2,7 +2,7 @@ class DashboardsController < ApplicationController
   def index
     notification = AdminNotification.find_by(id: params[:id])
     notification.update(read_at: Time.now) if notification.present?
-    @new_users = User.new_users.paginate(page: params[:page], per_page: 3)
+    @new_users = User.new_users.order(created_at: :desc).paginate(page: params[:page], per_page: 3)
     @new_users = User.where(" Date(created_at) >= ? AND Date(created_at) <= ?", params[:start_date], params[:end_date]).paginate(page: params[:page], per_page: 3) if params[:start_date].present? && params[:end_date].present?
     respond_to do |format|
       format.html

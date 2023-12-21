@@ -71,7 +71,7 @@
           <tbody>
 
           <% if @support_closer.exists? %>
-            <% @support_closer.each do |record| %>
+            <% @support_closer.reverse_each do |record| %>
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
@@ -85,7 +85,7 @@
                     </div>
                   </div>
                 </td>
-                <td class=" user_name">
+                <td class=" user_name" style="padding-right: 40px;">
                   <p class="fw_500 mb-0">
                     <%= record.full_name %>
                   </p>
@@ -93,9 +93,9 @@
                     <%= record.email %>
                   </p>
                 </td>
-                <td><%= record.phone_number %></td>
-                <td><%= record&.professions&.first&.title %></td>
-                <td>
+                <td style="padding-right: 30px;"><%= record.phone_number %></td>
+                <td style="padding-right: 30px;"><%= record&.professions&.first&.title %></td>
+                <td style="padding-right: 20px;">
                   <div class="d-flex align-items-center">
                     <div class="rating_blk me-2">
                       <%= image_tag 'rating.svg' %>

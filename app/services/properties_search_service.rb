@@ -1,11 +1,12 @@
 class PropertiesSearchService
 
-  def self.match(preference)
+  def self.match(preference, page)
     where_args = ['']
     conjuction = ' AND '
 
     preference.each do |key, value|
-      next if value.blank? || key.in?(['id', 'user_id', 'created_at', 'updated_at', 'property_type', 'currency_type', 'lot_size_unit'])
+      next if value.blank? || key.in?(
+        ['id', 'user_id', 'created_at', 'updated_at', 'property_type', 'currency_type', 'lot_size_unit', 'lot_depth_unit', 'lot_frontage_unit'])
 
       if key == 'max_age'
         where_args[0] << conjuction if where_args[0].present?
@@ -25,6 +26,7 @@ class PropertiesSearchService
           where_args.push(value['min'] || value['max'])
         end
       elsif value.is_a? Array
+        next if value.filter(&:present?).blank?
         where_args[0] << conjuction if where_args[0].present?
         where_args[0] << "ARRAY[#{key}]::varchar[] && ARRAY[?]::varchar[]"
         where_args.push(value)
@@ -36,7 +38,7 @@ class PropertiesSearchService
     end
 
     # pp where_args
-    Property.where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc)
+    Property.where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page: page, per_page: 10)
   end
 
 end

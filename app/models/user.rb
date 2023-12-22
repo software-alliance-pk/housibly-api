@@ -3,6 +3,8 @@ class User < ApplicationRecord
   include CsvCounter
   include PgSearch::Model
 
+  after_create :create_user_preference
+
   pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
                   associated_against: {
@@ -110,6 +112,10 @@ class User < ApplicationRecord
 
     def otp_length(length)
       rand((9.to_s * length).to_i).to_s.center(length, rand(9).to_s).to_i
+    end
+
+    def create_user_preference
+      build_user_preference(property_type: 'house')
     end
 
     def self.to_csv

@@ -2,6 +2,7 @@ class Property < ApplicationRecord
   include PgSearch::Model
 
   after_commit :add_the_lnt_and_lng_property, on: :create
+  before_save :convert_to_feet, unless: ->(property){property.property_type == "condo"}
 
   # reverse_geocoded_by :latitude, :longitude
   acts_as_mappable :default_units => :kms,
@@ -48,13 +49,33 @@ class Property < ApplicationRecord
   validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
   # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
-  validate :validate_detail_options
+  # validate :validate_room_levels, unless: ->(property){property.property_type == "vacant_land"}
+  validate :validate_detail_options, unless: ->(property){property.property_type == "vacant_land"}
+  validate :validate_measurement_units, unless: ->(property){property.property_type == "condo"}
 
   attr_writer :property_type
 
   # attribute reader
   def property_type
     type.underscore
+  end
+
+  # for conversion to feet
+  CONVERSION_FACTORS = {
+    meter: 3.28084, # 1 meter = 3.28084 feet
+    square_meter: 10.76391 # 1 square meter = 10.76391 square feet
+  }
+
+  def lot_depth
+    (self[:lot_depth].blank? || lot_depth_unit == 'feet') ? self[:lot_depth] : self[:lot_depth]/CONVERSION_FACTORS[:meter]
+  end
+
+  def lot_frontage
+    (self[:lot_frontage].blank? || lot_frontage_unit == 'feet') ? self[:lot_frontage] : self[:lot_frontage]/CONVERSION_FACTORS[:meter]
+  end
+
+  def lot_size
+    (self[:lot_size].blank? || lot_frontage_unit == 'feet') ? self[:lot_size] : self[:lot_size]/CONVERSION_FACTORS[:square_meter]
   end
 
   def self.detail_options
@@ -199,31 +220,74 @@ class Property < ApplicationRecord
         in_ground: 'In-Ground',
         above_ground: 'Above Ground',
         none: 'None'
+      },
+      room_levels: {
+        basement: 'Basement',
+        ground_floor: 'Ground Floor',
+        first_floor: 'First Floor',
+        second_floor: 'Second Floor',
+        third_floor: 'Third Floor',
+        fourth_floor: 'Fourth Floor'
+      },
+      length_units: {
+        feet: 'feet',
+        meter: 'meter'
       }
+      # area_units: {
+      #   square_feet: 'sqft',
+      #   square_meter: 'sqm'
+      # }
     }
   end
 
   private
 
-  def add_the_lnt_and_lng_property
-    location = LocationFinderService.get_location_attributes(self.address)
-    return unless location
-    self.update(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
-  end
+    def convert_to_feet
+      return if lot_depth_unit == 'feet' || (changed & ['lot_depth_unit', 'lot_depth', 'lot_frontage', 'lot_size']).blank?
 
-  def validate_detail_options
-    self.attributes.each do |key, value|
-      next unless value.present?
+      self[:lot_depth] *= CONVERSION_FACTORS[:meter] if self[:lot_depth].present?
+      self[:lot_frontage] *= CONVERSION_FACTORS[:meter] if self[:lot_frontage].present?
+      self[:lot_size] *= CONVERSION_FACTORS[:square_meter] if self[:lot_size].present?
+    end
 
-      allowed_values = Property.detail_options[key.to_sym]
-      next unless allowed_values
+    def add_the_lnt_and_lng_property
+      location = LocationFinderService.get_location_attributes(self.address)
+      return unless location
+      self.update(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
+    end
 
-      if value.is_a? Array
-        value.each { |entry| errors.add(key, "has invalid value: #{entry}") unless allowed_values[entry.to_sym] }
-      else
-        errors.add(key, "has invalid value: #{value}") unless allowed_values[value.to_sym]
+    def validate_room_levels
+      room_levels = Property.detail_options[:room_levels].keys
+      rooms.each do |room|
+        errors.add(:room_level, "has invalid value: #{room.level}") unless room.level.to_sym.in?(room_levels)
       end
     end
-  end
+
+    def validate_measurement_units
+      length_units = Property.detail_options[:length_units].keys
+      errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth_unit.to_sym.in?(length_units)
+      errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage_unit.to_sym.in?(length_units)
+      errors.add('lot_depth_unit and lot_frontage_unit', 'should be the same') unless lot_depth_unit == lot_frontage_unit
+
+      # errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit.in?(Property.detail_options[:area_units].keys)
+      # unless lot_depth_unit == lot_frontage_unit && lot_size_unit.include?(lot_depth_unit)
+      #   errors.add('lot_depth_unit, lot_frontage_unit, lot_size_unit', 'should have same base unit')
+      # end
+    end
+
+    def validate_detail_options
+      self.attributes.each do |key, value|
+        next unless value.present?
+
+        allowed_values = Property.detail_options[key.to_sym]
+        next unless allowed_values
+
+        if value.is_a? Array
+          value.each { |entry| errors.add(key, "has invalid value: #{entry}") unless allowed_values[entry.to_sym] }
+        else
+          errors.add(key, "has invalid value: #{value}") unless allowed_values[value.to_sym]
+        end
+      end
+    end
 
 end

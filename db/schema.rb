@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_17_212848) do
+ActiveRecord::Schema.define(version: 2023_12_21_100751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -398,9 +398,9 @@ ActiveRecord::Schema.define(version: 2023_12_17_212848) do
 
   create_table "user_preferences", force: :cascade do |t|
     t.string "property_type"
-    t.string "balcony"
-    t.string "security"
-    t.string "laundry"
+    t.string "balcony", default: [], array: true
+    t.string "security", default: [], array: true
+    t.string "laundry", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
@@ -409,12 +409,12 @@ ActiveRecord::Schema.define(version: 2023_12_17_212848) do
     t.boolean "is_lot_irregular"
     t.boolean "central_vacuum"
     t.string "currency_type"
-    t.string "driveway"
-    t.string "water"
-    t.string "sewer"
-    t.string "pool"
-    t.string "exposure"
-    t.string "pets_allowed"
+    t.string "driveway", default: [], array: true
+    t.string "water", default: [], array: true
+    t.string "sewer", default: [], array: true
+    t.string "pool", default: [], array: true
+    t.string "exposure", default: [], array: true
+    t.string "pets_allowed", default: [], array: true
     t.string "house_style", default: [], array: true
     t.string "house_type", default: [], array: true
     t.string "condo_style", default: [], array: true
@@ -435,6 +435,8 @@ ActiveRecord::Schema.define(version: 2023_12_17_212848) do
     t.json "garage_spaces"
     t.json "total_number_of_rooms"
     t.json "total_parking_spaces"
+    t.string "lot_frontage_unit"
+    t.string "lot_depth_unit"
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end
 

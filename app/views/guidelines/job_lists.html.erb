@@ -45,8 +45,8 @@
                   <hr class="hr">
                   <%= form.text_area :title, class: "input",placeholder: 'Input Here',id:'myTextfield' %>
                   <div class="btn_blk modal_btn">
-                    <button type="button" class="cancel">cancel</button>
-                    <button  type="submit" class="save site_btn">Save</button>
+                    <%= link_to "cancel", job_lists_guidelines_path, class:"cancel", style: "margin-top: 15px;" %>
+                    <button type="submit" class="save site_btn">Save</button>
                   </div>
                    <% end%>
                 </div>

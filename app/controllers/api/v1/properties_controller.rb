@@ -40,7 +40,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def matching_properties
     if @current_user.user_preference.present?
-      @properties = PropertiesSearchService.match(@current_user.user_preference.attributes)
+      @properties = PropertiesSearchService.match(@current_user.user_preference.attributes, params[:page])
     else
       render json: { message: "User has no preference" }
     end
@@ -51,7 +51,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def fetch_by_zip_code
-    @properties = Property.where(zip_code: property_params[:zip_code])
+    @properties = Property.where(zip_code: params[:zip_code])
   end
 
   def matching_property
@@ -94,7 +94,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         :driveway, :exposure, :garage_spaces, :house_style, :house_type, :is_lot_irregular, :laundry, :locker,
         :lot_depth, :lot_depth_unit, :lot_description, :lot_frontage, :lot_frontage_unit, :lot_size, :lot_size_unit,
         :pets_allowed, :pool, :price, :property_description, :property_tax, :property_type, :security, :sewer, :tax_year,
-        :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, :zip_code, air_conditioner: [],
+        :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, air_conditioner: [],
         basement: [], exterior: [], fireplace: [], heat_source: [], heat_type: [], included_utilities: [], images: [],
         rooms_attributes: [:id, :_destroy, :name, :length_in_feet, :length_in_inch, :width_in_feet, :width_in_inch, :level]
       )
@@ -102,12 +102,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
     def set_property
       @property = Property.find_by(id: params[:id])
-      render json: { error: "Property does not exist" }, status: :not_found unless @property
+      render json: { message: "Property does not exist" }, status: :not_found unless @property
     end
 
     def validate_property_type
       return if property_params[:property_type].in? ["house", "condo", "vacant_land"]
-      render json: { error: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
+      render json: { message: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
     end
 
     def check_number_of_images
@@ -123,7 +123,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         tempfile = Down.download(image["uri"])
         @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
       rescue => e
-        render json: { error: e.message }, status: 404
+        render json: { message: e.message }, status: 404
       end
     end
 

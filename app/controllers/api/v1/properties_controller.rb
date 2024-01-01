@@ -41,6 +41,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def matching_properties
     if @current_user.user_preference.present?
       @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info)
+      render 'index'
     else
       render json: { message: 'User has no preference' }
     end
@@ -49,6 +50,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def find_in_circle
     if search_params[:origin].present? && search_params[:radius].present?
       @properties = PropertiesSearchService.search_in_circle(search_params[:origin], search_params[:radius], page_info)
+      render 'index'
     else
       render json: { message: 'Origin or radius parameter is missing' }, status: :unprocessable_entity
     end
@@ -57,6 +59,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def find_in_polygon
     if search_params[:polygon].present?
       @properties = PropertiesSearchService.search_in_polygon(search_params[:polygon], page_info)
+      render 'index'
     else
       render json: { message: 'Polygon parameter is missing' }, status: :unprocessable_entity
     end
@@ -65,6 +68,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   def find_by_zip_code
     if search_params[:zip_code].present?
       @properties = Property.where(zip_code: search_params[:zip_code]).paginate(page_info)
+      render 'index'
     else
       render json: { message: 'Zip code parameter is missing' }, status: :unprocessable_entity
     end
@@ -72,6 +76,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def recent_properties
     @properties = @current_user.properties.where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago)
+    render 'index'
   end
 
   def matching_property

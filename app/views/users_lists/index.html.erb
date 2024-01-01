@@ -6,6 +6,24 @@
         <h1>User List</h1>
         <%= render 'shared/header-side' %>
       </div>
+      <% if flash[:alert].present? %>
+        <div id="flash-alert" class="alert alert-danger">
+          <%= flash[:alert] %>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function(){
+              var flashAlert = document.getElementById('flash-alert');
+              if (flashAlert) {
+                flashAlert.style.opacity = '0';
+                setTimeout(function() {
+                  flashAlert.style.display = 'none';
+                }, 5000);
+              }
+            }, 5000);
+          });
+        </script>
+      <% end %>
       <div class="top_blk">
         <div class="row">
           <div class="col-6">
@@ -243,3 +261,4 @@
     </div>
   </section>
 </main>
+

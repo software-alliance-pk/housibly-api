@@ -9,7 +9,7 @@ class UsersListsController < ApplicationController
     unless params[:search].blank?
       @all_users = User.all_users.custom_search(params[:search]).order(created_at: :desc).paginate(page: params[:page], per_page: 10)
     else
-      @all_users = User.all_users.order(created_at: :desc).paginate(page: params[:page], per_page: 3)
+      @all_users = User.all_users.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
     end
     response_to_method
   end
@@ -62,7 +62,7 @@ class UsersListsController < ApplicationController
                               recipient_id: @user.id, action: "New User Created") if Admin&.admin.present?
       redirect_to users_lists_path()
     else
-      flash.alert = @user.errors.full_messages
+      flash.alert = @user.errors.full_messages.join(', ')
       redirect_to users_lists_path()
     end
   end

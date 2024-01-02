@@ -6,13 +6,13 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   before_action :set_property, only: [:show, :update, :destroy]
 
   def index
-    @properties = @current_user.properties.order("created_at desc")
+    @properties = @current_user.properties.order('created_at desc')
   end
 
   def show; end # for getting a specific property
 
   def create
-    @property = property_params[:property_type].titleize.gsub(" ", "").constantize.new(property_params)
+    @property = property_params[:property_type].titleize.gsub(' ', '').constantize.new(property_params)
     @property.user = @current_user
     unless @property.save
       render_error_messages(@property)
@@ -28,7 +28,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def destroy
     if @property.destroy
-      render json: { message: "Property has been deleted successfully!" }
+      render json: { message: 'Property has been deleted successfully!' }
     else
       render_error_messages(@property)
     end
@@ -40,18 +40,43 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def matching_properties
     if @current_user.user_preference.present?
-      @properties = PropertiesSearchService.match(@current_user.user_preference.attributes, params[:page])
+      @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info)
+      render 'index'
     else
-      render json: { message: "User has no preference" }
+      render json: { message: 'User has no preference' }
+    end
+  end
+
+  def find_in_circle
+    if search_params[:origin].present? && search_params[:radius].present?
+      @properties = PropertiesSearchService.search_in_circle(search_params[:origin], search_params[:radius], page_info)
+      render 'index'
+    else
+      render json: { message: 'Origin or radius parameter is missing' }, status: :unprocessable_entity
+    end
+  end
+
+  def find_in_polygon
+    if search_params[:polygon].present?
+      @properties = PropertiesSearchService.search_in_polygon(search_params[:polygon], page_info)
+      render 'index'
+    else
+      render json: { message: 'Polygon parameter is missing' }, status: :unprocessable_entity
+    end
+  end
+
+  def find_by_zip_code
+    if search_params[:zip_code].present?
+      @properties = Property.where(zip_code: search_params[:zip_code]).paginate(page_info)
+      render 'index'
+    else
+      render json: { message: 'Zip code parameter is missing' }, status: :unprocessable_entity
     end
   end
 
   def recent_properties
     @properties = @current_user.properties.where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago)
-  end
-
-  def fetch_by_zip_code
-    @properties = Property.where(zip_code: params[:zip_code])
+    render 'index'
   end
 
   def matching_property
@@ -100,6 +125,10 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       )
     end
 
+    def search_params
+      params.require(:search).permit(:zip_code, :radius, origin: [:lat, :lng], polygon: [:lat, :lng])
+    end
+
     def set_property
       @property = Property.find_by(id: params[:id])
       render json: { message: "Property does not exist" }, status: :not_found unless @property
@@ -129,5 +158,12 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
     def calculate_weightage(_weight_age,matching_item,number)
       _weight_age = _weight_age + number if matching_item.present?
+    end
+
+    def page_info
+      {
+        page: params[:page],
+        per_page: 10
+      }
     end
 end

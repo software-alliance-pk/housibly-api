@@ -82,9 +82,11 @@ end
       resources :properties, only: [:index, :show, :create, :update, :destroy] do
         collection do
           get :detail_options
-          get :recent_properties
           get :matching_properties
-          get :fetch_by_zip_code
+          get :find_in_circle
+          get :find_in_polygon
+          get :find_by_zip_code
+          get :recent_properties
           get :matching_property
           get :matching_dream_address
           post :user_detail

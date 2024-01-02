@@ -33,6 +33,8 @@ class Property < ApplicationRecord
   scope :vacant_land, -> { where("type = (?)","VacantLand") }
   scope :condo, -> { where("type = (?)","Condo") }
 
+  scope :not_from_user, -> (user_id){ where.not(user_id: user_id) }
+
   cattr_accessor :bookmark_type
 
   belongs_to :user

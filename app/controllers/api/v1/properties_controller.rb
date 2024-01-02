@@ -4,6 +4,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   before_action :validate_property_type, only: [:update, :create]
   before_action :check_number_of_images, only: [:update, :create]
   before_action :set_property, only: [:show, :update, :destroy]
+  before_action :validate_polygon, only: :find_in_polygon
+  before_action :validate_origin, only: :find_in_circle
 
   def index
     @properties = @current_user.properties.order('created_at desc')
@@ -20,7 +22,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def update
-    @property.type = property_params[:property_type].titleize.gsub(" ", "").constantize
+    @property.type = property_params[:property_type].titleize.gsub(' ', '').constantize
     unless @property.update(@image_arr.length > 0 ? property_params : property_params.except(:images))
       render_error_messages(@property)
     end
@@ -40,7 +42,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def matching_properties
     if @current_user.user_preference.present?
-      @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info)
+      @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
       render 'index'
     else
       render json: { message: 'User has no preference' }
@@ -48,26 +50,22 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def find_in_circle
-    if search_params[:origin].present? && search_params[:radius].present?
-      @properties = PropertiesSearchService.search_in_circle(search_params[:origin], search_params[:radius], page_info)
+    if search_params[:radius].present?
+      @properties = PropertiesSearchService.search_in_circle(@origin, search_params[:radius], page_info, @current_user.id)
       render 'index'
     else
-      render json: { message: 'Origin or radius parameter is missing' }, status: :unprocessable_entity
+      render json: { message: 'Radius parameter is missing' }, status: :unprocessable_entity
     end
   end
 
   def find_in_polygon
-    if search_params[:polygon].present?
-      @properties = PropertiesSearchService.search_in_polygon(search_params[:polygon], page_info)
-      render 'index'
-    else
-      render json: { message: 'Polygon parameter is missing' }, status: :unprocessable_entity
-    end
+    @properties = PropertiesSearchService.search_in_polygon(@polygon, page_info, @current_user.id)
+    render 'index'
   end
 
   def find_by_zip_code
     if search_params[:zip_code].present?
-      @properties = Property.where(zip_code: search_params[:zip_code]).paginate(page_info)
+      @properties = Property.not_from_user(@current_user.id).where(zip_code: search_params[:zip_code])
       render 'index'
     else
       render json: { message: 'Zip code parameter is missing' }, status: :unprocessable_entity
@@ -86,7 +84,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       if @properties.present?
         @properties&.sort_by{|e| e[:created_at]}
       else
-        render json: { message: "Matching property not found" }, status: :unprocessable_entity
+        render json: { message: 'Matching property not found' }, status: :unprocessable_entity
       end
     else
       render json: {}, status: :ok
@@ -95,7 +93,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def matching_dream_address
     @properties = []
-    @property_list = Property.where("address ILIKE (?)",@current_user.dream_addresses.pluck(:location))
+    @property_list = Property.where('address ILIKE (?)',@current_user.dream_addresses.pluck(:location))
     @property_list.each do |record|
       record.weight_age = _weight_age
       @properties << record
@@ -126,31 +124,47 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
 
     def search_params
-      params.require(:search).permit(:zip_code, :radius, origin: [:lat, :lng], polygon: [:lat, :lng])
+      params.require(:search).permit(:zip_code, :radius, :origin, :polygon)
     end
 
     def set_property
       @property = Property.find_by(id: params[:id])
-      render json: { message: "Property does not exist" }, status: :not_found unless @property
+      render json: { message: 'Property does not exist' }, status: :not_found unless @property
     end
 
     def validate_property_type
-      return if property_params[:property_type].in? ["house", "condo", "vacant_land"]
-      render json: { message: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
+      return if property_params[:property_type].in? ['house', 'condo', 'vacant_land']
+      render json: { message: 'Property type should be one of the following: house, condo, vacant_land' }, status: 422
+    end
+
+    def validate_origin
+      @origin = JSON.parse(search_params[:origin]) rescue nil
+      return if valid_coordinates?(@origin)
+      render json: { message: 'Invalid value for origin' }, status: :unprocessable_entity
+    end
+
+    def validate_polygon
+      @polygon = JSON.parse(search_params[:polygon]) rescue nil
+      return if @polygon.is_a?(Array) && @polygon.none?{|point| !valid_coordinates?(point)}
+      render json: { message: 'Invalid value for polygon' }, status: :unprocessable_entity
+    end
+
+    def valid_coordinates?(point)
+      point.is_a?(Hash) && point['lat'].present? && point['lng'].present?
     end
 
     def check_number_of_images
       @image_arr = property_params[:images].blank? ? [] : property_params[:images]
       unless @image_arr.length <= 30
-        render json: { message: "Images should not be more than 30" }, status: :unprocessable_entity
+        render json: { message: 'Images should not be more than 30' }, status: :unprocessable_entity
       end
     end
 
     def upload_image_to_cloudinary(image)
       begin
-        require "down"
-        tempfile = Down.download(image["uri"])
-        @property.images.attach(io: File.open(image["uri"]), filename: image["name"], content_type: image["type"])
+        require 'down'
+        tempfile = Down.download(image['uri'])
+        @property.images.attach(io: File.open(image['uri']), filename: image['name'], content_type: image['type'])
       rescue => e
         render json: { message: e.message }, status: 404
       end

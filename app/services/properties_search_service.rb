@@ -1,6 +1,6 @@
 class PropertiesSearchService
 
-  def self.search_by_preference(preference, page_info)
+  def self.search_by_preference(preference, page_info, current_user_id)
     where_args = ['']
     conjuction = ' AND '
 
@@ -37,30 +37,38 @@ class PropertiesSearchService
     end
 
     # pp where_args
-    Property.where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page_info)
+    Property.not_from_user(current_user_id).where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page_info)
   end
 
-  def self.search_in_polygon(coordinates_array, page_info)
-    page = page_info[:page] || 1
-    end_index = page * page_info[:per_page]
-    prev_end_index = end_index - page_info[:per_page]
+  def self.search_in_polygon(coordinates_array, page_info, current_user_id)
+    # page = page_info[:page] || 1
+    # end_index = page * page_info[:per_page]
+    # prev_end_index = end_index - page_info[:per_page]
 
-    properties = Property.where.not(latitude: nil).where.not(longitude: nil)
+    properties = Property.not_from_user(current_user_id).where.not(latitude: nil).where.not(longitude: nil)
 
-    return [] if properties.count <= prev_end_index # return if no more pages
+    # return [] if properties.count <= prev_end_index # return if no more pages
 
-    polygon = Geokit::Polygon.new(coordinates_array.map{ |point| Geokit::LatLng.new(point.lat, point.lng) })
-    properties_in_polygon = properties.filter{ |property| polygon.contains?(Geokit::LatLng.new(property.latitude, property.longitude)) }
+    polygon = Geokit::Polygon.new(coordinates_array.map{ |point| Geokit::LatLng.new(point['lat'], point['lng']) })
+    properties_in_polygon = properties.filter do |property|
+      begin
+        polygon.contains?(Geokit::LatLng.new(property.latitude, property.longitude))
+      rescue => e
+        puts "Error in property coordinates. Property id: #{property.id}. Error message: #{e.message}"
+      end
+    end
 
-    return [] if properties_in_polygon.count <= prev_end_index # return if no more pages
+    return properties_in_polygon
 
-    results = properties_in_polygon.first(end_index)
-    results.last(results.count - prev_end_index)
+    # return [] if properties_in_polygon.count <= prev_end_index # return if no more pages
+
+    # results = properties_in_polygon.first(end_index)
+    # results.last(results.count - prev_end_index)
   end
 
-  def self.search_in_circle(origin, radius, page_info)
+  def self.search_in_circle(origin, radius, page_info, current_user_id)
     # p origin.values
-    Property.within(radius, origin: origin.values).paginate(page_info)
+    Property.not_from_user(current_user_id).within(radius, origin: origin.values)
   end
 
 end

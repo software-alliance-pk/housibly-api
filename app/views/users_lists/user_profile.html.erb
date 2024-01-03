@@ -54,15 +54,15 @@
           <tbody>
           <tr>
             <td>Budget</td>
-            <td class="fw_600"><span><%= @user.user_preference&.min_price %></span> to <span><%= @user.user_preference&.max_price %></span></td>
+            <td class="fw_600"><%= @user.user_preference&.price.is_a?(Hash) ? "#{ @user.user_preference&.price['min'] } to #{ @user.user_preference&.price['max'] }" : "No preference" %></td>
           </tr>
           <tr>
             <td>Bedrooms</td>
-            <td class="fw_600"><span><%= @user.user_preference&.min_bedrooms%></span> to <span><%= @user.user_preference&.max_bedrooms%></span></td>
+            <td class="fw_600"><%= @user.user_preference&.bed_rooms.is_a?(Hash) ? "#{ @user.user_preference&.bed_rooms['min'] } to #{ @user.user_preference&.bed_rooms['max'] }" : "No preference" %></td>
           </tr>
           <tr>
             <td>Bathrooms</td>
-            <td class="fw_600"><span><%= @user.user_preference&.min_bathrooms%></span> to <span><%= @user.user_preference&.max_bathrooms%></span></td>
+            <td class="fw_600"><%= @user.user_preference&.bath_rooms.is_a?(Hash) ? "#{ @user.user_preference&.bath_rooms['min'] } to #{ @user.user_preference&.bath_rooms['max'] }" : "No preference" %></td>
           </tr>
           <tr>
             <td>Property Type</td>
@@ -70,39 +70,31 @@
           </tr>
           <tr>
             <td>Property Styles</td>
-            <td class="fw_600"><%= @user.user_preference&.property_style%></td>
-          </tr>
-          <tr>
-            <td>Living Space</td>
-            <td><span><%= @user.user_preference&.min_living_space%></span> to <span><%= @user.user_preference&.min_living_space%></span></td>
-          </tr>
-          <tr>
-            <td>Balcony</td>
-            <td><%= @user.user_preference&.balcony%></td>
-          </tr>
-          <tr>
-            <td>Security</td>
-            <td><%= @user.user_preference&.security%></td>
-          </tr>
-          <tr>
-            <td>Laundry</td>
-            <td><%= @user.user_preference&.laundry %></td>
+            <td class="fw_600"><%= ([*@user.user_preference&.house_style] + [*@user.user_preference&.condo_style]).join(', ') %></td>
           </tr>
           <tr>
             <td>Min Lot Forntage</td>
-            <td class="fw_600"><%= @user.user_preference&.min_lot_frontage%></td>
+            <td class="fw_600"><%= @user.user_preference&.lot_frontage.is_a?(Hash) ? "#{@user.user_preference&.lot_frontage['min']} #{@user.user_preference&.lot_frontage_unit}" : 'No preference' %></td>
           </tr>
           <tr>
-            <td>Lot Size (ft)</td>
-            <td class="fw_600"><%= @user.user_preference&.lot_size_unit%></td>
+            <td>Lot Size (<%= @user.user_preference&.lot_size_unit%>)</td>
+            <td class="fw_600"><%= @user.user_preference&.lot_size.is_a?(Hash) ? "#{ @user.user_preference&.lot_size['min'] } to #{ @user.user_preference&.lot_size['max'] }" : "No preference" %></td>
           </tr>
           <tr>
             <td>Parking Spots Req.</td>
-            <td class="fw_600"><%= @user.user_preference&.parking_spot%></td>
+            <td class="fw_600"><%= @user.user_preference&.garage_spaces.is_a?(Hash) ? @user.user_preference&.garage_spaces['min'] : 'No preference' %></td>
           </tr>
           <tr>
-            <td>Garage Spots Req.</td>
-            <td class="fw_600"><%= @user.user_preference&.garbage_spot%></td>
+            <td>Balcony</td>
+            <td class="fw_600"><%= @user.user_preference&.balcony&.join(', ') || 'No preference' %></td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td class="fw_600"><%= @user.user_preference&.security&.join(', ') || 'No preference'%></td>
+          </tr>
+          <tr>
+            <td>Laundry</td>
+            <td class="fw_600"><%= @user.user_preference&.laundry&.join(', ') || 'No preference'%></td>
           </tr>
           <tr>
             <td>Max Age</td>

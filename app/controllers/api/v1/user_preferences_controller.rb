@@ -1,5 +1,6 @@
 class Api::V1::UserPreferencesController < Api::V1::ApiController
   before_action :validate_property_type, only: [:create]
+  before_action :sanitize_array_params, only: [:create]
 
   def index
     @preference = @current_user.user_preference
@@ -31,5 +32,14 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
     def validate_property_type
       return if preference_params[:property_type].in? ["house", "condo", "vacant_land"]
       render json: { message: "Property type should be one of the following: house, condo, vacant_land" }, status: 422
+    end
+
+    def sanitize_array_params
+      # for removing blank values from arrays
+      preference_params.each do |key, value|
+        if value.is_a? Array
+          params[:preference][key] = value.filter(&:present?)
+        end
+      end
     end
 end

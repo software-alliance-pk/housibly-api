@@ -33,6 +33,8 @@ class Property < ApplicationRecord
   scope :vacant_land, -> { where("type = (?)","VacantLand") }
   scope :condo, -> { where("type = (?)","Condo") }
 
+  scope :not_from_user, -> (user_id){ where.not(user_id: user_id) }
+
   cattr_accessor :bookmark_type
 
   belongs_to :user
@@ -60,22 +62,22 @@ class Property < ApplicationRecord
     type.underscore
   end
 
-  # for conversion to feet
+  # for conversion to/from feet
   CONVERSION_FACTORS = {
-    meter: 3.28084, # 1 meter = 3.28084 feet
-    square_meter: 10.76391 # 1 square meter = 10.76391 square feet
+    meter: 0.3048, # 1 foot = 0.3048 meter
+    square_meter: 0.09290304 # 1 square foot = 0.09290304 square meter
   }
 
   def lot_depth
-    (self[:lot_depth].blank? || lot_depth_unit == 'feet') ? self[:lot_depth] : self[:lot_depth]/CONVERSION_FACTORS[:meter]
+    (self[:lot_depth].blank? || lot_depth_unit == 'feet') ? self[:lot_depth] : self[:lot_depth]*CONVERSION_FACTORS[:meter]
   end
 
   def lot_frontage
-    (self[:lot_frontage].blank? || lot_frontage_unit == 'feet') ? self[:lot_frontage] : self[:lot_frontage]/CONVERSION_FACTORS[:meter]
+    (self[:lot_frontage].blank? || lot_frontage_unit == 'feet') ? self[:lot_frontage] : self[:lot_frontage]*CONVERSION_FACTORS[:meter]
   end
 
   def lot_size
-    (self[:lot_size].blank? || lot_frontage_unit == 'feet') ? self[:lot_size] : self[:lot_size]/CONVERSION_FACTORS[:square_meter]
+    (self[:lot_size].blank? || lot_frontage_unit == 'feet') ? self[:lot_size] : self[:lot_size]*CONVERSION_FACTORS[:square_meter]
   end
 
   def self.detail_options
@@ -245,9 +247,9 @@ class Property < ApplicationRecord
     def convert_to_feet
       return if lot_depth_unit == 'feet' || (changed & ['lot_depth_unit', 'lot_depth', 'lot_frontage', 'lot_size']).blank?
 
-      self[:lot_depth] *= CONVERSION_FACTORS[:meter] if self[:lot_depth].present?
-      self[:lot_frontage] *= CONVERSION_FACTORS[:meter] if self[:lot_frontage].present?
-      self[:lot_size] *= CONVERSION_FACTORS[:square_meter] if self[:lot_size].present?
+      self[:lot_depth] /= CONVERSION_FACTORS[:meter] if self[:lot_depth].present?
+      self[:lot_frontage] /= CONVERSION_FACTORS[:meter] if self[:lot_frontage].present?
+      self[:lot_size] /= CONVERSION_FACTORS[:square_meter] if self[:lot_size].present?
     end
 
     def add_the_lnt_and_lng_property

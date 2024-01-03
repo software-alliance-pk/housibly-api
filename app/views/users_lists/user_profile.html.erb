@@ -73,6 +73,18 @@
             <td class="fw_600"><%= ([*@user.user_preference&.house_style] + [*@user.user_preference&.condo_style]).join(', ') %></td>
           </tr>
           <tr>
+            <td>Min Lot Forntage</td>
+            <td class="fw_600"><%= @user.user_preference&.lot_frontage.is_a?(Hash) ? "#{@user.user_preference&.lot_frontage['min']} #{@user.user_preference&.lot_frontage_unit}" : 'No preference' %></td>
+          </tr>
+          <tr>
+            <td>Lot Size (<%= @user.user_preference&.lot_size_unit%>)</td>
+            <td class="fw_600"><%= @user.user_preference&.lot_size.is_a?(Hash) ? "#{ @user.user_preference&.lot_size['min'] } to #{ @user.user_preference&.lot_size['max'] }" : "No preference" %></td>
+          </tr>
+          <tr>
+            <td>Parking Spots Req.</td>
+            <td class="fw_600"><%= @user.user_preference&.garage_spaces.is_a?(Hash) ? @user.user_preference&.garage_spaces['min'] : 'No preference' %></td>
+          </tr>
+          <tr>
             <td>Balcony</td>
             <td class="fw_600"><%= @user.user_preference&.balcony&.join(', ') || 'No preference' %></td>
           </tr>
@@ -83,18 +95,6 @@
           <tr>
             <td>Laundry</td>
             <td class="fw_600"><%= @user.user_preference&.laundry&.join(', ') || 'No preference'%></td>
-          </tr>
-          <tr>
-            <td>Min Lot Forntage</td>
-            <td class="fw_600"><%= @user.user_preference&.lot_frontage.is_a?(Hash) ? "#{@user.user_preference&.lot_frontage['min']} #{@user.user_preference&.lot_frontage_unit}" : 'No preference' %></td>
-          </tr>
-          <tr>
-            <td>Lot Size (<%= @user.user_preference&.lot_size_unit%>)</td>
-            <td class="fw_600"><%= @user.user_preference&.lot_size.is_a?(Hash) ? "#{ @user.user_preference&.lot_size['min'] } to #{ @user.user_preference&.lot_size['max'] }" : "No preference" %></td>
-          </tr>
-          <tr>
-            <td>Garage Spaces Req.</td>
-            <td class="fw_600"><%= @user.user_preference&.garage_spaces.is_a?(Hash) ? @user.user_preference&.garage_spaces['min'] : 'No preference' %></td>
           </tr>
           <tr>
             <td>Max Age</td>

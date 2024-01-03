@@ -16,11 +16,11 @@ class PropertiesSearchService
       end
 
       if value.is_a? Hash
-        if value['min'] && value['max']
+        if value['min'].present? && value['max'].present?
           where_args[0] << conjuction if where_args[0].present?
           where_args[0] << "#{key} BETWEEN ? AND ?"
           where_args.push(value['min'], value['max'])
-        elsif value['min'] || value['max']
+        elsif value['min'].present? || value['max'].present?
           where_args[0] << conjuction if where_args[0].present?
           where_args[0] << "#{key} #{value['min'] ? '>=' : '<='} ?"
           where_args.push(value['min'] || value['max'])

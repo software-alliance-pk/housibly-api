@@ -1,4 +1,3 @@
-
 class LocationFinderService
   Geokit::Geocoders::GoogleGeocoder.api_key = ENV["MAP_API_KEY"]
 
@@ -20,8 +19,6 @@ class LocationFinderService
     end
   end
 
-
-
   def self.get_location_attributes_by_reverse(coordinates)
     location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode(coordinates)
     if location.present?
@@ -37,6 +34,15 @@ class LocationFinderService
       return location_data
     else
       return false
+    end
+  end
+
+  def self.get_coordinates_by_zip_code(zip_code)
+    location = Geokit::Geocoders::GoogleGeocoder.geocode('', components: {postal_code: zip_code})
+    if location&.lat.present?
+      { lat: location.lat, lng: location.lng }
+    else
+      nil
     end
   end
 end

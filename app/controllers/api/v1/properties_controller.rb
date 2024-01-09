@@ -65,7 +65,8 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def find_by_zip_code
     if search_params[:zip_code].present?
-      @properties = Property.not_from_user(@current_user.id).where(zip_code: search_params[:zip_code])
+      coordinates = LocationFinderService.get_coordinates_by_zip_code(search_params[:zip_code])
+      @properties = coordinates.blank? ? [] : PropertiesSearchService.search_in_circle(coordinates, 10, page_info, @current_user.id)
       render 'index'
     else
       render json: { message: 'Zip code parameter is missing' }, status: :unprocessable_entity

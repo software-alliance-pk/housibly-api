@@ -37,8 +37,8 @@ class LocationFinderService
     end
   end
 
-  def self.get_coordinates_by_zip_code(zip_code)
-    location = Geokit::Geocoders::GoogleGeocoder.geocode('', components: {postal_code: zip_code})
+  def self.get_coordinates_by_zip_code(zip_code, country)
+    location = Geokit::Geocoders::GoogleGeocoder.geocode('', components: {postal_code: zip_code, country: country})
     if location&.lat.present?
       { lat: location.lat, lng: location.lng }
     else

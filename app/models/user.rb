@@ -16,6 +16,7 @@ class User < ApplicationRecord
                    :lat_column_name => :latitude,
                    :lng_column_name => :longitude
   has_secure_password
+  has_many :saved_searches, dependent: :destroy
   has_many :user_search_addresses,dependent: :destroy
   has_one :subscription,dependent: :destroy
   has_one :user_setting, dependent: :destroy

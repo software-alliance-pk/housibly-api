@@ -99,6 +99,7 @@ end
           post 'newest_first'
         end
       end
+      resources :saved_searches, except: [:new, :edit]
       post '/signup', to: 'registrations#create'
       post '/destroy_user', to: 'registrations#destroy_user'
       post '/login', to: 'sessions#login'

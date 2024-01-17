@@ -49,7 +49,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
           ActionCable.server.broadcast "user_chat_list_#{broadcast_to_user}", { data: data.as_json }
           render json: { message: "Read Messages Successfully" }, status: :ok
         else
-          render json: { message: "You already ready your messages" }, status: :ok
+          render json: { message: "You already read your messages" }, status: :ok
         end
       else
         render json: { message: "No such conversation exists" }, status: :ok

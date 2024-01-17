@@ -23,7 +23,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id
 				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation)}
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-				puts "Message board casted to user_chat_list_#{broadcast_to_user}"
+				puts "Message broad_cast to user_chat_list_#{broadcast_to_user}"
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				ActionCable.server.broadcast "user_chat_list_#{broadcast_to_user}",  { data:  data.as_json}
 			else
@@ -49,7 +49,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			@notification = Notification.find(id: params[:notification_id])
 			if @notification.present?
 				@notification
-				render json: {message: "Notificatoin deleted successfully"},status: :ok
+				render json: {message: "Notification deleted successfully"},status: :ok
 			else
 				render json: {message: "Notification is not present"},status: :ok
 			end
@@ -60,7 +60,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
   def get_notification
   	@notifications = []
   	unless @current_user.user_setting.inapp_notification == false
-  		puts "<<<<<<<<<<<<<<<InAppNotification<<<<<<<<<<<<<<<<<"
+  		puts "<<<<<<<<<<<<<<< In App Notification <<<<<<<<<<<<<<<<<"
 	  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
 	  	conversations.each do |conversation|
 				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)
@@ -96,22 +96,22 @@ end
 		end
 	end
 
-	def send_notification_to_user(conversation,message)
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		puts conversation.sender.user_setting.push_notification
-		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-		if conversation.sender == @current_user
-			if conversation.recipient.user_setting.push_notification == true
-				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
-			else
-				puts "OFFFFFFFF"
-			end
-		else
-			if conversation.sender.user_setting.push_notification == true
-				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
-			else
-				puts "<<<<<<<<<<OFF<<<<<<<<<<<"
-			end
-		end
-	end
+	# def send_notification_to_user(conversation,message)
+	# 	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+	# 	puts conversation.sender.user_setting.push_notification
+	# 	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+	# 	if conversation.sender == @current_user
+	# 		if conversation.recipient.user_setting.push_notification == true
+	# 			UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+	# 		else
+	# 			puts "OFFFFFFFF"
+	# 		end
+	# 	else
+	# 		if conversation.sender.user_setting.push_notification == true
+	# 			UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
+	# 		else
+	# 			puts "<<<<<<<<<<OFF<<<<<<<<<<<"
+	# 		end
+	# 	end
+	# end
 end

@@ -35,7 +35,7 @@ class Api::V1::SavedSearchesController < Api::V1::ApiController
   private
 
     def saved_search_params
-      params.require(:saved_search).permit(:title, :search_type, :display_address, :zip_code, :radius, origin: [:lat, :lng], polygon: [:lat, :lng])
+      params.require(:saved_search).permit(:title, :search_type, :display_address, :zip_code, circle: [:lat, :lng], polygon: [:lat, :lng])
     end
 
     def set_saved_search

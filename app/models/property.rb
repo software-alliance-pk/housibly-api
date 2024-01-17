@@ -1,7 +1,7 @@
 class Property < ApplicationRecord
   include PgSearch::Model
 
-  after_commit :add_the_lnt_and_lng_property, on: :create
+  after_save_commit :add_the_lnt_and_lng_property
   before_save :convert_to_feet, unless: ->(property){property.property_type == "condo"}
 
   # reverse_geocoded_by :latitude, :longitude

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_21_100751) do
+ActiveRecord::Schema.define(version: 2024_01_16_114111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -288,6 +288,20 @@ ActiveRecord::Schema.define(version: 2023_12_21_100751) do
     t.index ["property_id"], name: "index_rooms_on_property_id"
   end
 
+  create_table "saved_searches", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "search_type"
+    t.json "polygon"
+    t.json "origin"
+    t.float "radius"
+    t.string "title"
+    t.string "display_address"
+    t.string "zip_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_saved_searches_on_user_id"
+  end
+
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id"
     t.string "working_days"
@@ -525,6 +539,7 @@ ActiveRecord::Schema.define(version: 2023_12_21_100751) do
   add_foreign_key "reportings", "users"
   add_foreign_key "reviews", "users"
   add_foreign_key "rooms", "properties"
+  add_foreign_key "saved_searches", "users"
   add_foreign_key "schedules", "users"
   add_foreign_key "subscription_histories", "users"
   add_foreign_key "subscriptions", "users"

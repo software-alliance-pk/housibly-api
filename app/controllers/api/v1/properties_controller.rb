@@ -146,7 +146,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
     def validate_polygon
       @polygon = JSON.parse(search_params[:polygon]) rescue nil
-      return if @polygon.is_a?(Array) && @polygon.none?{|point| !valid_coordinates?(point)}
+      return if @polygon.is_a?(Array) && @polygon.length >= 3 && @polygon.none?{|point| !valid_coordinates?(point)}
       render json: { message: 'Invalid value for polygon' }, status: :unprocessable_entity
     end
 

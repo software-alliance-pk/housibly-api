@@ -34,6 +34,11 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     ActionCable.server.broadcast "user_chat_list_#{@current_user.id}", { data: data.as_json }
   end
 
+  def get_all_conversations
+    @conversations = Conversation.where(sender_id: @current_user.id).or(Conversation.where(recipient_id: @current_user.id)).includes(:messages).order(created_at: :desc)
+    render json: @conversations.as_json(include: [:messages])
+  end
+  
   def read_messages
     if params[:conversation_id].present?
       _conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_16_114111) do
+ActiveRecord::Schema.define(version: 2024_01_17_144153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -292,8 +292,7 @@ ActiveRecord::Schema.define(version: 2024_01_16_114111) do
     t.bigint "user_id", null: false
     t.string "search_type"
     t.json "polygon"
-    t.json "origin"
-    t.float "radius"
+    t.json "circle"
     t.string "title"
     t.string "display_address"
     t.string "zip_code"

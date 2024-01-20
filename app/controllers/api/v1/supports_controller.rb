@@ -2,7 +2,7 @@ class Api::V1::SupportsController < Api::V1::ApiController
   def create_ticket
     @ticket = current_user.supports.new(support_params.merge(ticket_number: generate_ticket_number.upcase))
     if @ticket.save
-      conv_type = current_user.want_support_closer? ? "support_closer" : "end_user"
+      conv_type = current_user.support_closer? ? "support_closer" : "end_user"
       @conversation = @ticket.
         build_support_conversation(recipient_id: Admin.admin.first.id,sender_id:@current_user.id,
                                    conv_type: conv_type)

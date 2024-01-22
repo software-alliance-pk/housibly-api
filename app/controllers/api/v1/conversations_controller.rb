@@ -61,15 +61,15 @@ class Api::V1::ConversationsController < Api::V1::ApiController
 
   def destroy
     if params[:id].present?
-      @conversation = Conversation.find_by(id: params[:id])
+      @conversation = current_user.conversations.find_by(id: params[:id])
       if @conversation.present?
-        @conversation.delete
+        @conversation.destroy
         render json: { message: "Conversation is successfully deleted" }, status: :ok
       else
-        render json: { error: "Conversation does n't exists" }, status: :unprocessable_entity
+        render json: { error: "Conversation doesn't exist or doesn't belong to the current user" }, status: :unprocessable_entity
       end
     else
-      render json: { error: "Conversation with id #{id} does n't exists" }, status: :unprocessable_entity
+      render json: { error: "Conversation ID not provided" }, status: :unprocessable_entity
     end
   end
 

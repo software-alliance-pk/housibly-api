@@ -35,9 +35,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 	def get_messages
 		if params[:conversation_id].present?
 			@conversation = Conversation.find_by(id: params[:conversation_id])
-	
 			if @conversation.present?
-				# Check if the current_user is either the sender or recipient of the conversation
 				if @conversation.sender_id == current_user.id || @conversation.recipient_id == current_user.id
 					@messages = @conversation.messages.all.order(created_at: :desc)
 					render json: { messages: @messages }, status: :ok

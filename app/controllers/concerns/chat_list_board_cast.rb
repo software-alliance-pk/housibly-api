@@ -45,7 +45,7 @@ module ChatListBoardCast
   def compile_message(conversation)
     message = conversation.messages.last
     data = {}
-    # full_name,image,un_read_message_count, = get_extra_data_of_compile_message(message)
+  
     data["unread_message"] = un_read_counter(conversation)
     data["full_name"] = get_full_name(conversation)
     data["avatar"] = get_avatar(conversation)
@@ -56,10 +56,16 @@ module ChatListBoardCast
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
     data["user_id"] = message&.user_id
+  
     data["message"] = message.present? ? message.body : "No Message"
-    data["body"] =  message.present? ? message.body : "No Message"
-    data["id"] =  message.present? ? message.id : "No Message"
-    data["image"] = message.present? ? (chat_avatar_image(message)) : "No Message"
+    data["message"] = "Image" if data["message"] == "No Message" && chat_avatar_image(message).present?
+  
+    data["body"] = message.present? ? message.body : "No Message"
+    data["id"] = message.present? ? message.id : "No Message"
+    
+    # Assuming chat_avatar_image returns the image URL or nil
+    data["image"] = message.present? ? chat_avatar_image(message) : "No Message"
+  
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts " Current User Name:#{@current_user.full_name} Recipient Name #{get_full_name(conversation)} "
@@ -68,7 +74,7 @@ module ChatListBoardCast
     p data
     return data
   end
-
+  
   def chat_avatar_image(message)
     message.image.attached? ? message.image.url : ""
   end

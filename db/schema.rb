@@ -271,7 +271,8 @@ ActiveRecord::Schema.define(version: 2024_01_17_144153) do
     t.integer "rating"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "support_closer_id"
+    t.bigint "support_closer_id"
+    t.index ["support_closer_id"], name: "index_reviews_on_support_closer_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
@@ -303,9 +304,9 @@ ActiveRecord::Schema.define(version: 2024_01_17_144153) do
 
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "working_days"
-    t.datetime "starting_time"
-    t.datetime "ending_time"
+    t.string "working_days", default: [], array: true
+    t.string "starting_time"
+    t.string "ending_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_schedules_on_user_id"
@@ -503,6 +504,7 @@ ActiveRecord::Schema.define(version: 2024_01_17_144153) do
     t.datetime "last_seen"
     t.string "login_type"
     t.boolean "profile_complete"
+    t.float "hourly_rate"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -517,10 +519,11 @@ ActiveRecord::Schema.define(version: 2024_01_17_144153) do
 
   create_table "visitors", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "visit_id"
+    t.bigint "visit_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_visitors_on_user_id"
+    t.index ["visit_id"], name: "index_visitors_on_visit_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

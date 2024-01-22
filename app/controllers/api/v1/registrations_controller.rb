@@ -1,19 +1,12 @@
+# frozen_string_literal: true
+
 class Api::V1::RegistrationsController < Api::V1::ApiController
-  skip_before_action :authenticate_user, only: [:create, :verify_otp, :resend_otp]
   include CreateOtp
 
+  skip_before_action :authenticate_user, only: [:create, :verify_otp, :resend_otp]
+
   def create
-    # get_location = UserCurrentLocationService.new.call(request.safe_location)
-    # puts get_location
-
     @user = User.new(user_params)
-    # @user.address = get_location[:full_address]
-    # @user.longitude = get_location[:long]
-    # @user.latitude = get_location[:lat]
-    # @user.country_name = get_location[:country]
-    @user.country_name = user_params[:country_name]
-    @user.country_code = user_params[:country_code]
-
     if @user.save
       signup_otp(@user)
     else
@@ -21,16 +14,8 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     end
   end
 
-  def update_personal_info
+  def add_user_info
     if @current_user.is_otp_verified
-      if @current_user.want_support_closer?
-        @current_user.build_schedule(schedule_params) unless @current_user.schedule
-        @current_user.professions.destroy_all if @current_user.professions.present?
-        user_profession[:titles].each do |user|
-          @current_user.professions.build(title:user)
-        end
-        @current_user.schedule.update(schedule_params) if @current_user.schedule
-      end
       @current_user.update(user_params.merge(is_confirmed: true, login_type: 'manual', profile_complete: true))
       @current_user.user_setting.destroy if @current_user.user_setting.present?
       @current_user.build_user_setting.save
@@ -38,26 +23,11 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       AdminNotification.create(
         actor_id: Admin.admin.first.id,
         recipient_id: @current_user.id,
-        action: @current_user.want_support_closer? ? 'New Support Closer Created' : 'New User Created'
+        action: @current_user.support_closer? ? 'New Support Closer Created' : 'New User Created'
       ) if Admin&.admin.present?
     else
       render json: { message: 'OTP not verified' }, status: 401
     end
-  end
-
-  def update_social_login
-    @current_user.build_schedule(schedule_params) unless @current_user.schedule
-    @current_user.professions.destroy_all if @current_user.professions.present?
-    if user_profession[:titles].present?
-      user_profession[:titles].each do |user|
-        @current_user.professions.build(title:user)
-      end
-    end
-    @current_user.schedule.update(schedule_params) if @current_user.schedule
-    @current_user.update(user_params.merge(is_confirmed: true, profile_complete: true, is_otp_verified: true))
-    @current_user.user_setting.destroy if @current_user.user_setting.present?
-    @current_user.build_user_setting.save
-    @token = JsonWebTokenService.encode({ email: @current_user.email })
   end
 
   def verify_otp
@@ -96,27 +66,20 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     end
   end
 
-  def destroy_user
-    return render json: { message: 'Params are invalid' }, status: :unprocessable_entity unless params[:user].present?
-
-    return render json: { message: 'User not found' }, status: :bad_request unless (@user = User.find_by(id: params[:user][:user_id]))
-
-    render json: { message: 'User Successfully deleted' }, status: :ok if @user.destroy
+  def update_social_login
+    @current_user.update(user_params.merge(is_confirmed: true, profile_complete: true, is_otp_verified: true))
+    @current_user.user_setting.destroy if @current_user.user_setting.present?
+    @current_user.build_user_setting.save
+    @token = JsonWebTokenService.encode({ email: @current_user.email })
   end
 
   private
 
     def user_params
       params.require(:user).permit(:full_name, :email, :password, :phone_number, :description,
-        :licensed_realtor, :contacted_by_real_estate, :user_type, :profile_type,
-        :country_code, :country_name, :currency_type, :currency_amount, :address, :avatar, images: [], certificates: [])
-    end
-
-    def user_profession
-      params.require(:user).permit(titles: [])
-    end
-
-    def schedule_params
-      params.require(:user).permit(:ending_time, :starting_time, working_days: [])
+        :licensed_realtor, :contacted_by_real_estate, :user_type, :profile_type, :country_code, :country_name,
+        :currency_type, :currency_amount, :address, :avatar, :hourly_rate, images: [], certificates: [],
+        professions_attributes: [:id, :_destroy, :title], schedule_attributes: [:id, :ending_time, :starting_time, working_days: []]
+      )
     end
 end

@@ -14,6 +14,6 @@ json.rooms property.rooms do |room|
 end
 json.images property.images do |image|
   json.id image.signed_id
-  json.url image.url rescue "" # use for direct link, see https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
-  # json.url rails_blob_url(image) rescue "" # use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
+  # json.url image.url rescue "" # use for direct link (not available for local), see https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
+  json.url rails_blob_url(image) rescue "" # use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
 end

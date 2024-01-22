@@ -3,7 +3,7 @@ class Api::V1::SupportConversationsController < Api::V1::ApiController
     @conversation = SupportConversation.find_by(support_id: params[:support_id])
     unless @conversation.present?
       support = current_user.supports.find_by(id: params[:support_id])
-      conv_type = current_user.want_support_closer? ? "support_closer" : "end_user"
+      conv_type = current_user.support_closer? ? "support_closer" : "end_user"
       @conversation = support.
         build_support_conversation(recipient_id: Admin.admin.first.id,sender_id:current_user.id,
                                    conv_type: conv_type)
@@ -71,4 +71,3 @@ def create_message
 		params.require(:message).permit(:body, :image)
 	end
 end
-

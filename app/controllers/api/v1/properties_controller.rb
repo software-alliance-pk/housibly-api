@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::PropertiesController < Api::V1::ApiController
   require 'uri'
 
@@ -104,10 +106,6 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     else
       render json: @properties, status: :ok
     end
-  end
-
-  def user_detail
-    @user = User.find_by(id: params[:user_id])
   end
 
   private

@@ -14,7 +14,7 @@ class Api::V1::ReportingController < Api::V1::ApiController
 		  else
 		  	render_error_messages(@ticket)
 		  end
-		  conv_type = current_user.want_support_closer? ? "support_closer" : "end_user"
+		  conv_type = current_user.support_closer? ? "support_closer" : "end_user"
 			@conversation = SupportConversation.create(
 			recipient_id: Admin.admin.first.id,sender_id:current_user.id,
 			conv_type: conv_type, support_id: @ticket.id)
@@ -36,7 +36,7 @@ class Api::V1::ReportingController < Api::V1::ApiController
 	      @conversation = support.build_support_conversation
 	      @conversation.sender_id = @current_user.id
 	      @conversation.recipient_id = Admin.first.id
-	      if current_user.want_support_closer?
+	      if current_user.support_closer?
 	        @conversation.update(conv_type: "support_closer")
 	      else
 	        @conversation.update(conv_type: "end_user")
@@ -52,11 +52,10 @@ class Api::V1::ReportingController < Api::V1::ApiController
 	end
 
 
-def generate_ticket_number
+	def generate_ticket_number
     @ticket_number = loop do
       random_token = SecureRandom.urlsafe_base64(6, false)
       break random_token unless Support.exists?(ticket_number: random_token)
     end
-  end			
+  end
 end
-

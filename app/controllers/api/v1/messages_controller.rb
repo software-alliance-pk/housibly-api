@@ -6,16 +6,16 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
 				# send_notification_to_user(@conversation,@message)
-				@conversation_list, user = notify_second_user(@conversation)
+				# @conversation_list, user = notify_second_user(@conversation)
 				data = []
-				@conversation_list.each do |conversation|
-					custom_data = compile_message(conversation)
-						if conversation&.messages.present?
-								custom_data["avatar"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.avatar&.url : conversation.recipient&.avatar&.url
-								custom_data["full_name"] = conversation&.sender.id == @message.user.id ? conversation&.sender&.full_name :  conversation.recipient&.full_name
-						end
+				# @conversation_list.each do |conversation|
+					custom_data = compile_message(@conversation)
+					if @conversation&.messages.present?
+						custom_data["avatar"] = @conversation&.sender.id == @message.user.id ? @conversation&.sender&.avatar&.url : @conversation.recipient&.avatar&.url
+						custom_data["full_name"] = @conversation&.sender.id == @message.user.id ? @conversation&.sender&.full_name :  @conversation.recipient&.full_name
+					end
 					data << custom_data
-				end
+				# end
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				puts "message is send by #{@message.user.full_name}"
 				puts " Message #{data}"
@@ -35,15 +35,23 @@ class Api::V1::MessagesController < Api::V1::ApiController
 	def get_messages
 		if params[:conversation_id].present?
 			@conversation = Conversation.find_by(id: params[:conversation_id])
+	
 			if @conversation.present?
-				@messages = @conversation.messages.all.order(created_at: :desc)
+				# Check if the current_user is either the sender or recipient of the conversation
+				if @conversation.sender_id == current_user.id || @conversation.recipient_id == current_user.id
+					@messages = @conversation.messages.all.order(created_at: :desc)
+					render json: { messages: @messages }, status: :ok
+				else
+					render json: { message: "You do not have permission to access messages in this conversation" }, status: :forbidden
+				end
 			else
-				render json: {message: "Conversation not found"},status: :ok
+				render json: { message: "Conversation not found" }, status: :not_found
 			end
 		else
-			render json: {message: "Conversation id parameter is missing"},status: :ok
+			render json: { message: "Conversation id parameter is missing" }, status: :bad_request
 		end
-  end
+	end
+	
   def delete_notification
 		if params[:notification_id].present?
 			@notification = Notification.find(id: params[:notification_id])
@@ -57,7 +65,8 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			render json: {message: "Notification id parameter is missing"},status: :ok
 		end
   end 
-  def get_notification
+  
+	def get_notification
   	@notifications = []
   	unless @current_user.user_setting.inapp_notification == false
   		puts "<<<<<<<<<<<<<<< In App Notification <<<<<<<<<<<<<<<<<"
@@ -79,6 +88,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 end
 
 	private
+
 	def message_params
 		params.require(:message).permit(:body, :image)
 	end

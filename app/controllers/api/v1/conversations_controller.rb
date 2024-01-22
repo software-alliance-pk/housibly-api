@@ -5,38 +5,33 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     if conversation_params[:recipient_id].present?
       check_conversation_exists
       if @conversation.present?
-        @conversation
+        render json: @conversation
       else
         unless conversation_params[:recipient_id].to_i == @current_user.id
           conversation_parameter = conversation_params.merge(sender_id: current_user.id)
           @conversation = Conversation.new(conversation_parameter)
+  
           if @conversation.save
-            @conversation
+            render json: @conversation
           else
             render_error_messages(@conversation)
           end
         else
-          render json: { message: "You can't create your own conversation" }, status: :ok
+          render json: { message: "You can't create your own conversation" }, status: :bad_request
         end
-        # @list, user = notify_second_user(@conversation)
       end
     else
-      render json: { message: "Recipient id parameter is missing" }, status: :ok
+      render json: { message: "Recipient id parameter is missing" }, status: :bad_request
     end
   end
-
+  
   def index
-    @conversations = Conversation.find_specific_conversation(@current_user.id)
+    @conversations = Conversation.find_user_conversations(@current_user.id)
     data = []
     @conversations.each do |conversation|
       data << compile_message(conversation)
     end
     ActionCable.server.broadcast "user_chat_list_#{@current_user.id}", { data: data.as_json }
-  end
-
-  def get_all_conversations
-    @conversations = Conversation.where(sender_id: @current_user.id).or(Conversation.where(recipient_id: @current_user.id)).includes(:messages).order(created_at: :desc)
-    render json: @conversations.as_json(include: [:messages])
   end
   
   def read_messages
@@ -46,7 +41,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
         if _conversation&.messages.last&.user != @current_user
           data = []
           _conversation.messages.where.not(id: @current_user.id).update_all(read_status: true)
-          @conversations = Conversation.find_specific_conversation(_conversation.recipient.id)
+          @conversations = Conversation.find_user_conversations(_conversation.recipient.id)
           @conversations.each do |conversation|
             data << compile_message(conversation)
           end

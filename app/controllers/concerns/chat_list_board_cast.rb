@@ -3,7 +3,7 @@ module ChatListBoardCast
 
   def notify_second_user(conversation)
     user = conversation.sender == current_user ? conversation.recipient :  conversation.sender
-    @list = Conversation.find_specific_conversation(user.id)
+    @list = Conversation.find_user_conversations(user.id)
     return @list,user
   end
 
@@ -29,26 +29,26 @@ module ChatListBoardCast
   end
 
 
-  def  get_extra_data_of_compile_message(message)
-    conversation = message&.conversation
-    _full_name,_image,_un_read_message_count = '','',''
-    return _full_name, _image, _un_read_message_count unless  conversation.present?
-    _full_name = get_full_name(conversation)
-    _image = get_avatar(conversation)
-    _un_read_message_count = un_read_counter(conversation)
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts _un_read_message_count
-    puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    return _full_name,_image,_un_read_message_count
-  end
+  # def  get_extra_data_of_compile_message(message)
+  #   conversation = message&.conversation
+  #   _full_name,_image,_un_read_message_count = '','',''
+  #   return _full_name, _image, _un_read_message_count unless  conversation.present?
+  #   _full_name = 
+  #   _image = 
+  #   _un_read_message_count = 
+  #   puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  #   puts _un_read_message_count
+  #   puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  #   return _full_name,_image,_un_read_message_count
+  # end
 
   def compile_message(conversation)
     message = conversation.messages.last
     data = {}
-    full_name,image,un_read_message_count, = get_extra_data_of_compile_message(message)
-    data["unread_message"] = un_read_message_count
-    data["full_name"] =  full_name
-    data["avatar"] = image
+    # full_name,image,un_read_message_count, = get_extra_data_of_compile_message(message)
+    data["unread_message"] = un_read_counter(conversation)
+    data["full_name"] = get_full_name(conversation)
+    data["avatar"] = get_avatar(conversation)
     data["conversation_id"] = conversation.id
     data["recipient_id"] = conversation.recipient_id
     data["sender_id"] = conversation.sender_id
@@ -62,9 +62,10 @@ module ChatListBoardCast
     data["image"] = message.present? ? (chat_avatar_image(message)) : "No Message"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts " Current User Name:#{@current_user.full_name} Send Message To #{full_name} "
+    puts " Current User Name:#{@current_user.full_name} Recipient Name #{get_full_name(conversation)} "
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    p data
     return data
   end
 

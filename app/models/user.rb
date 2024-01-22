@@ -7,50 +7,55 @@ class User < ApplicationRecord
 
   pg_search_scope :custom_search,
                   against: [:full_name, :email, :phone_number],
-                  associated_against: {
-                  professions: :title},
-                  using: {
-                    tsearch: { prefix: true }
-                  }
+                  associated_against: { professions: :title },
+                  using: { tsearch: { prefix: true } }
+
   acts_as_mappable :default_units => :kms,
                    :lat_column_name => :latitude,
                    :lng_column_name => :longitude
+
   has_secure_password
-  has_many :saved_searches, dependent: :destroy
-  has_many :user_search_addresses,dependent: :destroy
-  has_one :subscription,dependent: :destroy
-  has_one :user_setting, dependent: :destroy
-  has_many :subscription_histories,dependent: :destroy
-  has_many :mobile_devices,dependent: :destroy
-  has_many :conversations, dependent: :destroy,foreign_key: :sender_id
-  has_many :conversations, dependent: :destroy,foreign_key: :recipient_id
-  has_many :support_conversations, dependent: :destroy,foreign_key: :sender_id
-  has_many :support_conversations, dependent: :destroy,foreign_key: :recipient_id
-  has_many :messages, dependent: :destroy
-  has_many :user_support_messages, dependent: :destroy,foreign_key: :sender_id
-  has_many :notifications, foreign_key: :recipient_id, class_name: "Notification",dependent: :destroy
-  has_many :notifications, foreign_key: :actor_id, class_name: 'Notification',dependent: :destroy
-  has_many :support_closer_reviews, class_name: "Review",dependent: :destroy,foreign_key: :support_closer_id
-  has_many :reportings, dependent: :destroy, foreign_key: :user_id
-  has_many :user_reports, class_name: "Reporting", dependent: :destroy, foreign_key: :reported_user_id
-  has_many :reviews,dependent: :destroy,foreign_key: :user_id
-  has_many :view_visitor, class_name: "Visitor",dependent: :destroy,foreign_key: :visit_id
-  has_many :visitor,dependent: :destroy,foreign_key: :user_id
+
+  has_one_attached :avatar, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-  has_many_attached :certificates,  dependent: :destroy
-  has_many :professions,  dependent: :destroy
-  has_one :schedule,  dependent: :destroy
-  has_many :bookmarks,  dependent: :destroy
-  has_one_attached :avatar,  dependent: :destroy
+  has_many_attached :certificates, dependent: :destroy
+
   has_one :user_preference, dependent: :destroy
-  has_many :dream_addresses, dependent: :destroy
+  has_one :schedule, dependent: :destroy
+  has_one :subscription, dependent: :destroy
+  has_one :user_setting, dependent: :destroy
+
+  has_many :professions, dependent: :destroy
   has_many :properties, dependent: :destroy
+  has_many :dream_addresses, dependent: :destroy
+  has_many :saved_searches, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
   has_many :supports, dependent: :destroy
   has_many :card_infos, dependent: :destroy
-  accepts_nested_attributes_for :professions, :schedule
+  has_many :user_search_addresses, dependent: :destroy
+  has_many :subscription_histories, dependent: :destroy
+  has_many :mobile_devices, dependent: :destroy
+  has_many :conversations, dependent: :destroy, foreign_key: :sender_id
+  has_many :conversations, dependent: :destroy, foreign_key: :recipient_id
+  has_many :support_conversations, dependent: :destroy, foreign_key: :sender_id
+  has_many :support_conversations, dependent: :destroy, foreign_key: :recipient_id
+  has_many :messages, dependent: :destroy
+  has_many :user_support_messages, dependent: :destroy, foreign_key: :sender_id
+  has_many :notifications, foreign_key: :recipient_id, class_name: 'Notification', dependent: :destroy
+  has_many :notifications, foreign_key: :actor_id, class_name: 'Notification', dependent: :destroy
+  has_many :reportings, dependent: :destroy, foreign_key: :user_id
+  has_many :user_reports, class_name: 'Reporting', dependent: :destroy, foreign_key: :reported_user_id
 
-  validates :full_name, :email, :phone_number, :user_type,
-            :profile_type, :password_digest, presence: true
+  has_many :reviews, dependent: :destroy # for regular users, reviews given to support closers
+  has_many :support_closer_reviews, class_name: 'Review', dependent: :destroy, foreign_key: :support_closer_id # for support closers, reviews given by regular users
+
+  has_many :visitors, dependent: :destroy # visits made by other users
+  has_many :visits, class_name: 'Visitor', dependent: :destroy, foreign_key: :visit_id # visits made to other user profiles
+
+  accepts_nested_attributes_for :professions, allow_destroy: true
+  accepts_nested_attributes_for :schedule
+
+  validates_presence_of :full_name, :email, :phone_number, :user_type, :profile_type, :password_digest
   validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
   validates :phone_number, format: { with: /\A^\+?\d+$\z/ }
   validates :phone_number, uniqueness: true
@@ -67,16 +72,16 @@ class User < ApplicationRecord
   enum profile_type: {
     want_sell: 0,
     want_buy: 1,
-    want_support_closer: 2
+    support_closer: 2
   }
 
-  scope :get_support_closer_user,-> { want_support_closer.order(created_at: :desc)}
+  scope :get_support_closer_user,-> { support_closer.order(created_at: :desc)}
   scope :get_all_buyer,-> { want_buy.order(created_at: :desc)}
   scope :get_all_seller,-> { want_sell.order(created_at: :desc)}
   scope :get_new_user,-> { order(created_at: :desc)}
   scope :count_active_user, -> { where('active = (?)',true) }
-  scope :count_support_closer_user, -> { want_support_closer.count }
-  scope :all_users, -> { where.not(profile_type: "want_support_closer")}
+  scope :count_support_closer_user, -> { support_closer.count }
+  scope :all_users, -> { where.not(profile_type: 'support_closer')}
   scope :new_users, -> { where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago) }
 
   def generate_password_token!
@@ -103,6 +108,15 @@ class User < ApplicationRecord
     self.reset_signup_token = nil
     self.password = password
     self.save!
+  end
+
+  def support_closer_average_rating
+    begin
+      rating = support_closer_reviews.pluck(:rating)
+      rating.sum/rating.count
+    rescue
+      0
+    end
   end
 
   private

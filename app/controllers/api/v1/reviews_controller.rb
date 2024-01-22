@@ -1,42 +1,41 @@
+# frozen_string_literal: true
+
 class Api::V1::ReviewsController < Api::V1::ApiController
-   def create
-    @user = User.find_by(id: params[:support_closer_id])
-    if @user.present?
-      if @user.want_support_closer?
-        @review = @current_user.reviews.build(review_params.merge(support_closer_id: @user.id))
-        if @review.save
-          @review
-        else
+
+  def create
+    user = User.find_by(id: review_params[:support_closer_id])
+    if user.present?
+      if user.support_closer?
+        @review = @current_user.reviews.build(review_params)
+        unless @review.save
           render_error_messages(@review)
         end
       else
-        render json: {message: "This user is not Support Closer"}, status: :unprocessable_entity
+        render json: {message: 'This user is not a support closer'}, status: :unprocessable_entity
       end
     else
-      render json: {message: "User does n't exists"}, status: :unprocessable_entity
+      render json: {message: 'User does not exist'}, status: :not_found
     end
   end
 
   def get_reviews
-    @reviews = Review.get_reviews(params[:support_closer_id])
-    if @reviews.present?
-      @reviews
-    else
-      render json: {message: "Support Closer has not review yet"}
-    end
+    @reviews = if review_params[:rating].present?
+        Review.where(support_closer_id: review_params[:support_closer_id], rating: review_params[:rating]).paginate(page_info)
+      else
+        Review.where(support_closer_id: review_params[:support_closer_id]).paginate(page_info)
+      end
   end
 
-  def review_filter
-    @reviews = Review.where(rating: params[:rating],support_closer_id: params[:support_closer_id] )
-    if @reviews.present?
-      @reviews
-    else
-      render json: {reviews: []}, status: :ok
-    end
-  end
   private
-  def review_params
-    params.require(:review).permit(:description, :rating)
-  end
 
+    def review_params
+      params.require(:review).permit(:support_closer_id, :description, :rating)
+    end
+
+    def page_info
+      {
+        page: params[:page],
+        per_page: 10
+      }
+    end
 end

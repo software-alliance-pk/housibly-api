@@ -55,11 +55,18 @@ module ChatListBoardCast
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
-    data["user_id"] = message&.user_id 
-    data["message"] = message.present? ? message.body : "No Message"
-    data["body"] = message.present? ? message.body : "No Message"
-    data["id"] = message.present? ? message.id : "No Message"
-    data["image"] = message.present? ? chat_avatar_image(message) : "No Message"
+    data["user_id"] = message&.user_id
+    data["id"] = message&.id
+  
+    if message.present?
+      data["message"] = message.body.present? ? message.body : (message.image.present? ? "Image" : "No Message")
+      data["image"] = message.image.present? ? chat_avatar_image(message) : "No Message"
+      data["body"] = message.body.present? ? message.body : "No Message"
+    else
+      data["message"] = "No Message"
+      data["image"] = "No Message"
+      data["body"] = "No Message"
+    end
   
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -69,6 +76,7 @@ module ChatListBoardCast
     p data
     return data
   end
+  
   
   def chat_avatar_image(message)
     if message && message.image.present? && message.image.attached?

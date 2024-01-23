@@ -190,6 +190,7 @@ end
       resources :conversations, only: [:create, :index, :destroy] do
         collection do
           post :notification_token
+          get :check_conversation_between_users
           post :read_messages
           post :logout
         end

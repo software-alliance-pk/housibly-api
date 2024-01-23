@@ -85,6 +85,15 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
 
+  def check_conversation_between_users
+    @conversation = Conversation.get_chat_between_user(params[:conversation][:recipient_id], @current_user.id)
+    if @conversation.present?
+      render json: @conversation
+    else
+      render json: { error: 'Conversation not found' }, status: :not_found
+    end
+  end
+
   def logout
     if params[:mtoken].present?
       mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mtoken])

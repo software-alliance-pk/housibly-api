@@ -55,20 +55,15 @@ module ChatListBoardCast
     data["created_at"] = conversation.created_at
     data["updated_at"] = conversation.updated_at
     data["is_blocked"] = conversation.is_blocked
-    data["user_id"] = message&.user_id
-  
+    data["user_id"] = message&.user_id 
     data["message"] = message.present? ? message.body : "No Message"
-    data["message"] = "Image" if data["message"] == "No Message" && chat_avatar_image(message).present?
-  
     data["body"] = message.present? ? message.body : "No Message"
     data["id"] = message.present? ? message.id : "No Message"
-    
-    # Assuming chat_avatar_image returns the image URL or nil
     data["image"] = message.present? ? chat_avatar_image(message) : "No Message"
   
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    puts " Current User Name:#{@current_user.full_name} Recipient Name #{get_full_name(conversation)} "
+    puts " Current User Name:#{@current_user.full_name} << AND >> Recipient Name: #{get_full_name(conversation)} "
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     p data
@@ -76,6 +71,10 @@ module ChatListBoardCast
   end
   
   def chat_avatar_image(message)
-    message.image.attached? ? message.image.url : ""
+    if message && message.image.present? && message.image.attached?
+      message.image.url
+    else
+      "No image"
+    end
   end
 end

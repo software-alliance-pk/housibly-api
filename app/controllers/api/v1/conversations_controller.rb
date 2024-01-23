@@ -61,10 +61,16 @@ class Api::V1::ConversationsController < Api::V1::ApiController
 
   def destroy
     if params[:id].present?
-      @conversation = current_user.conversations.find_by(id: params[:id])
+      @conversation = Conversation.find_by(id: params[:id])
       if @conversation.present?
-        @conversation.destroy
-        render json: { message: "Conversation is successfully deleted" }, status: :ok
+        sender_id = @conversation.sender_id
+        recipient_id = @conversation.recipient_id
+        if current_user.id == sender_id || current_user.id == recipient_id
+          @conversation.destroy
+          render json: { message: "Conversation is successfully deleted" }, status: :ok
+        else
+          render json: { error: "Current user is not authorized to delete this conversation" }, status: :unauthorized
+        end
       else
         render json: { error: "Conversation doesn't exist or doesn't belong to the current user" }, status: :unprocessable_entity
       end

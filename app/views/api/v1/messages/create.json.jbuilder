@@ -6,5 +6,5 @@ json.message do
 	json.is_blocked @conversation&.is_blocked
 	json.created_at @message&.created_at
 	json.updated_at @message&.updated_at
-    json.image @message&.image&.attached? ? @message&.image&.url : ""	
+  json.image @message&.image&.attached? ? @message&.image&.url : ""	
 end

@@ -3,9 +3,9 @@ module ApplicationCable
     identified_by :current_user
     def connect
       begin
-        if request.params[:token].present?
-            @jwt_token = request.params[:token]
-             self.current_user = find_verified_user
+        if request.headers["HTTP_AUTH_TOKEN"].present?
+          @jwt_token = request.headers["HTTP_AUTH_TOKEN"]
+          self.current_user = find_verified_user
         else
           self.current_user = find_verified_admin
         end

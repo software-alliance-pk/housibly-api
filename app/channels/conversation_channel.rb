@@ -3,7 +3,7 @@ class ConversationChannel < ApplicationCable::Channel
     stop_all_streams
     if current_user.present?
       Conversation.get_all_conversation_of_specific_user(current_user.id).find_each do |conversation|
-        stream_from "conversations_#{conversation.id}"
+        stream_from "conversation_#{conversation.id}"
       end
     end
   end
@@ -13,27 +13,39 @@ class ConversationChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    @conversation = Conversation.find_by(id: data.fetch("conversation_id"))
-    if check_conversation(@conversation)
+    args = data["args"]
+    return unless args && args["conversation_id"].present?
+  
+    conversation_id = args["conversation_id"]
+    @conversation = Conversation.find_by(id: conversation_id)
+  
+    if current_user && check_conversation(@conversation)
       message = @conversation.messages.build(user_id: current_user.id)
-      message.body = data["body"].present? ? data.fetch("body") : nil
+      message.body = args["body"].presence
       if message.save
-        data = {}
-        data["id"] = message.id
-        data["conversation_id"] = message.conversation_id
-        data["body"] = message.body
-        data["user_id"] = message.user_id
-        data["image"] = message.image
-        data["created_at"] = message.created_at
-        data["updated_at"] = message.updated_at
-        ActionCable.server.broadcast "conversations_#{message.conversation_id}", data.as_json
+        broadcast_message(message)
       end
     end
   end
+  
+  def broadcast_message(message)
+    data = {
+      id: message.id,
+      conversation_id: message.conversation_id,
+      body: message.body,
+      user_id: message.user_id,
+      image: message.image,
+      created_at: message.created_at,
+      updated_at: message.updated_at
+    }
+  
+    ActionCable.server.broadcast "conversation_#{message.conversation_id}", data.as_json
+  end
+  
+  def check_conversation(conversation)
+    return false unless conversation
 
-  def check_conversation(user)
-    (user.sender_id == current_user.id) || (user.recipient_id == current_user.id)
+    (conversation.sender_id == current_user.id) || (conversation.recipient_id == current_user.id)
   end
 
 end
-

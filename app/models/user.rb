@@ -55,14 +55,6 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :professions, allow_destroy: true
   accepts_nested_attributes_for :schedule
 
-  validates_presence_of :full_name, :email, :phone_number, :user_type, :profile_type, :password_digest
-  validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
-  validates :phone_number, format: { with: /\A^\+?\d+$\z/ }
-  validates :phone_number, uniqueness: true
-  validates :email, uniqueness: { case_sensitive: false }
-  validates :password_digest, length: { minimum: 6 }, confirmation: true
-  validates :user_type, inclusion: { in: %w(seller buyer neither) }
-
   enum property_type: [:house, :condo, :vacant_land]
   enum user_type: {
     seller: 0,
@@ -75,6 +67,15 @@ class User < ApplicationRecord
     support_closer: 2
   }
 
+  validates_presence_of :full_name, :email, :phone_number, :password_digest
+  validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
+  validates :phone_number, format: { with: /\A^\+?\d+$\z/ }
+  validates :phone_number, uniqueness: true
+  validates :email, uniqueness: { case_sensitive: false }
+  validates :password_digest, length: { minimum: 6 }, confirmation: true
+  validates :user_type, inclusion: { in: user_types.keys, message: "should be one of #{user_types.keys.join(', ')}"}
+  validates :profile_type, inclusion: { in: profile_types.keys, message: "should be one of #{profile_types.keys.join(', ')}"}
+
   scope :get_support_closer_user,-> { support_closer.order(created_at: :desc)}
   scope :get_all_buyer,-> { want_buy.order(created_at: :desc)}
   scope :get_all_seller,-> { want_sell.order(created_at: :desc)}
@@ -83,6 +84,14 @@ class User < ApplicationRecord
   scope :count_support_closer_user, -> { support_closer.count }
   scope :all_users, -> { where.not(profile_type: 'support_closer')}
   scope :new_users, -> { where('created_at >= :five_days_ago', :five_days_ago => 5.days.ago) }
+
+  def user_type=(value)
+    self.class.user_types.has_key?(value) ? super : nil
+  end
+
+  def profile_type=(value)
+    self.class.profile_types.has_key?(value) ? super : nil
+  end
 
   def generate_password_token!
     self.reset_password_token = generate_otp

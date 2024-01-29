@@ -3,7 +3,11 @@ json.extract! user,
   :licensed_realtor, :contacted_by_real_estate, :user_type, :profile_type, :description, :login_type,
   :profile_complete, :hourly_rate
 
+json.avatar user.avatar.attached? ? rails_blob_url(user.avatar) : ""
+
 json.average_rating user.support_closer_average_rating
+
+json.has_subscription user.subscription.present? && user.subscription.status != 'canceled'
 
 json.professions user.professions do |profession|
   json.extract! profession, :id, :title
@@ -12,8 +16,6 @@ end
 json.schedule do
   json.extract! user.schedule, :id, :starting_time, :ending_time, :working_days
 end if user.schedule
-
-json.avatar user.avatar.attached? ? rails_blob_url(user.avatar) : ""
 
 json.images user.images do |image|
   json.id image.signed_id

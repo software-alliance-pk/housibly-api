@@ -8,6 +8,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				# send_notification_to_user(@conversation,@message)
 				# @conversation_list, user = notify_second_user(@conversation)
 				data = []
+				puts "Message saved successfully."
+        puts "Conversation ID: #{@conversation.id}"
+        puts "Message ID: #{@message.id}"
 				# @conversation_list.each do |conversation|
 					custom_data = compile_message(@conversation)
 					if @conversation&.messages.present?
@@ -22,6 +25,11 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id
 				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation)}
+				
+				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+        puts "Message broadcast to conversations_#{@message.conversation_id}"
+        puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+				
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				puts "Message broad_cast to user_chat_list_#{broadcast_to_user}"
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

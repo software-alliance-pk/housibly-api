@@ -3,7 +3,7 @@ class ConversationChannel < ApplicationCable::Channel
     stop_all_streams
     if current_user.present?
       Conversation.get_all_conversation_of_specific_user(current_user.id).find_each do |conversation|
-        stream_from "conversation_#{conversation.id}"
+        stream_from "conversations_#{conversation.id}"
       end
     end
   end
@@ -39,7 +39,7 @@ class ConversationChannel < ApplicationCable::Channel
       updated_at: message.updated_at
     }
   
-    ActionCable.server.broadcast "conversation_#{message.conversation_id}", data.as_json
+    ActionCable.server.broadcast "conversations_#{message.conversation_id}", data.as_json
   end
   
   def check_conversation(conversation)

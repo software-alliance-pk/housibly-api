@@ -38,7 +38,7 @@ class ConversationChannel < ApplicationCable::Channel
       created_at: message.created_at,
       updated_at: message.updated_at
     }
-  
+  p data
     ActionCable.server.broadcast "conversations_#{message.conversation_id}", data.as_json
   end
   

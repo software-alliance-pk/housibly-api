@@ -42,8 +42,10 @@ module ChatListBoardCast
   #   return _full_name,_image,_un_read_message_count
   # end
 
-  def compile_message(conversation)
-    message = conversation.messages.last
+  def compile_message(conversation, message = nil)
+    message ||= conversation.messages.last
+    p ">>>>>>>>>>>>Messageeeeeeeeeeeeeeeeeeeeeee>>>>>>>>>>>>>>>>>>>>>>"
+    p message
     data = {}
   
     data["unread_message"] = un_read_counter(conversation)

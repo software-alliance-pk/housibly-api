@@ -12,7 +12,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
         puts "Conversation ID: #{@conversation.id}"
         puts "Message ID: #{@message.id}"
 				# @conversation_list.each do |conversation|
-					custom_data = compile_message(@conversation)
+					custom_data = compile_message(@conversation, @message)
 					if @conversation&.messages.present?
 						custom_data["avatar"] = @conversation&.sender.id == @message.user.id ? @conversation&.sender&.avatar&.url : @conversation.recipient&.avatar&.url
 						custom_data["full_name"] = @conversation&.sender.id == @message.user.id ? @conversation&.sender&.full_name :  @conversation.recipient&.full_name
@@ -24,7 +24,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				puts " Message #{data}"
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id
-				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation)}
+				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation, @message)}
 				
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         puts "Message broadcast to conversations_#{@message.conversation_id}"

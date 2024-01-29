@@ -5,8 +5,8 @@ test:
   adapter: test
 
 production:
-  adapter: redis
-  url: redisnew.daszz1.clustercfg.eun1.cache.amazonaws.com:6379
-  channel_prefix: housibly_backend_production
+  adapter: async
+  # url: redisnew.daszz1.clustercfg.eun1.cache.amazonaws.com:6379
+  # channel_prefix: housibly_backend_production
   #ssl_params:
    # verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>

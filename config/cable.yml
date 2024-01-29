@@ -6,7 +6,7 @@ test:
 
 production:
   adapter: async
-  #url: rediss://:pe780a0f2b5f534a50d9cd2315631a0812d0479e666fd08f98be4a3c7461eb7d4@ec2-44-
-  #channel_prefix: housibly_backend_production
+  url: redisnew.daszz1.clustercfg.eun1.cache.amazonaws.com:6379
+  channel_prefix: housibly_backend_production
   #ssl_params:
    # verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>

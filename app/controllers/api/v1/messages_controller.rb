@@ -8,9 +8,6 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				# send_notification_to_user(@conversation,@message)
 				# @conversation_list, user = notify_second_user(@conversation)
 				data = []
-				puts "Message saved successfully."
-        puts "Conversation ID: #{@conversation.id}"
-        puts "Message ID: #{@message.id}"
 				# @conversation_list.each do |conversation|
 					custom_data = compile_message(@conversation, @message)
 					if @conversation&.messages.present?

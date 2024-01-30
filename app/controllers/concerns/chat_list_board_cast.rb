@@ -44,8 +44,6 @@ module ChatListBoardCast
 
   def compile_message(conversation, message = nil)
     message ||= conversation.messages.last
-    p ">>>>>>>>>>>>Messageeeeeeeeeeeeeeeeeeeeeee>>>>>>>>>>>>>>>>>>>>>>"
-    p message
     data = {}
   
     data["unread_message"] = un_read_counter(conversation)
@@ -75,7 +73,6 @@ module ChatListBoardCast
     puts " Current User Name:#{@current_user.full_name} << AND >> Recipient Name: #{get_full_name(conversation)} "
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    p data
     return data
   end
   

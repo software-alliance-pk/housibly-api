@@ -9,11 +9,17 @@ json.extract! property,
 
 json.last_seen property&.user&.last_seen.present? ? "#{time_ago_in_words(property&.user&.last_seen)} ago" : ""
 json.is_new property.created_at > 6.weeks.ago
+
 json.rooms property.rooms do |room|
   json.partial! 'room', room: room
 end
+
 json.images property.images do |image|
   json.id image.signed_id
   # json.url image.url rescue "" # use for direct link (not available for local), see https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
   json.url rails_blob_url(image) rescue "" # use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
+end
+
+json.user do
+  json.partial! 'api/v1/shared/user_basic', user: property.user
 end

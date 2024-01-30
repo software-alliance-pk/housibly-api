@@ -61,13 +61,13 @@ module ChatListBoardCast
     data["id"] = message&.id
   
     if message.present?
-      data["message"] = message.body.present? ? message.body : (message.image.present? ? "Image" : "No Message")
-      data["image"] = message.image.present? ? chat_avatar_image(message) : "No Message"
-      data["body"] = message.body.present? ? message.body : "No Message"
+      data["message"] = message.body.present? ? message.body : (message.image.present? ? "Image" : "")
+      data["image"] = message.image.present? ? chat_avatar_image(message) : ""
+      data["body"] = message.body.present? ? message.body : ""
     else
-      data["message"] = "No Message"
-      data["image"] = "No Message"
-      data["body"] = "No Message"
+      data["message"] = ""
+      data["image"] = ""
+      data["body"] = ""
     end
   
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -84,7 +84,7 @@ module ChatListBoardCast
     if message && message.image.present? && message.image.attached?
       message.image.url
     else
-      "No image"
+      ""
     end
   end
 end

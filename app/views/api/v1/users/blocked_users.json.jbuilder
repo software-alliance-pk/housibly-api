@@ -7,16 +7,17 @@ json.blocked_users @conversation_blocked do |conversation_blocked|
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     puts @current_user.id
     puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    json.id conversation_blocked.id
+    json.conversation_id conversation_blocked.id
+    json.block_by conversation_blocked.block_by
     if conversation_blocked.sender == @current_user
       json.full_name conversation_blocked.recipient&.full_name
     else
       json.full_name conversation_blocked.sender&.full_name
     end
     if conversation_blocked.sender == @current_user
-      json.blocked_user_id conversation_blocked.recipient&.id
+      json.user_id conversation_blocked.recipient&.id
     else
-      json.blocked_user_id conversation_blocked.sender&.id
+      json.user_id conversation_blocked.sender&.id
     end
     if conversation_blocked.sender == @current_user
       json.avatar conversation_blocked.recipient.avatar.attached? ? rails_blob_url(conversation_blocked.recipient.avatar) : ""

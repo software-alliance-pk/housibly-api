@@ -34,6 +34,8 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			else
 				render_error_messages(@message)
 			end
+		else
+			render json: { message: 'This conversation is blocked. You cannot send messages.' }, status: :unprocessable_entity
 		end
 	end
 

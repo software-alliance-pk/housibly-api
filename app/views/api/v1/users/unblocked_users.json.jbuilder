@@ -1,19 +1,14 @@
-json.unblocked_users @unblocked_users do |unblocked_user|
-	json.id unblocked_user.id
-  json.full_name unblocked_user.full_name
-  json.email unblocked_user.email
-  json.is_otp_verified unblocked_user.is_otp_verified
-  json.is_confirmed unblocked_user.is_confirmed
-  json.phone_number unblocked_user.phone_number
-  json.country_code unblocked_user.country_code
-  json.country_name unblocked_user.country_name
-  json.licensed_realtor unblocked_user.licensed_realtor
-  json.contacted_by_real_estate unblocked_user.contacted_by_real_estate
-  json.user_type unblocked_user.user_type
-  json.profile_type unblocked_user.profile_type
-  json.description unblocked_user.description
-  json.login_type unblocked_user.login_type
-  json.profile_complete unblocked_user.profile_complete
-  json.image unblocked_user.avatar.attached? ? @current_user.avatar.url : ""
-end
+json.unblocked_users @conversation_unblocked do |conversation_unblocked|
+  
+  json.conversation_id conversation_unblocked.id
 
+  json.recipient_full_name conversation_unblocked.recipient&.full_name
+  json.sender_full_name conversation_unblocked.sender&.full_name
+  
+  json.recipient_user_id conversation_unblocked.recipient&.id
+  json.sender_user_id conversation_unblocked.sender&.id
+  
+  json.recipient_avatar conversation_unblocked.recipient.avatar.attached? ? rails_blob_url(conversation_unblocked.recipient.avatar) : ""
+  json.sender_avatar conversation_unblocked.sender.avatar.attached? ? rails_blob_url(conversation_unblocked.sender.avatar) : ""
+     
+end

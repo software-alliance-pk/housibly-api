@@ -5,7 +5,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		unless @conversation.is_blocked?
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
-				# send_notification_to_user(@conversation,@message)
+				 send_notification_to_user(@conversation,@message)
 				# @conversation_list, user = notify_second_user(@conversation)
 				data = []
 				# @conversation_list.each do |conversation|
@@ -109,22 +109,22 @@ end
 		end
 	end
 
-	# def send_notification_to_user(conversation,message)
-	# 	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	# 	puts conversation.sender.user_setting.push_notification
-	# 	puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	# 	if conversation.sender == @current_user
-	# 		if conversation.recipient.user_setting.push_notification == true
-	# 			UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
-	# 		else
-	# 			puts "OFFFFFFFF"
-	# 		end
-	# 	else
-	# 		if conversation.sender.user_setting.push_notification == true
-	# 			UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent to a message.",conversation_id: conversation.id )
-	# 		else
-	# 			puts "<<<<<<<<<<OFF<<<<<<<<<<<"
-	# 		end
-	# 	end
-	# end
+	def send_notification_to_user(conversation,message)
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		puts conversation.sender.user_setting.push_notification
+		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		if conversation.sender == @current_user
+			if conversation.recipient.user_setting.push_notification == true
+				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent you a message.",conversation_id: conversation.id )
+			else
+				puts "OFFFFFFFF"
+			end
+		else
+			if conversation.sender.user_setting.push_notification == true
+				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent you a message.",conversation_id: conversation.id )
+			else
+				puts "<<<<<<<<<<OFF<<<<<<<<<<<"
+			end
+		end
+	end
 end

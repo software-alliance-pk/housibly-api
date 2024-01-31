@@ -50,24 +50,49 @@ class Api::V1::UsersController < Api::V1::ApiController
     end
   end
 
-  def block_unblock_user
+  def report_unreport_user
     user = User.find_by(id: params[:user_id])
-    conversation = Conversation.find_by(recipient_id: user.id, sender_id: @current_user.id) ||
-      conversation = Conversation.find_by(recipient_id: @current_user.id, sender_id: user.id)
+    conversation = Conversation.find_by(recipient_id: user.id, sender_id: @current_user.id) || Conversation.find_by(recipient_id: @current_user.id, sender_id: user.id)
+  
     if conversation.present?
-      if params[:is_blocked].present? && params[:is_blocked] == 'true'
-        if conversation.update!(is_blocked: true, block_by: @current_user.id)
-          render json: { message: 'User added in blacklist' }, status: :ok
+      if params[:is_reported].present? && params[:is_reported] == 'true'
+        if user.update(is_reported: true)
+          render json: { message: 'User reported successfully' }, status: :ok
+        else
+          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
-      elsif params[:is_blocked].present? && params[:is_blocked] == 'false'
-        if conversation.update!(is_blocked: false, block_by: 0)
-          render json: { message: 'User removed from blacklist' }, status: :ok
+      elsif params[:is_reported].present? && params[:is_reported] == 'false'
+        if user.update(is_reported: false)
+          render json: { message: 'User is removed from the report list' }, status: :ok
+        else
+          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
       end
-      send_message = compile_message(conversation)
-      ActionCable.server.broadcast "conversations_#{conversation.id}", { messages: send_message }
     else
-      render json: { message: [] }, status: :ok
+      render json: { message: 'Conversation not found' }, status: :not_found
+    end
+  end  
+
+  def block_unblock_user
+    user = User.find_by(id: params[:user_id])
+    conversation = Conversation.find_by(recipient_id: user.id, sender_id: @current_user.id) || Conversation.find_by(recipient_id: @current_user.id, sender_id: user.id)
+  
+    if conversation.present?
+      if params[:is_blocked].present? && params[:is_blocked] == 'true'
+        if conversation.update(is_blocked: true, block_by: @current_user.id)
+          render json: { message: 'User added to blacklist' }, status: :ok
+        else
+          render json: { errors: conversation.errors.full_messages }, status: :unprocessable_entity
+        end
+      elsif params[:is_blocked].present? && params[:is_blocked] == 'false'
+        if conversation.update(is_blocked: false, block_by: nil)
+          render json: { message: 'User removed from blacklist' }, status: :ok
+        else
+          render json: { errors: conversation.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+    else
+      render json: { message: 'Conversation not found' }, status: :not_found
     end
   end
 
@@ -76,16 +101,16 @@ class Api::V1::UsersController < Api::V1::ApiController
     if @conversation_blocked.present?
       @conversation_blocked
     else
-      render json: { message: 'No Found' }
+      render json: { message: 'No Blocked Conversations Found' }
     end
   end
 
   def unblocked_users
-    @unblocked_users = User.where(is_blocked: false)
-    if @unblocked_users.present?
-      @unblocked_users
+    @conversation_unblocked = Conversation.where('(recipient_id = (?) OR sender_id = (?)) AND is_blocked = (?)', @current_user.id, @current_user.id, false)
+    if @conversation_unblocked.present?
+      @conversation_unblocked
     else
-      render json: { message: 'No Found' }
+      render json: { message: 'No Unblocked Conversations Found' }
     end
   end
 

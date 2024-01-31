@@ -136,6 +136,7 @@ end
       get 'blocked_users', to: 'users#blocked_users'
       get 'unblocked_users', to: 'users#unblocked_users'
       post 'block_unblock_user', to: 'users#block_unblock_user'
+      post 'report_unreport_user', to: 'users#report_unreport_user'
       get 'reported_users', to: 'users#reported_users'
       post '/update_notification', to: 'users#update_notification'
       get '/get_notification_setting', to: 'users#get_notification_setting'

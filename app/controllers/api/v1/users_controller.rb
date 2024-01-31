@@ -40,9 +40,14 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def search_support_closers
-    @support_closers = User.support_closer.custom_search(params[:search_query]).paginate(page_info)
-    # @support_closers =
-    #   User.support_closer.custom_search(params[:search]).joins(:subscription).where.not(subscription: {status: 'canceled'}).paginate(page_info)
+    if @current_user.latitude.present? && @current_user.longitude.present?
+      @support_closers =
+        User.support_closer.custom_search(params[:search_query]).within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
+    else
+      @support_closers = User.support_closer.custom_search(params[:search_query]).paginate(page_info)
+      # @support_closers =
+      #   User.support_closer.custom_search(params[:search]).joins(:subscription).where.not(subscription: {status: 'canceled'}).paginate(page_info)
+    end
   end
 
   def report_unreport_user
@@ -195,8 +200,9 @@ class Api::V1::UsersController < Api::V1::ApiController
 
     def user_params
       params.require(:user).permit(:full_name, :email, :password, :phone_number, :description,
-        :currency_amount, :country_code, :country_name, :avatar, :hourly_rate, images: [], certificates: [],
-        professions_attributes: [:id, :_destroy, :title], schedule_attributes: [:id, :ending_time, :starting_time, working_days: []]
+        :currency_amount, :country_code, :country_name, :avatar, :hourly_rate, :latitude, :longitude, :address,
+        images: [], certificates: [], professions_attributes: [:id, :_destroy, :title],
+        schedule_attributes: [:id, :ending_time, :starting_time, working_days: []]
       )
     end
 

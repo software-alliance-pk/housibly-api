@@ -19,11 +19,13 @@ class Api::V1::ReviewsController < Api::V1::ApiController
   end
 
   def get_reviews
-    @reviews = if review_params[:rating].present?
-        Review.where(support_closer_id: review_params[:support_closer_id], rating: review_params[:rating]).paginate(page_info)
-      else
-        Review.where(support_closer_id: review_params[:support_closer_id]).paginate(page_info)
-      end
+    if review_params[:rating].present?
+      @reviews = Review.where(support_closer_id: review_params[:support_closer_id], rating: review_params[:rating]).paginate(page_info)
+      @review_count = Review.review_count_for_rating(review_params[:support_closer_id], review_params[:rating])
+    else
+      @reviews = Review.where(support_closer_id: review_params[:support_closer_id]).paginate(page_info)
+      @review_count = Review.total_review_count(review_params[:support_closer_id])
+    end
   end
 
   private

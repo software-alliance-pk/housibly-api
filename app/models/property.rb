@@ -1,7 +1,7 @@
 class Property < ApplicationRecord
   include PgSearch::Model
 
-  after_save_commit :add_the_lnt_and_lng_property
+  before_save :add_the_lnt_and_lng_property
   before_save :convert_to_feet, unless: ->(property){property.property_type == "condo"}
 
   # reverse_geocoded_by :latitude, :longitude
@@ -253,9 +253,11 @@ class Property < ApplicationRecord
     end
 
     def add_the_lnt_and_lng_property
+      return unless address_changed?
+
       location = LocationFinderService.get_location_attributes(self.address)
       return unless location
-      self.update(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
+      self.assign_attributes(longitude: location[:long], latitude: location[:lat], zip_code: location[:zip_code], country: location[:country], city: location[:city])
     end
 
     def validate_room_levels

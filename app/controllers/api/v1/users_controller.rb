@@ -11,6 +11,8 @@ class Api::V1::UsersController < Api::V1::ApiController
     @user = User.find_by(id: params[:user_id])
     return render json: { message: 'User not found' }, status: :not_found unless @user
 
+    return render json: { message: 'Other user cannot be the same as the current user' }, status: 422 if @current_user.id == @user.id
+
     visitor = Visitor.find_by(user_id: @user.id, visit_id: @current_user.id)
     if visitor.present?
       visitor.touch # updates the updated_at timestamp
@@ -53,7 +55,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   def report_unreport_user
     user = User.find_by(id: params[:user_id])
     conversation = Conversation.find_by(recipient_id: user.id, sender_id: @current_user.id) || Conversation.find_by(recipient_id: @current_user.id, sender_id: user.id)
-  
+
     if conversation.present?
       if params[:is_reported].present? && params[:is_reported] == 'true'
         if user.update(is_reported: true)
@@ -71,12 +73,12 @@ class Api::V1::UsersController < Api::V1::ApiController
     else
       render json: { message: 'Conversation not found' }, status: :not_found
     end
-  end  
+  end
 
   def block_unblock_user
     user = User.find_by(id: params[:user_id])
     conversation = Conversation.find_by(recipient_id: user.id, sender_id: @current_user.id) || Conversation.find_by(recipient_id: @current_user.id, sender_id: user.id)
-  
+
     if conversation.present?
       if params[:is_blocked].present? && params[:is_blocked] == 'true'
         if conversation.update(is_blocked: true, block_by: @current_user.id)

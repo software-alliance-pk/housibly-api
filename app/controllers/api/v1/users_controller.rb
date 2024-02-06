@@ -42,14 +42,33 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def search_support_closers
-    if @current_user.latitude.present? && @current_user.longitude.present?
-      @support_closers =
-        User.support_closer.custom_search(params[:search_query]).within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
+    if params[:search_query].present?
+      if @current_user.latitude.present? && @current_user.longitude.present?
+        @support_closers =
+          User.support_closer.custom_search(params[:search_query]).within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
+      else
+        @support_closers = User.support_closer.custom_search(params[:search_query]).paginate(page_info)
+        # @support_closers =
+        #   User.support_closer.custom_search(params[:search]).joins(:subscription).where.not(subscription: {status: 'canceled'}).paginate(page_info)
+      end
     else
-      @support_closers = User.support_closer.custom_search(params[:search_query]).paginate(page_info)
-      # @support_closers =
-      #   User.support_closer.custom_search(params[:search]).joins(:subscription).where.not(subscription: {status: 'canceled'}).paginate(page_info)
+      if @current_user.latitude.present? && @current_user.longitude.present?
+        @support_closers = User.support_closer.within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
+      else
+        @support_closers = User.support_closer.paginate(page_info)
+      end
     end
+  end
+
+  def get_highest_rated_support_closers
+    @support_closers = User.support_closer
+      .select('users.*, coalesce(avg(reviews.rating), 0) as avg_rating')
+      .left_outer_joins(:support_closer_reviews)
+      .group('users.id')
+      .order('avg_rating desc')
+      .limit(4)
+
+    render 'search_support_closers'
   end
 
   def report_unreport_user

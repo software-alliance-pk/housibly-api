@@ -119,15 +119,6 @@ class User < ApplicationRecord
     self.save!
   end
 
-  def support_closer_average_rating
-    begin
-      rating = support_closer_reviews.pluck(:rating)
-      rating.sum/rating.count
-    rescue
-      0
-    end
-  end
-
   private
 
     def generate_otp

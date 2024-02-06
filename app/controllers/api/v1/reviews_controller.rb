@@ -4,17 +4,15 @@ class Api::V1::ReviewsController < Api::V1::ApiController
 
   def create
     user = User.find_by(id: review_params[:support_closer_id])
-    if user.present?
-      if user.support_closer?
-        @review = @current_user.reviews.build(review_params)
-        unless @review.save
-          render_error_messages(@review)
-        end
-      else
-        render json: {message: 'This user is not a support closer'}, status: :unprocessable_entity
-      end
-    else
-      render json: {message: 'User does not exist'}, status: :not_found
+    return render json: { message: 'User does not exist' }, status: :not_found unless user.present?
+
+    return render json: { message: 'You cannot review yourself!' }, status: 422 if @current_user.id == user.id
+
+    return render json: { message: 'User is not a support closer' }, status: 422 unless user.support_closer?
+
+    @review = @current_user.reviews.build(review_params)
+    unless @review.save
+      render_error_messages(@review)
     end
   end
 

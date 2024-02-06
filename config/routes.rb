@@ -130,6 +130,7 @@ end
       put '/update_profile', to: 'users#update_profile'
       delete '/delete_account', to: 'users#delete_account'
       get '/search_support_closers', to: 'users#search_support_closers'
+      get '/top_support_closers', to: 'users#get_highest_rated_support_closers'
 
       post '/get_school_pins', to: 'users#get_school_pins'
       post '/get_school', to: 'users#get_school'

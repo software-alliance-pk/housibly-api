@@ -53,7 +53,7 @@ class User < ApplicationRecord
   has_many :visits, class_name: 'Visitor', dependent: :destroy, foreign_key: :visit_id # visits made to other user profiles
 
   accepts_nested_attributes_for :professions, allow_destroy: true
-  accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :schedule, :mobile_devices
 
   enum property_type: [:house, :condo, :vacant_land]
   enum user_type: {

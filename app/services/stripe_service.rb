@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 module StripeService
   require 'stripe'
   extend self
+
+  Stripe.api_key  = ENV['STRIPE_API_KEY']
 
   def create_customer(name, email)
     handle_request{ Stripe::Customer.create({ name: name, email: email }) }
@@ -61,7 +65,7 @@ module StripeService
       begin
         yield
       rescue Stripe::InvalidRequestError => e
-        puts "Error in stripe API method: #{caller_locations[1].label}. #{e.message}"
+        puts "Error in stripe API, method: #{caller_locations[1].label}. #{e.message}"
       end
     end
 

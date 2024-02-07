@@ -79,7 +79,8 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
       params.require(:user).permit(:full_name, :email, :password, :phone_number, :description,
         :licensed_realtor, :contacted_by_real_estate, :user_type, :profile_type, :country_code, :country_name,
         :currency_type, :currency_amount, :address, :avatar, :hourly_rate, images: [], certificates: [],
-        professions_attributes: [:id, :_destroy, :title], schedule_attributes: [:id, :ending_time, :starting_time, working_days: []]
+        professions_attributes: [:id, :_destroy, :title], schedule_attributes: [:id, :ending_time, :starting_time, working_days: []],
+        mobile_devices_attributes: [:mobile_device_token]
       )
     end
 end

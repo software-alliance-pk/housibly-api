@@ -21,7 +21,9 @@ class NotificationService
                   type: user_notification.event_type,
                   body: user_notification.action,
                   sound: 'default'
-                }
+                },
+                contentAvailable: true,
+                priority: 'high'
     }
     puts "Sending notification to #{recipient.full_name}..."
     puts "Notification content: #{options}"

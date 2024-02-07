@@ -11,7 +11,7 @@ StripeEvent.configure do |events|
     when 'customer.subscription.created'
       SubscriptionCreatedJob.perform_now(event)
     when 'product.updated'
-       ProductUpdatedJob.perform_now(event)
+      ProductUpdatedJob.perform_now(event)
     when 'product.created'
       PackageCreateJob.perform_now(event)
     when 'price.created'

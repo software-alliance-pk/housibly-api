@@ -1,6 +1,7 @@
-class PropertiesSearchService
+module PropertiesSearchService
+  extend self
 
-  def self.search_by_preference(preference, page_info, current_user_id)
+  def search_by_preference(preference, page_info, current_user_id)
     where_args = ['']
     conjuction = ' AND '
 
@@ -40,7 +41,7 @@ class PropertiesSearchService
     Property.not_from_user(current_user_id).where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page_info)
   end
 
-  def self.search_in_polygon(coordinates_array, page_info, current_user_id)
+  def search_in_polygon(coordinates_array, page_info, current_user_id)
     # page = page_info[:page] || 1
     # end_index = page * page_info[:per_page]
     # prev_end_index = end_index - page_info[:per_page]
@@ -66,7 +67,7 @@ class PropertiesSearchService
     # results.last(results.count - prev_end_index)
   end
 
-  def self.search_in_circle(origin, radius, page_info, current_user_id)
+  def search_in_circle(origin, radius, page_info, current_user_id)
     # p origin.values
     Property.not_from_user(current_user_id).within(radius, origin: origin.values)
   end

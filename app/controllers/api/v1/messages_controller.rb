@@ -22,11 +22,11 @@ class Api::V1::MessagesController < Api::V1::ApiController
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				broadcast_to_user = @message.user == @conversation.sender ? @conversation.recipient.id : @conversation.sender.id
 				ActionCable.server.broadcast "conversations_#{@message.conversation_id}", { messages: compile_message(@conversation, @message)}
-				
+
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         puts "Message broadcast to conversations_#{@message.conversation_id}"
         puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-				
+
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 				puts "Message broad_cast to user_chat_list_#{broadcast_to_user}"
 				puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -56,7 +56,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 			render json: { message: "Conversation id parameter is missing" }, status: :bad_request
 		end
 	end
-	
+
   def delete_notification
 		if params[:notification_id].present?
 			@notification = Notification.find(id: params[:notification_id])
@@ -69,8 +69,8 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		else
 			render json: {message: "Notification id parameter is missing"},status: :ok
 		end
-  end 
-  
+  end
+
 	def get_notification
   	@notifications = []
   	unless @current_user.user_setting.inapp_notification == false
@@ -117,13 +117,13 @@ end
 		puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 		if conversation.sender == @current_user
 			if conversation.recipient.user_setting.push_notification == true
-				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent you a message.",conversation_id: conversation.id )
+				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.recipient_id, action: message.body,title: "#{@current_user.full_name} sent you a message.",conversation_id: conversation.id, event_type: "message" )
 			else
 				puts "OFFFFFFFF"
 			end
 		else
 			if conversation.sender.user_setting.push_notification == true
-				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent you a message.",conversation_id: conversation.id )
+				UserNotification.create(actor_id: @current_user.id,recipient_id:conversation.sender_id, action: message.body,title: "#{@current_user.full_name} sent you a message.",conversation_id: conversation.id, event_type: "message" )
 			else
 				puts "<<<<<<<<<<OFF<<<<<<<<<<<"
 			end

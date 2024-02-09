@@ -10,7 +10,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
         unless conversation_params[:recipient_id].to_i == @current_user.id
           conversation_parameter = conversation_params.merge(sender_id: current_user.id)
           @conversation = Conversation.new(conversation_parameter)
-  
+
           if @conversation.save
             render json: @conversation
           else
@@ -24,7 +24,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
       render json: { message: "Recipient id parameter is missing" }, status: :bad_request
     end
   end
-  
+
   def index
     @conversations = Conversation.find_user_conversations(@current_user.id)
     data = []
@@ -33,7 +33,7 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
     ActionCable.server.broadcast "user_chat_list_#{@current_user.id}", { data: data.as_json }
   end
-  
+
   def read_messages
     if params[:conversation_id].present?
       _conversation = Conversation.find_by("recipient_id = (?) OR  sender_id = (?) AND id = (?)", @current_user.id, @current_user.id, params[:conversation_id])
@@ -100,11 +100,28 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
 
+  def check_conversation_blocked_status
+    conversation_id = params[:conversation_id]
+
+    if conversation_id.present?
+      @conversation = Conversation.find_by(id: conversation_id)
+
+      if @conversation.present? && (@conversation.sender_id == @current_user.id || @conversation.recipient_id == @current_user.id)
+        render json: @conversation
+      else
+        render json: { error: 'Conversation not found or unauthorized' }, status: :not_found
+      end
+    else
+      render json: { error: 'Conversation ID parameter missing' }, status: :unprocessable_entity
+    end
+  end
+
+
   def logout
     if params[:mtoken].present?
       mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mtoken])
       if mtoken.present?
-        mtoken.destroy
+         mtoken.destroy
         render json: { message: "Log out successfully" }, status: :ok
       else
         render json: { message: "Provide mobile token is not correct" }, status: :ok

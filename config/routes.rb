@@ -193,6 +193,7 @@ end
         collection do
           post :notification_token
           post :check_conversation_between_users
+          post :check_conversation_blocked_status
           post :read_messages
           post :logout
         end

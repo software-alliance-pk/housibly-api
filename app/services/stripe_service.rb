@@ -44,6 +44,22 @@ module StripeService
     end
   end
 
+  def get_transactions(customer_id)
+    transactions = handle_request{ Stripe::PaymentIntent.search({query: "status:'succeeded' customer:'#{customer_id}'"}) }
+    if transactions
+      transactions.map do |tr|
+        {
+          amount: tr.amount/100.0,
+          description: tr.description,
+          created_at: Time.at(tr.created).utc.to_datetime,
+          currency: tr.currency
+        }
+      end
+    else
+      nil
+    end
+  end
+
   def create_product(package_name)
     handle_request{ Stripe::Product.create({ name: package_name }) }
   end

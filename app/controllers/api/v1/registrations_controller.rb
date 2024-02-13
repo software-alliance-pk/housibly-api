@@ -8,6 +8,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   def create
     @user = User.new(user_params)
     if @user.save
+      @mobile_device_token = @user.mobile_devices.first if @user.mobile_devices.present?
       signup_otp(@user)
     else
       render_error_messages(@user)

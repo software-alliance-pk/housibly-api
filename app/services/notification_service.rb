@@ -58,6 +58,7 @@ class NotificationService
 
   def self.fcm_push_notification_for_user_preference_address(recipient,actor,user_notification)
     data = {
+      property_id: property.id,
       id: user_notification.id,
       action: user_notification.action,
       title: user_notification.title,
@@ -66,14 +67,17 @@ class NotificationService
       recipient: recipient,
       property_owner: actor,
       avatar: actor&.avatar&.url,
+      property_images: user_notification.property_image
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {
       data: data,
       notification: {
+        property_id: property.id,
         id: user_notification.id,
         title: user_notification.title,
         type: user_notification.event_type,
+        property_images: user_notification.property_image,
         body: user_notification.action,
         sound: 'default'
       },
@@ -85,13 +89,14 @@ class NotificationService
     registration_ids = user_notification.recipient.mobile_devices.pluck(:mobile_device_token)
     registration_ids.each do |registration_id|
       response = fcm_client.send(registration_id, options)
-      puts "responseeeeeeeeeeeeeeeeeeeee"
+      puts "responseeeeeeeeeee on BUYER side"
       puts response
     end
   end
 
   def self.fcm_push_notification_for_user_address_search(recipient,actor,user_notification)
     data = {
+      property_id: property.id,
       id: user_notification.id,
       action: user_notification.action,
       title: user_notification.title,
@@ -100,15 +105,18 @@ class NotificationService
       recipient: recipient,
       property_owner: actor,
       avatar: actor&.avatar&.url,
+      property_images: user_notification.property_image
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {
       data: data,
       notification: {
+        property_id: property.id,
         id: user_notification.id,
         title: user_notification.title,
         type: user_notification.event_type,
         body: user_notification.action,
+        property_images: user_notification.property_image,
         sound: 'default'
       },
       contentAvailable: true,
@@ -119,7 +127,7 @@ class NotificationService
     registration_ids = user_notification.recipient.mobile_devices.pluck(:mobile_device_token)
     registration_ids.each do |registration_id|
       response = fcm_client.send(registration_id, options)
-      puts "responseeeeeeeeeeeeeeeeeeeee"
+      puts "responseeeeeeeeeeeeeeeeeeeee on SELLER side"
       puts response
     end
   end

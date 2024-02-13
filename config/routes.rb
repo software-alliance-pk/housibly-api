@@ -179,11 +179,6 @@ end
           post 'report_conversation'
         end
       end
-      resources :notifications do
-        collection do
-          post :notification_token
-        end
-      end
       resources :user_match_addresses do
         collection do
           post 'users_detail'

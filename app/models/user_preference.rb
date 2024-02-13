@@ -88,7 +88,7 @@ class UserPreference < ApplicationRecord
     end
 
     def notify_users
-      UserPreferencesNotificationJob.perform_now(user_id)
+      UserPreferencesNotificationJob.perform_later(user_id)
     end
 
 end

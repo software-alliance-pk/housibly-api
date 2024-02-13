@@ -24,6 +24,7 @@ gem 'stripe'
 gem 'stripe_event'
 gem 'twilio-ruby'
 gem 'will_paginate', '~> 3.3'
+gem 'whenever', require: false
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'

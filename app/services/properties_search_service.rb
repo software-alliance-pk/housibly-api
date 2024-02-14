@@ -38,7 +38,7 @@ module PropertiesSearchService
     end
 
     # pp where_args
-    Property.not_from_user(current_user_id).where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page_info)
+    Property.not_from_user(current_user_id).where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page_info).to_a
   end
 
   def search_in_polygon(coordinates_array, page_info, current_user_id)

@@ -1,5 +1,7 @@
-json.notification @notifications.each do |notification|
+json.array! @notifications do |notification|
 	json.id notification&.id
+	json.property_id notification.property_id
+	json.property_image (rails_blob_url(notification.property.images.first) rescue "")
 	json.title notification&.title
 	json.type notification&.event_type
 	json.recipient_id notification&.recipient_id

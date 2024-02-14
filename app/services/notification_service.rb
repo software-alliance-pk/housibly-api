@@ -60,16 +60,14 @@ class NotificationService
     data = {
       id: user_notification.id,
       action: user_notification.action,
-      title: user_notification.property.title,
+      title: user_notification.title,
       type: user_notification.event_type,
       event_const: user_notification.type,
-      recipient: recipient.full_name,
+      recipient_id: recipient.id,
+      sender_id: actor.id,
+      sender_avatar: actor&.avatar&.url,
       property_id: user_notification.property_id,
-      property_image: begin
-        user_notification.property.images.first.url
-      rescue
-        " "
-      end
+      property_image: (user_notification.property.images.first.url rescue "")
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {
@@ -101,15 +99,11 @@ class NotificationService
       title: user_notification.title,
       type: user_notification.event_type,
       event_const: user_notification.type,
-      recipient: recipient.full_name,
-      property_owner: actor,
-      avatar: actor&.avatar&.url,
+      recipient_id: recipient.id,
+      sender_id: actor.id,
+      sender_avatar: actor&.avatar&.url,
       property_id: user_notification.property_id,
-      property_image: begin
-        user_notification.property.images.first.url
-      rescue
-        " "
-      end
+      property_image: (user_notification.property.images.first.url rescue "")
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {

@@ -22,6 +22,7 @@ class UserPreferencesNotificationJob < ApplicationJob
       seller_ids = []
       loop do
         properties = PropertiesSearchService.search_by_preference(user.user_preference.attributes, page_info, user.id)
+        puts "ppppppppppppppppppppppppp #{properties.length} "
         properties.each do |property|
           next if UserNotification.find_by(property_id: property.id, recipient_id: user.id)
           # For BUYER
@@ -39,7 +40,7 @@ class UserPreferencesNotificationJob < ApplicationJob
             title: user.full_name, event_type: "sell_property"
           )
         end
-        break if properties.count < page_info[:per_page]
+        break if properties.length < page_info[:per_page]
         page_info[:page] += 1
       end
     end

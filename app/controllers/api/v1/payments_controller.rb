@@ -92,7 +92,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def get_card
-    render 'card'
+    @transactions = StripeService.get_transactions(@current_user.stripe_customer_id)
   end
 
   def get_all_cards

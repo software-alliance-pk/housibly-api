@@ -57,46 +57,6 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		end
 	end
 
-  def delete_notification
-		if params[:notification_id].present?
-			@notification = Notification.find(id: params[:notification_id])
-			if @notification.present?
-				@notification
-				render json: {message: "Notification deleted successfully"},status: :ok
-			else
-				render json: {message: "Notification is not present"},status: :ok
-			end
-		else
-			render json: {message: "Notification id parameter is missing"},status: :ok
-		end
-  end
-
-	def get_notification
-		@notifications = []
-		unless @current_user.user_setting.inapp_notification == false
-			puts "<<<<<<<<<<<<<<< In App Notification <<<<<<<<<<<<<<<<<"
-
-			# Retrieve message notifications
-			message_notifications = UserNotification.where(recipient_id: @current_user.id, event_type: "message")
-
-			@notifications.concat(message_notifications)
-
-			# Retrieve buyer and seller notifications
-			buyer_notifications = UserNotification.where(recipient_id: @current_user.id, event_type: "buy_property")
-			seller_notifications = UserNotification.where(actor_id: @current_user.id, event_type: "sell_property")
-
-			@notifications.concat(buyer_notifications)
-			@notifications.concat(seller_notifications)
-
-			if @notifications.any?
-				render json: { message: @notifications }, status: :ok
-			else
-				render json: { message: [] }, status: :ok
-			end
-		end
-	end
-
-
 	private
 
 	def message_params

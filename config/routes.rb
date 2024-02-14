@@ -139,7 +139,6 @@ end
       get 'reported_users', to: 'users#reported_users'
       post '/update_notification', to: 'users#update_notification'
       get '/get_notification_setting', to: 'users#get_notification_setting'
-      patch '/mark_as_read', to: 'notifications#mark_as_read'
       # post '/get_school', to: 'users#get_school'
       # post '/get_school_pins', to: 'users#get_school_pins'
 
@@ -157,6 +156,10 @@ end
       put '/update_card', to: 'payments#update_card'
       delete '/delete_card', to: 'payments#destroy_card'
       # post '/apple_pay', to: 'payments#apple_pay'
+
+      patch '/mark_as_read', to: 'notifications#mark_as_read'
+      get '/get_user_notifications', to: 'notifications#get_user_notifications'
+      delete '/delete_notification', to: 'notifications#delete_notification'
 
       get '/tickets', to: 'supports#get_tickets'
       post '/tickets', to: 'supports#create_ticket'
@@ -187,7 +190,6 @@ end
       end
       resources :conversations, only: [:create, :index, :destroy] do
         collection do
-          post :notification_token
           post :check_conversation_between_users
           post :check_conversation_blocked_status
           post :read_messages
@@ -197,8 +199,6 @@ end
       resources :messages, only: [:create, :destroy] do
         collection do
           post :get_messages
-          get :get_notification
-          delete :delete_notification
         end
       end
 

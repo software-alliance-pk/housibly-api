@@ -79,18 +79,6 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
 
-  def notification_token
-    if params[:token].present?
-      token = @current_user.mobile_devices.find_or_create_by(mobile_device_token: params[:token])
-      @current_user.update(last_seen: Time.now)
-      if token.save
-        render json: { message: 'Success', status: 'ok', token: token }
-      end
-    else
-      render json: { message: "Mobile token parameter is missing" }, status: :ok
-    end
-  end
-
   def check_conversation_between_users
     @conversation = Conversation.get_chat_between_user(params[:conversation][:recipient_id], @current_user.id)
     if @conversation.present?

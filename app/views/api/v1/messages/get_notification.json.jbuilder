@@ -1,6 +1,7 @@
 json.notification @notifications.each do |notification|
 	json.id notification&.id
 	json.title notification&.title
+	json.type notification&.event_type
 	json.recipient_id notification&.recipient_id
 	json.sender_id notification&.actor_id
 	json.conversation_id notification&.conversation_id

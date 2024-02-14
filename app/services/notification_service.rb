@@ -63,10 +63,8 @@ class NotificationService
       title: user_notification.property.title,
       type: user_notification.event_type,
       event_const: user_notification.type,
-      recipient: recipient,
+      recipient: recipient.full_name,
       property_id: user_notification.property_id,
-      property_owner: actor,
-      avatar: actor&.avatar&.url,
       property_image: begin
         user_notification.property.images.first.url
       rescue
@@ -98,27 +96,29 @@ class NotificationService
 
   def self.fcm_push_notification_for_user_address_search(recipient,actor,user_notification)
     data = {
-      property_id: property.id,
       id: user_notification.id,
       action: user_notification.action,
       title: user_notification.title,
       type: user_notification.event_type,
       event_const: user_notification.type,
-      recipient: recipient,
+      recipient: recipient.full_name,
       property_owner: actor,
       avatar: actor&.avatar&.url,
-      property_images: user_notification.property_image
+      property_id: user_notification.property_id,
+      property_image: begin
+        user_notification.property.images.first.url
+      rescue
+        " "
+      end
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {
       data: data,
       notification: {
-        property_id: property.id,
         id: user_notification.id,
         title: user_notification.title,
         type: user_notification.event_type,
         body: user_notification.action,
-        property_images: user_notification.property_image,
         sound: 'default'
       },
       contentAvailable: true,

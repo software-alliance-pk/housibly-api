@@ -11,7 +11,9 @@ end
 
 def create
   @preference = @current_user.build_user_preference(preference_params)
-  unless @preference.save
+  if @preference.save
+    UserPreferencesNotificationJob.perform_later(user_id: @current_user.id)
+  else
     render_error_messages(@preference)
   end
 end

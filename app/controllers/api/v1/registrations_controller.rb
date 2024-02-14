@@ -8,7 +8,6 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
   def create
     @user = User.new(user_params)
     if @user.save
-      @mobile_device_token = @user.mobile_devices.first if @user.mobile_devices.present?
       signup_otp(@user)
     else
       render_error_messages(@user)
@@ -17,15 +16,19 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
 
   def add_user_info
     if @current_user.is_otp_verified
-      @current_user.update(user_params.merge(is_confirmed: true, login_type: 'manual', profile_complete: true))
-      @current_user.user_setting.destroy if @current_user.user_setting.present?
-      @current_user.build_user_setting.save
-      @token = JsonWebTokenService.encode({ email: @current_user.email })
-      AdminNotification.create(
-        actor_id: Admin.admin.first.id,
-        recipient_id: @current_user.id,
-        action: @current_user.support_closer? ? 'New Support Closer Created' : 'New User Created'
-      ) if Admin&.admin.present?
+      if @current_user.update(user_params.merge(is_confirmed: true, login_type: 'manual', profile_complete: true))
+        @current_user.user_setting.destroy if @current_user.user_setting.present?
+        @current_user.build_user_setting.save
+        @token = JsonWebTokenService.encode({ email: @current_user.email })
+        @mobile_device_token = @current_user.mobile_devices.first.mobile_device_token if @current_user.mobile_devices.present?
+        AdminNotification.create(
+          actor_id: Admin.admin.first.id,
+          recipient_id: @current_user.id,
+          action: @current_user.support_closer? ? 'New Support Closer Created' : 'New User Created'
+        ) if Admin&.admin.present?
+      else
+        render_error_messages(@current_user)
+      end
     else
       render json: { message: 'OTP not verified' }, status: 401
     end
@@ -37,6 +40,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     if @user && @user.signup_token_valid?
       @user.update(is_otp_verified: true)
       @token = JsonWebTokenService.encode({ email: @user.email })
+      @mobile_device_token = @user.mobile_devices.first.mobile_device_token if @user.mobile_devices.present?
       AdminNotification.create(
         actor_id: Admin.admin.first.id, recipient_id: @user.id, action: 'Please complete your profile'
       ) if Admin&.admin.present?

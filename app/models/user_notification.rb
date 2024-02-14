@@ -1,11 +1,9 @@
 class UserNotification < Notification
 	after_create :push_notification
 	belongs_to :conversation, optional:true
+	belongs_to :property, optional: true
 
-	def mark_as_seen
-		update(last_seen: true)
-		update(read_at: Time.now)
-	end
+	scope :unread, -> { where(read_at: nil) }
 
 	validates_inclusion_of :event_type, in: ['message', 'buy_property', 'sell_property']
 

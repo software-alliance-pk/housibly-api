@@ -2,7 +2,6 @@ class UserPreference < ApplicationRecord
   belongs_to :user
   cattr_accessor :weight_age
 
-  after_create :notify_users
   before_save :convert_to_feet, unless: ->(user_preference){user_preference.property_type == "condo"}
 
   validates_presence_of :property_type
@@ -85,10 +84,6 @@ class UserPreference < ApplicationRecord
       # unless lot_depth_unit == lot_frontage_unit && lot_size_unit.include?(lot_depth_unit)
       #   errors.add('lot_depth_unit, lot_frontage_unit, lot_size_unit', 'should have same base unit')
       # end
-    end
-
-    def notify_users
-      UserPreferencesNotificationJob.perform_later(user_id)
     end
 
 end

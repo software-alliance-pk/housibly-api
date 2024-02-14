@@ -40,6 +40,7 @@ class Property < ApplicationRecord
   belongs_to :user
   has_many_attached :images
   has_many :bookmarks
+  has_many :user_notifications
   has_many :rooms, dependent: :destroy
   accepts_nested_attributes_for :rooms, allow_destroy: true
 

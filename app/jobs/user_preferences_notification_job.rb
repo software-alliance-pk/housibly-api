@@ -35,8 +35,8 @@ class UserPreferencesNotificationJob < ApplicationJob
           seller_ids << property.user_id
           UserNotification.create(
             actor_id: user.id, recipient_id: property.user_id, property_id: property.id,
-            action: "#{user.full_name} wants to search for a house in areas that you are offering",
-            title: property.title, event_type: "sell_property"
+            action: "#{user.full_name} wants to search for a house that you are selling",
+            title: user.full_name, event_type: "sell_property"
           )
         end
         break if properties.count < page_info[:per_page]

@@ -139,7 +139,7 @@ end
       get 'reported_users', to: 'users#reported_users'
       post '/update_notification', to: 'users#update_notification'
       get '/get_notification_setting', to: 'users#get_notification_setting'
-      get '/mark_as_read', to: 'notifications#mark_as_read'
+      patch '/mark_as_read', to: 'notifications#mark_as_read'
       # post '/get_school', to: 'users#get_school'
       # post '/get_school_pins', to: 'users#get_school_pins'
 

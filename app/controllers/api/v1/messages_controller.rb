@@ -72,25 +72,30 @@ class Api::V1::MessagesController < Api::V1::ApiController
   end
 
 	def get_notification
-  	@notifications = []
-  	unless @current_user.user_setting.inapp_notification == false
-  		puts "<<<<<<<<<<<<<<< In App Notification <<<<<<<<<<<<<<<<<"
-	  	conversations = Conversation.where("recipient_id = (?) OR  sender_id = (?)", @current_user.id, @current_user.id)
-	  	conversations.each do |conversation|
-				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.sender_id)
-				_notification = UserNotification.check_notifiction_send(@current_user.id,conversation.recipient_id) unless _notification.present?
-				_notification = 	_notification.last
-	  	  unless _notification == nil
-	  	   @notifications <<	_notification
-	  	 end
-	  	end
-		if @notifications
-			@notifications
-		else
-		  render json: {message: []},status: :ok
+		@notifications = []
+		unless @current_user.user_setting.inapp_notification == false
+			puts "<<<<<<<<<<<<<<< In App Notification <<<<<<<<<<<<<<<<<"
+
+			# Retrieve message notifications
+			message_notifications = UserNotification.where(recipient_id: @current_user.id, event_type: "message")
+
+			@notifications.concat(message_notifications)
+
+			# Retrieve buyer and seller notifications
+			buyer_notifications = UserNotification.where(recipient_id: @current_user.id, event_type: "buy_property")
+			seller_notifications = UserNotification.where(actor_id: @current_user.id, event_type: "sell_property")
+
+			@notifications.concat(buyer_notifications)
+			@notifications.concat(seller_notifications)
+
+			if @notifications.any?
+				render json: { message: @notifications }, status: :ok
+			else
+				render json: { message: [] }, status: :ok
+			end
 		end
 	end
-end
+
 
 	private
 

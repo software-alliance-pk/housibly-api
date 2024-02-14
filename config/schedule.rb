@@ -19,5 +19,5 @@
 
 # Learn more: http://github.com/javan/whenever
 every 1.day do
-  runner "UserPreference.notify_users"
+  runner "UserPreferenceNotificationJob.perform_later(all_users: true)"
 end

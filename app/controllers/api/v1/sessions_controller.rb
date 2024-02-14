@@ -6,7 +6,12 @@ class Api::V1::SessionsController < Api::V1::ApiController
     if @user&.authenticate(user_params[:password])
       if @user.present?
         @token = JsonWebTokenService.encode({ email: @user.email })
-        @user.mobile_devices.find_or_create_by(mobile_device_token: user_params[:mobile_device_token])
+        mobile_device = @user.mobile_devices.find_or_create_by(mobile_device_token: user_params.dig(:mobile_devices_attributes, 0, :mobile_device_token))
+        if mobile_device.id
+          @mobile_device_token = mobile_device.mobile_device_token
+        else
+          render_error_messages(mobile_device)
+        end
       else
         render json: { message: "Please verify email address" }, status: :unauthorized
       end

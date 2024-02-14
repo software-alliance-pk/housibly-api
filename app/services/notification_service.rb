@@ -58,16 +58,16 @@ class NotificationService
 
   def self.fcm_push_notification_for_user_preference_address(recipient,actor,user_notification)
     data = {
-      property_id: property.id,
       id: user_notification.id,
       action: user_notification.action,
-      title: user_notification.title,
+      title: user_notification.property.title,
       type: user_notification.event_type,
       event_const: user_notification.type,
       recipient: recipient,
+      property_id: user_notification.property_id,
       property_owner: actor,
       avatar: actor&.avatar&.url,
-      property_images: user_notification.property_image
+      property_image: user_notification.property.images.first.url rescue ""
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {

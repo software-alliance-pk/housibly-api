@@ -73,11 +73,9 @@ class NotificationService
     options = {
       data: data,
       notification: {
-        property_id: property.id,
         id: user_notification.id,
         title: user_notification.title,
         type: user_notification.event_type,
-        property_images: user_notification.property_image,
         body: user_notification.action,
         sound: 'default'
       },

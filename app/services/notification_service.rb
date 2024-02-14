@@ -67,7 +67,11 @@ class NotificationService
       property_id: user_notification.property_id,
       property_owner: actor,
       avatar: actor&.avatar&.url,
-      property_image: user_notification.property.images.first.url rescue ""
+      property_image: begin
+        user_notification.property.images.first.url
+      rescue
+        " "
+      end
     }
     fcm_client = FCM.new(ENV['FCM_SERVER_KEY'])
     options = {

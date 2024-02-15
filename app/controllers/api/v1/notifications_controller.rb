@@ -1,15 +1,16 @@
 class Api::V1::NotificationsController < Api::V1::ApiController
 
-  def mark_as_read
-    notifications = @current_user.notifications
-    return render json: {message: "Could not find notification"}, status: :not_found unless notifications
+  def mark_as_seen
+		notifications = @current_user.notifications.where(seen: false)
 
-    if notifications.update(seen: true, read_at: Time.now)
-      render json: { message: "Notification marked as read successfully" }
-    else
-      render_error_messages(notifications)
-    end
-  end
+		return render json: { message: "No unseen notifications found" }, status: :not_found if notifications.empty?
+
+		if notifications.update_all(seen: true, read_at: Time.now)
+			render json: { message: "Notifications marked as seen successfully" }
+		else
+			render_error_messages(notifications)
+		end
+	end
 
   def get_user_notifications
 		@notifications = []

@@ -1,11 +1,10 @@
 class Api::V1::NotificationsController < Api::V1::ApiController
 
   def mark_as_read
-		notifications = @current_user.notifications.where(seen: false)
+		notifications = Notification.where(recipient_id: @current_user.id, seen: false) || Notification.where(actor_id: @current_user.id, seen: false)
+		return render json: { message: "No unseen notifications found" } if notifications.empty?
 
-		return render json: { message: "No unseen notifications found" }, status: :not_found if notifications.empty?
-
-		if notifications.update_all(seen: true, read_at: Time.now)
+		if notifications.update_all(seen: true)
 			render json: { message: "Notifications marked as seen successfully" }
 		else
 			render_error_messages(notifications)

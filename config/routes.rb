@@ -158,7 +158,7 @@ end
       delete '/delete_card', to: 'payments#destroy_card'
       # post '/apple_pay', to: 'payments#apple_pay'
 
-      patch '/mark_as_read', to: 'notifications#mark_as_read'
+      get '/mark_as_read', to: 'notifications#mark_as_read'
       get '/get_user_notifications', to: 'notifications#get_user_notifications'
       delete '/delete_notification', to: 'notifications#delete_notification'
 

@@ -50,7 +50,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         property: property.as_json,
         last_seen: property.user&.last_seen.present? ? "#{time_ago_in_words(property.user.last_seen)} ago" : "",
         is_new: property.created_at > 6.weeks.ago,
-        rooms: property.rooms.map { |room| render_room_json(room) },  # Assuming render_room_json is a helper method for rendering rooms
+        rooms: property.rooms.map { |room| render_room_json(room) },
         images: property.images.map do |image|
           { id: image.signed_id, url: begin rails_blob_url(image) rescue "" end }
         end,

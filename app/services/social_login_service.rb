@@ -4,20 +4,21 @@ class SocialLoginService
   require 'net/http'
   require 'uri'
 
-  def initialize(provider, token)
+  def initialize(provider, token, mobile_device_token = nil)
     @token = token
     @provider = provider.downcase
+    @mobile_device_token = mobile_device_token
   end
 
   def social_login
     if @provider == 'google'
-      google_signup(@token)
+      google_signup(@token, @mobile_device_token)
     elsif @provider == 'apple'
-      apple_signup(@token)
+      apple_signup(@token, @mobile_device_token)
     end
   end
 
-  def google_signup(token)
+  def google_signup(token, mobile_device_token)
     require 'net/http'
     uri = URI("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{token}")
     response = Net::HTTP.get_response(uri)
@@ -27,9 +28,11 @@ class SocialLoginService
     user = User.find_by(email: json_response['email'])
     token = JsonWebTokenService.encode({ email: user.email })
     [user, token, json_response['picture']]
+
+    handle_mobile_device_token(user, mobile_device_token)
   end
 
-  def apple_signup(token)
+  def apple_signup(token, mobile_device_token)
     jwt = token
     begin
       header_segment = JSON.parse(Base64.decode64(jwt.split(".").first))
@@ -49,6 +52,7 @@ class SocialLoginService
     token = JsonWebTokenService.encode({ email: user.email })
     [user, token, " "]
 
+    handle_mobile_device_token(user, mobile_device_token)
   end
 
   private
@@ -61,6 +65,16 @@ class SocialLoginService
       name = response['name'].present? ? response['name'] : "apple don't provide name"
       @user = User.new(email: response['email'], full_name: name, password: PASSWORD_DIGEST, password_confirmation: PASSWORD_DIGEST,login_type: "social login", profile_complete: false,is_otp_verified: true)
       @user.save(validate: false)
+    end
+  end
+
+  def handle_mobile_device_token(user, mobile_device_token)
+    mobile_device = user.mobile_devices.find_or_create_by(mobile_device_token: mobile_device_token)
+
+    if mobile_device.id
+      @mobile_device_token = mobile_device.mobile_device_token
+    else
+      render_error_messages(mobile_device)
     end
   end
 

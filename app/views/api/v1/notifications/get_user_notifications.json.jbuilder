@@ -4,6 +4,7 @@ json.array! @notifications do |notification|
 	json.property_image (rails_blob_url(notification.property.images.first) rescue "")
 	json.title notification&.title
 	json.type notification&.event_type
+	json.seen notification.seen
 	json.recipient_id notification&.recipient_id
 	json.sender_id notification&.actor_id
 	json.conversation_id notification&.conversation_id

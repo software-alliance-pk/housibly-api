@@ -86,6 +86,7 @@ end
           get :find_in_circle
           get :find_in_polygon
           get :find_by_zip_code
+          get :details_by_property_id
           # get :recent_properties
           # get :matching_property
           # get :matching_dream_address

@@ -42,6 +42,25 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     render json: Property.detail_options
   end
 
+  def details_by_property_id
+    property = Property.find_by_id(params[:property_id])
+
+    if property
+      render json: {
+        property: property.as_json,
+        last_seen: property.user&.last_seen.present? ? "#{time_ago_in_words(property.user.last_seen)} ago" : "",
+        is_new: property.created_at > 6.weeks.ago,
+        rooms: property.rooms.map { |room| render_room_json(room) },  # Assuming render_room_json is a helper method for rendering rooms
+        images: property.images.map do |image|
+          { id: image.signed_id, url: begin rails_blob_url(image) rescue "" end }
+        end,
+        user: property.user.as_json
+      }
+    else
+      render json: { error: 'Property not found' }, status: :not_found
+    end
+  end
+
   def matching_properties
     if @current_user.user_preference.present?
       @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
@@ -177,6 +196,18 @@ class Api::V1::PropertiesController < Api::V1::ApiController
       {
         page: params[:page],
         per_page: 10
+      }
+    end
+
+    def render_room_json(room)
+      {
+        id: room.id,
+        name: room.name,
+        length_in_feet: room.length_in_feet,
+        length_in_inch: room.length_in_inch,
+        width_in_feet: room.width_in_feet,
+        width_in_inch: room.width_in_inch,
+        level: room.level
       }
     end
 end

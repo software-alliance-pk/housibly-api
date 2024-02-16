@@ -4,35 +4,32 @@ class SocialLoginService
   require 'net/http'
   require 'uri'
 
-  def initialize(provider, token, mobile_device_token = nil)
-    @token = token
-    @provider = provider.downcase
+  def initialize(mobile_device_token)
     @mobile_device_token = mobile_device_token
   end
 
-  def social_login
-    if @provider == 'google'
-      google_signup(@token, @mobile_device_token)
-    elsif @provider == 'apple'
-      apple_signup(@token, @mobile_device_token)
+  def social_login(provider, token)
+    case provider.downcase
+    when 'google'
+      google_signup(token)
+    when 'apple'
+      apple_signup(token)
     end
   end
 
-  def google_signup(token, mobile_device_token)
-    require 'net/http'
+  def google_signup(token)
     uri = URI("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{token}")
     response = Net::HTTP.get_response(uri)
     return JSON.parse(response.body) if response.code != '200'
+
     json_response = JSON.parse(response.body)
     create_user(json_response['email'], json_response['sub'], json_response)
     user = User.find_by(email: json_response['email'])
     token = JsonWebTokenService.encode({ email: user.email })
     [user, token, json_response['picture']]
-
-    handle_mobile_device_token(user, mobile_device_token)
   end
 
-  def apple_signup(token, mobile_device_token)
+  def apple_signup(token)
     jwt = token
     begin
       header_segment = JSON.parse(Base64.decode64(jwt.split(".").first))
@@ -50,31 +47,28 @@ class SocialLoginService
     create_user(data['email'], data['sub'], data)
     user = User.find_by(email: data['email'])
     token = JsonWebTokenService.encode({ email: user.email })
-    [user, token, " "]
-
-    handle_mobile_device_token(user, mobile_device_token)
+    [user, token, ""]
   end
 
   private
 
   def create_user(email, provider_id, response)
-    resource = User.find_by(email: email)
-    if resource
-      resource
+    user = User.find_by(email: email)
+    if user
+      user.update(login_type: 'social_login', is_otp_verified: true)
     else
       name = response['name'].present? ? response['name'] : "apple don't provide name"
-      @user = User.new(email: response['email'], full_name: name, password: PASSWORD_DIGEST, password_confirmation: PASSWORD_DIGEST,login_type: "social login", profile_complete: false,is_otp_verified: true)
-      @user.save(validate: false)
-    end
-  end
-
-  def handle_mobile_device_token(user, mobile_device_token)
-    mobile_device = user.mobile_devices.find_or_create_by(mobile_device_token: mobile_device_token)
-
-    if mobile_device.id
-      @mobile_device_token = mobile_device.mobile_device_token
-    else
-      render_error_messages(mobile_device)
+      user = User.new(
+        email: response['email'],
+        full_name: name,
+        password: PASSWORD_DIGEST,
+        password_confirmation: PASSWORD_DIGEST,
+        login_type: "social login",
+        profile_complete: false,
+        is_otp_verified: true
+      )
+      user.mobile_devices.build(mobile_device_token: @mobile_device_token)
+      user.save(validate: false)
     end
   end
 

@@ -18,6 +18,6 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-every 1.day do
-  runner "UserPreferenceNotificationJob.perform_later(all_users: true)"
+every 10.minutes do
+  runner "UserPreferencesNotificationJob.perform_later(all_users: true)"
 end

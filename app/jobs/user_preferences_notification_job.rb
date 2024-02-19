@@ -1,5 +1,6 @@
 class UserPreferencesNotificationJob < ApplicationJob
   queue_as :default
+
   def perform(all_users: false, user_id: nil)
     if all_users
       User.where.not(profile_type: :support_closer).each do |user|

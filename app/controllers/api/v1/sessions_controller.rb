@@ -20,6 +20,20 @@ class Api::V1::SessionsController < Api::V1::ApiController
     end
   end
 
+  def logout
+    if params[:mobile_device_token].present?
+      mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mobile_device_token])
+      if mtoken.present?
+        mtoken.destroy
+        render json: { message: "Log out successfully" }, status: :ok
+      else
+        render json: { message: "Provide mobile token is not correct" }, status: :ok
+      end
+    else
+      render json: { message: "Mobile token parameter is missing" }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def user_params

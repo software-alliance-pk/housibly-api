@@ -63,7 +63,7 @@ class SocialLoginService
         full_name: name,
         password: PASSWORD_DIGEST,
         password_confirmation: PASSWORD_DIGEST,
-        login_type: "social login",
+        login_type: "social_login",
         profile_complete: false,
         is_otp_verified: true
       )

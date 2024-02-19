@@ -113,12 +113,12 @@ end
       end
 
       post '/login', to: 'sessions#login'
+      post '/logout', to: 'sessions#logout'
 
       post '/signup', to: 'registrations#create'
       post '/register_user', to: 'registrations#add_user_info'
       post '/verify_otp', to: 'registrations#verify_otp'
       post '/verify_otp/resend_otp', to: 'registrations#resend_otp'
-      # post '/update_social_login', to: 'registrations#update_social_login'
 
       post '/forgot_password/email', to: 'forgot_password#forgot_password_through_email'
       post '/forgot_password/phone', to: 'forgot_password#forgot_password_through_phone'
@@ -194,7 +194,6 @@ end
           post :check_conversation_between_users
           post :check_conversation_blocked_status
           post :read_messages
-          post :logout
         end
       end
       resources :messages, only: [:create, :destroy] do

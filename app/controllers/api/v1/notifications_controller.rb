@@ -13,7 +13,7 @@ class Api::V1::NotificationsController < Api::V1::ApiController
 
   def get_user_notifications
 		@notifications = []
-		unless @current_user.user_setting.nil? || @current_user.user_setting.inapp_notification == false
+		unless @current_user.user_setting.inapp_notification == false
 			@notifications = UserNotification.where(recipient_id: @current_user.id).order(created_at: :desc)
 		end
 	end

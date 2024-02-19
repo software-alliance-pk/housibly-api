@@ -104,22 +104,6 @@ class Api::V1::ConversationsController < Api::V1::ApiController
     end
   end
 
-
-  def logout
-    if params[:mtoken].present?
-      mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mtoken])
-      if mtoken.present?
-         mtoken.destroy
-        render json: { message: "Log out successfully" }, status: :ok
-      else
-        render json: { message: "Provide mobile token is not correct" }, status: :ok
-      end
-    else
-      render json: { message: "Mobile token parameter is missing" }, status: :ok
-    end
-
-  end
-
   private
 
   def conversation_params

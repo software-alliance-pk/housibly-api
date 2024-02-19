@@ -18,6 +18,12 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+# env :PATH, ENV['PATH']
+# set :environment, "development"
+set :output, "log/cron.log"
+
+# every 1.day, at: '12pm' do
 every 10.minutes do
-  runner "UserPreferencesNotificationJob.perform_later(all_users: true)"
+  runner "UserPreferencesNotificationJob.perform_now(all_users: true)"
 end

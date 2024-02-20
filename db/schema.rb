@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_17_144153) do
+ActiveRecord::Schema.define(version: 2024_02_14_053024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,10 @@ ActiveRecord::Schema.define(version: 2024_01_17_144153) do
     t.string "type"
     t.string "title"
     t.integer "conversation_id"
+    t.string "event_type"
+    t.boolean "seen", default: false
+    t.bigint "property_id"
+    t.index ["property_id"], name: "index_notifications_on_property_id"
   end
 
   create_table "packages", force: :cascade do |t|
@@ -535,6 +539,7 @@ ActiveRecord::Schema.define(version: 2024_01_17_144153) do
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
   add_foreign_key "mobile_devices", "users"
+  add_foreign_key "notifications", "properties"
   add_foreign_key "pages", "admins"
   add_foreign_key "professions", "users"
   add_foreign_key "properties", "users"

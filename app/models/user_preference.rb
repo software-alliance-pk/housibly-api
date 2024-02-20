@@ -7,6 +7,8 @@ class UserPreference < ApplicationRecord
   validates_presence_of :property_type
   validate :validate_measurement_units, unless: ->(user_preference){user_preference.property_type == "condo"}
 
+  scope :not_of_user, -> (user_id){ where.not(user_id: user_id) }
+
   scope :price_matcher, ->(price){where("min_price >= ? OR max_price <= ?",price,price)}
   scope :bed_rooms_matcher, ->(bed_rooms){where("min_bedrooms >= ? OR max_bedrooms <= ?",bed_rooms,bed_rooms)}
   scope :bath_rooms_matcher, ->(bath_rooms){ where("min_bathrooms >= ? OR max_bathrooms <= ?",bath_rooms,bath_rooms)}
@@ -27,36 +29,34 @@ class UserPreference < ApplicationRecord
   # scope :property_age, ->  (age){where("year_built between (?) and (?)",age,Date.today.strftime("%y").to_i)}
 
   def lot_depth
-    if self[:lot_depth].blank? || lot_depth_unit == 'feet'
-      self[:lot_depth]
+    if self['lot_depth'].blank? || lot_depth_unit == 'feet'
+      self['lot_depth']
     else
-      ld = {}
-      ld[:min] = self['lot_depth']['min']/Property::CONVERSION_FACTORS[:meter] if self['lot_depth']['min'].present?
-      ld[:max] = self['lot_depth']['max']/Property::CONVERSION_FACTORS[:meter] if self['lot_depth']['max'].present?
-      ld
+      UserPreference.get_metric_values(self['lot_depth']['min'], self['lot_depth']['max'], :meter)
     end
   end
 
   def lot_frontage
-    if self[:lot_frontage].blank? || lot_frontage_unit == 'feet'
-      self[:lot_frontage]
+    if self['lot_frontage'].blank? || lot_frontage_unit == 'feet'
+      self['lot_frontage']
     else
-      ld = {}
-      ld[:min] = self['lot_frontage']['min']/Property::CONVERSION_FACTORS[:meter] if self['lot_frontage']['min'].present?
-      ld[:max] = self['lot_frontage']['max']/Property::CONVERSION_FACTORS[:meter] if self['lot_frontage']['max'].present?
-      ld
+      UserPreference.get_metric_values(self['lot_frontage']['min'], self['lot_frontage']['max'], :meter)
     end
   end
 
   def lot_size
-    if self[:lot_size].blank? || lot_frontage_unit == 'feet'
-      self[:lot_size]
+    if self['lot_size'].blank? || lot_frontage_unit == 'feet'
+      self['lot_size']
     else
-      ld = {}
-      ld[:min] = self['lot_size']['min']/Property::CONVERSION_FACTORS[:square_meter] if self['lot_size']['min'].present?
-      ld[:max] = self['lot_size']['max']/Property::CONVERSION_FACTORS[:square_meter] if self['lot_size']['max'].present?
-      ld
+      UserPreference.get_metric_values(self['lot_size']['min'], self['lot_size']['max'], :square_meter)
     end
+  end
+
+  def self.get_metric_values(min, max, unit)
+    lot_data = {}
+    lot_data['min'] = min.to_f * Property::CONVERSION_FACTORS[unit] if min.present?
+    lot_data['max'] = max.to_f * Property::CONVERSION_FACTORS[unit] if max.present?
+    lot_data
   end
 
   private
@@ -64,21 +64,21 @@ class UserPreference < ApplicationRecord
     def convert_to_feet
       return if lot_frontage_unit == 'feet'
 
-      self['lot_depth']['min'] = self['lot_depth']['min'].to_f * Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_depth', 'min')
-      self['lot_depth']['max'] = self['lot_depth']['max'].to_f * Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_depth', 'max')
+      self['lot_depth']['min'] = self['lot_depth']['min'].to_f / Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_depth', 'min')
+      self['lot_depth']['max'] = self['lot_depth']['max'].to_f / Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_depth', 'max')
 
-      self['lot_frontage']['min'] = self['lot_frontage']['min'].to_f * Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_frontage', 'min')
-      self['lot_frontage']['max'] = self['lot_frontage']['max'].to_f * Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_frontage', 'max')
+      self['lot_frontage']['min'] = self['lot_frontage']['min'].to_f / Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_frontage', 'min')
+      self['lot_frontage']['max'] = self['lot_frontage']['max'].to_f / Property::CONVERSION_FACTORS[:meter] if attributes.dig('lot_frontage', 'max')
 
-      self['lot_size']['min'] = self['lot_size']['min'].to_f * Property::CONVERSION_FACTORS[:square_meter] if attributes.dig('lot_size', 'min')
-      self['lot_size']['max'] = self['lot_size']['max'].to_f * Property::CONVERSION_FACTORS[:square_meter] if attributes.dig('lot_size', 'max')
+      self['lot_size']['min'] = self['lot_size']['min'].to_f / Property::CONVERSION_FACTORS[:square_meter] if attributes.dig('lot_size', 'min')
+      self['lot_size']['max'] = self['lot_size']['max'].to_f / Property::CONVERSION_FACTORS[:square_meter] if attributes.dig('lot_size', 'max')
     end
 
     def validate_measurement_units
       length_units = Property.detail_options[:length_units].keys
       errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth_unit.blank? || lot_depth_unit.to_sym.in?(length_units)
       errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage_unit.blank? || lot_frontage_unit.to_sym.in?(length_units)
-      errors.add('lot_depth_unit and lot_frontage_unit', 'should be the same') unless lot_depth_unit.blank? || lot_frontage_unit.blank? || lot_depth_unit == lot_frontage_unit
+      errors.add('lot depth unit and lot frontage unit', 'should be the same') unless lot_depth_unit.blank? || lot_frontage_unit.blank? || lot_depth_unit == lot_frontage_unit
 
       # errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit.in?(Property.detail_options[:area_units].keys)
       # unless lot_depth_unit == lot_frontage_unit && lot_size_unit.include?(lot_depth_unit)

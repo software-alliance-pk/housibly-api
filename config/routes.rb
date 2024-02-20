@@ -79,38 +79,6 @@ end
 
   namespace :api do
     namespace :v1 do
-      resources :properties, only: [:index, :show, :create, :update, :destroy] do
-        collection do
-          get :detail_options
-          get :matching_properties
-          get :find_in_circle
-          get :find_in_polygon
-          get :find_by_zip_code
-          get :details_by_property_id
-          # get :recent_properties
-          # get :matching_property
-          # get :matching_dream_address
-          # post :user_detail
-        end
-      end
-
-      resources :dream_addresses, only: [:index, :create, :destroy]
-      # resources :dream_addresses, only: [:index, :create, :destroy] do
-      #   collection do
-      #     post :fetch_property
-      #     post 'fetch_user'
-      #     post 'newest_first'
-      #   end
-      # end
-
-      resources :user_preferences, only: [:index, :create]
-      resources :saved_searches, except: [:new, :edit]
-
-      resources :reviews, only: [:create] do
-        collection do
-          get :get_reviews
-        end
-      end
 
       post '/login', to: 'sessions#login'
       post '/logout', to: 'sessions#logout'
@@ -168,6 +136,44 @@ end
       post '/social_login', to: 'social_logins#social_login'
       get '/static_page/:permalink', to: 'static_pages#static_page'
       post '/active', to: 'users_lists#index'
+
+      resources :properties, only: [:index, :show, :create, :update, :destroy] do
+        collection do
+          get :detail_options
+          get :matching_properties
+          get :find_in_circle
+          get :find_in_polygon
+          get :find_by_zip_code
+          get :details_by_property_id
+          # get :recent_properties
+          # get :matching_property
+          # get :matching_dream_address
+          # post :user_detail
+        end
+      end
+
+      resources :dream_addresses, only: [:index, :create, :destroy]
+      # resources :dream_addresses, only: [:index, :create, :destroy] do
+      #   collection do
+      #     post :fetch_property
+      #     post 'fetch_user'
+      #     post 'newest_first'
+      #   end
+      # end
+
+      resources :saved_searches, except: [:new, :edit]
+
+      resources :user_preferences, only: [:index, :create] do
+        collection do
+          get '/potential_buyers', to: 'user_preferences#get_potential_buyer_preferences'
+        end
+      end
+
+      resources :reviews, only: [:create] do
+        collection do
+          get :get_reviews
+        end
+      end
 
       resources :bookmarks, only:  [:create, :destroy] do
         collection do

@@ -270,8 +270,8 @@ class Property < ApplicationRecord
 
     def validate_measurement_units
       length_units = Property.detail_options[:length_units].keys
-      errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth_unit.to_sym.in?(length_units)
-      errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage_unit.to_sym.in?(length_units)
+      errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth_unit&.to_sym.in?(length_units)
+      errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage_unit&.to_sym.in?(length_units)
       errors.add('lot_depth_unit and lot_frontage_unit', 'should be the same') unless lot_depth_unit == lot_frontage_unit
 
       # errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit.in?(Property.detail_options[:area_units].keys)

@@ -25,7 +25,7 @@ class UserPreferencesNotificationJob < ApplicationJob
         properties = PropertiesSearchService.search_by_preference(user.user_preference.attributes, page_info, user.id)
         puts "ppppppppppppppppppppppppp #{properties.length} "
         properties.each do |property|
-          next if UserNotification.find_by(property_id: property.id, recipient_id: user.id)
+          next if UserNotification.exists?(property_id: property.id, recipient_id: user.id)
           # For BUYER
           UserNotification.create(
             actor_id: property.user_id, recipient_id: user.id, property_id: property.id,

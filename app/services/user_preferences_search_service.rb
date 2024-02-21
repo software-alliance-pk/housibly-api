@@ -14,21 +14,38 @@ module UserPreferencesSearchService
       preference_data = {}
 
       preference.attributes.slice(*attribute_list[property.property_type]).each do |key, value|
+        matched = false
+
         if key == 'max_age'
-          match_points += 1 if property.year_built >= value.to_i.years.ago.year
-        elsif value.is_a? Hash
+          if property.year_built.present? && property.year_built >= value.to_i.years.ago.year
+            match_points += 1
+            matched = true
+          end
+        elsif value.is_a?(Hash) && property[key].present?
           if value['min'].present? && value['max'].present?
-            match_points += 1 if value['min'].to_f <= property[key] && value['max'].to_f >= property[key]
+            if value['min'].to_f <= property[key] && value['max'].to_f >= property[key]
+              match_points += 1
+              matched = true
+            end
           elsif value['min'].present?
-            match_points += 1 if value['min'].to_f <= property[key]
+            if value['min'].to_f <= property[key]
+              match_points += 1
+              matched = true
+            end
           elsif value['max'].present?
-            match_points += 1 if value['max'].to_f >= property[key]
+            if value['max'].to_f >= property[key]
+              match_points += 1
+              matched = true
+            end
           end
         elsif value.is_a? Array
-          match_points += 1 if property[key].in? value
+          if property[key].in? value
+            match_points += 1
+            matched = true
+          end
         end
 
-        preference_data[key] = value
+        preference_data[key] = {'value' => value, 'matched' => matched}
       end
 
       match_percentage = (match_points/total_match_points[property.property_type])*100
@@ -38,14 +55,14 @@ module UserPreferencesSearchService
         preference_data['lot_size_unit'] = property.lot_size_unit
         preference_data['lot_frontage_unit'] = property.lot_frontage_unit
         if property.lot_frontage_unit != 'feet'
-          preference_data['lot_frontage'] = UserPreference.get_metric_values(
-            preference_data['lot_frontage']['min'],
-            preference_data['lot_frontage']['max'],
+          preference_data['lot_frontage']['value'] = UserPreference.get_metric_values(
+            preference_data.dig('lot_frontage', 'value', 'min'),
+            preference_data.dig('lot_frontage', 'value', 'max'),
             :meter
           )
-          preference_data['lot_size'] = UserPreference.get_metric_values(
-            preference_data['lot_size']['min'],
-            preference_data['lot_size']['max'],
+          preference_data['lot_size']['value'] = UserPreference.get_metric_values(
+            preference_data.dig('lot_size', 'value', 'min'),
+            preference_data.dig('lot_size', 'value', 'max'),
             :square_meter
           )
         end

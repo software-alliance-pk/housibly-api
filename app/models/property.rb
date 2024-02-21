@@ -48,7 +48,7 @@ class Property < ApplicationRecord
   validates :house_type, :house_style, presence: true, if: ->(property){property.property_type == "house"}
   validates :condo_type, :condo_style, presence: true, if: ->(property){property.property_type == "condo"}
 
-  validates :lot_frontage_unit, :lot_depth_unit, presence: true, unless: ->(property){property.property_type == "condo"}
+  validates :lot_frontage_unit, :lot_depth_unit, :lot_size_unit, presence: true, unless: ->(property){property.property_type == "condo"}
   validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
   # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
@@ -235,11 +235,11 @@ class Property < ApplicationRecord
       length_units: {
         feet: 'feet',
         meter: 'meter'
+      },
+      area_units: {
+        sqft: 'square feet',
+        sqm: 'square meter'
       }
-      # area_units: {
-      #   square_feet: 'sqft',
-      #   square_meter: 'sqm'
-      # }
     }
   end
 
@@ -272,12 +272,14 @@ class Property < ApplicationRecord
       length_units = Property.detail_options[:length_units].keys
       errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth_unit&.to_sym.in?(length_units)
       errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage_unit&.to_sym.in?(length_units)
-      errors.add('lot_depth_unit and lot_frontage_unit', 'should be the same') unless lot_depth_unit == lot_frontage_unit
+      errors.add('lot depth unit and lot frontage unit', 'should be the same') unless lot_depth_unit == lot_frontage_unit
 
-      # errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit.in?(Property.detail_options[:area_units].keys)
-      # unless lot_depth_unit == lot_frontage_unit && lot_size_unit.include?(lot_depth_unit)
-      #   errors.add('lot_depth_unit, lot_frontage_unit, lot_size_unit', 'should have same base unit')
-      # end
+      area_units = Property.detail_options[:area_units].keys
+      errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit&.to_sym.in?(area_units)
+      unless (lot_size_unit&.to_sym == area_units[0] && lot_depth_unit&.to_sym == length_units[0]) ||
+        (lot_size_unit&.to_sym == area_units[1] && lot_depth_unit&.to_sym == length_units[1])
+        errors.add('lot depth unit and lot frontage unit and lot size unit', 'should have same base unit')
+      end
     end
 
     def validate_detail_options

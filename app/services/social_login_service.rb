@@ -1,6 +1,4 @@
 class SocialLoginService
-  PASSWORD_DIGEST = SecureRandom.hex(10)
-  APPLE_PEM_URL = 'https://appleid.apple.com/auth/keys'
   require 'net/http'
   require 'uri'
 
@@ -23,6 +21,8 @@ class SocialLoginService
     return JSON.parse(response.body) if response.code != '200'
 
     json_response = JSON.parse(response.body)
+    return {message: 'Email not found for social login'} if json_response['email'].blank?
+
     create_user(json_response['email'], json_response['sub'], json_response)
     user = User.find_by(email: json_response['email'])
     token = JsonWebTokenService.encode({ email: user.email })
@@ -35,7 +35,7 @@ class SocialLoginService
       header_segment = JSON.parse(Base64.decode64(jwt.split(".").first))
       alg = header_segment["alg"]
       kid = header_segment["kid"]
-      apple_response = Net::HTTP.get(URI.parse(APPLE_PEM_URL))
+      apple_response = Net::HTTP.get(URI.parse('https://appleid.apple.com/auth/keys'))
       apple_certificate = JSON.parse(apple_response)
       keyHash = ActiveSupport::HashWithIndifferentAccess.new(apple_certificate["keys"].select { |key| key["kid"] == kid }[0])
       jwk = JWT::JWK.import(keyHash)
@@ -44,6 +44,8 @@ class SocialLoginService
       return e.as_json
     end
     data = token_data.with_indifferent_access
+    return {message: 'Email not found for social login'} if data['email'].blank?
+
     create_user(data['email'], data['sub'], data)
     user = User.find_by(email: data['email'])
     token = JsonWebTokenService.encode({ email: user.email })
@@ -57,12 +59,13 @@ class SocialLoginService
     if user
       user.update(login_type: 'social_login', is_otp_verified: true)
     else
-      name = response['name'].present? ? response['name'] : "apple don't provide name"
+      name = response['name'].present? ? response['name'] : 'no name'
+      password_digest = SecureRandom.hex(10)
       user = User.new(
         email: response['email'],
         full_name: name,
-        password: PASSWORD_DIGEST,
-        password_confirmation: PASSWORD_DIGEST,
+        password: password_digest,
+        password_confirmation: password_digest,
         login_type: "social_login",
         profile_complete: false,
         is_otp_verified: true

@@ -14,10 +14,10 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     end
   end
 
-  def add_user_info
+  def complete_registration
     if @current_user.is_otp_verified
       if @current_user.update(user_params.merge(is_confirmed: true, profile_complete: true))
-        @current_user.update(login_type: 'manual') unless @current_user.login_type
+        @current_user.update(login_type: 'manual') unless @current_user.login_type.present? # for handling social logins
         @current_user.user_setting.destroy if @current_user.user_setting.present?
         @current_user.build_user_setting.save
         @token = JsonWebTokenService.encode({ email: @current_user.email })
@@ -25,7 +25,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
         AdminNotification.create(
           actor_id: Admin.admin.first.id,
           recipient_id: @current_user.id,
-          action: @current_user.support_closer? ? 'New Support Closer Created' : 'New User Created'
+          action: (@current_user.support_closer? ? 'New Support Closer Created' : 'New User Created')
         ) if Admin&.admin.present?
       else
         render_error_messages(@current_user)

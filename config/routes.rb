@@ -84,7 +84,7 @@ end
       post '/logout', to: 'sessions#logout'
 
       post '/signup', to: 'registrations#create'
-      post '/register_user', to: 'registrations#add_user_info'
+      post '/register_user', to: 'registrations#complete_registration'
       post '/verify_otp', to: 'registrations#verify_otp'
       post '/verify_otp/resend_otp', to: 'registrations#resend_otp'
 

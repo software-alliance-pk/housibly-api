@@ -76,14 +76,19 @@ class UserPreference < ApplicationRecord
 
     def validate_measurement_units
       length_units = Property.detail_options[:length_units].keys
-      errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth_unit.blank? || lot_depth_unit.to_sym.in?(length_units)
-      errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage_unit.blank? || lot_frontage_unit.to_sym.in?(length_units)
-      errors.add('lot depth unit and lot frontage unit', 'should be the same') unless lot_depth_unit.blank? || lot_frontage_unit.blank? || lot_depth_unit == lot_frontage_unit
+      errors.add(:lot_depth_unit, "has invalid value: #{lot_depth_unit}") unless lot_depth.blank? || lot_depth_unit&.to_sym.in?(length_units)
+      errors.add(:lot_frontage_unit, "has invalid value: #{lot_frontage_unit}") unless lot_frontage.blank? || lot_frontage_unit&.to_sym.in?(length_units)
+      errors.add('lot depth unit and lot frontage unit', 'should be the same') unless lot_depth.blank? || lot_frontage.blank? || lot_depth_unit == lot_frontage_unit
 
-      # errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit.in?(Property.detail_options[:area_units].keys)
-      # unless lot_depth_unit == lot_frontage_unit && lot_size_unit.include?(lot_depth_unit)
-      #   errors.add('lot_depth_unit, lot_frontage_unit, lot_size_unit', 'should have same base unit')
-      # end
+      return if lot_size.blank?
+
+      area_units = Property.detail_options[:area_units].keys
+      errors.add(:lot_size_unit, "has invalid value: #{lot_size_unit}") unless lot_size_unit&.to_sym.in?(area_units)
+      comparison_unit = lot_depth_unit.present? ? lot_depth_unit : lot_frontage_unit
+      unless comparison_unit.blank? || (lot_size_unit&.to_sym == area_units[0] && comparison_unit&.to_sym == length_units[0]) ||
+        (lot_size_unit&.to_sym == area_units[1] && comparison_unit&.to_sym == length_units[1])
+        errors.add('lot depth unit and lot frontage unit and lot size unit', 'should have same base unit')
+      end
     end
 
 end

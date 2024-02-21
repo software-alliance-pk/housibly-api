@@ -41,6 +41,14 @@ class Api::V1::UsersController < Api::V1::ApiController
     end
   end
 
+  def update_location
+    if @current_user.update(api_user_params)
+      render json: { message: 'Location updated successfully' }, status: :ok
+    else
+      render_error_messages(@current_user)
+    end
+  end
+
   def search_support_closers
     if params[:search_query].present?
       if @current_user.latitude.present? && @current_user.longitude.present?
@@ -225,6 +233,10 @@ class Api::V1::UsersController < Api::V1::ApiController
         images: [], certificates: [], professions_attributes: [:id, :_destroy, :title],
         schedule_attributes: [:id, :ending_time, :starting_time, working_days: []]
       )
+    end
+
+    def api_user_params
+      params.require(:user).permit(:latitude, :longitude, :address)
     end
 
     def page_info

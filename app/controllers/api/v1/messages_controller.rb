@@ -5,7 +5,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 		unless @conversation.is_blocked?
 			@message = @current_user.messages.build(message_params.merge(conversation_id: @conversation.id))
 			if @message.save
-				 send_notification_to_user(@conversation,@message)
+				send_notification_to_user(@conversation,@message)
 				# @conversation_list, user = notify_second_user(@conversation)
 				data = []
 				# @conversation_list.each do |conversation|

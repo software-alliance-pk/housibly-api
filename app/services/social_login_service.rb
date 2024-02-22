@@ -6,73 +6,66 @@ class SocialLoginService
     @mobile_device_token = mobile_device_token
   end
 
-  def social_login(provider, token)
-    case provider.downcase
-    when 'google'
-      google_signup(token)
-    when 'apple'
-      apple_signup(token)
-    end
-  end
-
   def google_signup(token)
     uri = URI("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{token}")
     response = Net::HTTP.get_response(uri)
-    return JSON.parse(response.body) if response.code != '200'
+    unless response.code == '200'
+      puts JSON.parse(response.body)
+      return {error_message: 'Error in Google auth or token expired'}
+    end
 
     json_response = JSON.parse(response.body)
-    return {message: 'Email not found for social login'} if json_response['email'].blank?
+    return {error_message: 'Unable to fetch email for the provided Google account'} if json_response['email'].blank?
 
-    create_user(json_response['email'], json_response['sub'], json_response)
-    user = User.find_by(email: json_response['email'])
-    token = JsonWebTokenService.encode({ email: user.email })
-    [user, token, json_response['picture']]
+    user = create_or_find_user(json_response['email'], json_response['name'], google_user_id: json_response['sub'])
+    return { error_message: 'Unable to create user account' } if user.blank?
+    return { error_message: 'Unable to fetch name for the provided Google account' } if user[:error_message] == 'missing name'
+
+    { user: user, token: JsonWebTokenService.encode({ email: user.email }) }
   end
 
-  def apple_signup(token)
-    jwt = token
-    begin
-      header_segment = JSON.parse(Base64.decode64(jwt.split(".").first))
-      alg = header_segment["alg"]
-      kid = header_segment["kid"]
-      apple_response = Net::HTTP.get(URI.parse('https://appleid.apple.com/auth/keys'))
-      apple_certificate = JSON.parse(apple_response)
-      keyHash = ActiveSupport::HashWithIndifferentAccess.new(apple_certificate["keys"].select { |key| key["kid"] == kid }[0])
-      jwk = JWT::JWK.import(keyHash)
-      token_data = JWT.decode(jwt, jwk.public_key, true, { algorithm: alg })[0]
-    rescue StandardError => e
-      return e.as_json
+  def apple_signup(apple_user_id, email, name)
+    user = User.find_by(apple_user_id: apple_user_id)
+    unless user
+      if email.blank?
+        return { error_message: 'Unable to fetch email for the provided Apple account' }
+      else
+        user = create_or_find_user(email, name, apple_user_id: apple_user_id)
+        return { error_message: 'Unable to create user account' } if user.blank?
+        return { error_message: 'Unable to fetch name for the provided Apple account' } if user[:error_message] == 'missing name'
+      end
     end
-    data = token_data.with_indifferent_access
-    return {message: 'Email not found for social login'} if data['email'].blank?
 
-    create_user(data['email'], data['sub'], data)
-    user = User.find_by(email: data['email'])
-    token = JsonWebTokenService.encode({ email: user.email })
-    [user, token, ""]
+    { user: user, token: JsonWebTokenService.encode({ email: user.email }) }
   end
 
   private
 
-  def create_user(email, provider_id, response)
-    user = User.find_by(email: email)
-    if user
-      user.update(login_type: 'social_login', is_otp_verified: true)
-    else
-      name = response['name'].present? ? response['name'] : 'no name'
-      password_digest = SecureRandom.hex(10)
-      user = User.new(
-        email: response['email'],
-        full_name: name,
-        password: password_digest,
-        password_confirmation: password_digest,
-        login_type: "social_login",
-        profile_complete: false,
-        is_otp_verified: true
-      )
-      user.mobile_devices.build(mobile_device_token: @mobile_device_token)
-      user.save(validate: false)
+    def create_or_find_user(email, name, apple_user_id: nil, google_user_id: nil)
+      user = User.find_by(email: email)
+      if user
+        attributes = { login_type: 'social_login', is_otp_verified: true }
+        attributes[:apple_user_id] = apple_user_id if apple_user_id.present?
+        attributes[:google_user_id] = google_user_id if google_user_id.present?
+        user.assign_attributes(attributes)
+        user.save(validate: false) && user
+      else
+        return { error_message: 'missing name' } if name.blank?
+        password_digest = SecureRandom.hex(10)
+        user = User.new(
+          email: email,
+          full_name: name,
+          password: password_digest,
+          password_confirmation: password_digest,
+          login_type: "social_login",
+          profile_complete: false,
+          is_otp_verified: true
+        )
+        user.apple_user_id = apple_user_id if apple_user_id.present?
+        user.google_user_id = google_user_id if google_user_id.present?
+        user.mobile_devices.build(mobile_device_token: @mobile_device_token)
+        user.save(validate: false) && user
+      end
     end
-  end
 
 end

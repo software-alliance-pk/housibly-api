@@ -67,10 +67,12 @@ class User < ApplicationRecord
     support_closer: 2
   }
 
-  validates_presence_of :full_name, :email, :phone_number, :password_digest
+  validates :phone_number, presence: true, unless: -> { login_type == 'social_login' }
+  validates :phone_number, uniqueness: true, if: -> { phone_number.present? }
+  validates :phone_number, format: { with: /\A^\+?\d+$\z/ }, if: -> { phone_number.present? }
+
+  validates_presence_of :full_name, :email, :password_digest
   validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
-  validates :phone_number, format: { with: /\A^\+?\d+$\z/ }
-  validates :phone_number, uniqueness: true
   validates :email, uniqueness: { case_sensitive: false }
   validates :password_digest, length: { minimum: 6 }, confirmation: true
   validates :user_type, inclusion: { in: user_types.keys, message: "should be one of #{user_types.keys.join(', ')}"}

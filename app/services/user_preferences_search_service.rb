@@ -97,7 +97,7 @@ module UserPreferencesSearchService
       {
         'house' => ['price', 'bed_rooms', 'bath_rooms', 'house_type', 'house_style', 'lot_frontage', 'lot_size',
                     'total_number_of_rooms', 'total_parking_spaces', 'garage_spaces', 'max_age'],
-        'condo' => ['price', 'bed_rooms', 'bath_rooms', 'house_type', 'house_style', 'lot_frontage', 'lot_size',
+        'condo' => ['price', 'bed_rooms', 'bath_rooms', 'condo_type', 'condo_style', 'lot_frontage', 'lot_size',
                     'total_number_of_rooms', 'total_parking_spaces', 'balcony', 'security', 'laundry', 'max_age'],
         'vacant_land' => ['price', 'lot_frontage', 'lot_size']
       }

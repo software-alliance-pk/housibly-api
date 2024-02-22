@@ -138,6 +138,9 @@ end
       get '/static_page/:permalink', to: 'static_pages#static_page'
       post '/active', to: 'users_lists#index'
 
+      get '/show_current_user_setting', to: 'user_settings#show_current_user_setting'
+      put '/update_current_user_setting', to: 'user_settings#update_current_user_setting'
+
       resources :properties, only: [:index, :show, :create, :update, :destroy] do
         collection do
           get :detail_options

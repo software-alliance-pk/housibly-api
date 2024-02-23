@@ -29,12 +29,12 @@ class User < ApplicationRecord
   has_many :properties, dependent: :destroy
   has_many :dream_addresses, dependent: :destroy
   has_many :saved_searches, dependent: :destroy
-  has_many :bookmarks, dependent: :destroy
   has_many :supports, dependent: :destroy
   has_many :card_infos, dependent: :destroy
   has_many :user_search_addresses, dependent: :destroy
   has_many :subscription_histories, dependent: :destroy
   has_many :mobile_devices, dependent: :destroy
+
   has_many :conversations, dependent: :destroy, foreign_key: :sender_id
   has_many :conversations, dependent: :destroy, foreign_key: :recipient_id
   has_many :support_conversations, dependent: :destroy, foreign_key: :sender_id
@@ -45,6 +45,11 @@ class User < ApplicationRecord
   has_many :notifications, foreign_key: :actor_id, class_name: 'Notification', dependent: :destroy
   has_many :reportings, dependent: :destroy, foreign_key: :user_id
   has_many :user_reports, class_name: 'Reporting', dependent: :destroy, foreign_key: :reported_user_id
+
+  has_many :bookmarks, dependent: :destroy
+  has_many :property_bookmarks
+  has_many :user_bookmarks
+  has_many :bookmarkings_by_users, class_name: 'UserBookmark', foreign_key: :bookmarked_user_id
 
   has_many :reviews, dependent: :destroy # for regular users, reviews given to support closers
   has_many :support_closer_reviews, class_name: 'Review', dependent: :destroy, foreign_key: :support_closer_id # for support closers, reviews given by regular users

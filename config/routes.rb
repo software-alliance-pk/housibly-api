@@ -152,7 +152,6 @@ end
           # get :recent_properties
           # get :matching_property
           # get :matching_dream_address
-          # post :user_detail
         end
       end
 
@@ -166,23 +165,16 @@ end
       # end
 
       resources :saved_searches, except: [:new, :edit]
+      resources :bookmarks, only: [:index, :create, :destroy]
 
       resources :user_preferences, only: [:index, :create] do
         collection do
           get '/potential_buyers', to: 'user_preferences#get_potential_buyer_preferences'
         end
       end
-
       resources :reviews, only: [:create] do
         collection do
           get :get_reviews
-        end
-      end
-
-      resources :bookmarks, only:  [:create, :destroy] do
-        collection do
-          get :get_current_user_bookmark
-          post :filter_bookmarks
         end
       end
       resources :support_conversations do

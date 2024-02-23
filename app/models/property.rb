@@ -35,11 +35,9 @@ class Property < ApplicationRecord
 
   scope :not_from_user, -> (user_id){ where.not(user_id: user_id) }
 
-  cattr_accessor :bookmark_type
-
   belongs_to :user
   has_many_attached :images
-  has_many :bookmarks
+  has_many :property_bookmarks
   has_many :user_notifications
   has_many :rooms, dependent: :destroy
   accepts_nested_attributes_for :rooms, allow_destroy: true
@@ -79,6 +77,10 @@ class Property < ApplicationRecord
 
   def lot_size
     (self[:lot_size].blank? || lot_frontage_unit == 'feet') ? self[:lot_size] : self[:lot_size]*CONVERSION_FACTORS[:square_meter]
+  end
+
+  def bookmarked_by_user?(user_id)
+    property_bookmarks.exists?(user_id: user_id)
   end
 
   def self.detail_options

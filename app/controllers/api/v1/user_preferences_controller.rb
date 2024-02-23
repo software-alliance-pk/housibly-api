@@ -17,7 +17,7 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
       if @current_user.user_setting.push_notification == true || @current_user.user_setting.inapp_notification == true
         UserPreferencesNotificationJob.perform_now(user_id: @current_user.id)
       else
-        puts "No notification for Buyer or Seller"
+        puts 'No notification for Buyer or Seller'
       end
     else
       render_error_messages(@preference)

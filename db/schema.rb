@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_21_132732) do
+ActiveRecord::Schema.define(version: 2024_02_22_205514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,10 +76,12 @@ ActiveRecord::Schema.define(version: 2024_02_21_132732) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.string "type"
-    t.integer "user_id"
-    t.integer "property_id"
+    t.bigint "user_id", null: false
+    t.bigint "property_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "bookmarked_user_id"
+    t.index ["bookmarked_user_id"], name: "index_bookmarks_on_bookmarked_user_id"
     t.index ["property_id"], name: "index_bookmarks_on_property_id"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
@@ -536,6 +538,7 @@ ActiveRecord::Schema.define(version: 2024_02_21_132732) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookmarks", "properties"
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "bookmarks", "users", column: "bookmarked_user_id"
   add_foreign_key "card_infos", "users"
   add_foreign_key "dream_addresses", "users"
   add_foreign_key "messages", "conversations"

@@ -34,6 +34,7 @@ class Api::V1::SupportsController < Api::V1::ApiController
   end
 
   private
+
   def support_params
     params.require(:support).permit(:id, :ticket_number, :status, :description, :image)
   end

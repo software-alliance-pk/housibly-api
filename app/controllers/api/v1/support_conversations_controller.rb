@@ -50,7 +50,6 @@ def create_message
       data["updated_at"] = @message.updated_at
       data["image"] = @message&.image&.url
       data["user_profile"] = @message&.user&.avatar&.url.present? ? @message&.user&.avatar&.url : ''
-      ActionCable.server.broadcast "support_conversations_#{@message.support_conversation_id}", { title: 'dsadasdas', body: data.as_json }
 		else
 			render_error_messages(@message)
 		end

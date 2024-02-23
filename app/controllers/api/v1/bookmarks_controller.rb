@@ -1,60 +1,55 @@
+# frozen_string_literal: true
+
 class Api::V1::BookmarksController < Api::V1::ApiController
+  before_action :validate_bookmark_type, only: [:create]
+
+  def index
+    @bookmarks = case params[:bookmark_type]
+      when 'user_bookmark'
+        @current_user.user_bookmarks
+      when 'property_bookmark'
+        @current_user.property_bookmarks
+      else
+        @current_user.bookmarks
+      end
+  end
+
   def create
-    type = bookmark_params[:bookmark_type]
-    @property = Property.find_by(id: params[:id]) if type == "property_bookmark"
-    property_id = params[:id] if @property
-    @user = User.find_by(id: params[:id]) if type == "user_bookmark"
-    user_id = params[:id] if @user
-    unless Bookmark.check_property_already_booked(@property).present? || Bookmark.check_user_already_booked(@user).present?
-      @bookmark = bookmark_params[:bookmark_type].titleize.gsub(" ", "").constantize.new
-      property_id ? @bookmark.property_id = property_id : @bookmark.user_id = user_id
-      @bookmark.user_id = @current_user.id
-      if @bookmark.save
-        @bookmark
-      else
-        render_error_messages(@bookmark)
-      end
+    @bookmark = bookmark_params[:bookmark_type].titleize.gsub(' ', '').constantize.new(user_id: @current_user.id)
+
+    if bookmark_params[:bookmark_type] == 'user_bookmark'
+      return render json: { message: 'You cannot bookmark yourself!' }, status: 422 if @current_user.id == bookmark_params[:bookmarked_user_id].to_i
+      return render json: { message: 'Already bookmarked' } if @current_user.user_bookmarks.exists?(bookmarked_user_id: bookmark_params[:bookmarked_user_id])
+      @bookmark.bookmarked_user_id = bookmark_params[:bookmarked_user_id]
     else
-      render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
+      return render json: { message: 'Already bookmarked' } if @current_user.property_bookmarks.exists?(property_id: bookmark_params[:property_id])
+      @bookmark.property_id = bookmark_params[:property_id]
     end
-  end
 
-  def get_current_user_bookmark
-    @bookmarks = @current_user.bookmarks
-    # @property = UserPreferencesService.new.bookmark_match_property(@current_user)
-  end
-
-  def filter_bookmarks
-    if params[:keyword].present?
-      @bookmarks = @current_user.bookmarks if params[:keyword].downcase == "all"
-      @bookmarks = @current_user.bookmarks.where("type = (?)", "PropertyBookmark") if params[:keyword].downcase == "property"
-      @bookmarks = @current_user.bookmarks.where("type = (?)", "UserBookmark") if params[:keyword] == "support_closers"
-      if @bookmarks.present?
-        @bookmarks
-        # @user_type = params[:keyword] == "support_closers" ? "user" : "property"
-        # @bookmarks = Bookmark.where(property_id: property_ids)
-      else
-        render json: { message: "Property is already bookmarked" }, status: :unprocessable_entity
-      end
+    unless @bookmark.save
+      render_error_messages(@bookmark)
     end
   end
 
   def destroy
-    @bookmark = Bookmark.find_by(id: params[:id])
-    if @bookmark.present?
-      if @bookmark.destroy
-        render json: { message: 'bookmark deleted successfully.' }, status: :ok
-      else
-        render_error_messages(@bookmark)
-      end
+    bookmark = Bookmark.find_by(id: params[:id])
+    return render json: { message: "Bookmark not found" }, status: :not_found unless bookmark.present?
+
+    if bookmark.destroy
+      render json: { message: 'Bookmark deleted successfully.' }
     else
-      render json: { message: "Bookmark not found" }, status: 404
+      render_error_messages(bookmark)
     end
   end
 
   private
 
-  def bookmark_params
-    params.require(:bookmark).permit(:bookmark_type)
-  end
+    def bookmark_params
+      params.require(:bookmark).permit(:bookmark_type, :property_id, :bookmarked_user_id)
+    end
+
+    def validate_bookmark_type
+      return if bookmark_params[:bookmark_type].in? ['property_bookmark', 'user_bookmark']
+      render json: { message: 'Bookmark type should be one of the following: property_bookmark, user_bookmark' }, status: 422
+    end
 end

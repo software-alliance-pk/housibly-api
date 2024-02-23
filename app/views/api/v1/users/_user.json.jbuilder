@@ -19,11 +19,11 @@ end if user.schedule
 
 json.images user.images do |image|
   json.id image.signed_id
-  json.url rails_blob_url(image) rescue ""
+  json.url (rails_blob_url(image) rescue "")
 end
 
 json.certificates user.certificates do |certificate|
   json.id certificate.signed_id
-  json.url rails_blob_url(certificate) rescue ""
-  json.size number_to_human_size(certificate.byte_size) rescue ""
+  json.url (rails_blob_url(certificate) rescue "")
+  json.size (number_to_human_size(certificate.byte_size) rescue "")
 end

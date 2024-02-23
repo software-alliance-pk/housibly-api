@@ -19,6 +19,8 @@ class Api::V1::UsersController < Api::V1::ApiController
     else
       @user.visitors.create(visit_id: @current_user.id)
     end
+
+    @bookmarked = @current_user.user_bookmarks.exists?(bookmarked_user_id: @user.id)
   end
 
   def update_profile

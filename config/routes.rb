@@ -178,8 +178,10 @@ end
         end
       end
       resources :support_conversations do
-        post 'create_message'
-        post 'get_messages'
+        collection do
+          post :create_message
+          post :get_messages
+        end
       end
       resources :reporting do
         collection do

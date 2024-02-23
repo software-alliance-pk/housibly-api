@@ -22,6 +22,7 @@ class Api::V1::BookmarksController < Api::V1::ApiController
       return render json: { message: 'Already bookmarked' } if @current_user.user_bookmarks.exists?(bookmarked_user_id: bookmark_params[:bookmarked_user_id])
       @bookmark.bookmarked_user_id = bookmark_params[:bookmarked_user_id]
     else
+      return render json: { message: 'You cannot bookmark your own property' }, status: 422 if @current_user.properties.exists?(id: bookmark_params[:property_id])
       return render json: { message: 'Already bookmarked' } if @current_user.property_bookmarks.exists?(property_id: bookmark_params[:property_id])
       @bookmark.property_id = bookmark_params[:property_id]
     end

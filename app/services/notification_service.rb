@@ -8,8 +8,8 @@ class NotificationService
             title: user_notification.title,
             type: user_notification.event_type,
             event_const: user_notification.type,
-            recipient: recipient,
-            sender:actor,
+            recipient: recipient.id,
+            sender: actor.id,
             avatar: actor&.avatar&.url,
             conversation_id: user_notification.conversation_id
           }

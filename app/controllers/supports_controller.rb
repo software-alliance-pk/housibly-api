@@ -1,7 +1,7 @@
 class SupportsController < ApplicationController
   before_action :set_user_list, only: [:index,:get_specific_chat]
   before_action :get_support_ticket, only: [:ticket_in_progress,:ticket_closed,:ticket_pending]
-  
+
   def index
     notification = AdminNotification.find_by(id:params[:id])
     notification.update(read_at:Time.now) if notification.present?
@@ -14,7 +14,12 @@ class SupportsController < ApplicationController
     if conversation.present?
        @message = conversation.admin_support_messages.new(sender_id: current_admin.id ,body: params[:text],image: params[:image],file: params[:file])
        if @message.save
-        data = {}
+        if conversation.sender.user_setting.push_notification == true
+          UserNotification.create(actor_id: current_admin.id, recipient_id:conversation.sender_id, action: @message.body,title: "#{current_admin.full_name} sent you a message.",conversation_id: conversation.id, event_type: "support_message" )
+        else
+          puts "OOooOOffFFff Notification"
+        end
+          data = {}
           data["id"] = @message.id
           data["support_conversation_id"] = @message.support_conversation_id
           data["body"] = @message.body
@@ -53,7 +58,7 @@ class SupportsController < ApplicationController
     elsif params[:status] == "in_progress"
       @support.update(status: "in_progress")
       flash[:success_alert] = "Support Ticket status has been updated to In-Progress"
-    
+
     else params[:status] == "closed"
       @support.update(status: "closed")
       flash[:success_alert] = "Support Ticket Status has been updated to Closed"

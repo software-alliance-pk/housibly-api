@@ -47,7 +47,7 @@ class SupportsController < ApplicationController
   end
 
   def update_ticket_status
-    @support = Support.find_by(id: params[:support_id])
+    @support = Support.find_by(id: params[:id])
     unless @support.present?
       redirect_back(fallback_location: root_path) and return
     end
@@ -63,7 +63,7 @@ class SupportsController < ApplicationController
       @support.update(status: "closed")
       flash[:success_alert] = "Support Ticket Status has been updated to Closed"
     end
-    redirect_to get_specific_chat_support_path(id: params[:support_id])
+    redirect_to get_specific_chat_support_path(id: params[:id])
   end
 
   def set_user_list

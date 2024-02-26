@@ -15,7 +15,7 @@ class SupportsController < ApplicationController
        @message = conversation.admin_support_messages.new(sender_id: current_admin.id ,body: params[:text],image: params[:image],file: params[:file])
        if @message.save
         if conversation.sender.user_setting.push_notification == true
-          UserNotification.create(actor_id: current_admin.id, recipient_id:conversation.sender_id, action: @message.body,title: "#{current_admin.full_name} sent you a message.",conversation_id: conversation.id, event_type: "support_message" )
+          UserNotification.create(actor_id: current_admin.id, recipient_id:conversation.sender_id, action: @message.body,title: "MESSAGE from Support",conversation_id: conversation.id, event_type: "support_message" )
         else
           puts "OOooOOffFFff Notification"
         end

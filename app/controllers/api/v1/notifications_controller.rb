@@ -19,10 +19,10 @@ class Api::V1::NotificationsController < Api::V1::ApiController
 	end
 
   def delete_notification
-		if params[:notification_id].present?
-			@notification = Notification.find(id: params[:notification_id])
-			if @notification.present?
-				@notification
+		if params[:id].present?
+			@notification = Notification.find_by(id: params[:id])
+		  if @notification.present?
+			  @notification.destroy
 				render json: {message: "Notification deleted successfully"},status: :ok
 			else
 				render json: {message: "Notification is not present"},status: :ok

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_22_205514) do
+ActiveRecord::Schema.define(version: 2024_02_27_222042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -329,6 +329,14 @@ ActiveRecord::Schema.define(version: 2024_02_22_205514) do
     t.string "country"
   end
 
+  create_table "searched_addresses", force: :cascade do |t|
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "settings", force: :cascade do |t|
     t.integer "csv_count"
     t.datetime "created_at", precision: 6, null: false
@@ -410,12 +418,6 @@ ActiveRecord::Schema.define(version: 2024_02_22_205514) do
     t.index ["user_id"], name: "index_supports_on_user_id"
   end
 
-  create_table "user_match_addresses", force: :cascade do |t|
-    t.string "address"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "user_preferences", force: :cascade do |t|
     t.string "property_type"
     t.string "balcony", default: [], array: true
@@ -462,11 +464,11 @@ ActiveRecord::Schema.define(version: 2024_02_22_205514) do
 
   create_table "user_search_addresses", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "user_match_address_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "searched_address_id", null: false
+    t.index ["searched_address_id"], name: "index_user_search_addresses_on_searched_address_id"
     t.index ["user_id"], name: "index_user_search_addresses_on_user_id"
-    t.index ["user_match_address_id"], name: "index_user_search_addresses_on_user_match_address_id"
   end
 
   create_table "user_settings", force: :cascade do |t|
@@ -559,7 +561,7 @@ ActiveRecord::Schema.define(version: 2024_02_22_205514) do
   add_foreign_key "support_messages", "support_conversations"
   add_foreign_key "supports", "users"
   add_foreign_key "user_preferences", "users"
-  add_foreign_key "user_search_addresses", "user_match_addresses"
+  add_foreign_key "user_search_addresses", "searched_addresses"
   add_foreign_key "user_search_addresses", "users"
   add_foreign_key "user_settings", "users"
   add_foreign_key "visitors", "users"

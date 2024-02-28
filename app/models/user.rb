@@ -31,7 +31,6 @@ class User < ApplicationRecord
   has_many :saved_searches, dependent: :destroy
   has_many :supports, dependent: :destroy
   has_many :card_infos, dependent: :destroy
-  has_many :user_search_addresses, dependent: :destroy
   has_many :subscription_histories, dependent: :destroy
   has_many :mobile_devices, dependent: :destroy
 
@@ -39,12 +38,18 @@ class User < ApplicationRecord
   has_many :conversations, dependent: :destroy, foreign_key: :recipient_id
   has_many :support_conversations, dependent: :destroy, foreign_key: :sender_id
   has_many :support_conversations, dependent: :destroy, foreign_key: :recipient_id
+
   has_many :messages, dependent: :destroy
   has_many :user_support_messages, dependent: :destroy, foreign_key: :sender_id
+
   has_many :notifications_received, foreign_key: :recipient_id, class_name: 'Notification', dependent: :destroy
   has_many :notifications_sent, foreign_key: :actor_id, class_name: 'Notification', dependent: :destroy
+
   has_many :reportings, dependent: :destroy, foreign_key: :user_id
   has_many :user_reports, class_name: 'Reporting', dependent: :destroy, foreign_key: :reported_user_id
+
+  has_many :user_search_addresses, dependent: :destroy
+	has_many :searched_addresses, through: :user_search_addresses
 
   has_many :bookmarks, dependent: :destroy
   has_many :property_bookmarks

@@ -177,6 +177,11 @@ end
           get :get_reviews
         end
       end
+      resources :searched_addresses, only: [:create] do
+        collection do
+          get :get_users
+        end
+      end
       resources :support_conversations do
         collection do
           post :create_message
@@ -186,11 +191,6 @@ end
       resources :reporting do
         collection do
           post 'report_conversation'
-        end
-      end
-      resources :user_match_addresses do
-        collection do
-          post 'users_detail'
         end
       end
       resources :conversations, only: [:create, :index, :destroy] do

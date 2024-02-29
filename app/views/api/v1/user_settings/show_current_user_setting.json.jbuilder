@@ -1,4 +1,0 @@
-json.user_id @current_user.user_setting.user_id
-json.push_notification @current_user.user_setting.push_notification
-json.inapp_notification @current_user.user_setting.inapp_notification
-json.email_notification @current_user.user_setting.email_notification

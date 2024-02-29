@@ -9,9 +9,7 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
   def create
     @address = @current_user.dream_addresses.build(dream_address_params)
     if @address.save
-      if @current_user.user_setting.push_notification || @current_user.user_setting.inapp_notification
-        UserPreferencesNotificationJob.perform_now(user_id: @current_user.id, preference_type: 'dream_address')
-      end
+      UserPreferencesNotificationJob.perform_now(user_id: @current_user.id, preference_type: 'dream_address')
     else
       render_error_messages(@address)
     end

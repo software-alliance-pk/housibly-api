@@ -14,11 +14,7 @@ class Api::V1::UserPreferencesController < Api::V1::ApiController
   def create
     @preference = @current_user.build_user_preference(preference_params)
     if @preference.save
-      if @current_user.user_setting.push_notification || @current_user.user_setting.inapp_notification
-        UserPreferencesNotificationJob.perform_now(user_id: @current_user.id)
-      else
-        puts 'No notification for Buyer or Seller'
-      end
+      UserPreferencesNotificationJob.perform_now(user_id: @current_user.id)
     else
       render_error_messages(@preference)
     end

@@ -38,7 +38,14 @@ class Api::V1::SearchedAddressesController < Api::V1::ApiController
 			.order('users.id desc')
 			.paginate(page_info)
 
-		@users = User.where(id: user_ids.map{ |uid| uid.id if uid.id != @current_user.id }).includes(:user_preference)
+		user_ids = user_ids.map(&:id)
+
+		if user_ids.include? @current_user.id
+			user_ids.delete @current_user.id
+			@total_user_count -= 1 if @total_user_count
+		end
+
+		@users = User.where(id: user_ids).includes(:user_preference)
 	end
 
 	private

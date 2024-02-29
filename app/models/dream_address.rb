@@ -2,7 +2,8 @@ class DreamAddress < ApplicationRecord
   include CsvCounter
 
   belongs_to :user
-  after_commit :add_the_lnt_and_lng_property, on: :create
+
+  validates_presence_of :address, :latitude, :longitude
 
   def self.to_csv
     CsvCounter.update_csv_counter
@@ -14,11 +15,4 @@ class DreamAddress < ApplicationRecord
     end
   end
 
-  private
-
-    def add_the_lnt_and_lng_property
-      location = LocationFinderService.get_location_attributes(self.location)
-      return unless location
-      self.update(longitude: location[:long], latitude: location[:lat])
-    end
 end

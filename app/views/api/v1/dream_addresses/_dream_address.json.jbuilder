@@ -1,2 +1,2 @@
 json.extract! address,
-  :id, :location, :longitude, :latitude
+  :id, :address, :longitude, :latitude

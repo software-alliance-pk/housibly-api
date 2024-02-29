@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::DreamAddressesController < Api::V1::ApiController
 
   def index
@@ -5,30 +7,26 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
   end
 
   def create
-    if address_params[:location].present?
-      @address = @current_user.dream_addresses.build(location: address_params[:location])
-      unless @address.save
-        render_error_messages(@address)
+    @address = @current_user.dream_addresses.build(dream_address_params)
+    if @address.save
+      if @current_user.user_setting.push_notification || @current_user.user_setting.inapp_notification
+        UserPreferencesNotificationJob.perform_now(user_id: @current_user.id, preference_type: 'dream_address')
       end
     else
-      render json: { message: "Location parameter is missing" }, status: :unprocessable_entity
+      render_error_messages(@address)
     end
   end
 
   def destroy
-    if params[:id].present?
-      dream_address = DreamAddress.find_by(id: params[:id])
-      if dream_address.present?
-        if dream_address.destroy
-          render json: { message: "Successfully deleted" }
-        else
-          render_error_messages(dream_address)
-        end
+    dream_address = DreamAddress.find_by(id: params[:id])
+    if dream_address.present?
+      if dream_address.destroy
+        render json: { message: 'Successfully deleted' }
       else
-        render json: { message: "Dream address not found" }, status: :not_found
+        render_error_messages(dream_address)
       end
     else
-      render json: { message: "id parameter is missing" }, status: :unprocessable_entity
+      render json: { message: "Dream address with id: #{params[:id]} not found" }, status: :not_found
     end
   end
 
@@ -248,8 +246,8 @@ class Api::V1::DreamAddressesController < Api::V1::ApiController
 
   private
 
-    def address_params
-      params.require(:dream_address).permit(:location)
+    def dream_address_params
+      params.require(:dream_address).permit(:address, :latitude, :longitude)
     end
 
 end

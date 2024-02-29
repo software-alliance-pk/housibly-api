@@ -160,7 +160,6 @@ end
       #   collection do
       #     post :fetch_property
       #     post 'fetch_user'
-      #     post 'newest_first'
       #   end
       # end
 

@@ -48,9 +48,7 @@ class SocialLoginService
       attributes[:apple_user_id] = apple_user_id if apple_user_id.present?
       attributes[:google_user_id] = google_user_id if google_user_id.present?
       user.assign_attributes(attributes)
-      user.save(validate: false)
-
-      update_user_setting(user, name)
+      user.save(validate: false) && user
     else
       return { error_message: 'missing name' } if name.blank?
       password_digest = SecureRandom.hex(10)
@@ -66,21 +64,7 @@ class SocialLoginService
       user.apple_user_id = apple_user_id if apple_user_id.present?
       user.google_user_id = google_user_id if google_user_id.present?
       user.mobile_devices.build(mobile_device_token: @mobile_device_token)
-      user.save(validate: false)
-
-      update_user_setting(user, name)
+      user.save(validate: false) && user
     end
-    user
   end
-
-  def update_user_setting(user, name)
-    user_setting = user.user_setting || user.build_user_setting
-    user_setting.push_notification = true
-    user_setting.inapp_notification = true
-    user_setting.email_notification = true
-    user_setting.vibration = true
-
-    user_setting.save
-  end
-
 end

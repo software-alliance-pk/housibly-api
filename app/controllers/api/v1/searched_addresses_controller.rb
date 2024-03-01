@@ -27,6 +27,7 @@ class Api::V1::SearchedAddressesController < Api::V1::ApiController
 				.within(1, origin: searched_address_params.slice(:latitude, :longitude).values)
 				.joins(:users)
 				.select('DISTINCT ON (users.id) users.id')
+				.where.not(users: {id: @current_user.id})
 				.order('users.id desc')
 				.size
 		end
@@ -35,17 +36,11 @@ class Api::V1::SearchedAddressesController < Api::V1::ApiController
 			.within(1, origin: searched_address_params.slice(:latitude, :longitude).values)
 			.joins(:users)
 			.select('DISTINCT ON (users.id) users.id')
+			.where.not(users: {id: @current_user.id})
 			.order('users.id desc')
 			.paginate(page_info)
 
-		user_ids = user_ids.map(&:id)
-
-		if user_ids.include? @current_user.id
-			user_ids.delete @current_user.id
-			@total_user_count -= 1 if @total_user_count
-		end
-
-		@users = User.where(id: user_ids).includes(:user_preference)
+		@users = User.where(id: user_ids.map(&:id)).includes(:user_preference)
 	end
 
 	private

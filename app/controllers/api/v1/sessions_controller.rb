@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::SessionsController < Api::V1::ApiController
   skip_before_action :authenticate_user, only: [:login]
 
@@ -13,10 +15,10 @@ class Api::V1::SessionsController < Api::V1::ApiController
           render_error_messages(mobile_device)
         end
       else
-        render json: { message: "Please verify email address" }, status: :unauthorized
+        render json: { message: 'Please verify email address' }, status: :unauthorized
       end
     else
-      render json: { message: "Incorrect email or password" }, status: :unauthorized
+      render json: { message: 'Incorrect email or password' }, status: :unauthorized
     end
   end
 
@@ -25,12 +27,12 @@ class Api::V1::SessionsController < Api::V1::ApiController
       mtoken = @current_user.mobile_devices.find_by(mobile_device_token: params[:mobile_device_token])
       if mtoken.present?
         mtoken.destroy
-        render json: { message: "Log out successfully" }, status: :ok
+        render json: { message: 'Log out successfully' }, status: :ok
       else
-        render json: { message: "Provide mobile token is not correct" }, status: :ok
+        render json: { message: 'Provide mobile token is not correct' }, status: :ok
       end
     else
-      render json: { message: "Mobile token parameter is missing" }, status: :unprocessable_entity
+      render json: { message: 'Mobile token parameter is missing' }, status: :unprocessable_entity
     end
   end
 

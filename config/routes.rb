@@ -100,14 +100,11 @@ end
       delete '/delete_account', to: 'users#delete_account'
       get '/search_support_closers', to: 'users#search_support_closers'
       get '/top_support_closers', to: 'users#get_highest_rated_support_closers'
-
       get 'blocked_users', to: 'users#blocked_users'
       get 'unblocked_users', to: 'users#unblocked_users'
       post 'block_unblock_user', to: 'users#block_unblock_user'
       post 'report_unreport_user', to: 'users#report_unreport_user'
       get 'reported_users', to: 'users#reported_users'
-      post '/update_notification', to: 'users#update_notification'
-      get '/get_notification_setting', to: 'users#get_notification_setting'
       put '/update_location', to: 'users#update_location'
       # post '/get_school', to: 'users#get_school'
       # post '/get_school_pins', to: 'users#get_school_pins'
@@ -138,8 +135,8 @@ end
       get '/static_page/:permalink', to: 'static_pages#static_page'
       post '/active', to: 'users_lists#index'
 
-      get '/show_current_user_setting', to: 'user_settings#show_current_user_setting'
-      put '/update_current_user_setting', to: 'user_settings#update_current_user_setting'
+      get '/show_current_user_setting', to: 'user_settings#show'
+      put '/update_current_user_setting', to: 'user_settings#update'
 
       resources :properties, only: [:index, :show, :create, :update, :destroy] do
         collection do

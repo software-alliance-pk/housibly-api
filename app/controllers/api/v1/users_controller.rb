@@ -53,20 +53,20 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def search_support_closers
     if params[:search_query].present?
-      if @current_user.latitude.present? && @current_user.longitude.present?
-        @support_closers =
-          User.support_closer.custom_search(params[:search_query]).within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
-      else
+      # if @current_user.latitude.present? && @current_user.longitude.present?
+      #   @support_closers =
+      #     User.support_closer.custom_search(params[:search_query]).within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
+      # else
         @support_closers = User.support_closer.custom_search(params[:search_query]).paginate(page_info)
         # @support_closers =
         #   User.support_closer.custom_search(params[:search]).joins(:subscription).where.not(subscription: {status: 'canceled'}).paginate(page_info)
-      end
+      # end
     else
-      if @current_user.latitude.present? && @current_user.longitude.present?
-        @support_closers = User.support_closer.within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
-      else
+      # if @current_user.latitude.present? && @current_user.longitude.present?
+      #   @support_closers = User.support_closer.within(15, origin: [@current_user.latitude, @current_user.longitude]).paginate(page_info)
+      # else
         @support_closers = User.support_closer.paginate(page_info)
-      end
+      # end
     end
   end
 

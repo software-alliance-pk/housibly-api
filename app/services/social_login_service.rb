@@ -45,6 +45,7 @@ class SocialLoginService
     user = User.find_by(email: email)
     if user
       attributes = { login_type: 'social_login', is_otp_verified: true }
+      # present? conditons are used to make sure the id for an existing provider is not replaced with a nil value when using another provider
       attributes[:apple_user_id] = apple_user_id if apple_user_id.present?
       attributes[:google_user_id] = google_user_id if google_user_id.present?
       user.assign_attributes(attributes)
@@ -57,12 +58,12 @@ class SocialLoginService
         full_name: name,
         password: password_digest,
         password_confirmation: password_digest,
-        login_type: "social_login",
+        login_type: 'social_login',
         profile_complete: false,
-        is_otp_verified: true
+        is_otp_verified: true,
+        apple_user_id: apple_user_id,
+        google_user_id: google_user_id
       )
-      user.apple_user_id = apple_user_id if apple_user_id.present?
-      user.google_user_id = google_user_id if google_user_id.present?
       user.mobile_devices.build(mobile_device_token: @mobile_device_token)
       user.save(validate: false) && user
     end

@@ -29,42 +29,69 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def get_packages
-    @packages = Package.all
+    products = StripeService.get_products
+    subscribed_price_id = ''
+    current_period_end = nil
+    if @current_user.subscribed?
+      subscribed_price_id = @current_user.subscription.stripe_price_id
+      current_period_end = @current_user.subscription.current_period_end
+    end
+    @packages = products.map do |prod|
+      {
+        name: prod.name,
+        product_id: prod.id,
+        price_id: prod.default_price,
+        current_period_end: current_period_end,
+        is_subscribed: prod.default_price == subscribed_price_id
+      }
+    end
     render json: @packages
   end
 
-  def create_subscription
-    begin
-      package = Package.find_by(id: payment_params[:package_id])
-      return render json: {message: 'This package is not available now.'}, status: :unprocessable_entity unless package.present?
+  def create_subscription_on_card
+    # package = Package.find_by(id: payment_params[:package_id])
+    # return render json: {message: 'This package is not available now.'}, status: :unprocessable_entity unless package.present?
 
-      return render json: {message: 'Please add the card first'}, status: :unprocessable_entity unless @current_user.card_infos.present?
+    return render json: {message: 'Please add a card first'}, status: :unprocessable_entity unless @current_user.card_infos.present?
 
-      subscription = StripeService.create_subscription(@current_user.stripe_customer_id, package.stripe_price_id)
-      return render json: {message: 'Unable to subscribe to the package'}, status: :unprocessable_entity unless subscription.present?
+    # subscription = StripeService.create_subscription(@current_user.stripe_customer_id, package.stripe_price_id)
+    subscription = StripeService.create_subscription(@current_user.stripe_customer_id, payment_params[:stripe_price_id])
+    if subscription.blank? || (subscription.items.data.first.plan rescue nil).blank?
+      return render json: {message: 'Unable to subscribe to the package'}, status: :unprocessable_entity
+    end
 
-      user_subscription = @current_user.build_subscription(
-        payment_currency: subscription&.currency,
-        current_period_end: Time.at(subscription&.current_period_end),
-        subscription_id: subscription&.id,
-        status: subscription&.status,
-        interval_count: subscription&.plan.interval_count,
-        current_period_start: Time.at(subscription&.current_period_start),
-        price: subscription&.items&.data.first.plan.amount,
-        interval: subscription&.plan&.interval,
-        payment_nature: subscription.items.list.data.last.price.type,
-        plan_title: "#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
-        subscription_title: "#{subscription&.plan.interval_count} #{subscription.plan.interval}".upcase,
-        sub_type: package.name
-      )
+    @current_user.subscription.destroy if @current_user.subscription
+    user_subscription = build_user_subscription(subscription)
 
-      if user_subscription.save
-        render json: { subscription: user_subscription }
-      else
-        render_error_messages(user_subscription)
-      end
-    rescue Exception => e
-      render json: {message: e.message}, status: :unprocessable_entity
+    if user_subscription.save
+      render json: { subscription: user_subscription }
+    else
+      render_error_messages(user_subscription)
+    end
+  end
+
+  def create_subscription_on_digital_wallet
+    customer = check_customer_at_stripe
+    return render json: {message: 'Unable to get or create customer on stripe'}, status: :unprocessable_entity unless customer.present?
+
+    payment_method = StripeService.attach_payment_method(customer.id, payment_params[:payment_method_id])
+    return render json: {message: 'Unable to use payment method'}, status: :unprocessable_entity unless payment_method.present?
+
+    customer = StripeService.set_default_payment_method(customer.id, payment_method.id)
+    return render json: {message: 'Unable to use payment method'}, status: :unprocessable_entity unless customer.present?
+
+    subscription = StripeService.create_subscription(@current_user.stripe_customer_id, payment_params[:stripe_price_id])
+    if subscription.blank? || (subscription.items.data.first.plan rescue nil).blank?
+      return render json: {message: 'Unable to subscribe to the package'}, status: :unprocessable_entity
+    end
+
+    @current_user.subscription.destroy if @current_user.subscription
+    user_subscription = build_user_subscription(subscription)
+
+    if user_subscription.save
+      render json: { subscription: user_subscription }
+    else
+      render_error_messages(user_subscription)
     end
   end
 
@@ -111,7 +138,8 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   def set_default_card
     @current_user.card_infos.update_all(is_default: false) unless @card.is_default
     @card.update(is_default: true)
-    SetDefaultCardJob.perform_now(@current_user.id, @card.card_id)
+    StripeService.set_default_payment_method(@current_user.stripe_customer_id, @card.card_id)
+    # SetDefaultCardJob.perform_later(@current_user.stripe_customer_id, @card.card_id)
     render 'card'
   end
 
@@ -130,7 +158,8 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       first_card = user_cards_info&.first unless user_cards_info.pluck(:is_default).include?(true)
       if first_card
         first_card.update(is_default: true)
-        SetDefaultCardJob.perform_now(@current_user.id, first_card.card_id)
+        StripeService.set_default_payment_method(@current_user.stripe_customer_id, first_card.card_id)
+        # SetDefaultCardJob.perform_later(@current_user.stripe_customer_id, first_card.card_id)
       end
       render json: { message: 'Card deleted successfully!' }
     else
@@ -138,15 +167,11 @@ class Api::V1::PaymentsController < Api::V1::ApiController
     end
   end
 
-  def apple_pay
-    # ApplePayService.apple_pay
-  end
-
   private
 
     def payment_params
-      params.require(:payment).permit(
-        :id, :token, :name, :country, :subscription_id, :package_id, :package_name, :recurring_interval, :price
+      params.require(:payment).permit(:id, :token, :name, :country, :package_id, :package_name,
+        :recurring_interval, :price, :subscription_id, :payment_method_id, :stripe_price_id
       )
     end
 
@@ -165,7 +190,7 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       if @current_user.stripe_customer_id.present?
         customer = StripeService.get_customer(@current_user.stripe_customer_id)
       else
-        customer = StripeService.create_customer(payment_params[:name], @current_user.email)
+        customer = StripeService.create_customer(@current_user.full_name, @current_user.email)
         @current_user.update(stripe_customer_id: customer.id) rescue nil
       end
       return customer
@@ -184,12 +209,21 @@ class Api::V1::PaymentsController < Api::V1::ApiController
       )
     end
 
-    def create_user_subscription(subscription)
+    def build_user_subscription(subscription)
       @current_user.build_subscription(
-        current_period_end: subscription.current_period_end,
-        current_period_start: subscription.current_period_start,
-        interval_count: subscription.interval_count,
-        interval: subscription.interval
+        subscription_id: subscription.id,
+        status: subscription.status,
+        payment_currency: subscription.currency,
+        current_period_start: Time.at(subscription.current_period_start),
+        current_period_end: Time.at(subscription.current_period_end),
+        interval: subscription.items.data.first.plan.interval,
+        interval_count: subscription.items.data.first.plan.interval_count,
+        price: subscription.items.data.first.plan.amount,
+        payment_nature: subscription.items.data.first.price.type,
+        stripe_price_id: subscription.items.data.first.plan.id,
+        stripe_product_id: subscription.items.data.first.plan.product,
+        plan_title: "#{subscription.items.data.first.plan.interval_count} #{subscription.items.data.first.plan.interval}".upcase,
+        subscription_title: "#{subscription.items.data.first.plan.interval_count} #{subscription.items.data.first.plan.interval}".upcase,
       )
     end
 end

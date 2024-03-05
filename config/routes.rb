@@ -112,7 +112,8 @@ end
       post '/create_card', to: 'payments#create_card'
       get '/get_packages', to: 'payments#get_packages'
       post '/create_package', to: 'payments#create_package'
-      post '/create_subscription', to: 'payments#create_subscription'
+      post '/create_subscription_on_card', to: 'payments#create_subscription_on_card'
+      post '/create_subscription_on_digital_wallet', to: 'payments#create_subscription_on_digital_wallet'
       post '/cancel_subscription', to: 'payments#cancel_subscription'
       get '/get_subscription', to: 'payments#get_subscription'
       get '/get_subscription_history', to: 'payments#get_subscription_history'
@@ -122,7 +123,6 @@ end
       put '/set_default_card', to: 'payments#set_default_card'
       put '/update_card', to: 'payments#update_card'
       delete '/delete_card', to: 'payments#destroy_card'
-      # post '/apple_pay', to: 'payments#apple_pay'
 
       get '/mark_as_read', to: 'notifications#mark_as_read'
       get '/get_user_notifications', to: 'notifications#get_user_notifications'

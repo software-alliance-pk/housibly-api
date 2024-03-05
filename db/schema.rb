@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_29_164342) do
+ActiveRecord::Schema.define(version: 2024_03_05_090651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -378,6 +378,8 @@ ActiveRecord::Schema.define(version: 2024_02_29_164342) do
     t.string "payment_nature"
     t.string "payment_currency"
     t.string "sub_type"
+    t.string "stripe_product_id"
+    t.string "stripe_price_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 

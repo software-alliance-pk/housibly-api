@@ -4,3 +4,4 @@ json.extract! user,
   :profile_complete, :hourly_rate, :latitude, :longitude, :address
 
 json.avatar user.avatar.attached? ? rails_blob_url(user.avatar) : ""
+json.is_subscribed user.subscribed?

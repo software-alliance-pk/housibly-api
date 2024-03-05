@@ -7,7 +7,7 @@ json.avatar user.avatar.attached? ? rails_blob_url(user.avatar) : ""
 
 json.average_rating user.support_closer_reviews.average(:rating)&.to_f || 0
 
-json.has_subscription user.subscription.present? && user.subscription.status != 'canceled'
+json.is_subscribed user.subscribed?
 
 json.professions user.professions do |profession|
   json.extract! profession, :id, :title

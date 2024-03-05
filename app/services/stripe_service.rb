@@ -14,10 +14,15 @@ module StripeService
     handle_request{ Stripe::Customer.retrieve(customer_id) }
   end
 
+  def set_default_payment_method(customer_id, payment_method_id)
+    handle_request{ Stripe::Customer.update(customer_id, invoice_settings: {default_payment_method: payment_method_id}) }
+  end
+
+  def attach_payment_method(customer_id, payment_method_id)
+    handle_request{ Stripe::PaymentMethod.attach(payment_method_id, {customer: customer_id}) }
+  end
+
   def create_subscription(customer_id, price_id)
-    user = User.find_by(stripe_customer_id: customer_id)
-    subscription = Subscription.find_by(user_id: user.id)
-    subscription.destroy if subscription
     handle_request{ Stripe::Subscription.create({ customer: customer_id, items: [{price: price_id}] }) }
   end
 
@@ -34,16 +39,6 @@ module StripeService
     resp&.deleted
   end
 
-  def update_default_card_at_stripe(user, card_id)
-    @current_user = User.find_by_id(user)
-    handle_request do
-      Stripe::Customer.update(
-        @current_user.stripe_customer_id,
-        {invoice_settings: {default_payment_method: card_id}},
-      )
-    end
-  end
-
   def get_transactions(customer_id)
     transactions = handle_request{ Stripe::PaymentIntent.search({query: "status:'succeeded' customer:'#{customer_id}'"}) }
     if transactions
@@ -58,6 +53,10 @@ module StripeService
     else
       nil
     end
+  end
+
+  def get_products
+    handle_request{ Stripe::Product.list({active: true}) }
   end
 
   def create_product(package_name)

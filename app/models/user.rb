@@ -131,6 +131,10 @@ class User < ApplicationRecord
     self.save!
   end
 
+  def subscribed?
+    subscription.present? && !subscription.status.in?(['canceled', 'incomplete_expired'])
+  end
+
   private
 
     def generate_otp

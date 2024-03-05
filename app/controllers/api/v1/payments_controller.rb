@@ -29,23 +29,31 @@ class Api::V1::PaymentsController < Api::V1::ApiController
   end
 
   def get_packages
-    products = StripeService.get_products
     subscribed_price_id = ''
     current_period_end = nil
     if @current_user.subscribed?
       subscribed_price_id = @current_user.subscription.stripe_price_id
       current_period_end = @current_user.subscription.current_period_end
     end
-    @packages = products.map do |prod|
+
+    products = StripeService.get_products
+
+    packages = products.map do |prod|
+      next if prod.default_price.blank?
       {
         name: prod.name,
         product_id: prod.id,
-        price_id: prod.default_price,
+        price_id: prod.default_price.id,
+        price_amount: prod.default_price.unit_amount,
+        price_currency: prod.default_price.currency,
+        interval: prod.default_price.recurring&.interval,
+        interval_count: prod.default_price.recurring&.interval_count,
         current_period_end: current_period_end,
-        is_subscribed: prod.default_price == subscribed_price_id
+        is_subscribed: prod.default_price.id == subscribed_price_id
       }
     end
-    render json: @packages
+
+    render json: packages.compact.sort_by{ |prod| (prod[:interval_count].send(prod[:interval]) rescue nil).to_i }
   end
 
   def create_subscription_on_card

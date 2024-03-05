@@ -56,7 +56,7 @@ module StripeService
   end
 
   def get_products
-    handle_request{ Stripe::Product.list({active: true}) }
+    handle_request{ Stripe::Product.list({active: true, expand: ['data.default_price']}) }
   end
 
   def create_product(package_name)

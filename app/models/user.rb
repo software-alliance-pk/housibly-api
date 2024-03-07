@@ -83,6 +83,7 @@ class User < ApplicationRecord
 
   validates_presence_of :full_name, :email, :password_digest
   validates_inclusion_of :contacted_by_real_estate, :licensed_realtor, in: [true, false]
+  validates_inclusion_of :login_type, in: ['manual', 'social_login'], if: -> { login_type.present? }
   validates :email, uniqueness: { case_sensitive: false }
   validates :password_digest, length: { minimum: 6 }, confirmation: true
   validates :user_type, inclusion: { in: user_types.keys, message: "should be one of #{user_types.keys.join(', ')}"}

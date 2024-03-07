@@ -3,7 +3,7 @@
 module UserPreferencesSearchService
   extend self
 
-  def search_by_property(property_id, current_user_id, sort_criteria = 'newest')
+  def search_by_property(property_id, current_user_id, sort_criteria)
     property = Property.find_by_id(property_id)
     return nil unless property
 
@@ -17,43 +17,37 @@ module UserPreferencesSearchService
         matched = false
 
         if key == 'max_age'
-          if property.year_built.present? && property.year_built >= value.to_i.years.ago.year
-            match_points += 1
-            matched = true
-          end
+          matched = true if property.year_built.present? && property.year_built >= value.to_i.years.ago.year
         elsif value.is_a?(Hash) && property[key].present?
           if value['min'].present? && value['max'].present?
-            if value['min'].to_f <= property[key] && value['max'].to_f >= property[key]
-              match_points += 1
-              matched = true
-            end
+            matched = true if value['min'].to_f <= property[key] && value['max'].to_f >= property[key]
           elsif value['min'].present?
-            if value['min'].to_f <= property[key]
-              match_points += 1
-              matched = true
-            end
+            matched = true if value['min'].to_f <= property[key]
           elsif value['max'].present?
-            if value['max'].to_f >= property[key]
-              match_points += 1
-              matched = true
-            end
+            matched = true if value['max'].to_f >= property[key]
           end
         elsif value.is_a? Array
-          if property[key].in? value
-            match_points += 1
-            matched = true
-          end
+          matched = true if property[key].in? value
         end
 
+        match_points += 1 if matched
         preference_data[key] = {'value' => value, 'matched' => matched}
       end
 
       match_percentage = (match_points/total_match_points[property.property_type])*100
       if match_percentage > 0
-        preference_data['match_percentage'] = match_percentage
-        preference_data['updated_at'] = preference.updated_at
-        preference_data['lot_size_unit'] = property.lot_size_unit
-        preference_data['lot_frontage_unit'] = property.lot_frontage_unit
+        preference_data.update({
+          'match_percentage' => match_percentage,
+          'updated_at' => preference.updated_at,
+          'lot_size_unit' => property.lot_size_unit,
+          'lot_frontage_unit' => property.lot_frontage_unit,
+          'user' => {
+            'id' => preference.user_id,
+            'full_name' => preference.user.full_name,
+            'avatar' => (preference.user.avatar.url rescue '')
+          }
+        })
+
         if property.lot_frontage_unit != 'feet'
           preference_data['lot_frontage']['value'] = UserPreference.get_metric_values(
             preference_data.dig('lot_frontage', 'value', 'min'),
@@ -66,19 +60,15 @@ module UserPreferencesSearchService
             :square_meter
           )
         end
-        preference_data['user'] = {
-          'id' => preference.user_id,
-          'full_name' => preference.user.full_name,
-          'avatar' => (preference.user.avatar.url rescue '')
-        }
+
         matches << preference_data
       end
     end
 
-    case sort_criteria
-    when 'top_match'
+    if sort_criteria == 'top_match'
       matches.sort_by {|match| -match['match_percentage']}
-    when 'newest'
+    else
+      # already sorted by newest
       matches
     end
   end

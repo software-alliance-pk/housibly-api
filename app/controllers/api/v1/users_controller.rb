@@ -71,12 +71,23 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def get_highest_rated_support_closers
-    @support_closers = User.support_closer
-      .select('users.*, coalesce(avg(reviews.rating), 0) as avg_rating')
-      .left_outer_joins(:support_closer_reviews)
-      .group('users.id')
-      .order('avg_rating desc')
-      .limit(4)
+    user_limit = 4
+
+    # subscribed support closers first
+    @support_closers = User.support_closer.left_outer_joins(:subscription).where.not(subscriptions: {status: ['canceled', 'incomplete_expired', '', nil]})
+
+    @support_closers = @support_closers.sort_by { |user| user.support_closer_reviews.average(:rating)&.to_f || 0 }.reverse.first(user_limit)
+
+    if @support_closers.count < user_limit
+      user_ids = @support_closers.map(&:id)
+      @support_closers += User.support_closer
+        .select('users.*, coalesce(avg(reviews.rating), 0) as avg_rating')
+        .where.not(users: {id: user_ids})
+        .left_outer_joins(:support_closer_reviews)
+        .group('users.id')
+        .order('avg_rating desc')
+        .limit(user_limit - @support_closers.count)
+    end
 
     render 'search_support_closers'
   end

@@ -8,6 +8,7 @@ module UserPreferencesSearchService
     return nil unless property
 
     matches = []
+    currency_conversion = CurrencyConversion.first
 
     UserPreference.not_of_user(current_user_id).where(property_type: property.property_type).order(updated_at: :desc).each do |preference|
       match_points = 0
@@ -19,6 +20,20 @@ module UserPreferencesSearchService
         if key == 'max_age'
           matched = true if property.year_built.present? && property.year_built >= value.to_i.years.ago.year
         elsif value.is_a?(Hash) && property[key].present?
+          if key == 'price' && preference.currency_type.present? && preference.currency_type != property.currency_type
+            value['min'] = currency_conversion.convert(
+              amount: value['min'].to_f,
+              from: preference.currency_type,
+              to: property.currency_type
+            ) if value['min'].present?
+
+            value['max'] = currency_conversion.convert(
+              amount: value['max'].to_f,
+              from: preference.currency_type,
+              to: property.currency_type
+            ) if value['max'].present?
+          end
+
           if value['min'].present? && value['max'].present?
             matched = true if value['min'].to_f <= property[key] && value['max'].to_f >= property[key]
           elsif value['min'].present?
@@ -39,6 +54,7 @@ module UserPreferencesSearchService
         preference_data.update({
           'match_percentage' => match_percentage,
           'updated_at' => preference.updated_at,
+          'currency_type' => property.currency_type,
           'lot_size_unit' => property.lot_size_unit,
           'lot_frontage_unit' => property.lot_frontage_unit,
           'user' => {

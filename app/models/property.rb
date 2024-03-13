@@ -226,6 +226,10 @@ class Property < ApplicationRecord
         above_ground: 'Above Ground',
         none: 'None'
       },
+      currency_type: {
+        USD: '$USD',
+        CAD: '$CDN'
+      },
       room_levels: {
         basement: 'Basement',
         ground_floor: 'Ground Floor',

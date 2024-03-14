@@ -5,6 +5,7 @@ class UserPreference < ApplicationRecord
   before_save :convert_to_feet, unless: ->(user_preference){user_preference.property_type == "condo"}
 
   validates_presence_of :property_type
+  validate :validate_currency_type, if: -> { price.present? }
   validate :validate_measurement_units, unless: ->(user_preference){user_preference.property_type == "condo"}
 
   scope :not_of_user, -> (user_id){ where.not(user_id: user_id) }
@@ -89,6 +90,11 @@ class UserPreference < ApplicationRecord
         (lot_size_unit&.to_sym == area_units[1] && comparison_unit&.to_sym == length_units[1])
         errors.add('lot depth unit and lot frontage unit and lot size unit', 'should have same base unit')
       end
+    end
+
+    def validate_currency_type
+      currency_types = Property.detail_options[:currency_type].keys
+      errors.add(:currency_type, "has invalid value: #{currency_type}") unless currency_type&.to_sym.in?(currency_types)
     end
 
 end

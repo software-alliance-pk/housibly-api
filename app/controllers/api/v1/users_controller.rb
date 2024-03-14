@@ -74,9 +74,8 @@ class Api::V1::UsersController < Api::V1::ApiController
     user_limit = 4
 
     # subscribed support closers first
-    @support_closers = User.support_closer.left_outer_joins(:subscription).where.not(subscriptions: {status: ['canceled', 'incomplete_expired', '', nil]})
-
-    @support_closers = @support_closers.sort_by { |user| user.support_closer_reviews.average(:rating)&.to_f || 0 }.reverse.first(user_limit)
+    @support_closers = User.support_closer.joins(:subscription).where.not(subscriptions: {status: ['canceled', 'incomplete_expired', '', nil]})
+    @support_closers = @support_closers.sort_by{ |user| user.support_closer_reviews.average(:rating).to_f }.reverse.first(user_limit)
 
     if @support_closers.count < user_limit
       user_ids = @support_closers.map(&:id)

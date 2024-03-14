@@ -23,7 +23,8 @@
 # set :environment, "development"
 set :output, "log/cron.log"
 
-# every 1.day, at: '12pm' do
-every 10.minutes do
+# every 10.minutes do
+every 1.day, at: '12pm' do # server time
   runner "UserPreferencesNotificationJob.perform_now(all_users: true)"
+  runner "CurrencyRatesUpdateJob.perform_now"
 end

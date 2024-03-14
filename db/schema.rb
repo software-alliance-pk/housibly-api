@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_05_090651) do
+ActiveRecord::Schema.define(version: 2024_03_12_144743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,12 @@ ActiveRecord::Schema.define(version: 2024_03_05_090651) do
     t.index ["deleted_at"], name: "index_conversations_on_deleted_at"
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
     t.index ["sender_id"], name: "index_conversations_on_sender_id"
+  end
+
+  create_table "currency_conversions", force: :cascade do |t|
+    t.json "rates"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "dream_addresses", force: :cascade do |t|

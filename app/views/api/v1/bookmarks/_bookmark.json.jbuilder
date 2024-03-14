@@ -6,7 +6,7 @@ if bookmark.bookmark_type == "user_bookmark"
     json.id user.id
     json.full_name user.full_name
     json.avatar user.avatar.attached? ? rails_blob_url(user.avatar) : ""
-    json.average_rating user.support_closer_reviews.average(:rating)&.to_f || 0
+    json.average_rating user.support_closer_reviews.average(:rating).to_f
 
     json.professions user.professions.map(&:title)
   end

@@ -2,6 +2,7 @@ module PropertiesSearchService
   extend self
 
   def search_by_preference(preference, page_info, current_user_id)
+    currency_conversion = CurrencyConversion.first
     where_args = ['']
     conjuction = ' AND '
 
@@ -13,18 +14,29 @@ module PropertiesSearchService
         where_args[0] << conjuction if where_args[0].present?
         where_args[0] << 'year_built >= ?'
         where_args.push(value.to_i.years.ago.year)
-        next
-      end
-
-      if value.is_a? Hash
-        if value['min'].present? && value['max'].present?
-          where_args[0] << conjuction if where_args[0].present?
-          where_args[0] << "#{key} BETWEEN ? AND ?"
-          where_args.push(value['min'], value['max'])
-        elsif value['min'].present? || value['max'].present?
-          where_args[0] << conjuction if where_args[0].present?
-          where_args[0] << "#{key} #{value['min'] ? '>=' : '<='} ?"
-          where_args.push(value['min'] || value['max'])
+      elsif value.is_a? Hash
+        if key == 'price' && preference['currency_type'].present?
+          # convert property prices to the same currency as the user preference for comparison
+          if value['min'].present? && value['max'].present?
+            where_args[0] << conjuction if where_args[0].present?
+            where_args[0] << "price BETWEEN (? * ? / (SELECT (rates->>currency_type)::numeric FROM (SELECT * FROM currency_conversions FETCH FIRST 1 ROW ONLY) as first_row))
+              AND (? * ? / (SELECT (rates->>currency_type)::numeric FROM (SELECT * FROM currency_conversions FETCH FIRST 1 ROW ONLY) as first_row))"
+            where_args.push(value['min'], currency_conversion.rates[preference['currency_type']], value['max'], currency_conversion.rates[preference['currency_type']])
+          elsif value['min'].present? || value['max'].present?
+            where_args[0] << conjuction if where_args[0].present?
+            where_args[0] << "price #{value['min'] ? '>=' : '<='} (? * ? / (SELECT (rates->>currency_type)::numeric FROM (SELECT * FROM currency_conversions FETCH FIRST 1 ROW ONLY) as first_row))"
+            where_args.push(value['min'] || value['max'], currency_conversion.rates[preference['currency_type']])
+          end
+        else
+          if value['min'].present? && value['max'].present?
+            where_args[0] << conjuction if where_args[0].present?
+            where_args[0] << "#{key} BETWEEN ? AND ?"
+            where_args.push(value['min'], value['max'])
+          elsif value['min'].present? || value['max'].present?
+            where_args[0] << conjuction if where_args[0].present?
+            where_args[0] << "#{key} #{value['min'] ? '>=' : '<='} ?"
+            where_args.push(value['min'] || value['max'])
+          end
         end
       elsif value.is_a? Array
         where_args[0] << conjuction if where_args[0].present?
@@ -38,7 +50,11 @@ module PropertiesSearchService
     end
 
     # pp where_args
-    Property.not_from_user(current_user_id).where(type: preference['property_type'].titleize.gsub(" ", "")).where(where_args).order(created_at: :desc).paginate(page_info).to_a
+    Property.not_from_user(current_user_id)
+      .where(type: preference['property_type'].titleize.gsub(' ', ''))
+      .where(where_args)
+      .order(created_at: :desc)
+      .paginate(page_info).to_a
   end
 
   def search_in_polygon(coordinates_array, page_info, current_user_id)

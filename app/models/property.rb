@@ -42,17 +42,19 @@ class Property < ApplicationRecord
   has_many :rooms, dependent: :destroy
   accepts_nested_attributes_for :rooms, allow_destroy: true
 
-  validates :price, :currency_type, presence: true
-  validates :house_type, :house_style, presence: true, if: ->(property){property.property_type == "house"}
-  validates :condo_type, :condo_style, presence: true, if: ->(property){property.property_type == "condo"}
+  # validates :price, :currency_type, presence: true
+  validates :title, :price, presence: true
+  # validates :house_type, :house_style, presence: true, if: ->(property){property.property_type == "house"}
+  # validates :condo_type, :condo_style, presence: true, if: ->(property){property.property_type == "condo"}
 
-  validates :lot_frontage_unit, :lot_depth_unit, :lot_size_unit, presence: true, unless: ->(property){property.property_type == "condo"}
-  validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  # validates :lot_frontage_unit, :lot_depth_unit, :lot_size_unit, presence: true, unless: ->(property){property.property_type == "condo"}
+  # validates :bed_rooms, :bath_rooms, :air_conditioner, :garage_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
+  validates :bed_rooms, :bath_rooms, :total_number_of_rooms, presence: true, unless: ->(property){property.property_type == "vacant_land"}
   # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
   # validate :validate_room_levels, unless: ->(property){property.property_type == "vacant_land"}
-  validate :validate_detail_options, unless: ->(property){property.property_type == "vacant_land"}
-  validate :validate_measurement_units, unless: ->(property){property.property_type == "condo"}
+  # validate :validate_detail_options, unless: ->(property){property.property_type == "vacant_land"}
+  # validate :validate_measurement_units, unless: ->(property){property.property_type == "condo"}
 
   attr_writer :property_type
 
@@ -93,6 +95,7 @@ class Property < ApplicationRecord
         mobile: 'Mobile/Trailer',
         duplex: 'Duplex (2 Units)',
         multiplex: 'Multiplex (4+ Units)',
+        triplex: 'Triplex',
         cottage: 'Cottage'
       },
       house_style: {
@@ -165,11 +168,11 @@ class Property < ApplicationRecord
         internet: 'Internet',
         none: 'None'
       },
-      water: {
-        municipal: 'Municipal',
-        well: 'Well',
-        other: 'Other'
-      },
+      # water: {
+      #   municipal: 'Municipal',
+      #   well: 'Well',
+      #   other: 'Other'
+      # },
       sewer: {
         municipal: 'Municipal',
         septic: 'Septic',
@@ -198,11 +201,16 @@ class Property < ApplicationRecord
       },
       laundry: {
         ensuite: 'Ensuite',
-        laundry_room: 'Laundry Room'
+        laundry_room: 'Laundry Room',
+        lower_level: 'Lower Level',
+        main_floor: 'Main Floor', 
+        upper_level: 'Upper Level', 
+        none: 'None'
       },
       fireplace: {
         gas: 'Gas',
         wood: 'Wood',
+        electric: "Electric",
         none: 'None'
       },
       basement: {
@@ -211,6 +219,7 @@ class Property < ApplicationRecord
         separate_entrance: 'Separate Entrance',
         unfinished: 'Unfinished',
         walk_out: 'Walk-Out',
+        partial_finished: 'Partial Finished',
         none: 'None'
       },
       driveway: {

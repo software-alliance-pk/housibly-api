@@ -53,8 +53,8 @@ class Property < ApplicationRecord
   # validates :total_parking_spaces, presence: true, unless: ->(property){property.property_type == "vacant_land"}
 
   # validate :validate_room_levels, unless: ->(property){property.property_type == "vacant_land"}
-  # validate :validate_detail_options, unless: ->(property){property.property_type == "vacant_land"}
-  # validate :validate_measurement_units, unless: ->(property){property.property_type == "condo"}
+  validate :validate_detail_options, unless: ->(property){property.property_type == "vacant_land"}
+  validate :validate_measurement_units, unless: ->(property){property.property_type == "condo"}
 
   attr_writer :property_type
 
@@ -94,8 +94,8 @@ class Property < ApplicationRecord
         detached: 'Detached',
         mobile: 'Mobile/Trailer',
         duplex: 'Duplex (2 Units)',
-        multiplex: 'Multiplex (4+ Units)',
         triplex: 'Triplex',
+        multiplex: 'Multiplex (4+ Units)',
         cottage: 'Cottage'
       },
       house_style: {
@@ -168,11 +168,11 @@ class Property < ApplicationRecord
         internet: 'Internet',
         none: 'None'
       },
-      # water: {
-      #   municipal: 'Municipal',
-      #   well: 'Well',
-      #   other: 'Other'
-      # },
+      water: {
+        municipal: 'Municipal',
+        well: 'Well',
+        other: 'Other'
+      },
       sewer: {
         municipal: 'Municipal',
         septic: 'Septic',

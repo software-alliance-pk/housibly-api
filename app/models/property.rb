@@ -231,9 +231,10 @@ class Property < ApplicationRecord
         other: 'Other'
       },
       pool: {
+        yes: 'Yes',
         in_ground: 'In-Ground',
         above_ground: 'Above Ground',
-        none: 'None'
+        no: 'No'
       },
       currency_type: {
         USD: '$USD',

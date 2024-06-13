@@ -104,6 +104,7 @@ class Property < ApplicationRecord
         two_storey: '2 Storey',
         two_half_storey: '2 1/2 Storey',
         three_storey: '3 Storey',
+        four_plus_storey: '4+ Storey',
         backsplit: 'Backsplit',
         sidesplit: 'Sidesplit'
       },

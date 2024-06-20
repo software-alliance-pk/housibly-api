@@ -137,7 +137,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         :pets_allowed, :pool, :price, :property_description, :property_tax, :property_type, :security, :sewer, :tax_year,
         :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, air_conditioner: [],
         basement: [], exterior: [], fireplace: [], heat_source: [], heat_type: [], included_utilities: [], images: [],
-        rooms_attributes: [:id, :_destroy, :name, :length_in_feet, :length_in_inch, :width_in_feet, :width_in_inch, :level]
+        rooms_attributes: [:id, :_destroy, :name, :length_in_feet, :length_in_inch, :width_in_feet, :width_in_inch, :level, :room_measurement_unit]
       )
     end
 

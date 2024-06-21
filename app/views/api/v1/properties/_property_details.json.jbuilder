@@ -17,8 +17,12 @@ end
 
 json.images property.images do |image|
   json.id image.signed_id
+  extension = image.blob.content_type&.split('/')&.last
+  # Get the filename
+  filename = image.filename&.to_s
+
   # json.url (image.url rescue "") # use for direct link (not available for local), see https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
-  json.url (rails_blob_url(image) rescue "") # use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
+  json.url filename.ends_with?(".#{extension}") ? (rails_blob_url(image) rescue "") : (rails_blob_url(image, image.blob.content_type.split('/').last) rescue "")# use for redirect link, see https://guides.rubyonrails.org/active_storage_overview.html#redirect-mode
 end
 
 json.user do

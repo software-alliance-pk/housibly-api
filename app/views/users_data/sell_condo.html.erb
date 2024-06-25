@@ -165,16 +165,10 @@
             Room Name
           </th>
           <th style="width: 14.2rem">
-            Length (ft)
-          </th>
-          <th style="width: 14.2rem">
-            Length (in)
+            Length
           </th>
           <th style="width: 16.1rem">
-            Width (ft)
-          </th>
-          <th style="width: 16.1rem">
-            Width (in)
+            Width
           </th>
           <th>
             Level
@@ -240,21 +234,7 @@
           <td>
             <% if condo.rooms.present? %>
               <% condo.rooms.each do |room| %>
-               <%= room.length_in_inch.to_i %>in<br>
-              <% end %>
-            <% end %>
-          </td>
-          <td>
-            <% if condo.rooms.present? %>
-              <% condo.rooms.each do |room| %>
                 <%= room.room_width.to_i %>ft<br>
-              <% end %>
-            <% end %>
-          </td>
-          <td>
-            <% if condo.rooms.present? %>
-              <% condo.rooms.each do |room| %>
-                <%= room.width_in_inch.to_i %>in<br>
               <% end %>
             <% end %>
           </td>

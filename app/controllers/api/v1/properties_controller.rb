@@ -137,7 +137,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         :pets_allowed, :pool, :price, :property_description, :property_tax, :property_type, :security, :sewer, :tax_year,
         :title, :total_number_of_rooms, :total_parking_spaces, :unit, :water, :year_built, air_conditioner: [],
         basement: [], exterior: [], fireplace: [], heat_source: [], heat_type: [], included_utilities: [], images: [],
-        rooms_attributes: [:id, :_destroy, :name, :room_length, :length_in_inch, :room_width, :width_in_inch, :level, :room_measurement_unit]
+        rooms_attributes: [:id, :_destroy, :name, :room_length, :room_width, :level, :room_measurement_unit]
       )
     end
 
@@ -204,9 +204,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
         id: room.id,
         name: room.name,
         room_length: room.room_length,
-        length_in_inch: room.length_in_inch,
         room_width: room.room_width,
-        width_in_inch: room.width_in_inch,
         level: room.level
       }
     end

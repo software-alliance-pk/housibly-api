@@ -142,6 +142,7 @@ end
         collection do
           get :detail_options
           get :matching_properties
+          get :buy_properties_listing
           get :find_in_circle
           get :find_in_polygon
           get :find_by_zip_code

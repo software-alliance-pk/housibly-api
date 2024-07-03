@@ -70,6 +70,15 @@ class Api::V1::PropertiesController < Api::V1::ApiController
     end
   end
 
+  def buy_properties_listing
+    if @current_user.user_preference.present?
+      @properties = PropertiesSearchService.buy_properties_listing(@current_user.user_preference.attributes, page_info, @current_user.id)
+      render 'index'
+    else
+      render json: { message: 'User has no preference' }
+    end
+  end
+
   def find_in_circle
     if search_params[:radius].present?
       @properties = PropertiesSearchService.search_in_circle(@origin, search_params[:radius], page_info, @current_user.id)

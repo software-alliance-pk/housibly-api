@@ -3,7 +3,8 @@ class Property < ApplicationRecord
 
   before_save :add_the_lnt_and_lng_property
   before_save :convert_to_feet, unless: ->(property){property.property_type == "condo"}
-
+  has_many :preference_properties, dependent: :destroy
+  has_many :preferences, through: :preference_properties, dependent: :destroy
   # reverse_geocoded_by :latitude, :longitude
   acts_as_mappable :default_units => :kms,
                    :lat_column_name => :latitude,

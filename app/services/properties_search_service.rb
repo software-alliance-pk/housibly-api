@@ -1,6 +1,74 @@
 module PropertiesSearchService
   extend self
 
+  def calculate_match_percentage(preference, page_info, current_user_id,property)
+    matches = 0
+    total_attributes = 0
+    currency_conversion = CurrencyConversion.first
+    where_args = ['']
+    conjuction = ' OR '
+
+    preference.each do |key, value|
+      next if value.blank? || key.in?(
+        ['id', 'user_id', 'created_at', 'updated_at', 'property_type', 'currency_type', 'lot_size_unit', 'lot_depth_unit', 'lot_frontage_unit'])
+      if key == 'max_age'
+        if property.year_built.present?
+          total_attributes += 1
+          matches += 1 if property.year_built >= value.to_i.years.ago.year
+        end
+      elsif value.is_a? Hash
+        if key == 'price' && preference['currency_type'].present?
+          # convert property prices to the same currency as the user preference for comparison
+          if value['min'].present? && value['max'].present?
+            total_attributes += 1
+            where_args[0] = conjuction if where_args[0].present?
+            where_args[0] = "price BETWEEN (? * ? / (SELECT (rates->>currency_type)::numeric FROM (SELECT * FROM currency_conversions FETCH FIRST 1 ROW ONLY) as first_row))
+              AND (? * ? / (SELECT (rates->>currency_type)::numeric FROM (SELECT * FROM currency_conversions FETCH FIRST 1 ROW ONLY) as first_row))"
+            where_args.push(value['min'], currency_conversion.rates[preference['currency_type']], value['max'], currency_conversion.rates[preference['currency_type']])
+            min_price = where_args[1].to_f * where_args[2] / currency_conversion.rates[property.currency_type]
+            max_price = where_args[3].to_f * where_args[4] / currency_conversion.rates[property.currency_type]
+            if  property.price >= min_price.to_f &&  property.price <= max_price.to_f
+              matches += 1
+            end 
+          elsif value['min'].present? || value['max'].present?
+            total_attributes += 1
+            if value['min'].present?
+              if property[key].to_f >= (value['min'].to_f * currency_conversion.rates[preference['currency_type']] / currency_conversion.rates[property.currency_type])
+                matches += 1
+              end
+            elsif value['max'].present?
+             if property[key].to_f <= ( value['max'].to_f * currency_conversion.rates[preference['currency_type']] / currency_conversion.rates[property.currency_type])
+              matches +=1
+             end
+            end
+          end
+        else
+          if value['min'].present? && value['max'].present?
+            total_attributes += 1
+            matches += 1 if price[key] >= value['min'].to_f && price[key] <= value['max'].to_f
+          elsif value['min'].present? || value['max'].present?
+            total_attributes += 1
+            if value["min"].present?
+              matches += 1 if property[key].to_f >= value["min"].to_f
+            elsif value["max"].present?
+              matches += 1 if property[key].to_f <= value["max"].to_f
+            end
+          end
+        end
+      elsif value.is_a? Array
+        total_attributes += 1
+        if value.to_a.include? property[key] 
+          matches += 1 
+        end
+      else
+        total_attributes += 1
+        matches += 1 if property[key] == value
+      end
+    end
+    # Example calculation based on attributes (modify as per your actual attributes
+    (matches.to_f / total_attributes * 100).round(2)
+  end
+
   def get_percentage(where_args,current_user_id,preference)
     base_condition = Property.not_from_user(current_user_id)
                          .where(type: preference['property_type'].titleize.gsub(' ', ''))

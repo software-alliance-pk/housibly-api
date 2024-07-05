@@ -1,6 +1,8 @@
 class UserPreference < ApplicationRecord
   belongs_to :user
   cattr_accessor :weight_age
+  has_many :preference_properties
+  has_many :properties, through: :preference_properties, dependent: :destroy
 
   before_save :convert_to_feet, unless: ->(user_preference){user_preference.property_type == "condo"}
 

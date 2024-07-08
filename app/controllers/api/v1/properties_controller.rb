@@ -63,18 +63,20 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def matching_properties
     if @current_user.user_preference.present?
-      @current_user.user_preference.preference_properties.destroy_all if @current_user.user_preference.preference_properties.any?
+      @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).destroy_all if @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).any?
       @properties = Property.not_from_user(@current_user.id)
       .where(type: @current_user.user_preference['property_type'].titleize.gsub(' ', ''))
-      @properties.map do |property|
+      @properties.each do |property|
         match_percentage = PropertiesSearchService.calculate_match_percentage(@current_user.user_preference.attributes, page_info, @current_user.id,property)
-        PreferenceProperty.find_or_create_by(
-          user_preference_id: @current_user.user_preference.id,
-          property_id: property.id,
-          match_percentage: match_percentage
-        ) if match_percentage > 70
+        if !@current_user.user_preference.preference_properties.where("match_percentage > ?", 70).any? { |property| property.property_id == property.id && property.match_percentage == match_percentage }
+          PreferenceProperty.find_or_create_by(
+            user_preference_id: @current_user.user_preference.id,
+            property_id: property.id,
+            match_percentage: match_percentage
+          ) if match_percentage > 70
+        end
       end
-      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage > ?", 70)
+      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).uniq
       # @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
       render 'matching_properties'
     else
@@ -84,18 +86,20 @@ class Api::V1::PropertiesController < Api::V1::ApiController
 
   def buy_properties_listing
     if @current_user.user_preference.present?
-      @current_user.user_preference.preference_properties.destroy_all if @current_user.user_preference.preference_properties.any?
+      @current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70).destroy_all if @current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70).any?
       @properties = Property.not_from_user(@current_user.id)
       .where(type: @current_user.user_preference['property_type'].titleize.gsub(' ', ''))
-      @properties.map do |property|
+      @properties.each do |property|
         match_percentage = PropertiesSearchService.calculate_match_percentage(@current_user.user_preference.attributes, page_info, @current_user.id,property)
-        PreferenceProperty.find_or_create_by(
-          user_preference_id: @current_user.user_preference.id,
-          property_id: property.id,
-          match_percentage: match_percentage
-        ) if match_percentage >= 50 && match_percentage <= 70
+        if !@current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70).any? { |property| property.property_id == property.id && property.match_percentage == match_percentage }
+          PreferenceProperty.find_or_create_by(
+            user_preference_id: @current_user.user_preference.id,
+            property_id: property.id,
+            match_percentage: match_percentage
+          ) if match_percentage >= 50 && match_percentage <= 70
+        end
       end
-      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70)
+      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70).uniq
       # @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
       render 'matching_properties'
     else

@@ -76,7 +76,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
           ) if match_percentage > 70
         end
       end
-      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).uniq
+      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).order(created_at: :desc).paginate(page_info)
       # @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
       render 'matching_properties'
     else
@@ -99,7 +99,7 @@ class Api::V1::PropertiesController < Api::V1::ApiController
           ) if match_percentage >= 50 && match_percentage <= 70
         end
       end
-      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70).uniq
+      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage BETWEEN ? AND ?",50,70).order(created_at: :desc).paginate(page_info)
       # @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
       render 'matching_properties'
     else

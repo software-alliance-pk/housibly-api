@@ -57,7 +57,7 @@ class Api::V1::RegistrationsController < Api::V1::ApiController
     @user = User.find_by(phone_number: user_params[:phone_number]) if user_params[:phone_number].present?
     if @user
       if user_params[:email].present?
-        signup_otp(@user)
+        resend_new_otp(@user)
       else
         @user.generate_signup_token!
         TwilioService.send_message(

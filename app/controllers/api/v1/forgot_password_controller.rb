@@ -8,7 +8,7 @@ class Api::V1::ForgotPasswordController < Api::V1::ApiController
     end
     user = User.find_by(email: user_params[:email])
     if user.present?
-      signup_otp(user)
+      forgot_password_otp(user)
 
       # user.generate_password_token! #generate pass token
       # # SEND EMAIL/PHONE HERE

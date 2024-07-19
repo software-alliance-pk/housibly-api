@@ -26,15 +26,17 @@ class UserPreferencesNotificationJob < ApplicationJob
     notifications_sent = 0
 
     user_setting = user.user_setting
+    if user_setting.present?
+      loop do
+        properties = PropertiesSearchService.search_by_preference(user.user_preference.attributes, page_info, user.id)
+        puts "ppppppppppppppppppppppppp #{properties&.length} "
+        if properties.any?
+          notifications_sent = send_notifications(user, user_setting, properties, seller_ids, notifications_sent)
 
-    loop do
-      properties = PropertiesSearchService.search_by_preference(user.user_preference.attributes, page_info, user.id)
-      puts "ppppppppppppppppppppppppp #{properties.length} "
-
-      notifications_sent = send_notifications(user, user_setting, properties, seller_ids, notifications_sent)
-
-      break if notifications_sent == 4 || properties.length < page_info[:per_page]
-      page_info[:page] += 1
+          break if notifications_sent == 4 || properties.length < page_info[:per_page]
+          page_info[:page] += 1
+        end
+      end
     end
   end
 
@@ -53,11 +55,11 @@ class UserPreferencesNotificationJob < ApplicationJob
   private
 
     def send_notifications(user, user_setting, properties, seller_ids, notifications_sent)
-      properties.each do |property|
+      properties&.each do |property|
         sent = false
 
         # For BUYER
-        if user_setting.push_notification && user_setting.inapp_notification &&
+        if user_setting&.push_notification && user_setting&.inapp_notification &&
           !UserNotification.exists?(property_id: property.id, recipient_id: user.id, event_type: 'buy_property')
 
           UserNotification.create(
@@ -72,7 +74,7 @@ class UserPreferencesNotificationJob < ApplicationJob
         next if seller_ids.include?(property.user_id)
         seller_ids << property.user_id
 
-        if property.user.user_setting.push_notification && property.user.user_setting.inapp_notification &&
+        if property.user.user_setting&.push_notification && property.user.user_setting&.inapp_notification &&
           !UserNotification.exists?(property_id: property.id, actor_id: user.id, event_type: 'sell_property')
 
           UserNotification.create(

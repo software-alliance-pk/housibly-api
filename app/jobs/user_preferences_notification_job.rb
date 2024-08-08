@@ -30,7 +30,7 @@ class UserPreferencesNotificationJob < ApplicationJob
       loop do
         properties = PropertiesSearchService.search_by_preference(user.user_preference.attributes, page_info, user.id)
         puts "ppppppppppppppppppppppppp #{properties&.length} "
-        if properties&.any?
+        if properties && properties&.any?
           notifications_sent = send_notifications(user, user_setting, properties, seller_ids, notifications_sent)
 
           break if notifications_sent == 4 || properties.length < page_info[:per_page]

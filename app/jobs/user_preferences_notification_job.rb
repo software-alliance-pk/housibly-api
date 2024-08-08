@@ -17,7 +17,7 @@ class UserPreferencesNotificationJob < ApplicationJob
 
   def notify_for_user_preference(user)
     return if user.user_preference.blank?
-
+    return if user.properties.blank?
     page_info = {
       page: 1,
       per_page: 20

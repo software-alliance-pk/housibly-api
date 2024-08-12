@@ -86,7 +86,7 @@
         <div class="chat_sec">
           <div class="top_blk">
             <div class="tag chat_box<%= @message&.id %> " data-id="<%= @message&.id %>" id="chatmessagebox">
-              <%= @message.present? ? @message.support.ticket_number : "No Ticket Present" %>
+              <%= @message.present? ? @message&.support&.ticket_number : "No Ticket Present" %>
             </div>
             <div class="dropdown">
               <button class="select dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,20 +94,20 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
-                    <a href="<%= update_ticket_status_supports_path(id: @message&.support.id, status: 'pending') %>">Pending</a>
+                    <a href="<%= update_ticket_status_supports_path(id: @message&.support&.id, status: 'pending') %>">Pending</a>
                 </li>
                 <li>
-                    <a href="<%= update_ticket_status_supports_path(id: @message&.support.id, status: 'in_progress') %>">In Progress</a>
+                    <a href="<%= update_ticket_status_supports_path(id: @message&.support&.id, status: 'in_progress') %>">In Progress</a>
                 </li>
                 <li>
-                    <a href="<%= update_ticket_status_supports_path(id: @message&.support.id, status: 'closed') %>">Closed</a>
+                    <a href="<%= update_ticket_status_supports_path(id: @message&.support&.id, status: 'closed') %>">Closed</a>
                 </li>
               </ul>
             </div>
           </div>
           <div class="chat_msg">
             <% last_date = '' %>
-            <% @message&.support_messages&.order(created_at: :asc).each do |record| %>
+            <% @message&.support_messages&.order(created_at: :asc)&.each do |record| %>
               <% if last_date != record.created_at.strftime("%D") %>
                 <div class="mt-5 d-flex chat_date">
                   <span><%= record.created_at.strftime("%d %B %Y") %></span>

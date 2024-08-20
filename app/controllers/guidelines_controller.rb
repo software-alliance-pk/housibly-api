@@ -1,6 +1,8 @@
 class GuidelinesController < ApplicationController
   before_action :get_paper_trail, only: [:index,:create,:guidelines]
   before_action :get_page, only: [:index, :create, :guidelines]
+  skip_before_action :authenticate_admin!, only: [:contact_us, :privacy_policy]
+
   def index
   end
 

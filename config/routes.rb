@@ -39,6 +39,8 @@ end
       post :job_list
       get :job_lists
       delete :job_list
+      get :contact_us
+      get :privacy_policy
     end
   end
   get '/delete_job_list/:id', to: 'guidelines#delete_job_list', as: :delete_job_list

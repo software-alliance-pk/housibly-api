@@ -13,6 +13,15 @@ class GuidelinesController < ApplicationController
     render 'index'
   end
 
+  def contact_us
+    file_path = Rails.root.join('public', 'contact_us.html')
+    send_file file_path, type: 'text/html', disposition: 'inline'
+  end 
+  def privacy_policy
+    file_path = Rails.root.join('public', 'privacy_policy.html')
+    send_file file_path, type: 'text/html', disposition: 'inline'
+  end
+
   def get_page
     @page = Page.find_by(permalink: params[:permalink].blank? ? "terms&condition" : params[:permalink])
   end

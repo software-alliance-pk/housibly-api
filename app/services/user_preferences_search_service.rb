@@ -44,6 +44,9 @@ module UserPreferencesSearchService
         elsif value.is_a? Array
           matched = true if property[key].in? value
         end
+        if key == 'price' && value.nil?
+          matched = true
+        end 
 
         match_points += 1 if matched
         preference_data[key] = {'value' => value, 'matched' => matched}

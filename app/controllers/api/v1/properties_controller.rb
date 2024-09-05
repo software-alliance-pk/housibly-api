@@ -62,22 +62,28 @@ class Api::V1::PropertiesController < Api::V1::ApiController
   end
 
   def matching_properties
-    if @current_user.user_preference.present?
-      @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).destroy_all if @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).any?
-      @properties = Property.not_from_user(@current_user.id)
-      .where(type: @current_user.user_preference['property_type'].titleize.gsub(' ', ''))
-      @properties.each do |property|
-        match_percentage = PropertiesSearchService.calculate_match_percentage(@current_user.user_preference.attributes, page_info, @current_user.id,property)
-        if !@current_user.user_preference.preference_properties.where("match_percentage > ?", 70).any? { |property| property.property_id == property.id && property.match_percentage == match_percentage }
-          PreferenceProperty.find_or_create_by(
-            user_preference_id: @current_user.user_preference.id,
-            property_id: property.id,
-            match_percentage: match_percentage
-          ) if match_percentage > 70
+    if @current_user.user_preference.present? 
+      if @current_user.user_preference.only_one_field_present?('property_type')
+        @preference_properties = Property.not_from_user(@current_user.id)
+        .where(type: @current_user.user_preference['property_type'].titleize.gsub(' ', ''))
+        .order(created_at: :desc).paginate(page_info)
+      else
+        @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).destroy_all if @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).any?
+        @properties = Property.not_from_user(@current_user.id)
+        .where(type: @current_user.user_preference['property_type'].titleize.gsub(' ', ''))
+        @properties.each do |property|
+          match_percentage = PropertiesSearchService.calculate_match_percentage(@current_user.user_preference.attributes, page_info, @current_user.id,property)
+          if !@current_user.user_preference.preference_properties.where("match_percentage > ?", 70).any? { |property| property.property_id == property.id && property.match_percentage == match_percentage }
+            PreferenceProperty.find_or_create_by(
+              user_preference_id: @current_user.user_preference.id,
+              property_id: property.id,
+              match_percentage: match_percentage
+            ) if match_percentage > 70
+          end
         end
-      end
-      @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).order(created_at: :desc).paginate(page_info)
+        @preference_properties = @current_user.user_preference.preference_properties.where("match_percentage > ?", 70).order(created_at: :desc).paginate(page_info)
       # @properties = PropertiesSearchService.search_by_preference(@current_user.user_preference.attributes, page_info, @current_user.id)
+      end
       render 'matching_properties'
     else
       render json: { message: 'User has no preference' }

@@ -31,6 +31,15 @@ class UserPreference < ApplicationRecord
   # #scope :property_living_space, -> (min_living,max_living){where("living_space = (?) or living_space (?)",min_living.to_s,max_living.to_s)}
   # scope :property_age, ->  (age){where("year_built between (?) and (?)",age,Date.today.strftime("%y").to_i)}
 
+  def only_one_field_present?(field_name)
+    # Get all fields for the model (except id, relation and timestamps)
+    fields = attributes.except('id', 'created_at', 'updated_at', 'user_id')
+
+    # Check if the specified field is present and all other fields are empty
+    fields[field_name].present? && 
+    fields.except(field_name).values.all? { |value| value.blank? || value == [] }
+  end
+  
   def lot_depth
     if self['lot_depth'].blank? || lot_depth_unit == 'feet'
       self['lot_depth']

@@ -1,7 +1,7 @@
 class GuidelinesController < ApplicationController
   before_action :get_paper_trail, only: [:index,:create,:guidelines]
   before_action :get_page, only: [:index, :create, :guidelines]
-  skip_before_action :authenticate_admin!, only: [:contact_us, :privacy_policy]
+  skip_before_action :authenticate_admin!, only: [:contact_us, :privacy_policy, :deletion]
 
   def index
   end
@@ -21,6 +21,11 @@ class GuidelinesController < ApplicationController
   end 
   def privacy_policy
     file_path = Rails.root.join('public', 'privacy_policy.html')
+    send_file file_path, type: 'text/html', disposition: 'inline'
+  end
+
+  def deletion
+    file_path = Rails.root.join('public', 'deletion.html')
     send_file file_path, type: 'text/html', disposition: 'inline'
   end
 
